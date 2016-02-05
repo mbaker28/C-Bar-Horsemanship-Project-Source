@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.http import HttpResponse
 
-# Create your views here.
+
+def index_public(request):
+    return HttpResponse("Welcome to the C-Bar Horsemanship TRC information database!")
