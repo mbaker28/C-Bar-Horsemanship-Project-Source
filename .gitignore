@@ -1,5 +1,6 @@
-#----------- Python / Django -----------
+#----------- Python / Django / Virtualenv -----------
 *.pyc
+/env/*
 
 #----------- MS Office Ignores -----------
 ~$*
