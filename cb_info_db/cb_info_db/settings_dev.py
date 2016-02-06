@@ -78,15 +78,11 @@ WSGI_APPLICATION = 'cb_info_db.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'test_database.db'),
-    },
-    'deployment': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'cbar_info_db',
-        'USER': 'info_db_admin',
-        'PASSWORD': '0vIFg6oJsG@jiQ&Aco4jw*Li!UD41&4',
-        'HOST': 'mysql.db.cbarhorsemanship.org',
+        'NAME': 'cbar_test',
+        'USER': 'root',
+        'PASSWORD': 'localtestpass',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
