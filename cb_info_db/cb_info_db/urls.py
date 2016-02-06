@@ -17,6 +17,5 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^$', include('cbar_db.urls')), # Ex: db.cbarhorsemanship.org/
     url(r'^admin/', admin.site.urls), # Ex: db.cbarhorsemanship.org/admin/
 ]
