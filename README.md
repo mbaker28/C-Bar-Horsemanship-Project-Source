@@ -2,7 +2,7 @@
 This repository contains the code for the C-Bar Information Database Project.
 
 ## Setting up Development Environment
-Instructions [here](dev_environment_setup.md).
+Instructions [here](SETUP.md).
 
 ## Starting a Development Session
 #### Windows

@@ -24,7 +24,7 @@ installer as an administrator. By default Python installs to
 python
 ```
 to verify python installed correctly. You should see "Python 3.5.1 [......]".
-Hit `control-c` to exit the Python prompt.
+Hit `control-z` and then `enter` to exit the Python prompt.
 
 4) __Steps 4-6 may be unnecessary.__ Try them if you cannot get the `pip
 install` step to work. Open powershell (windows menu -> type "powershell") and
