@@ -61,7 +61,7 @@ python -m virtualenv env
 __Note:__ This will most likely fail if your repository pathname contains spaces
 or other special characters.
 
-12) Activate the virtual environment:
+12) Activate the virtual environment. __You will need to do this step every time you start working.__
 ```bash
 env\Scripts\activate
 ```
