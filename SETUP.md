@@ -8,79 +8,81 @@ __Notes:__
 ## Under Windows
 Tested on Windows 8.1, but should work with other versions.
 
-1) Uninstall any other Python versions. Open the programs and features section
+1) If you have not already, clone this repository. __Make sure there are no spaces or special characters in the path name.__
+
+2) Uninstall any other Python versions. Open the programs and features section
 of the control panel, search for "python" and uninstall each version
 individually.
 
-2) Download and install [Python 3.5.1](https://www.python.org/ftp/python/3.5.1/python-3.5.1-amd64.exe).
+3) Download and install [Python 3.5.1](https://www.python.org/ftp/python/3.5.1/python-3.5.1-amd64.exe).
 __Make sure "Add Python 3.5 to PATH" is checked.__ You may need to run the
 installer as an administrator. By default Python installs to
 ```
 \Users\{Username}\AppData\Local\Programs\Python\Python35
 ```
 
-3) Open up an admin command prompt (`windows-x`) and run the following:
+4) Open up an admin command prompt (`windows-x`) and run the following:
 ```bash
 python
 ```
 to verify python installed correctly. You should see "Python 3.5.1 [......]".
 Hit `control-z` and then `enter` to exit the Python prompt.
 
-4) __Steps 4-6 may be unnecessary.__ Try them if you cannot get the `pip
+5) __Steps 4-6 may be unnecessary.__ Try them if you cannot get the `pip
 install` step to work. Open powershell (windows menu -> type "powershell") and
 run the following:
 ```bash
 Start-Process powershell -Verb runAs
 ```
 
-5) In the new window run (type `Y` or `Yes` at the prompt):
+6) In the new window run (type `Y` or `Yes` at the prompt):
 ```bash
 Set-ExecutionPolicy RemoteSigned
 ```
 
-6) Close the two powershell windows.
+7) Close the two powershell windows.
 
-7) Update pip:
+8) Update pip:
 ```bash
 python -m pip install --upgrade pip
 ```
 
-8) Install virtualenv.
+9) Install virtualenv.
 ```bash
 python -m pip install virtualenv
 ```
-9) Navigate to the top level folder of this repository in the admin command
+10) Navigate to the top level folder of this repository in the admin command
     prompt.
 
-10) Create the virtual environment:
+11) Create the virtual environment:
 ```bash
 python -m virtualenv env
 ```
 __Note:__ This will most likely fail if your repository pathname contains spaces
 or other special characters.
 
-11) Activate the virtual environment:
+12) Activate the virtual environment:
 ```bash
 env\Scripts\activate
 ```
 If it was successful you will see `(env)` at the beginning of your command prompt.
 
-12) Install Django v1.9.1 (this may take some time):
+13) Install Django v1.9.1 (this may take some time):
 ```bash
 python -m pip install django==1.9.1
 ```
 
-13) Install mysqlclient (Django library):
+14) Install mysqlclient (Django library):
 ```bash
 python -m pip install mysqlclient-1.3.7-cp35-none-win_amd64.whl
 ```
 
-14) [Download](http://downloads.mysql.com/archives/get/file/mysql-5.5.44-winx64.msi)
+15) [Download](http://downloads.mysql.com/archives/get/file/mysql-5.5.44-winx64.msi)
 and install MySQL Community 5.5.44 server. Select "Standard Configuration" when
 prompted. Check "Include Bin Directory in Widows PATH". Set the root password to
 `localtestpass`. The rest of the default settings should be fine.
 
-15) Open the MySQL Command Line Client (windows key -> 'mysql' -> click name),
+16) Open the MySQL Command Line Client (windows key -> 'mysql' -> click name),
 enter the password you set in the last step, and run:
 ```SQL
 CREATE DATABASE cbar_test;
@@ -90,7 +92,7 @@ To verify it created the DB correctly you can run:
 SHOW DATABASES;
 ```
 
-16) Run the test server:
+17) Run the test server:
 ```bash
 cd cb*
 python manage.py runserver --settings cb_info_db.settings_dev
