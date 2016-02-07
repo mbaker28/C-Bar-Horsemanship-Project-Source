@@ -7,17 +7,17 @@ Instructions [here](dev_environment_setup.md).
 ## Starting a Development Session
 #### Windows
 
-1. Open a command prompt to the top level of the repository. Run:
+1) Open a command prompt to the top level of the repository. Run:
 ```bash
 env\scripts\activate
 ```
 
-2. Run the development server. Navigate to the `cb_info_db` folder and run:
+2) Run the development server. Navigate to the `cb_info_db` folder and run:
 ```bash
 python manage.py runserver --settings cb_info_db.settings_dev
 ```
 
-3. Do your develop.
+3) Do your develop.
 
 If you need to make changes using manage.py, run them in the command prompt like so:
 ```bash
