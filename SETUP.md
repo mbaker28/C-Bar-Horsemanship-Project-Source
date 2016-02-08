@@ -1,5 +1,6 @@
 # Setting up your local development environment
 __Notes:__
+
 * Replace `{Path to repository}` with the full path to your repository as
     applicable on each system.
 * Replace `{Username}` with your local Windows or Linux user name.
