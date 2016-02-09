@@ -1,3 +1,6 @@
+# This file links Apache with Django via passenger.
+# ---------------- DO NOT TOUCH WITHOUT A VERY GOOD REASON ---------------------
+
 import sys, os
 cwd = os.getcwd()
 sys.path.append(cwd)
