@@ -79,5 +79,6 @@ This is the workflow for making a contribution to this Git repository.
 * `Issue-{number}-...` branches are branches containing new or modified code
  that address the relevant issue {number}.
 
- ### Issues
- * [Linking Issues with Commit Messages](https://confluence.atlassian.com/bitbucket/resolve-issues-automatically-when-users-push-code-221451126.html#Resolveissuesautomaticallywhenuserspushcode-IncludingIssuesinaCommitMessage)
+### Issues
+
+* [Linking Issues with Commit Messages](https://confluence.atlassian.com/bitbucket/resolve-issues-automatically-when-users-push-code-221451126.html#Resolveissuesautomaticallywhenuserspushcode-IncludingIssuesinaCommitMessage)
