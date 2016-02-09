@@ -1,12 +1,8 @@
-# C-Bar Information Database - Source Code
+# C-Bar Information Database - SOURCE CODE
 This repository contains the source code for the C-Bar Information Database
  Project.
 
-## Setting up Development Environment
-Instructions [here](SETUP.md).
-
-## Starting a Development Session
-#### Windows
+## Starting a Development Session (Windows)
 
 1) Open a command prompt to the top level of the repository. Run:
 ```bash
@@ -21,7 +17,7 @@ python manage.py runserver --settings cb_info_db.settings_dev
 3) Do your develop. Hail Python!
 
 If you need to make changes using manage.py, run them in the command prompt like
- so:
+so:
 ```bash
 python manage.py
 ```
@@ -31,19 +27,35 @@ repository and `(env)` is at the start of your command prompt. If not, redo step
 
 ## Testing user
 
-This account is needed to access any portion of the DB system through the web
- browser while in development.
+This account is needed to access any portion of the
+[db.cbarhorsemanship.org](http://db.cbarhorsemanship.org) while in development.
 
 * Username: test
 * Password: inw@EngMZUz!EG3hQC^P5!Z4t$tQm9gD
 
-## Git Contribution Workflow
+## Setting up Development Environment
+Instructions [here](SETUP.md).
+
+## Things you should probably have installed
+
+* [SmartGit](http://www.syntevo.com/smartgit/): Git client.
+* [Atom](https://atom.io/): Text editor; I would suggest the following
+ extensions: `autocomplete-python`, `hard-wrap`, `minimap`, `pdf-view`,
+ `pigments`, `python-tools`, `script`, `terminal-plus`, and `multi-cursor`.
+* [Slack](http://cbar-capstone.slack.com)
+
+## Tests
+* [Shippable](https://app.shippable.com/): Continuous Integration provider.
+ Essentially it runs the tests every time a commit is pushed to the repository.
+
+## Git
 This is the workflow for making a contribution to this Git repository.
 
 1. Checkout the ```master``` branch.
 2. Pull changes from ```master``` (if any).
 3. Create a new branch from ```master```. Name it
- ```issue-###-name-of-the-issue```. For example: ```issue-3-fix-form-overlap-in-internet-explorer```.
+```issue-###-name-of-the-issue```. For example:
+```issue-3-fix-form-overlap-in-internet-explorer```.
 4. Checkout this branch.
 5. Make some changes.
 6. Commit the changes to this branch. Start each commit message with
@@ -66,3 +78,6 @@ This is the workflow for making a contribution to this Git repository.
  will be made from this branch.
 * `Issue-{number}-...` branches are branches containing new or modified code
  that address the relevant issue {number}.
+
+ ### Issues
+ * [Linking Issues with Commit Messages](https://confluence.atlassian.com/bitbucket/resolve-issues-automatically-when-users-push-code-221451126.html#Resolveissuesautomaticallywhenuserspushcode-IncludingIssuesinaCommitMessage)
