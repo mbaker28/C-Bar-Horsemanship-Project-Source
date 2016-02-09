@@ -34,7 +34,7 @@ This account is needed to access any portion of the
 * Password: inw@EngMZUz!EG3hQC^P5!Z4t$tQm9gD
 
 ## Coding Style
-[This document](CODING_STYLE.md) outlines guidlines to follow regarding coding
+[This document](CODING_STYLE.md) outlines guidelines to follow regarding coding
  styles used. It includes how we will do variable naming, use whitespace, etc.
 
 ## Setting up Development Environment
