@@ -33,6 +33,10 @@ This account is needed to access any portion of the
 * Username: test
 * Password: inw@EngMZUz!EG3hQC^P5!Z4t$tQm9gD
 
+## Coding Style
+[This document](CODING_STYLE.md) outlines guidlines to follow regarding coding
+ styles used. It includes how we will do variable naming, use whitespace, etc.
+
 ## Setting up Development Environment
 Instructions [here](SETUP.md).
 

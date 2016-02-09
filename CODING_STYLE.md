@@ -34,6 +34,16 @@ If you are modifying existing code please do this:
 * If the implementation is easy to explain, it may be a good idea.
 * Namespaces are one honking great idea -- let's do more of those!
 
+## Naming Conventions
+
+* Never use the characters 'l' (lowercase letter el), 'O' (uppercase letter oh),
+ or 'I' (uppercase letter eye) as single character variable names.
+* `package_name`, `module_name`, `function_name`, `method_name`, `instance_variable`,
+* `ClassNames`
+* `ExceptionNameError`, or `ExceptionNameException` depending on whether the
+ exception is an error or just an exception.
+* `CONSTANT_NAME`
+
 ## Code Layout
 
 ### Indentation
@@ -71,9 +81,9 @@ If you are modifying existing code please do this:
    `>=`, `<=` etc).
 * Do not put spaces around an `=` sign or other assignment operators.
 
-## comments
+## Comments
 
-* Update any relevant comments when you modify code.
+* __Update any relevant comments when you modify code.__
 * User proper English in your comments. That includes using full sentences.
 * Syntax: `#` (followed by a space) for each line comment line.
 * Don't Use in-line comments to explain the obvious.
@@ -88,25 +98,15 @@ If you are modifying existing code please do this:
 
 ### Documentation Strings
 
-Insert documentation strings to functions and methods when application. These
+Insert documentation strings into functions and methods when application. These
 will show up when using auto-complete features. They are placed at the very
-beginning of the function/method. Syntax:
+beginning of the function/method. Syntax example:
 ```python
-""" Returns a foobang
+""" Returns a string that gives the name of the participant
 
-Optional plotz says to frobnicate the bizbaz first.
+...More info if needed/helpful...
 """
 ```
 Make sure the closing `"""` is on it's own line if the documentation string is
  multiple lines. It can go on the same line as the text if it is a single line
  documentation string.
-
-## Naming Conventions
-
-* Never use the characters 'l' (lowercase letter el), 'O' (uppercase letter oh),
- or 'I' (uppercase letter eye) as single character variable names.
-* `package_name`, `module_name`, `function_name`, `method_name`, `instance_variable`,
-* `ClassNames`
-* `ExceptionNameError`, or `ExceptionNameException` depending on whether the
- exception is an error or just an exception.
-* `CONSTANT_NAME`
