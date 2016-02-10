@@ -13,6 +13,17 @@ env\scripts\activate
 ```bash
 python manage.py runserver --settings cb_info_db.settings_dev
 ```
+This will allow you to test on the machine the server is running on by visiting
+ `localhost:8000` in the browser. If you want to access the development server
+ on a different device on the local network (i.e to test on a tablet or phone),
+ run this instead:
+```bash
+python manage.py runserver --settings cb_info_db.settings_dev 0.0.0.0:8000
+```
+Then visit `{your_computers_ip_number}:8000`
+ (for example `172.16.104.114:8000`) in a web browser on the other device. You
+ can find your IP address by running `ipconfig`. Keep in mind this will be
+ accessible to every device on the local network.
 
 3) Do your develop. Hail Python!
 
