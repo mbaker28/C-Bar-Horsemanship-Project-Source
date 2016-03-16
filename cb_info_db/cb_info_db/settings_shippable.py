@@ -1,5 +1,5 @@
 """
-DEVELOPMENT - LOCAL USE ONLY
+CONTINUOUS INTEGRATION - SHIPPABLE USE ONLY
 
 Django settings for cb_info_db project.
 
@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Testing Setup
 TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
-TEST_OUTPUT_DIR = 'test-results'
+TEST_OUTPUT_DIR = '/root/src/bitbucket.org/OKBU_CS_Capstone_15-16/c-bar_info_db_source/shippable/testresults'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -31,7 +31,6 @@ SECRET_KEY = '*rin0hfya*_p(604srszyo7$jh4ijlj&njnkj91tqk!i8z0pqx'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -84,9 +83,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cbar_test',
-        'USER': 'root',
-        'PASSWORD': 'localtestpass',
-        'HOST': '127.0.0.1',
+        'USER': 'shippable',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }

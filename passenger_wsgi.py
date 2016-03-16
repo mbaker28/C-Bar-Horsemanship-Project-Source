@@ -1,5 +1,5 @@
-# This file links Apache with Django via passenger.
 # ---------------- DO NOT TOUCH WITHOUT A VERY GOOD REASON ---------------------
+# This file links Apache with Django via passenger.
 
 import sys, os
 cwd = os.getcwd()

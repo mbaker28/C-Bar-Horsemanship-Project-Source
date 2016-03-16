@@ -1,0 +1,32 @@
+# This document configures Shippable, the continuous integration provider.
+
+####################### Touch upon pain of death! ########################
+
+# language setting
+language: python
+
+# version numbers
+python:
+  - "3.5" #Aka production version
+
+services:
+    - mysql
+
+build:
+    pre_ci_boot:
+        image_name: drydock/u12pytpls
+        image_tag: prod
+        pull: true
+    ci:
+        # Setup stuff
+        - apt-get -y install libmysqlclient-dev
+        - mysql -e 'create database cbar_test;' | echo
+        - mkdir -p $HOME/bldve/
+        - virtualenv -p $SHIPPABLE_PYTHON  $HOME/bldve/
+        - source $HOME/bldve/bin/activate
+        - pip install -U pip
+        - "pip install -r requirements.txt"
+        # Run the tests
+        - cd cb_info_db
+        - coverage run ./manage.py test --settings cb_info_db.settings_shippable
+        - coverage xml -o /root/src/bitbucket.org/OKBU_CS_Capstone_15-16/c-bar_info_db_source/shippable/codecoverage/coverage.xml
