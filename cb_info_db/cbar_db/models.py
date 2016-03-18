@@ -204,3 +204,12 @@ class BackgroundCheck(models.Model):
     date=models.DateField(primary_key=True)
     signature=models.CharField(max_length=NAME_LENGTH)
     driver_license_num=models.CharField(max_length=18)
+
+
+class ConfidentialityPolicy(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(('participant_id','date'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    agreement=models.CharField(max_length=1, choices=YES_NO_CHOICES)
