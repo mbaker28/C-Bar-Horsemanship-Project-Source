@@ -8,11 +8,14 @@
 #       -Add can_post_canter
 #       -Verify whether proper_lead_canter should include walk/trot as well
 #           Observation Form (unnamed)
+#   Medication table
+#       -Add participant_id as a FK
+#       -Change PK to (medication_name, participant_id)
+#
+# Do following in models.py (this file):
 #   AuthorizedUser
 #       -Add model (extend Django auth table?)
 #   MedicalInfo
-#       -Add model
-#   Medication
 #       -Add model
 #   SeizureEval
 #       -Add model
@@ -896,3 +899,13 @@ class EvalPhysical(models.Model):
         choices=LIKERT_LIKE_CHOICES_NO_PC,
         blank=True
     )
+
+
+class Medication(models.Model):
+    class Meta: # Sets up PK as (participant_id, medication_name)
+        unique_together=(("participant_id","medication_name"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    medication_name=models.CharField(max_length=100, primary_key=True)
+    duration_taken=models.CharField(max_length=25)
+    frequency=models.CharField(max_length=25)
