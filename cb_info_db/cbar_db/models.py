@@ -232,3 +232,22 @@ class AuthorizeEmergencyMedicalTreatment(models.Model):
         max_length=1,
         choices=YES_NO_CHOICES
     )
+
+
+class EvalHorsemanship(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(('participant_id','date'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    rules_and_reasons=models.NullBooleanField()
+    parts_of_horse=models.NullBooleanField()
+    parts_of_saddle=models.NullBooleanField()
+    parts_of_bridle=models.NullBooleanField()
+    approach_tied_horse=models.NullBooleanField()
+    methods_of_tying=models.NullBooleanField()
+    halter=models.NullBooleanField()
+    lead=models.NullBooleanField()
+    groom=models.NullBooleanField()
+    can_saddle_horse=models.NullBooleanField()
+    can_bridle_horse=models.NullBooleanField()
