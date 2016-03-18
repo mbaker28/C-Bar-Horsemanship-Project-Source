@@ -71,3 +71,18 @@ class SessionGoals(models.Model):
     goal_type=models.CharField(max_length=1, choices=GOAL_CHOICES)
     goal_description=models.CharField(max_length=500)
     motiviation=models.CharField(max_length=250)
+
+
+class PhysRelease(models.Model):
+    class Meta:
+        unique_together=(('participant_id','date'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    health_provider_name=models.CharField(max_length=NAME_LENGTH)
+    health_provider_title=models.CharField(max_length=50)
+    health_provider_address=models.CharField(max_length=255)
+    health_provider_phone=models.CharField(max_length=PHONE_LENGTH)
+    health_provider_signature=models.CharField(max_length=NAME_LENGTH)
+    #health_provider_license_num length is based on National Provider Identifier
+    health_provider_license_num=models.CharField(max_length=10)
