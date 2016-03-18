@@ -21,18 +21,21 @@
 #       -Add FK to SeizureType to replace type_of_seizure
 #       -Add during_seizure_* attribrutes
 #       -Add can_communicate_when_will_occur attribute
+#   AdaptationsNeeded table
+#       -Verify *_stationary_block options are correct
+#       -Remove assisted_device
+#       -Remove mobility (duplicate of ambulatory_status)
 #
 # Do following in models.py (this file):
 #   AuthorizedUser
 #       -Add model (extend Django auth table?)
-#   AdaptationsNeeded
-#       -Add model
 
 from django.db import models
 
 # Global Constants and Choices
 NAME_LENGTH=75
 PHONE_LENGTH=15
+SHORT_ANSWER_LENGTH=100
 
 MALE="M"
 FEMALE="F"
@@ -912,7 +915,10 @@ class Medication(models.Model):
         unique_together=(("participant_id","medication_name"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    medication_name=models.CharField(max_length=100, primary_key=True)
+    medication_name=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        primary_key=True
+    )
 
     duration_taken=models.CharField(max_length=25)
     frequency=models.CharField(max_length=25)
@@ -994,9 +1000,9 @@ class SeizureEval(models.Model):
     )
     date_of_last_seizure=models.DateField()
     duration_of_last_seizure=models.DurationField()
-    typical_cause=models.CharField(max_length=100)
+    typical_cause=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     seizure_indicators=models.CharField(max_length=500)
-    after_effect=models.CharField(max_length=100)
+    after_effect=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     during_seizure_stare=models.BooleanField()
     during_seizure_stare_length=models.DurationField(null=True)
     during_seizure_walks=models.BooleanField()
@@ -1011,3 +1017,122 @@ class SeizureEval(models.Model):
         max_length=2,
         choices=ACTIONS_TO_TAKE_CHOICES
     )
+
+
+class AdaptationsNeeded(models.Model):
+    INDPENDENT="I"
+    MIN_ASSISTANCE="M"
+    FULL_ASSISTANCE="F"
+    ASSISTANCE_CHOICES=(
+        (INDPENDENT, "Independent"),
+        (MIN_ASSISTANCE, "Minimal assistance"),
+        (FULL_ASSISTANCE, "Full assistance")
+    )
+
+    WALKS_IND="I"
+    IND_WITH_CANE_ETC="C"
+    WHEELCHAIR_MIN_NO_ASSISTANCE="N"
+    WHEELCHAIR_FULL_ASSISTANCE="A"
+    OTHER="O"
+    AMBULATORY_CHOICES=(
+        (WALKS_IND, "Walks independently"),
+        (IND_WITH_CANE_ETC, "Independent with cane/bronco/walker"),
+        (WHEELCHAIR_MIN_NO_ASSISTANCE, "Wheelchair with minimal or no assistance"),
+        (WHEELCHAIR_FULL_ASSISTANCE, "Wheelchair with full assistance"),
+        (OTHER, "Other") # -> ambulatory_status_other needed
+    )
+
+    MNT_RAMP="R"
+    MNT_OVER_CREST="T"
+    MNT_OVER_CROUP="P"
+    STATIONARY_BLOCK_CHOICES=(
+        (MNT_RAMP, "Ramp"),
+        (MNT_OVER_CREST, "Over crest"),
+        (MNT_OVER_CROUP, "Over croup")
+    )
+
+    DMT_OVER_CROUP="A"
+    DMT_OVER_CROUP_LF_STIRRUP="B"
+    DMT_OVER_CREST_FLIP="C"
+    DMT_OVER_CREST_HIP="D"
+    DISMOUNT_TYPE_CHOICES=(
+        (DMT_OVER_CROUP, "Over croup"),
+        (DMT_OVER_CROUP_LF_STIRRUP, "Over croup with left foot in stirrup"),
+        (DMT_OVER_CREST_FLIP, "Over crest and flip"),
+        (DMT_OVER_CREST_HIP, "Over crest and hip")
+    )
+
+    class Meta: # Sets up PK as (participant_id, adaptation_id)
+        unique_together=(("participant_id","adaptation_id"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    adaptation_id=models.AutoField(primary_key=True)
+
+    mount_assistance_required=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES
+    )
+    mount_portable_block_needed=models.BooleanField()
+    mount_stationary_block=models.CharField(
+        max_length=1,
+        choices=STATIONARY_BLOCK_CHOICES,
+        null=True
+    )
+    dismount_assistance_required=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES
+    )
+    dismount_type=models.CharField(
+        max_length=1,
+        choices=DISMOUNT_TYPE_CHOICES
+    )
+    num_sidewalkers_walk_spotter=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_walk_heel_hold=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_walk_over_thigh=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_walk_other=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_trot_spotter=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_trot_heel_hold=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_trot_over_thigh=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_trot_other=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    posture_standing=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    posture_sitting=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    posture_mounted=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    ambulatory_status=models.CharField(max_length=1, choices=AMBULATORY_CHOICES)
+    ambulatory_status_other=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    gait_flat=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_uneven=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_incline=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_decline=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_stairs=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_balance=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_standing_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_standing_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_straddle_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_straddle_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
