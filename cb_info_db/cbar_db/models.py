@@ -1,3 +1,6 @@
+# Uses the following hack to support composite keys:
+#    http://stackoverflow.com/questions/28712848/composite-primary-key-in-django
+
 from django.db import models
 
 # Constants and Choices
@@ -18,8 +21,9 @@ MINOR_STATUS_CHOICES=(
 )
 PHONE_LENGTH=15
 
+
 class Participant(models.Model):
-    participant_ID=models.AutoField(primary_key=True) # Auto generated PK
+    participant_id=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
     birth_date=models.DateField()
     email=models.EmailField() # Auto-validation for email addresses
@@ -35,8 +39,17 @@ class Participant(models.Model):
     phone_cell_work=models.CharField(max_length=PHONE_LENGTH)
     school_institution=models.CharField(max_length=150, blank=True)
 
+
 class Caregiver(models.Model):
     caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE) # VERIFY THAT WE WANT CASCADE HERE
     name=models.CharField(max_length=NAME_LENGTH)
     phone=models.CharField(max_length=PHONE_LENGTH)
+
+
+class Session(models.Model):
+    class Meta: #Hacks, FTW
+        unique_together=(('session_ID','date'))
+    session_ID=models.AutoField(primary_key=True) # Auto generated PK
+    date=models.DateTimeField()
+    tack=models.CharField(max_length=250)
