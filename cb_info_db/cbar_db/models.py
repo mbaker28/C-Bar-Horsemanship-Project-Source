@@ -92,3 +92,9 @@ class Donor(models.Model):
     donor_id=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
     email=models.EmailField()
+
+
+class Horse(models.Model):
+    horse_id=models.AutoField(primary_key=True) # Auto generated PK
+    name=models.CharField(max_length=NAME_LENGTH)
+    description=models.CharField(max_length=500)
