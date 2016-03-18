@@ -57,7 +57,7 @@ class Caregiver(models.Model):
 
 
 class Session(models.Model):
-    class Meta: #Hacks, FTW
+    class Meta:  # Sets up PK as (session_id, date)
         unique_together=(('session_ID', 'date'))
     session_ID=models.AutoField(primary_key=True) # Auto generated PK
     date=models.DateTimeField()
@@ -71,7 +71,7 @@ class SessionGoals(models.Model):
         (GOAL_SHORT_TERM, 'Short term goal'),
         (GOAL_LONG_TERM, 'Long term goal')
     )
-    class Meta: #Hacks, FTW
+    class Meta: # Sets up PK as (participant_id, session_id)
         unique_together=(('participant_id', 'session_id'))
 
     session_goals_id=models.AutoField(primary_key=True) # Auto generated PK
@@ -83,7 +83,7 @@ class SessionGoals(models.Model):
 
 
 class PhysRelease(models.Model):
-    class Meta:
+    class Meta: # Sets up PK as (participant_id, date)
         unique_together=(('participant_id','date'))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
@@ -138,7 +138,7 @@ class Grouping(models.Model):
 
 
 class ObservationEvaluation(models.Model):
-    class Meta:
+    class Meta: # Sets up PK as (participant_id, date)
         unique_together=(('participant_id','date'))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
@@ -156,7 +156,7 @@ class ParticipantType(models.Model):
         (STAFF, 'Staff')
     )
 
-    class Meta:
+    class Meta:  # Sets up PK as (participant_id, participant_type)
         unique_together=(('participant_id','participant_type'))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
@@ -175,7 +175,7 @@ class Diagnosis(models.Model):
         (SECONDARY, 'Secondary')
     )
 
-    class Meta:
+    class Meta: # Sets up PK as (participant_id, diagnosis)
         unique_together=(('participant_id','diagnosis'))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
@@ -187,10 +187,20 @@ class Diagnosis(models.Model):
 
 
 class MediaRelease(models.Model):
-    class Meta:
+    class Meta: # Sets up PK as (participant_id, date)
         unique_together=(('participant_id','date'))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
     consent=models.CharField(max_length=1, choices=YES_NO_CHOICES)
     signature=models.CharField(max_length=NAME_LENGTH)
+
+
+class BackgroundCheck(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(('participant_id','date'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    signature=models.CharField(max_length=NAME_LENGTH)
+    driver_license_num=models.CharField(max_length=18)
