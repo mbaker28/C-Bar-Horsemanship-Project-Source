@@ -126,3 +126,12 @@ class Grouping(models.Model):
     class_id=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=50)
     description=models.CharField(max_length=500)
+
+
+class ObservationEvaluation(models.Model):
+    class Meta:
+        unique_together=(('participant_id','date'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    class_id=models.ForeignKey(Grouping, null=True, on_delete=models.SET_NULL)
