@@ -119,3 +119,10 @@ class Donation(models.Model):
     # but it's in the ERD...
     # payment_info=models.CharField(max_length=500)
     donation_type=models.CharField(max_length=1, choices=DONATION_CHOICES)
+
+
+class Grouping(models.Model):
+    """ AKA Class... reserved words and such """
+    class_id=models.AutoField(primary_key=True) # Auto generated PK
+    name=models.CharField(max_length=50)
+    description=models.CharField(max_length=500)
