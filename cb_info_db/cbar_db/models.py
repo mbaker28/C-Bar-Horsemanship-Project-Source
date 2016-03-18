@@ -1,27 +1,26 @@
 from django.db import models
 
+# Constants and Choices
+NAME_LENGTH=75
+MALE='M'
+FEMALE='F'
+GENDER_CHOICES=(
+    (MALE, 'Male'),
+    (FEMALE, 'Female')
+)
+MINOR='M'
+ADULT_WITH_GUARDIAN='G'
+ADULT_WITHOUT_GUARDIAN='A'
+MINOR_STATUS_CHOICES=(
+    (MINOR, 'Minor'),
+    (ADULT_WITH_GUARDIAN, 'Adult with guardian'),
+    (ADULT_WITHOUT_GUARDIAN, 'Independent adult')
+)
+PHONE_LENGTH=15
+
 class Participant(models.Model):
     """ Main table for all Participants """
 
-    # Constants and Choices
-    NAME_LENGTH=75
-    MALE='M'
-    FEMALE='F'
-    GENDER_CHOICES=(
-        (MALE, 'Male'),
-        (FEMALE, 'Female')
-    )
-    MINOR='M'
-    ADULT_WITH_GUARDIAN='G'
-    ADULT_WITHOUT_GUARDIAN='A'
-    MINOR_STATUS_CHOICES=(
-        (MINOR, 'Minor'),
-        (ADULT_WITH_GUARDIAN, 'Adult with guardian'),
-        (ADULT_WITHOUT_GUARDIAN, 'Independent adult')
-    )
-    PHONE_LENGTH=15
-
-    # Attributes
     participant_ID=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
     birth_date=models.DateField()
@@ -37,3 +36,9 @@ class Participant(models.Model):
     phone_home=models.CharField(max_length=PHONE_LENGTH)
     phone_cell_work=models.CharField(max_length=PHONE_LENGTH)
     school_institution=models.CharField(max_length=150, blank=True)
+
+class Caregiver(models.Model):
+    caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE) # VERIFY THAT WE WANT CASCADE HERE
+    name=models.CharField(max_length=NAME_LENGTH)
+    phone=models.CharField(max_length=PHONE_LENGTH)
