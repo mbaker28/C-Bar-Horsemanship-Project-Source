@@ -49,7 +49,25 @@ class Caregiver(models.Model):
 
 class Session(models.Model):
     class Meta: #Hacks, FTW
-        unique_together=(('session_ID','date'))
+        unique_together=(('session_ID', 'date'))
     session_ID=models.AutoField(primary_key=True) # Auto generated PK
     date=models.DateTimeField()
     tack=models.CharField(max_length=250)
+
+
+class SessionGoals(models.Model):
+    GOAL_SHORT_TERM='S'
+    GOAL_LONG_TERM='L'
+    GOAL_CHOICES=(
+        (GOAL_SHORT_TERM, 'Short term goal'),
+        (GOAL_LONG_TERM, 'Long term goal')
+    )
+    class Meta: #Hacks, FTW
+        unique_together=(('participant_id', 'session_id'))
+
+    session_goals_id=models.AutoField(primary_key=True) # Auto generated PK
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    session_id=models.ForeignKey(Session, on_delete=models.CASCADE)
+    goal_type=models.CharField(max_length=1, choices=GOAL_CHOICES)
+    goal_description=models.CharField(max_length=500)
+    motiviation=models.CharField(max_length=250)
