@@ -7,28 +7,48 @@ from django.db import models
 NAME_LENGTH=75
 PHONE_LENGTH=15
 
-MALE='M'
-FEMALE='F'
+MALE="M"
+FEMALE="F"
 GENDER_CHOICES=(
-    (MALE, 'Male'),
-    (FEMALE, 'Female')
+    (MALE, "Male"),
+    (FEMALE, "Female")
 )
 
-MINOR='M'
-ADULT_WITH_GUARDIAN='G'
-ADULT_WITHOUT_GUARDIAN='A'
+MINOR="M"
+ADULT_WITH_GUARDIAN="G"
+ADULT_WITHOUT_GUARDIAN="A"
 MINOR_STATUS_CHOICES=(
-    (MINOR, 'Minor'),
-    (ADULT_WITH_GUARDIAN, 'Adult with guardian'),
-    (ADULT_WITHOUT_GUARDIAN, 'Independent adult')
+    (MINOR, "Minor"),
+    (ADULT_WITH_GUARDIAN, "Adult with guardian"),
+    (ADULT_WITHOUT_GUARDIAN, "Independent adult")
 )
 
-YES='Y'
-NO='N'
+YES="Y"
+NO="N"
 YES_NO_CHOICES=(
-    (YES, 'Yes'),
-    (NO, 'No')
+    (YES, "Yes"),
+    (NO, "No")
 )
+
+UNSATISFACTORY="U"
+POOR="P"
+FAIR="F"
+GOOD="G"
+EXCELLENT="E"
+NOT_PERFORMED_DISABILITY="N"
+ATTEMPTS="A"
+PARTIALLY_COMPLETES="P"
+LIKERT_LIKE_CHOICES=(
+    (UNSATISFACTORY, "Unsatisfactory"),
+    (POOR, "Poor"),
+    (FAIR, "Fair"),
+    (GOOD, "Good"),
+    (EXCELLENT, "Excellent"),
+    (NOT_PERFORMED_DISABILITY, "Rider not able to perform due to disability"),
+    (ATTEMPTS, "Attempts"),
+    (PARTIALLY_COMPLETES, "Partially completes")
+)
+
 
 
 class Participant(models.Model):
@@ -37,7 +57,7 @@ class Participant(models.Model):
     birth_date=models.DateField()
     email=models.EmailField() # Auto-validation for email addresses
     weight=models.DecimalField(max_digits=4, decimal_places=1) # Ex: 999.9
-    gender=models.CharField(max_length=1, choices=GENDER_CHOICES) # Ex: 'M', 'F'
+    gender=models.CharField(max_length=1, choices=GENDER_CHOICES) # Ex: "M", "F"
     guardian_name=models.CharField(max_length=NAME_LENGTH)
     height=models.DecimalField(max_digits=4, decimal_places=1) # Ex: 999.9
     minor_status=models.CharField(max_length=1, choices=MINOR_STATUS_CHOICES)
@@ -58,21 +78,21 @@ class Caregiver(models.Model):
 
 class Session(models.Model):
     class Meta:  # Sets up PK as (session_id, date)
-        unique_together=(('session_ID', 'date'))
+        unique_together=(("session_ID", "date"))
     session_ID=models.AutoField(primary_key=True) # Auto generated PK
     date=models.DateTimeField()
     tack=models.CharField(max_length=250)
 
 
 class SessionGoals(models.Model):
-    GOAL_SHORT_TERM='S'
-    GOAL_LONG_TERM='L'
+    GOAL_SHORT_TERM="S"
+    GOAL_LONG_TERM="L"
     GOAL_CHOICES=(
-        (GOAL_SHORT_TERM, 'Short term goal'),
-        (GOAL_LONG_TERM, 'Long term goal')
+        (GOAL_SHORT_TERM, "Short term goal"),
+        (GOAL_LONG_TERM, "Long term goal")
     )
     class Meta: # Sets up PK as (participant_id, session_id)
-        unique_together=(('participant_id', 'session_id'))
+        unique_together=(("participant_id", "session_id"))
 
     session_goals_id=models.AutoField(primary_key=True) # Auto generated PK
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
@@ -84,7 +104,7 @@ class SessionGoals(models.Model):
 
 class PhysRelease(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
-        unique_together=(('participant_id','date'))
+        unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
@@ -110,13 +130,13 @@ class Horse(models.Model):
 
 
 class Donation(models.Model):
-    DONATION_ADOPT_HORSE='H'
-    DONATION_ADOPT_PARTICIPANT='P'
-    DONATION_MONETARY='M'
+    DONATION_ADOPT_HORSE="H"
+    DONATION_ADOPT_PARTICIPANT="P"
+    DONATION_MONETARY="M"
     DONATION_CHOICES=(
-        (DONATION_ADOPT_HORSE, 'Horse adoption'),
-        (DONATION_ADOPT_PARTICIPANT, 'Participant adoption'),
-        (DONATION_MONETARY, 'Monetary donation')
+        (DONATION_ADOPT_HORSE, "Horse adoption"),
+        (DONATION_ADOPT_PARTICIPANT, "Participant adoption"),
+        (DONATION_MONETARY, "Monetary donation")
     )
 
     donation_id=models.AutoField(primary_key=True) # Auto generated PK
@@ -124,8 +144,8 @@ class Donation(models.Model):
     horse_id=models.ForeignKey(Horse, on_delete=models.CASCADE)
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     amount=models.DecimalField(max_digits=10, decimal_places=2)
-    # Commented out because I don't think we'll actually store payment info,
-    # but it's in the ERD...
+    # Commented out because I don"t think we"ll actually store payment info,
+    # but it"s in the ERD...
     # payment_info=models.CharField(max_length=500)
     donation_type=models.CharField(max_length=1, choices=DONATION_CHOICES)
 
@@ -139,7 +159,7 @@ class Grouping(models.Model):
 
 class ObservationEvaluation(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
-        unique_together=(('participant_id','date'))
+        unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
@@ -147,17 +167,17 @@ class ObservationEvaluation(models.Model):
 
 
 class ParticipantType(models.Model):
-    PARTICIPANT='P'
-    VOLUNTEER='V'
-    STAFF='S'
+    PARTICIPANT="P"
+    VOLUNTEER="V"
+    STAFF="S"
     TYPE_CHOICES=(
-        (PARTICIPANT, 'Participant'),
-        (VOLUNTEER, 'Volunteer'),
-        (STAFF, 'Staff')
+        (PARTICIPANT, "Participant"),
+        (VOLUNTEER, "Volunteer"),
+        (STAFF, "Staff")
     )
 
     class Meta:  # Sets up PK as (participant_id, participant_type)
-        unique_together=(('participant_id','participant_type'))
+        unique_together=(("participant_id","participant_type"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     participant_type=models.CharField(
@@ -168,15 +188,15 @@ class ParticipantType(models.Model):
 
 
 class Diagnosis(models.Model):
-    PRIMARY='P'
-    SECONDARY='S'
+    PRIMARY="P"
+    SECONDARY="S"
     DIAGNOSIS_CHOICES=(
-        (PRIMARY, 'Primary'),
-        (SECONDARY, 'Secondary')
+        (PRIMARY, "Primary"),
+        (SECONDARY, "Secondary")
     )
 
     class Meta: # Sets up PK as (participant_id, diagnosis)
-        unique_together=(('participant_id','diagnosis'))
+        unique_together=(("participant_id","diagnosis"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     diagnosis=models.CharField(max_length=255, primary_key=True)
@@ -188,7 +208,7 @@ class Diagnosis(models.Model):
 
 class MediaRelease(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
-        unique_together=(('participant_id','date'))
+        unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
@@ -198,7 +218,7 @@ class MediaRelease(models.Model):
 
 class BackgroundCheck(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
-        unique_together=(('participant_id','date'))
+        unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
@@ -208,7 +228,7 @@ class BackgroundCheck(models.Model):
 
 class ConfidentialityPolicy(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
-        unique_together=(('participant_id','date'))
+        unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
@@ -217,7 +237,7 @@ class ConfidentialityPolicy(models.Model):
 
 class AuthorizeEmergencyMedicalTreatment(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
-        unique_together=(('participant_id','date'))
+        unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
@@ -236,7 +256,7 @@ class AuthorizeEmergencyMedicalTreatment(models.Model):
 
 class EvalHorsemanship(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
-        unique_together=(('participant_id','date'))
+        unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
@@ -251,3 +271,119 @@ class EvalHorsemanship(models.Model):
     groom=models.NullBooleanField()
     can_saddle_horse=models.NullBooleanField()
     can_bridle_horse=models.NullBooleanField()
+
+
+class EvalAttitude(models.Model):
+    WILLING="A"
+    WILLING_NEEDS_ENCOURAGEMENT="B"
+    UNWILLING="C"
+    MOTIVATED_WELL="D"
+    MOTIVATED_SOMEWHAT="E"
+    NOT_MOTIVATED="F"
+    SMILES_APPEARS_HAPPY="G"
+    APPREHENSIVE="H"
+    ATTITUDE_CHOICES=(
+        (WILLING, "Willing"),
+        (WILLING_NEEDS_ENCOURAGEMENT, "Willing, but needs encouragement"),
+        (UNWILLING, "Unwilling"),
+        (MOTIVATED_WELL, "Well motivated"),
+        (MOTIVATED_SOMEWHAT, "Somewhat motivated"),
+        (NOT_MOTIVATED, "Not motivated"),
+        (SMILES_APPEARS_HAPPY, "Smiles, appears happy"),
+        (APPREHENSIVE, "Apprehensive about the whole thing")
+    )
+
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+
+    # Attiude choices:
+    walking_through_barn=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    looking_at_horses=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    petting_horses=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    up_down_ramp=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    mounting_before=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    mounting_after=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    riding_before=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    riding_during=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    riding_after=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    understands_directions=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    participates_exercises=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    participates_games=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+    general_attitude=models.CharField(
+        max_length=1,
+        choices=ATTITUDE_CHOICES,
+        blank=True
+    )
+
+    # Likert like choices:
+    comprehension=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    confidence=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    attention=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    relaxation=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
