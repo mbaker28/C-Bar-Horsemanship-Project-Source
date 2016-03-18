@@ -135,3 +135,24 @@ class ObservationEvaluation(models.Model):
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
     class_id=models.ForeignKey(Grouping, null=True, on_delete=models.SET_NULL)
+
+
+class ParticipantType(models.Model):
+    PARTICIPANT='P'
+    VOLUNTEER='V'
+    STAFF='S'
+    TYPE_CHOICES=(
+        (PARTICIPANT, 'Participant'),
+        (VOLUNTEER, 'Volunteer'),
+        (STAFF, 'Staff')
+    )
+
+    class Meta:
+        unique_together=(('participant_id','participant_type'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    participant_type=models.CharField(
+        max_length=1,
+        choices=TYPE_CHOICES,
+        primary_key=True
+    )
