@@ -11,12 +11,14 @@
 #   Medication table
 #       -Add participant_id as a FK
 #       -Change PK to (medication_name, participant_id)
+#   MedicalInfo table
+#       -Add allergies_conditions_that_exclude_description
+#       -Add physical_or_mental_issues_affecting_riding_description
+#       -Add restriction_for_horse_activity_last_five_years_description
 #
 # Do following in models.py (this file):
 #   AuthorizedUser
 #       -Add model (extend Django auth table?)
-#   MedicalInfo
-#       -Add model
 #   SeizureEval
 #       -Add model
 #   AdaptationsNeeded
@@ -907,5 +909,51 @@ class Medication(models.Model):
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     medication_name=models.CharField(max_length=100, primary_key=True)
+
     duration_taken=models.CharField(max_length=25)
     frequency=models.CharField(max_length=25)
+
+
+class MedicalInfo(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    medication_name=models.ForeignKey(
+        Medication,
+        null=True,
+        on_delete=models.SET_NULL
+    )
+    physical_release=models.ForeignKey(
+        PhysRelease,
+        null=True,
+        on_delete=models.SET_NULL
+    )
+
+    primary_physician_name=models.CharField(max_length=NAME_LENGTH)
+    primary_physician_phone=models.CharField(max_length=PHONE_LENGTH)
+    last_seen_by_physician_date=models.DateField()
+    last_seen_by_physician_reason=models.CharField(max_length=250)
+    allergies_conditions_that_exclude=models.BooleanField()
+    allergies_conditions_that_exclude_description=models.CharField(
+        max_length=500,
+        null=True
+    )
+    heat_exhaustion_stroke=models.BooleanField()
+    tetanus_shot_last_ten_years=models.BooleanField()
+    seizures_last_six_monthes=models.BooleanField()
+    doctor_concered_re_horse_activites=models.BooleanField() # If yes -> PhysRelease required
+    physical_or_mental_issues_affecting_riding=models.BooleanField()
+    physical_or_mental_issues_affecting_riding_description=models.CharField(
+        max_length=500,
+        null=True
+    )
+    restriction_for_horse_activity_last_five_years=models.BooleanField()
+    restriction_for_horse_activity_last_five_years_description=models.CharField(
+        max_length=500,
+        null=True
+    )
+    present_restrictions_for_horse_activity=models.BooleanField() # If yes -> PhysRelease required
+    limiting_surgeries_last_six_monthes=models.BooleanField()
+    signature=models.CharField(max_length=NAME_LENGTH)
