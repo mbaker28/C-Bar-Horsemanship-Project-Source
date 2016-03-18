@@ -56,7 +56,15 @@ LIKERT_LIKE_CHOICES=(
     (ATTEMPTS, "Attempts"),
     (PARTIALLY_COMPLETES, "Partially completes")
 )
-
+LIKERT_LIKE_CHOICES_NO_PC=(
+    (UNSATISFACTORY, "Unsatisfactory"),
+    (POOR, "Poor"),
+    (FAIR, "Fair"),
+    (GOOD, "Good"),
+    (EXCELLENT, "Excellent"),
+    (NOT_PERFORMED_DISABILITY, "Rider not able to perform due to disability"),
+    (ATTEMPTS, "Attempts")
+)
 
 
 class Participant(models.Model):
@@ -374,25 +382,25 @@ class EvalAttitude(models.Model):
         blank=True
     )
 
-    # Likert like choices:
+    # Likert like choices w/o PARTIALLY_COMPLETES:
     comprehension=models.CharField(
         max_length=1,
-        choices=LIKERT_LIKE_CHOICES,
+        choices=LIKERT_LIKE_CHOICES_NO_PC,
         blank=True
     )
     confidence=models.CharField(
         max_length=1,
-        choices=LIKERT_LIKE_CHOICES,
+        choices=LIKERT_LIKE_CHOICES_NO_PC,
         blank=True
     )
     attention=models.CharField(
         max_length=1,
-        choices=LIKERT_LIKE_CHOICES,
+        choices=LIKERT_LIKE_CHOICES_NO_PC,
         blank=True
     )
     relaxation=models.CharField(
         max_length=1,
-        choices=LIKERT_LIKE_CHOICES,
+        choices=LIKERT_LIKE_CHOICES_NO_PC,
         blank=True
     )
 
@@ -674,5 +682,207 @@ class EvalRidingExercises(models.Model):
     jump_crossbar_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+
+
+class EvalPhysical(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+
+    # Likert like choices:
+    arms_head_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    arms_head_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    arms_side_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    arms_side_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_tail_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_talk_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    twist_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    twist_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_ears_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_ears_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    arm_circle_back_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    arm_circle_back_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    arm_circle_fwd_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    arm_circle_fwd_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    hand_circle_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    hand_circle_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_right_tow_w_left_hand_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_right_tow_w_left_hand_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_left_tow_w_right_hand_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_left_tow_w_right_hand_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_both_toes_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    touch_both_toes_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    swing_legs_back_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    swing_legs_back_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    swing_legs_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    swing_legs_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    stand_in_stirrups_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    stand_in_stirrups_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    bend_foot_up_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    bend_foot_up_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    bend_foot_down_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    bend_foot_down_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    foot_circles_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    foot_circles_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    lie_back_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    lie_back_halt=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+
+    # Likert like choices w/o PARTIALLY_COMPLETES:
+    balance=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES_NO_PC,
+        blank=True
+    )
+    coordination=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES_NO_PC,
         blank=True
     )
