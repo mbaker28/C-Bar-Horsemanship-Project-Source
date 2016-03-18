@@ -5,12 +5,15 @@ from django.db import models
 
 # Constants and Choices
 NAME_LENGTH=75
+PHONE_LENGTH=15
+
 MALE='M'
 FEMALE='F'
 GENDER_CHOICES=(
     (MALE, 'Male'),
     (FEMALE, 'Female')
 )
+
 MINOR='M'
 ADULT_WITH_GUARDIAN='G'
 ADULT_WITHOUT_GUARDIAN='A'
@@ -19,7 +22,13 @@ MINOR_STATUS_CHOICES=(
     (ADULT_WITH_GUARDIAN, 'Adult with guardian'),
     (ADULT_WITHOUT_GUARDIAN, 'Independent adult')
 )
-PHONE_LENGTH=15
+
+YES='Y'
+NO='N'
+YES_NO_CHOICES=(
+    (YES, 'Yes'),
+    (NO, 'No')
+)
 
 
 class Participant(models.Model):
@@ -175,3 +184,13 @@ class Diagnosis(models.Model):
         max_length=1,
         choices=DIAGNOSIS_CHOICES,
     )
+
+
+class MediaRelease(models.Model):
+    class Meta:
+        unique_together=(('participant_id','date'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    consent=models.CharField(max_length=1, choices=YES_NO_CHOICES)
+    signature=models.CharField(max_length=NAME_LENGTH)
