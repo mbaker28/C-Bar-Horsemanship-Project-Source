@@ -156,3 +156,22 @@ class ParticipantType(models.Model):
         choices=TYPE_CHOICES,
         primary_key=True
     )
+
+
+class Diagnosis(models.Model):
+    PRIMARY='P'
+    SECONDARY='S'
+    DIAGNOSIS_CHOICES=(
+        (PRIMARY, 'Primary'),
+        (SECONDARY, 'Secondary')
+    )
+
+    class Meta:
+        unique_together=(('participant_id','diagnosis'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    diagnosis=models.CharField(max_length=255, primary_key=True)
+    diagnosis_type=models.CharField(
+        max_length=1,
+        choices=DIAGNOSIS_CHOICES,
+    )
