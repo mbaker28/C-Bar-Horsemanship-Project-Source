@@ -42,7 +42,7 @@ class Participant(models.Model):
 
 class Caregiver(models.Model):
     caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK
-    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE) # VERIFY THAT WE WANT CASCADE HERE
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     name=models.CharField(max_length=NAME_LENGTH)
     phone=models.CharField(max_length=PHONE_LENGTH)
 
@@ -98,3 +98,24 @@ class Horse(models.Model):
     horse_id=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
     description=models.CharField(max_length=500)
+
+
+class Donation(models.Model):
+    DONATION_ADOPT_HORSE='H'
+    DONATION_ADOPT_PARTICIPANT='P'
+    DONATION_MONETARY='M'
+    DONATION_CHOICES=(
+        (DONATION_ADOPT_HORSE, 'Horse adoption'),
+        (DONATION_ADOPT_PARTICIPANT, 'Participant adoption'),
+        (DONATION_MONETARY, 'Monetary donation')
+    )
+
+    donation_id=models.AutoField(primary_key=True) # Auto generated PK
+    donor_id=models.ForeignKey(Donor, on_delete=models.CASCADE)
+    horse_id=models.ForeignKey(Horse, on_delete=models.CASCADE)
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    amount=models.DecimalField(max_digits=10, decimal_places=2)
+    # Commented out because I don't think we'll actually store payment info,
+    # but it's in the ERD...
+    # payment_info=models.CharField(max_length=500)
+    donation_type=models.CharField(max_length=1, choices=DONATION_CHOICES)
