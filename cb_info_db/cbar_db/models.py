@@ -15,12 +15,16 @@
 #       -Add allergies_conditions_that_exclude_description
 #       -Add physical_or_mental_issues_affecting_riding_description
 #       -Add restriction_for_horse_activity_last_five_years_description
+#   SeizureType table
+#       -Add table
+#   SeizureEval table
+#       -Add FK to SeizureType to replace type_of_seizure
+#       -Add during_seizure_* attribrutes
+#       -Add can_communicate_when_will_occur attribute
 #
 # Do following in models.py (this file):
 #   AuthorizedUser
 #       -Add model (extend Django auth table?)
-#   SeizureEval
-#       -Add model
 #   AdaptationsNeeded
 #       -Add model
 
@@ -957,3 +961,53 @@ class MedicalInfo(models.Model):
     present_restrictions_for_horse_activity=models.BooleanField() # If yes -> PhysRelease required
     limiting_surgeries_last_six_monthes=models.BooleanField()
     signature=models.CharField(max_length=NAME_LENGTH)
+
+
+class SeizureType(models.Model):
+    name=models.CharField(max_length=50, primary_key=True)
+
+
+class SeizureEval(models.Model):
+    DO_NOTHING="DN"
+    DISMOUNT="DM"
+    ALLOW_TIME="AT"
+    REPORT_IMMEDIATELY="RI"
+    SEND_NOTE="SN"
+    ACTIONS_TO_TAKE_CHOICES=(
+        (DO_NOTHING, "Do nothing"),
+        (DISMOUNT, "Dismount from horse"),
+        (ALLOW_TIME, "Allow time to rest and re-orient"), # -> How many minutes?
+        (REPORT_IMMEDIATELY, "Report observations to parents/guardians"
+            " immediately"),
+        (SEND_NOTE, "Send note home to parent/guardian")
+    )
+
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    type_of_seizure=models.ForeignKey(
+        SeizureType,
+        null=True,
+        on_delete=models.SET_NULL
+    )
+    date_of_last_seizure=models.DateField()
+    duration_of_last_seizure=models.DurationField()
+    typical_cause=models.CharField(max_length=100)
+    seizure_indicators=models.CharField(max_length=500)
+    after_effect=models.CharField(max_length=100)
+    during_seizure_stare=models.BooleanField()
+    during_seizure_stare_length=models.DurationField(null=True)
+    during_seizure_walks=models.BooleanField()
+    during_seizure_aimless=models.BooleanField()
+    during_seizure_cry_etc=models.BooleanField()
+    during_seizure_bladder_bowel=models.BooleanField()
+    during_seizure_confused_etc=models.BooleanField()
+    during_seizure_other=models.CharField(max_length=500, null=True)
+    knows_when_will_occur=models.BooleanField()
+    can_communicate_when_will_occur=models.BooleanField()
+    actions_to_take=models.CharField(
+        max_length=2,
+        choices=ACTIONS_TO_TAKE_CHOICES
+    )
