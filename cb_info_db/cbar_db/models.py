@@ -86,3 +86,9 @@ class PhysRelease(models.Model):
     health_provider_signature=models.CharField(max_length=NAME_LENGTH)
     #health_provider_license_num length is based on National Provider Identifier
     health_provider_license_num=models.CharField(max_length=10)
+
+
+class Donor(models.Model):
+    donor_id=models.AutoField(primary_key=True) # Auto generated PK
+    name=models.CharField(max_length=NAME_LENGTH)
+    email=models.EmailField()
