@@ -19,8 +19,6 @@ MINOR_STATUS_CHOICES=(
 PHONE_LENGTH=15
 
 class Participant(models.Model):
-    """ Main table for all Participants """
-
     participant_ID=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
     birth_date=models.DateField()
