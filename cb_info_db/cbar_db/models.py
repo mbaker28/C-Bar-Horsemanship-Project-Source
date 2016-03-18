@@ -1,6 +1,14 @@
 # Uses the following hack to support composite keys:
 #    http://stackoverflow.com/questions/28712848/composite-primary-key-in-django
 
+# TODO:
+# Update ERD with changes herein:
+#   EvalRidingExercises table
+#       -Add holds_reins_*
+#       -Add can_post_canter
+#       -Verify whether proper_lead_canter should include walk/trot as well
+#           Observation Form (unnamed)
+
 from django.db import models
 
 # Global Constants and Choices
@@ -383,6 +391,287 @@ class EvalAttitude(models.Model):
         blank=True
     )
     relaxation=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+
+
+class EvalRidingExercises(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+
+    # Long-answer:
+    comments=models.CharField(max_length=500, null=True)
+
+    # Yes/No/Null choices:
+    basic_trail_rules=models.NullBooleanField()
+    mount=models.NullBooleanField()
+    dismount=models.NullBooleanField()
+    emergency_dismount=models.NullBooleanField()
+    four_natural_aids=models.NullBooleanField()
+    basic_control=models.NullBooleanField()
+    reverse_at_walk=models.NullBooleanField()
+    reverse_at_trot=models.NullBooleanField()
+    never_ridden=models.NullBooleanField()
+    seat_at_walk=models.NullBooleanField()
+    seat_at_trot=models.NullBooleanField()
+    seat_at_canter=models.NullBooleanField()
+    two_point_trot=models.NullBooleanField()
+    circle_trot_no_stirrups=models.NullBooleanField()
+    circle_at_canter=models.NullBooleanField()
+    circle_canter_no_stirrups=models.NullBooleanField()
+    two_point_canter=models.NullBooleanField()
+    circle_at_walk=models.NullBooleanField()
+    circle_at_trot=models.NullBooleanField()
+
+    # Likert like choices:
+    holds_handhold_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    holds_handhold_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    holds_handhold_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    holds_handhold_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    # MISSING FROM ERD !!!!!!!!!!!!!!
+    holds_reins_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    holds_reins_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    holds_reins_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    holds_reins_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    # END MISSING FROM ERD
+    shorten_lengthen_reins_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    shorten_lengthen_reins_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    shorten_lengthen_reins_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    shorten_lengthen_reins_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_control_horse_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_control_horse_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_control_horse_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_control_horse_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_halt_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_halt_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_halt_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_halt_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    drop_pickup_stirrups_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    drop_pickup_stirrups_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    drop_pickup_stirrups_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    drop_pickup_stirrups_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    rides_no_stirrups_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    rides_no_stirrups_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    rides_no_stirrups_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    rides_no_stirrups_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    maintain_half_seat_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    maintain_half_seat_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    maintain_half_seat_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    maintain_half_seat_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_post_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_post_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_post_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_post_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    proper_diagonal_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    proper_diagonal_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    proper_diagonal_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    proper_diagonal_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    proper_lead_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_steer_over_cavalletti_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_steer_over_cavalletti_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_steer_over_cavalletti_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    can_steer_over_cavalletti_canter=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    jump_crossbar_walk=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    jump_crossbar_sit_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    jump_crossbar_post_trot=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    jump_crossbar_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
