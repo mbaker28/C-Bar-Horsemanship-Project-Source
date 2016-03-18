@@ -25,12 +25,10 @@
 #       -Verify *_stationary_block options are correct
 #       -Remove assisted_device
 #       -Remove mobility (duplicate of ambulatory_status)
-#
-# Do following in models.py (this file):
-#   AuthorizedUser
-#       -Add model (extend Django auth table?)
+
 
 from django.db import models
+from django.contrib.auth.models import User
 
 # Global Constants and Choices
 NAME_LENGTH=75
@@ -1136,3 +1134,14 @@ class AdaptationsNeeded(models.Model):
     gait_standing_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_straddle_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_straddle_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+
+
+class AuthorizedUser(models.Model):
+    """ Links to the built in Django authentication system. Acts as a bridge
+     from the User model in Django auth to Participant in our models. """
+
+    class Meta: # Sets up PK as (participant_id, authorized_user_id)
+        unique_together=(("participant_id","authorized_user_id"))
+
+    participant_id=models.ForeignKey(Participant)
+    authorized_user_id = models.OneToOneField(User, primary_key=True)
