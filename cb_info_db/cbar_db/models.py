@@ -3,7 +3,7 @@
 
 from django.db import models
 
-# Constants and Choices
+# Global Constants and Choices
 NAME_LENGTH=75
 PHONE_LENGTH=15
 
@@ -213,3 +213,22 @@ class ConfidentialityPolicy(models.Model):
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
     agreement=models.CharField(max_length=1, choices=YES_NO_CHOICES)
+
+
+class AuthorizeEmergencyMedicalTreatment(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(('participant_id','date'))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    pref_medical_facility=models.CharField(max_length=70)
+    insurance_provider=models.CharField(max_length=70)
+    insurance_policy_num=models.CharField(max_length=20)
+    emerg_contact_name=models.CharField(max_length=NAME_LENGTH)
+    emerg_contact_phone=models.CharField(max_length=PHONE_LENGTH)
+    emerg_contact_relation=models.CharField(max_length=50)
+    alt_emerg_procedure=models.CharField(max_length=500, null=True)
+    consents_emerg_med_treatment=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
