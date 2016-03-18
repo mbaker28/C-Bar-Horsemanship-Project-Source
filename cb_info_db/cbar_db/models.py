@@ -8,6 +8,16 @@
 #       -Add can_post_canter
 #       -Verify whether proper_lead_canter should include walk/trot as well
 #           Observation Form (unnamed)
+#   AuthorizedUser
+#       -Add model (extend Django auth table?)
+#   MedicalInfo
+#       -Add model
+#   Medication
+#       -Add model
+#   SeizureEval
+#       -Add model
+#   AdaptationsNeeded
+#       -Add model
 
 from django.db import models
 
