@@ -54,9 +54,7 @@ Instructions [here](SETUP.md).
 ## Things you should probably have installed
 
 * [SmartGit](http://www.syntevo.com/smartgit/): Git client.
-* [Atom](https://atom.io/): Text editor; I would suggest the following
- extensions: `autocomplete-python`, `hard-wrap`, `minimap`, `pdf-view`,
- `pigments`, `python-tools`, `script`, `terminal-plus`, and `multi-cursor`.
+* [Atom](https://atom.io/): Text editor. Install it and then run `apm install color-picker autocomplete-python hard-wrap multi-cursor pdf-view pigments python-tools terminal-plus` to get Michael's preferred set of extensions installed.
 * [Slack](http://cbar-capstone.slack.com)
 
 ## Tests
