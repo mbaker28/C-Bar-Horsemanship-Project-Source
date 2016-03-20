@@ -48,15 +48,36 @@ This account is needed to access any portion of the
 [This document](CODING_STYLE.md) outlines guidelines to follow regarding coding
  styles used. It includes how we will do variable naming, use whitespace, etc.
 
+## Setting up Gulp.js
+
+1) Pull the repository
+
+2) Install gulp globally. Run:
+
+```bash
+npm install --global gulp-cli
+```
+
+3) Install gulp locally. Open a terminal in the root level of the `source`
+ repository and Run:
+
+```bash
+npm install --save-dev gulp
+```
+
+4) Install the required gulp extensions. Run:
+
+```bash
+npm install --save-dev gulp-less gulp-watch gulp-uglify gulp-cssnano del
+```
+
 ## Setting up Development Environment
 Instructions [here](SETUP.md).
 
 ## Things you should probably have installed
 
 * [SmartGit](http://www.syntevo.com/smartgit/): Git client.
-* [Atom](https://atom.io/): Text editor; I would suggest the following
- extensions: `autocomplete-python`, `hard-wrap`, `minimap`, `pdf-view`,
- `pigments`, `python-tools`, `script`, `terminal-plus`, and `multi-cursor`.
+* [Atom](https://atom.io/): Text editor. Install it and then run `apm install color-picker autocomplete-python hard-wrap multi-cursor pdf-view pigments python-tools terminal-plus` to get Michael's preferred set of extensions installed.
 * [Slack](http://cbar-capstone.slack.com)
 
 ## Tests
