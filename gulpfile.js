@@ -5,43 +5,43 @@ var uglify = require('gulp-uglify');
 var cssNano = require('gulp-cssnano');
 var del = require('del');
 
+// Default build
+gulp.task('default', function() {
+    gulp.start(['clean:css', 'clean:js', 'scripts', 'LESS']);
+});
+
 // Clean JS output folders
 gulp.task('clean:js', function () {
     return del([
-        'public/static/cbar_db/js/**/*'
+        'cb_info_db/cbar_db/static/cbar_db/js**/*'
     ]);
 });
 
 // Clean CSS output folders
 gulp.task('clean:css', function () {
     return del([
-        'public/static/cbar_db/css/**/*'
+        'cb_info_db/cbar_db/static/cbar_db/css/**/*'
     ]);
-});
-
-// Default build
-gulp.task('default', function() {
-    gulp.start(['clean:css', 'clean:js', 'scripts', 'LESS', 'watch']);
 });
 
 // Minify all JavaScript files into one file
 gulp.task('scripts', function(){
-    return gulp.src('static_source/js/**/*.js')
+    return gulp.src('cb_info_db/cbar_db/static_source/cbar_db/js/**/*.js')
     .pipe(uglify())
-    .pipe(gulp.dest('public/static/cbar_db/js'));
+    .pipe(gulp.dest('cb_info_db/cbar_db/static/cbar_db/js'));
 });
 
 // Process LESS files into CSS and minify into one file
 gulp.task('LESS', function(){
-    return gulp.src('static_source/less/**/*.less')
+    return gulp.src('cb_info_db/cbar_db/static_source/cbar_db/less/**/*.less')
     .pipe(less())
     .pipe(cssNano())
-    .pipe(gulp.dest('public/static/cbar_db/css'));
+    .pipe(gulp.dest('cb_info_db/cbar_db/static/cbar_db/css'));
 });
 
 // Watch so we auto run when files are updated.
 gulp.task('watch', function(){
-    gulp.watch('static_source/js/**/*.js', ['clean:js', 'scripts']);
+    gulp.watch('cb_info_db/cbar_db/static_source/cbar_db/js/**/*.js', ['clean:js', 'scripts']);
 
-    gulp.watch('static_source/less/**/*.less', ['clean:css', 'LESS']);
+    gulp.watch('cb_info_db/cbar_db/static_source/cbar_db/less/**/*.less', ['clean:css', 'LESS']);
 });

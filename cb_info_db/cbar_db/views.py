@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-
+# from django.http import HttpResponse
+from django.shortcuts import render
 
 def index_public(request):
-    return HttpResponse("Welcome to the C-Bar Horsemanship TRC information database!")
+    return render(request, 'cbar_db/index.html')
