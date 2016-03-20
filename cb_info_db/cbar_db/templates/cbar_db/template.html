@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static "cbar_db/css/cbar_styles.css" %}" />
+    <title>C-Bar Information Database</title>
+</head>
+<body>
+    <div class="main">
+        {% block body %}{% endblock %}
+        <div id="footer" class="content_container">
+            Copyright &copy; 2016 C-Bar Horsemanship
+        </div>
+    </div>
+</body>
