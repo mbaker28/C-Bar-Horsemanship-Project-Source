@@ -1,8 +1,9 @@
 # C-Bar Information Database - SOURCE CODE
-This repository contains the source code for the C-Bar Information Database
- Project.
 
 [![Run Status](https://api.shippable.com/projects/56b97bb71895ca447473a0cc/badge?branch=master)](https://app.shippable.com/projects/56b97bb71895ca447473a0cc)
+
+This repository contains the source code for the C-Bar Information Database
+ Project.
 
 ## Starting a Development Session (Windows)
 
