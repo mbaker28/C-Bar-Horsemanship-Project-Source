@@ -5,7 +5,19 @@
 </head>
 <body>
     <div class="main">
-        {% block body %}{% endblock %}
+        <div id="header" class="content_container">
+            <a href="/"><h1>C-Bar Information Database</h1></a>
+            <div class="nav">
+                <a class="button" href="{% url 'index-public-forms' %}">Public Forms</a>
+                <a class="button" href="">Private Forms</a>
+                <a class="button" href="">Administration</a>
+            </div>
+        </div>
+
+        <div class="content_container">
+            {% block body %}{% endblock %}
+        </div>
+
         <div id="footer" class="content_container">
             Copyright &copy; 2016 C-Bar Horsemanship
         </div>
