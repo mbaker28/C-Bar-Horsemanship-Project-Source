@@ -50,20 +50,26 @@ This account is needed to access any portion of the
 
 ## Setting up Gulp.js
 
-* Pull the repository
+1) Pull the repository
 
-### Install gulp globally
+2) Install gulp globally. Run:
 
-* Run `npm install --global gulp-cli`
+```bash
+npm install --global gulp-cli
+```
 
-### Install gulp locally
+3) Install gulp locally. Open a terminal in the root level of the `source`
+ repository and Run:
 
-* Open a terminal in the root level of the `source` repository
-* Run `npm install --save-dev gulp`
+```bash
+npm install --save-dev gulp
+```
 
-### Install gulp extensions
+4) Install the required gulp extensions. Run:
 
-* Run `npm install --save-dev gulp-less gulp-watch gulp-uglify gulp-cssnano del`
+```bash
+npm install --save-dev gulp-less gulp-watch gulp-uglify gulp-cssnano del
+```
 
 ## Setting up Development Environment
 Instructions [here](SETUP.md).
