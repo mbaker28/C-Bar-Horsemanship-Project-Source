@@ -50,6 +50,8 @@ This account is needed to access any portion of the
 
 ## Setting up Gulp.js
 
+* Pull the repository
+
 ### Install gulp globally
 
 * Run `npm install --global gulp-cli`
