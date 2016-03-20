@@ -48,6 +48,29 @@ This account is needed to access any portion of the
 [This document](CODING_STYLE.md) outlines guidelines to follow regarding coding
  styles used. It includes how we will do variable naming, use whitespace, etc.
 
+## Setting up Gulp.js
+
+1) Pull the repository
+
+2) Install gulp globally. Run:
+
+```bash
+npm install --global gulp-cli
+```
+
+3) Install gulp locally. Open a terminal in the root level of the `source`
+ repository and Run:
+
+```bash
+npm install --save-dev gulp
+```
+
+4) Install the required gulp extensions. Run:
+
+```bash
+npm install --save-dev gulp-less gulp-watch gulp-uglify gulp-cssnano del
+```
+
 ## Setting up Development Environment
 Instructions [here](SETUP.md).
 

@@ -127,3 +127,6 @@ Temporary Items
 
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
+
+#----------- Node.js Ignores -----------
+node_modules
