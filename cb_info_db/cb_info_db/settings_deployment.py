@@ -1,5 +1,5 @@
 """
-DEPLOYMENT
+DEPLOYMENT - USED ON DB.CBARHORSEMANSHIP.ORG ONLY
 
 Django settings for cb_info_db project.
 
