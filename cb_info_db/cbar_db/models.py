@@ -1059,15 +1059,6 @@ class AdaptationsNeeded(models.Model):
         (MNT_OVER_CROUP, "Over croup")
     )
 
-    # MNT_RAMP="R"
-    # MNT_OVER_CREST="T"
-    # MNT_OVER_CROUP="P"
-    # STATIONARY_BLOCK_CHOICES=(
-    #     (MNT_RAMP, "Ramp"),
-    #     (MNT_OVER_CREST, "Over crest"),
-    #     (MNT_OVER_CROUP, "Over croup")
-    # )
-
     DMT_OVER_CROUP="A"
     DMT_OVER_CROUP_LF_STIRRUP="B"
     DMT_OVER_CREST="C"
@@ -1097,12 +1088,7 @@ class AdaptationsNeeded(models.Model):
         choices=MOUNT_TYPE_CHOICES,
         null=True
     )
-    # mount_portable_block_needed=models.BooleanField()
-    # mount_stationary_block=models.CharField(
-    #     max_length=1,
-    #     choices=STATIONARY_BLOCK_CHOICES,
-    #     null=True
-    # )
+
     dismount_assistance_required=models.CharField(
         max_length=1,
         choices=ASSISTANCE_CHOICES
