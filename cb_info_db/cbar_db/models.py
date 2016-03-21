@@ -1043,24 +1043,38 @@ class AdaptationsNeeded(models.Model):
         (OTHER, "Other") # -> ambulatory_status_other needed
     )
 
+    MNT_PORT_BLOCK="P"
+    MNT_STATIC_BLOCK="S"
     MNT_RAMP="R"
+    MOUNT_DEVICE_CHOICES=(
+        (MNT_PORT_BLOCK, "Portable block"),
+        (MNT_STATIC_BLOCK, "Static block"),
+        (MNT_RAMP, "Ramp")
+    )
+
     MNT_OVER_CREST="T"
     MNT_OVER_CROUP="P"
-    STATIONARY_BLOCK_CHOICES=(
-        (MNT_RAMP, "Ramp"),
+    MOUNT_TYPE_CHOICES=(
         (MNT_OVER_CREST, "Over crest"),
         (MNT_OVER_CROUP, "Over croup")
     )
 
+    # MNT_RAMP="R"
+    # MNT_OVER_CREST="T"
+    # MNT_OVER_CROUP="P"
+    # STATIONARY_BLOCK_CHOICES=(
+    #     (MNT_RAMP, "Ramp"),
+    #     (MNT_OVER_CREST, "Over crest"),
+    #     (MNT_OVER_CROUP, "Over croup")
+    # )
+
     DMT_OVER_CROUP="A"
     DMT_OVER_CROUP_LF_STIRRUP="B"
-    DMT_OVER_CREST_FLIP="C"
-    DMT_OVER_CREST_HIP="D"
+    DMT_OVER_CREST="C"
     DISMOUNT_TYPE_CHOICES=(
         (DMT_OVER_CROUP, "Over croup"),
         (DMT_OVER_CROUP_LF_STIRRUP, "Over croup with left foot in stirrup"),
-        (DMT_OVER_CREST_FLIP, "Over crest and flip"),
-        (DMT_OVER_CREST_HIP, "Over crest and hip")
+        (DMT_OVER_CREST, "Over crest")
     )
 
     class Meta: # Sets up PK as (participant_id, adaptation_id)
@@ -1073,12 +1087,22 @@ class AdaptationsNeeded(models.Model):
         max_length=1,
         choices=ASSISTANCE_CHOICES
     )
-    mount_portable_block_needed=models.BooleanField()
-    mount_stationary_block=models.CharField(
+    mount_device_needed=models.CharField(
         max_length=1,
-        choices=STATIONARY_BLOCK_CHOICES,
+        choices=MOUNT_DEVICE_CHOICES,
         null=True
     )
+    mount_type=models.CharField(
+        max_length=1,
+        choices=MOUNT_TYPE_CHOICES,
+        null=True
+    )
+    # mount_portable_block_needed=models.BooleanField()
+    # mount_stationary_block=models.CharField(
+    #     max_length=1,
+    #     choices=STATIONARY_BLOCK_CHOICES,
+    #     null=True
+    # )
     dismount_assistance_required=models.CharField(
         max_length=1,
         choices=ASSISTANCE_CHOICES
