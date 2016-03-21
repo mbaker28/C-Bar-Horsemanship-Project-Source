@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'cbar_db.apps.CbarDbConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -69,11 +70,6 @@ TEMPLATES = [
         },
     },
 ]
-
-TEMPLATE_DIRS = (
-    # Hackish and will definitely break if we move deployment folder.
-    '/home/cbardbuser/db.cbarhorsemanship.org/cb_info_db/cbar_db/templates',
-)
 
 WSGI_APPLICATION = 'cb_info_db.wsgi.application'
 
