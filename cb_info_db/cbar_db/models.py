@@ -662,7 +662,12 @@ class EvalRidingExercises(models.Model):
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
-    proper_lead_canter=models.CharField(
+    proper_lead_canter_sees=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES,
+        blank=True
+    )
+    proper_lead_canter_knows=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
