@@ -25,6 +25,9 @@
 #       -Verify *_stationary_block options are correct
 #       -Remove assisted_device
 #       -Remove mobility (duplicate of ambulatory_status)
+#       -Remove num_sidewalker_* attributes
+#   Sidewalker
+#       -Add table
 
 
 from django.db import models
@@ -1084,38 +1087,6 @@ class AdaptationsNeeded(models.Model):
         max_length=1,
         choices=DISMOUNT_TYPE_CHOICES
     )
-    num_sidewalkers_walk_spotter=models.DecimalField(
-        max_digits=1,
-        decimal_places=0
-    )
-    num_sidewalkers_walk_heel_hold=models.DecimalField(
-        max_digits=1,
-        decimal_places=0
-    )
-    num_sidewalkers_walk_over_thigh=models.DecimalField(
-        max_digits=1,
-        decimal_places=0
-    )
-    num_sidewalkers_walk_other=models.DecimalField(
-        max_digits=1,
-        decimal_places=0
-    )
-    num_sidewalkers_trot_spotter=models.DecimalField(
-        max_digits=1,
-        decimal_places=0
-    )
-    num_sidewalkers_trot_heel_hold=models.DecimalField(
-        max_digits=1,
-        decimal_places=0
-    )
-    num_sidewalkers_trot_over_thigh=models.DecimalField(
-        max_digits=1,
-        decimal_places=0
-    )
-    num_sidewalkers_trot_other=models.DecimalField(
-        max_digits=1,
-        decimal_places=0
-    )
     posture_standing=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     posture_sitting=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     posture_mounted=models.CharField(max_length=SHORT_ANSWER_LENGTH)
@@ -1134,6 +1105,51 @@ class AdaptationsNeeded(models.Model):
     gait_standing_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_straddle_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_straddle_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+
+
+class Sidewalker(models.Model):
+    SPOTTER="S"
+    HEELHOLD="H"
+    OVER_THIGH="T"
+    OTHER="O"
+    SIDEWALKER_POSITION_CHOICES=(
+        (SPOTTER, "Spotter"),
+        (HEELHOLD, "Heel hold"),
+        (OVER_THIGH, "Over thigh"),
+        (OTHER, "Other")
+    )
+
+    # The sidewalker:
+    volunteer_id=models.ForeignKey(
+        Participant,
+        related_name="volunteer",
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    # The participant that needs sidewalker:
+    subject_id=models.ForeignKey(
+        Participant,
+        related_name="subject",
+        on_delete=models.CASCADE
+    )
+
+    session_id=models.ForeignKey(Session, on_delete=models.CASCADE)
+
+    sidewalker_pace=models.CharField(
+        max_length=1,
+        choices=(
+            ("W", "Walk"),
+            ("T", "Trot")
+        )
+    )
+    sidewalker_position=models.CharField(
+        max_length=1,
+        choices=SIDEWALKER_POSITION_CHOICES
+    )
+    sidewalker_position_other_description=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
 
 
 class AuthorizedUser(models.Model):
