@@ -14,6 +14,6 @@ sys.path.insert(0,'$HOME/db.cbarhorsemanship.org/env/bin')
 sys.path.insert(0,'$HOME/db.cbarhorsemanship.org/env/lib/python3.5/site-packages/django')
 sys.path.insert(0,'$HOME/db.cbarhorsemanship.org/env/lib/python3.5/site-packages')
 
-os.environ['DJANGO_SETTINGS_MODULE'] = "cb_info_db.settings"
+os.environ['DJANGO_SETTINGS_MODULE'] = "cb_info_db.settings_deployment"
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
