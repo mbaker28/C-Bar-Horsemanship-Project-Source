@@ -1147,9 +1147,9 @@ class Sidewalker(models.Model):
         null=True
     )
     # The participant that needs sidewalker:
-    subject_id=models.ForeignKey(
+    student_id=models.ForeignKey(
         Participant,
-        related_name="subject",
+        related_name="student",
         on_delete=models.CASCADE
     )
 
