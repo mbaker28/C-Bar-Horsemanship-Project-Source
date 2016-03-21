@@ -25,9 +25,6 @@
 #       -Remove num_sidewalker_* attributes
 #   Sidewalker
 #       -Add table
-#
-# This file (models.py):
-#   -E/W = English/Western -> Split attributes into a `..._western` and `..._english`
 
 
 from django.db import models
