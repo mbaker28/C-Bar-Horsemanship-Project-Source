@@ -6,8 +6,6 @@
 #   EvalRidingExercises table
 #       -Add holds_reins_*
 #       -Add can_post_canter
-#       -Verify whether proper_lead_canter should include walk/trot as well
-#           Observation Form (unnamed)
 #   Medication table
 #       -Add participant_id as a FK
 #       -Change PK to (medication_name, participant_id)
@@ -22,12 +20,14 @@
 #       -Add during_seizure_* attribrutes
 #       -Add can_communicate_when_will_occur attribute
 #   AdaptationsNeeded table
-#       -Verify *_stationary_block options are correct
 #       -Remove assisted_device
 #       -Remove mobility (duplicate of ambulatory_status)
 #       -Remove num_sidewalker_* attributes
 #   Sidewalker
 #       -Add table
+#
+# This file (models.py):
+#   -E/W = English/Western -> Split attributes into a `..._western` and `..._english`
 
 
 from django.db import models
