@@ -1126,8 +1126,44 @@ class AdaptationsNeeded(models.Model):
     gait_straddle_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_straddle_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
 
+    # Sidewalker information for initial assessment
+    num_sidewalkers_walk_spotter=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_walk_heel_hold=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_walk_over_thigh=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_walk_other=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_trot_spotter=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_trot_heel_hold=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_trot_over_thigh=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+    num_sidewalkers_trot_other=models.DecimalField(
+        max_digits=1,
+        decimal_places=0
+    )
+
 
 class Sidewalker(models.Model):
+    """ Sidewalker information on a per-session basis. """
+
     SPOTTER="S"
     HEELHOLD="H"
     OVER_THIGH="T"
