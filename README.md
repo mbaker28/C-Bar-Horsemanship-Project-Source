@@ -1,4 +1,7 @@
 # C-Bar Information Database - SOURCE CODE
+
+[![Run Status](https://api.shippable.com/projects/56b97bb71895ca447473a0cc/badge?branch=master)](https://app.shippable.com/projects/56b97bb71895ca447473a0cc)
+
 This repository contains the source code for the C-Bar Information Database
  Project.
 
@@ -77,7 +80,7 @@ Instructions [here](SETUP.md).
 ## Things you should probably have installed
 
 * [SmartGit](http://www.syntevo.com/smartgit/): Git client.
-* [Atom](https://atom.io/): Text editor. Install it and then run `apm install color-picker autocomplete-python hard-wrap multi-cursor pdf-view pigments python-tools terminal-plus` to get Michael's preferred set of extensions installed.
+* [Atom](https://atom.io/): Text editor. Install it and then run `apm install color-picker autocomplete-python hard-wrap multi-cursor pdf-view pigments python-tools terminal-plus file-icons` to get Michael's preferred set of extensions installed.
 * [Slack](http://cbar-capstone.slack.com)
 
 ## Tests
