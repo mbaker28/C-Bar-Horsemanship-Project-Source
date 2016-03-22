@@ -1,4 +1,8 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    Media Release form
+    <form action="/your-name/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
 {% endblock %}

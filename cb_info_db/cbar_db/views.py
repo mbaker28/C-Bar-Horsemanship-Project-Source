@@ -1,5 +1,6 @@
 # from django.http import HttpResponse
 from django.shortcuts import render
+from cbar_db import forms
 
 def index_public(request):
     """ Website index view. """
@@ -33,7 +34,22 @@ def public_form_liability(request):
 
 def public_form_media(request):
     """ Media Release form view. """
-    return render(request, 'cbar_db/forms/public/media.html')
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = forms.MediaReleaseForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = forms.MediaReleaseForm()
+
+    return render(request, 'cbar_db/forms/public/media.html', {'form': form})
 
 
 def public_form_background(request):
