@@ -1,7 +1,7 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     <h1>Photo &amp; Media Release</h1>
-    <form action="/your-name/" method="post">
+    <form action="{% url 'public-form-media' %}" method="post">
         {% csrf_token %}
         <p>
             Authorization is given to C-Bar Therapeutic Riding to use and/or
