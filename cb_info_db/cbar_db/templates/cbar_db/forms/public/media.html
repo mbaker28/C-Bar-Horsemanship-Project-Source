@@ -1,8 +1,21 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
+    <h1>Photo &amp; Media Release</h1>
     <form action="/your-name/" method="post">
         {% csrf_token %}
-        {{ form }}
+        <p>
+            Authorization is given to C-Bar Therapeutic Riding to use and/or
+             reproduce any and all photographs and/or any other audio/visual
+             materials taken of visitors, volunteers, participants, or staff
+             for promotional material, educational activities, and exhibitions
+             or for any other use for the benefit of the program.
+        </p>
+        <p>
+            I, {{ form.name }}, {{ form.consent }} to the above.
+        </p>
+        <p>
+            Signature: {{ form.signature }}. Date: {{ form.date }}
+        </p>
         <input type="submit" value="Submit" />
     </form>
 {% endblock %}
