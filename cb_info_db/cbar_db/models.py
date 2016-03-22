@@ -243,12 +243,19 @@ class Diagnosis(models.Model):
 
 
 class MediaRelease(models.Model):
+    CONSENT="Y"
+    NO_CONSENT="N"
+    CONSENT_CHOICES=(
+        (CONSENT, "consent"),
+        (NO_CONSENT, "do not consent")
+    )
+
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
-    consent=models.CharField(max_length=1, choices=YES_NO_CHOICES)
+    consent=models.CharField(max_length=1, choices=CONSENT_CHOICES)
     signature=models.CharField(max_length=NAME_LENGTH)
 
 
