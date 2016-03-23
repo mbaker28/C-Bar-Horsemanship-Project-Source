@@ -22,7 +22,18 @@ def public_form_med_release(request):
 
 
 def public_form_emerg_auth(request):
-    """ Emegency Medical Treatment Authorization form view. """
+    """ Emegency Medical Treatment Authorization form view. Handles viewing and
+     saving the form.
+
+    Viewing form (GET): Display the form
+    Saving form (POST):
+        If participant exists:
+            Update record in Participant
+            Create new record in MedicalInfo
+            Create new record in AuthorizeEmergencyMedicalTreatment
+        Else:
+            Give an error
+    """
     # if this is a POST request we need to process the form data
     if request.method -- 'POST':
         # create a form instance and populate it with data from the request:
