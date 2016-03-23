@@ -18,25 +18,39 @@ class EmergencyMedicalReleaseForm(forms.Form):
 
     # Shite stored in AuthorizeEmergencyMedicalTreatment
     pref_medical_facility=forms.CharField(
-        max_length=models.AuthorizeEmergencyMedicalTreatment._meta.field("pref_medical_facility").max_length
+        max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
+            .field("pref_medical_facility").max_length
+        )
     )
     insurance_provider=forms.CharField(
-        max_length=models.AuthorizeEmergencyMedicalTreatment._meta.field("insurance_provider").max_length
+        max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
+            .field("insurance_provider").max_length
+        )
     )
     insurance_policy_num=forms.CharField(
-        max_length=models.AuthorizeEmergencyMedicalTreatment._meta.field("insurance_policy_num").max_length
+        max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
+            .field("insurance_policy_num").max_length
+        )
     )
     emerg_contact_name=forms.CharField(
-        max_length=models.AuthorizeEmergencyMedicalTreatment._meta.field("emerg_contact_name").max_length
+        max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
+            .field("emerg_contact_name").max_length
+        )
     )
     emerg_contact_phone=forms.CharField(
-        max_length=models.AuthorizeEmergencyMedicalTreatment._meta.field("emerg_contact_phone").max_length
+        max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
+            .field("emerg_contact_phone").max_length
+        )
     )
     emerg_contact_relation=forms.CharField(
-        max_length=models.AuthorizeEmergencyMedicalTreatment._meta.field("emerg_contact_relation").max_length
+        max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
+            .field("emerg_contact_relation").max_length
+        )
     )
     consents_emerg_med_treatment=forms.CharField(
-        choices=models.AuthorizeEmergencyMedicalTreatment._meta.field("consents_emerg_med_treatment").choices
+        choices=(models.AuthorizeEmergencyMedicalTreatment._meta
+            .field("consents_emerg_med_treatment").choices
+        )
     )
     date=forms.DateField()
     signature=forms.CharField(
