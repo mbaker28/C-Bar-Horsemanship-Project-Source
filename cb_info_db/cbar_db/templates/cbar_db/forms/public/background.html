@@ -1,4 +1,20 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     Background Check Authorization form
+    <p>I, {{ form.name }} of lawful age, do hereby authorize C-Bar Therapeutic
+         Riding to receive information from federal, state, and local law
+         enforcement agencies, courts, and offender registries, and/or private
+         investigative agencies, regarding any charge or conviction for a felony
+         or misdemeanor offense.  I agree to provide C-Bar all information
+         required to properly identify me for this specific purpose, including
+         but not limited to current and previous residential addresses, social
+         security number and driver’s license number.
+
+         Signature: {{ form.signature }}  Date: {{ form.date }}
+         Date of Birth {{ form.birth_date }}
+         Drivers License Number {{form.driver_license_num}}
+
+
+
+    </p>
 {% endblock %}
