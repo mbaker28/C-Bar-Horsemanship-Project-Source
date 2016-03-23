@@ -39,7 +39,13 @@ def public_form_liability(request):
 
 
 def public_form_media(request):
-    """ Media Release form view. """
+    """ Media Release form view.
+
+    If Participant exists:
+        Create new instance of MediaReleaseForm and save it to the DB
+    Else:
+        Give an error
+    """
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
