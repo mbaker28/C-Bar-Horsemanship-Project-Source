@@ -13,7 +13,9 @@ class MedicalReleaseForm(forms.Form):
     last_seen_by_physician_date=forms.DateField()
 
     last_seen_by_physician_reason=forms.CharField(
-        max_length=models.MedicalInfo._meta.get_field("last_seen_by_physician_reason").max_length
+        max_length=(models.MedicalInfo._meta
+            .get_field("last_seen_by_physician_reason").max_length
+        )
     )
 
     allergies_conditions_that_exclude=forms.BooleanField()
@@ -73,3 +75,5 @@ class MedicalReleaseForm(forms.Form):
     signature=forms.CharField(
         max_length=models.MedicalInfo._meta.get_field("signature").max_length
     )
+
+    date=forms.DateField()
