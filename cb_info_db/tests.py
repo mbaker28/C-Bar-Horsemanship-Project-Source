@@ -78,3 +78,9 @@ class TestForms(TestCase):
             school_institution=""
         )
         test_participant.save()
+
+    def test_test_participant_exists(self):
+        """ Test whether the test participant exists. """
+        p=models.Participant.objects.get(name="TEST Jarvis")
+
+        self.assert
