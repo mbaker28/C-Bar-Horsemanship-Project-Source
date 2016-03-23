@@ -30,6 +30,25 @@ class MedicalReleaseForm(forms.Form):
     seizures_last_six_monthes=forms.BooleanField()
 
     #currently taking medications code goes here
+    medication_one_name=forms.CharField(
+        max_length=models.Medication._meta.get_field("medication_name").max_length
+    )
+    medication_one_duration=forms.CharField(
+        max_length=models.Medication._meta.get_field("duration_taken").max_length
+    )
+    medication_one_frequency=forms.CharField(
+        max_length=models.Medication._meta.get_field("frequency").max_length
+    )
+
+    medication_two_name=forms.CharField(
+        max_length=models.Medication._meta.get_field("medication_name").max_length
+    )
+    medication_two_duration=forms.CharField(
+        max_length=models.Medication._meta.get_field("duration_taken").max_length
+    )
+    medication_two_frequency=forms.CharField(
+        max_length=models.Medication._meta.get_field("frequency").max_length
+    )
 
     doctor_concered_re_horse_activites=forms.BooleanField() # If yes -> PhysRelease required
 
