@@ -1,26 +1,4 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    <h1> Authorization for Emergency Medical Treatment </h1>
-    <form action=method="post">
-      {% csrf_token %}
-      Name{{ form.name }} Date of Birth {{ form.birth_date }}
-      Primary Physician {{ form.primary_physician_name }} Physician Phone {{ form.primary_physician_phone }}
-      Prefered Medical Facility {{ form.pref_medical_facility }}
-      Insurance Provider {{ form.insurance_provider }} Insurance Policy Number {{ form.insurance_policy_num }}
-      Emergency Contact {{ form.emerg_contact_name }} Emergency Contact Phone {{ form.emerg_contact_phone }}
-      Relation to Participant {{ form.emerg_contact_relation }}
-<p> If medical care is required in conjunction with any C-Bar activity and normal permission is not available in a timely manner,
-    the undersigned authorizes C-Bar to secure and retain appropriate medical care and transportation, if needed.  This authorization
-    includes releasing medical information on this form to emergency medical personnel, a physician, or the medical facility providing
-    the treatment and may include x-rays, surgery, hospitalization, medication, and any treatment deemed “lifesaving” by the physician.
-    This provision will only be invoked if the person(s) listed above cannot be reached.</p>
-
-    I, {{ form.consents_emerg_med_treatment }},  Date: {{ form.date }}
-
-    signature {{ form.signature }}
-
-      <input type="Submit" value="Submit" />
-
-</form>
-
+    Medical Release form
 {% endblock %}
