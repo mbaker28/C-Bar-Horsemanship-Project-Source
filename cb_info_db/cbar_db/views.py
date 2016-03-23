@@ -48,12 +48,12 @@ def public_form_emerg_auth(request):
                 logger.error(
                     "Couldn't find Participant FK to save Emergency Medical Release Form"
                     )
-                    #redirec to a new URL:
-                    return HttpResponseRedirect('/')
+            #redirec to a new URL:
+            return HttpResponseRedirect('/')
 
-                #if a GET (or any other method) we'll create a black for,
-            else:
-                form=forms.EmergencyMedicalReleaseForm()
+        #if a GET (or any other method) we'll create a black for,
+        else:
+            form=forms.EmergencyMedicalReleaseForm()
 
         return render(request, 'cbar_db/forms/public/media.html', {'form': form})
 
