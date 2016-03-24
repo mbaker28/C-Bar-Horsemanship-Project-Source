@@ -35,7 +35,7 @@ def public_form_emerg_auth(request):
             Give an error
     """
     # if this is a POST request we need to process the form data
-    if request.method -- 'POST':
+    if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form=form.EmergencyMedicalReleaseForm(request.POST)
         #chech whether it's valid:
