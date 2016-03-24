@@ -1,5 +1,12 @@
 # from django.http import HttpResponse
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
+import logging
+from cbar_db import forms
+from cbar_db import models
+
+loggeyMcLogging=logging.getLogger(__name__)
 
 def index_public(request):
     """ Website index view. """
@@ -34,39 +41,60 @@ def public_form_emerg_auth(request):
         Else:
             Give an error
     """
+
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form=form.EmergencyMedicalReleaseForm(request.POST)
-        #chech whether it's valid:
+        loggeyMcLogging.error("Request is of type POST")
+        # Create a form instance and populate it with data from the request:
+        form=forms.EmergencyMedicalReleaseForm(request.POST)
+
+        # Check whether the form data entered is valid:
         if form.is_valid():
-            #create an instance of the EmergencyMedicalReleaseForm model to hold form data
-            logger.error("Creating Emergency Medical Release Form instance...")
+            loggeyMcLogging.error("The form is valid")
             try:
-                form_data_emerg_auth=models.EmergencyMedicalReleaseForm(
-                    participant_id=models.Participant.objects.get(
-                        name=form.cleaned_data['name']
-                    ),
-                    # TODO: birth_date needs to be updated in relavenent participant instance
+                participant_id=models.Participant.objects.get(
+                    name=form.cleaned_data['name']
+                ).first()
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/public/emergency_authorization.html",
+                    {
+                        'form': form,
+                        'error_text': ("The requested participant isn't in the"
+                        " database."),
+                    }
                 )
-                logger.error("Saving Emergency Medical Release Form instance...")
-                new_data=form_data_media.save()
-                logger.error("Successfully saved Emergency Medical Release Form")
-            except objectDoesNotExsist:
-                """Triggered if the PK found by name doesn't exist
-                    AKA:The Participant record Doesn't exist.
-                """
-                logger.error(
-                    "Couldn't find Participant FK to save Emergency Medical Release Form"
-                    )
-            #redirec to a new URL:
+
+            # Redirect to the home page:
             return HttpResponseRedirect('/')
 
-        #if a GET (or any other method) we'll create a black for,
         else:
-            form=forms.EmergencyMedicalReleaseForm()
+            # The form is not valid
+            loggeyMcLogging.error("The form is NOT valid")
 
-        return render(request, 'cbar_db/forms/public/media.html', {'form': form})
+            return render(
+                request,
+                "cbar_db/forms/public/emergency_authorization.html",
+                {
+                    'form': form,
+                    'error_text': "Error validating form.",
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.EmergencyMedicalReleaseForm()
+
+    return render(
+        request,
+        'cbar_db/forms/public/emergency_authorization.html',
+        {
+            'form': form,
+        }
+    )
 
 
 def public_form_liability(request):
