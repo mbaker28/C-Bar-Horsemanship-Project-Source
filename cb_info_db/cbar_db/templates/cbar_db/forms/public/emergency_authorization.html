@@ -1,20 +1,6 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     <h1> Authorization for Emergency Medical Treatment </h1>
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-                <div class="alert alert-error">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-            <div class="alert alert-error">
-                <strong>{{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endif %}
     {% if error_text %}
         <p><strong>
             {{ error_text }}
@@ -23,15 +9,64 @@
     <form action="{% url 'public-form-emerg-auth' %}" method="post">
         {% csrf_token %}
         <p>
-            Name{{ form.name }} Date of Birth {{ form.birth_date }}
-            Primary Physician {{ form.primary_physician_name }}
-            Physician Phone {{ form.primary_physician_phone }}
-            Prefered Medical Facility {{ form.pref_medical_facility }}
-            Insurance Provider {{ form.insurance_provider }}
-            Insurance Policy Number {{ form.insurance_policy_num }}
-            Emergency Contact {{ form.emerg_contact_name }}
-            Emergency Contact Phone {{ form.emerg_contact_phone }}
-            Relation to Participant {{ form.emerg_contact_relation }}
+            Name: {{ form.name }}
+            <span class="error_message">
+                {{ form.name.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Date of Birth: {{ form.birth_date }}
+            <span class="error_message">
+                {{ form.birth_date.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Primary Physician: {{ form.primary_physician_name }}
+            <span class="error_message">
+                {{ form.primary_physician_name.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Physician Phone: {{ form.primary_physician_phone }}
+            <span class="error_message">
+                {{ form.primary_physician_phone.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Prefered Medical Facility: {{ form.pref_medical_facility }}
+            <span class="error_message">
+                {{ form.pref_medical_facility.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Insurance Provider: {{ form.insurance_provider }}
+            <span class="error_message">
+                {{ form.insurance_provider.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Insurance Policy Number: {{ form.insurance_policy_num }}
+            <span class="error_message">
+                {{ form.insurance_policy_num.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Emergency Contact: {{ form.emerg_contact_name }}
+            <span class="error_message">
+                {{ form.emerg_contact_name.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Emergency Contact Phone: {{ form.emerg_contact_phone }}
+            <span class="error_message">
+                {{ form.emerg_contact_phone.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Relation to Participant: {{ form.emerg_contact_relation }}
+            <span class="error_message">
+                {{ form.emerg_contact_relation.errors.as_text }}
+            </span>
         </p>
         <p>
             If medical care is required in conjunction with any C-Bar activity
@@ -46,8 +81,15 @@
              cannot be reached.
         </p>
         <p>
-            I, {{ form.consents_emerg_med_treatment }},  Date: {{ form.date }}
+            I, {{ form.consents_emerg_med_treatment }}, Date: {{ form.date }}
+            <span class="error_message">
+                {{ form.date.errors.as_text }}
+            </span>
+
              Signature: {{ form.signature }}
+            <span class="error_message">
+                {{ form.signature.errors.as_text }}
+            </span>
         </p>
         <input type="Submit" value="Submit" />
     </form>
