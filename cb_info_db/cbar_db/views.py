@@ -35,7 +35,7 @@ def public_form_emerg_auth(request):
     Saving form (POST):
         If participant exists:
             Update record in Participant
-            Create new record in MedicalInfo
+            Update record in MedicalInfo
             Create new record in AuthorizeEmergencyMedicalTreatment
         Else:
             Give an error
@@ -50,10 +50,12 @@ def public_form_emerg_auth(request):
         # Check whether the form data entered is valid:
         if form.is_valid():
             loggeyMcLogging.error("The form is valid")
+            # Find the participant's record based on their (name, birth_date):
             try:
-                participant_id=models.Participant.objects.get(
-                    name=form.cleaned_data['name']
-                ).first()
+                participant=models.Participant.objects.get(
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date']
+                )
             except ObjectDoesNotExist:
                 # The participant doesn't exist.
                 # Set the error message and redisplay the form:
@@ -66,6 +68,61 @@ def public_form_emerg_auth(request):
                         " database."),
                     }
                 )
+
+            # If no exception, the participant exists. Update their records:
+            try:
+                # If the participant has a MedicalInfo record, retrieve it:
+                medical_info=models.MedicalInfo.objects.get(
+                    participant_id=participant
+                )
+
+                # Update the fields:
+                medical_info.primary_physician_name=(
+                    form.cleaned_data['primary_physician_name']
+                )
+                medical_info.primary_physician_phone=(
+                    form.cleaned_data['primary_physician_phone']
+                )
+
+                # Save the updated record
+                medical_info.save()
+            except ObjectDoesNotExist:
+                # The participant has no MedicalInfo record, prompt them to fill
+                # out the Medical Release first.
+                return render(
+                    request,
+                    "cbar_db/forms/public/emergency_authorization.html",
+                    {
+                        'form': form,
+                        'error_text': (
+                            "The requested participant does not have their"
+                            " medical information on file. Please fill out a"
+                            " medical release first."
+                        ),
+                    }
+                )
+
+            # Create a new AuthorizeEmergencyMedicalTreatment instance for the
+            # participant and save it:
+            authorize_emerg_medical=models.AuthorizeEmergencyMedicalTreatment(
+                participant_id=participant,
+                pref_medical_facility=(
+                    form.cleaned_data['pref_medical_facility']
+                ),
+                insurance_provider=form.cleaned_data['insurance_provider'],
+                insurance_policy_num=form.cleaned_data['insurance_policy_num'],
+                emerg_contact_name=form.cleaned_data['emerg_contact_name'],
+                emerg_contact_phone=form.cleaned_data['emerg_contact_phone'],
+                emerg_contact_relation=(
+                    form.cleaned_data['emerg_contact_relation']
+                ),
+                consents_emerg_med_treatment=(
+                    form.cleaned_data['consents_emerg_med_treatment']
+                ),
+                date=form.cleaned_data['date'],
+                signature=form.cleaned_data['signature']
+            )
+            authorize_emerg_medical.save()
 
             # Redirect to the home page:
             return HttpResponseRedirect('/')
@@ -87,13 +144,13 @@ def public_form_emerg_auth(request):
         # If request type is GET (or any other method) create a blank form.
         form=forms.EmergencyMedicalReleaseForm()
 
-    return render(
-        request,
-        'cbar_db/forms/public/emergency_authorization.html',
-        {
-            'form': form,
-        }
-    )
+        return render(
+            request,
+            'cbar_db/forms/public/emergency_authorization.html',
+            {
+                'form': form,
+            }
+        )
 
 
 def public_form_liability(request):
