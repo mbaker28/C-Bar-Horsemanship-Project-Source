@@ -14,15 +14,15 @@
         </p>
 
         <p>
-          Name of family physician: {{form.primary_physician_name}}
-          Phone: {{form.primary_physician_phone}}
+          Name of family physician: {{ form.primary_physician_name }}
+          Phone: {{ form.primary_physician_phone }}
         </p>
 
         <br>
 
         <p>
-          Date last seen by physician: {{form.last_seen_by_physician_date}}
-          Reason: {{form.last_seen_by_physician_reason}}
+          Date last seen by physician: {{ form.last_seen_by_physician_date }}
+          Reason: {{ form.last_seen_by_physician_reason }}
         </p>
 
         <br>
@@ -41,8 +41,9 @@
         <br>
 
         <p>
-          {{allergies_conditions_that_exclude}}
-          If yes, please specify: {{allergies_conditions_that_exclude_description}}
+          {{ allergies_conditions_that_exclude }}
+          If yes, please specify:
+           {{ allergies_conditions_that_exclude_description }}
         </p>
 
         <p>
@@ -65,33 +66,37 @@
         </p>
 
         <p>
-        {{form.heat_exhaustion_stroke}}
+        {{ form.heat_exhaustion_stroke }}
         Have you experienced heat exhaustion or heat stroke?
 
         <br>
 
-        {{form.tetanus_shot_last_ten_years}}
-        Within the last ten years, have you had immunizations or boosters for Tetanus?
+        {{ form.tetanus_shot_last_ten_years }}
+        Within the last ten years, have you had immunizations or boosters for
+         Tetanus?
 
         <br>
 
-        {{seizures_last_six_monthes}}
+        {{ seizures_last_six_monthes }}
         Have you had any type of seizure in the last 6 months?
 
         <br>
 
-        <!--need a booleanfield for taking any medication question{{}}-->
-        Are you currently taking any medications(including insulin)? If yes, please list:
+        <!--need a booleanfield for taking any medication question-->
+        Are you currently taking any medications(including insulin)? If yes,
+         please list:
 
         <br>
 
-        Medication: {{form.medication_one_name}} Used for: {{medication_one_duration}}
+        Medication: {{ form.medication_one_name }} Used for:
+         {{ medication_one_duration }}
         <br>
-        How Often: {{form.medication_one_frequency}}
+        How Often: {{ form.medication_one_frequency }}
         <br>
-        Medication: {{form.medication_two_name}} Used for: {{medication_two_duration}}
+        Medication: {{ form.medication_two_name }} Used for:
+         {{ medication_two_duration }}
         <br>
-        How Often: {{form.medication_two_frequency}}
+        How Often: {{ form.medication_two_frequency }}
         </p>
 
         <br>
@@ -103,7 +108,7 @@
         </p>
 
         <p>
-        {{form.doctor_concered_re_horse_activites}}
+        {{ form.doctor_concered_re_horse_activites }}
         </p>
 
         <p>
@@ -122,11 +127,12 @@
         </p>
 
         <p>
-        {{form.physical_or_mental_issues_affecting_riding}}
+        {{ form.physical_or_mental_issues_affecting_riding }}
         </p>
 
         <p>
-          If yes, please specify: {{form.physical_or_mental_issues_affecting_riding_description}}
+          If yes, please specify:
+           {{ form.physical_or_mental_issues_affecting_riding_description }}
         </p>
 
         <p>
@@ -136,11 +142,12 @@
         </p>
 
         <p>
-          {{form.restriction_for_horse_activity_last_five_years}}
+          {{ form.restriction_for_horse_activity_last_five_years }}
         </p>
 
         <p>
-          If yes, please specify: {{form.restriction_for_horse_activity_last_five_years_description}}
+          If yes, please specify:
+           {{ form.restriction_for_horse_activity_last_five_years_description }}
         </p>
 
         <p>
@@ -150,7 +157,7 @@
         </p>
 
         <p>
-          {{form.present_restrictions_for_horse_activity}}
+          {{ form.present_restrictions_for_horse_activity }}
         </p>
 
         <p>
@@ -167,11 +174,11 @@
         </p>
 
         <p>
-          {{form.limiting_surgeries_last_six_monthes}}
+          {{ form.limiting_surgeries_last_six_monthes }}
         </p>
 
         <p>
-          If yes, please specify <!--need a last 6 month surgery description-->
+          If yes, please specify: <!--need a last 6 month surgery description-->
         </p>
 
         <p>
@@ -181,6 +188,6 @@
         </p>
 
         <p>
-          Signature: {{form.signature}} Date: {{form.date}}
+          Signature: {{ form.signature }} Date: {{ form.date }}
         </p>
 {% endblock %}
