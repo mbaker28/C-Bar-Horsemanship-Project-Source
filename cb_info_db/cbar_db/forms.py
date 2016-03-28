@@ -22,21 +22,37 @@ class MedicalReleaseForm(forms.Form):
         )
     )
 
-    allergies_conditions_that_exclude=forms.BooleanField()
+    allergies_conditions_that_exclude=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("allergies_conditions_that_exclude").choices
+        )
+    )
 
     allergies_conditions_that_exclude_description=forms.CharField(
         max_length=(models.MedicalInfo
             ._meta.get_field("allergies_conditions_that_exclude_description")
             .max_length
-        )
+        ),
         required=False
     )
 
-    heat_exhaustion_stroke=forms.BooleanField()
+    heat_exhaustion_stroke=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("heat_exhaustion_stroke").choices
+        )
+    )
 
-    tetanus_shot_last_ten_years=forms.BooleanField()
+    tetanus_shot_last_ten_years=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("tetanus_shot_last_ten_years").choices
+        )
+    )
 
-    seizures_last_six_monthes=forms.BooleanField()
+    seizures_last_six_monthes=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("seizures_last_six_monthes").choices
+        )
+    )
 
     #currently taking medications code goes here
     medication_one_name=forms.CharField(
@@ -68,9 +84,17 @@ class MedicalReleaseForm(forms.Form):
     )
 
     # If yes -> Physician Release required:
-    doctor_concered_re_horse_activites=forms.BooleanField()
+    doctor_concered_re_horse_activites=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("doctor_concered_re_horse_activites").choices
+        )
+    )
 
-    physical_or_mental_issues_affecting_riding=forms.BooleanField()
+    physical_or_mental_issues_affecting_riding=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("physical_or_mental_issues_affecting_riding").choices
+        )
+    )
 
     physical_or_mental_issues_affecting_riding_description=forms.CharField(
         max_length=(models.MedicalInfo._meta
@@ -80,7 +104,11 @@ class MedicalReleaseForm(forms.Form):
         required=False
     )
 
-    restriction_for_horse_activity_last_five_years=forms.BooleanField()
+    restriction_for_horse_activity_last_five_years=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("restriction_for_horse_activity_last_five_years").choices
+        )
+    )
 
     restriction_for_horse_activity_last_five_years_description=forms.CharField(
         max_length=(models.MedicalInfo._meta
@@ -92,9 +120,17 @@ class MedicalReleaseForm(forms.Form):
     )
 
     # If yes -> Physician's Release required
-    present_restrictions_for_horse_activity=forms.BooleanField()
+    present_restrictions_for_horse_activity=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("present_restrictions_for_horse_activity").choices
+        )
+    )
 
-    limiting_surgeries_last_six_monthes=forms.BooleanField()
+    limiting_surgeries_last_six_monthes=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("limiting_surgeries_last_six_monthes").choices
+        )
+    )
 
     signature=forms.CharField(
         max_length=models.MedicalInfo._meta.get_field("signature").max_length
