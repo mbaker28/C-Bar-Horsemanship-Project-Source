@@ -1,193 +1,156 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    <h1>GENERAL HEALTH INFORMATION AND MEDICAL HISTORY</h1>
+    <h1>Health Information &amp; Medical History</h1>
     <form action="{% url 'public-form-med-release' %}" method="post">
         {% csrf_token %}
         <p>
-          As you provide the following information, please keep in mind that
-          this will NOT be used to exclude you from participating in C-Bar
-          activities. It is for us to use to help provide you with the best
-          service possible and to place you in activities that maximize
-          safety and effectiveness. We strive to make C-Bar a pleasant and
-          fulfilling experience for everyone that visits our site. This
-          information will help us do that.
+            As you provide the following information, please keep in mind that
+            this will NOT be used to exclude you from participating in C-Bar
+            activities. It is for us to use to help provide you with the best
+            service possible and to place you in activities that maximize
+            safety and effectiveness. We strive to make C-Bar a pleasant and
+            fulfilling experience for everyone that visits our site. This
+            information will help us do that.
         </p>
-
         <p>
-          Name of family physician: {{ form.primary_physician_name }}
-          Phone: {{ form.primary_physician_phone }}
+            Name of family physician: {{ form.primary_physician_name }}
+            Phone: {{ form.primary_physician_phone }}
         </p>
-
-        <br>
-
         <p>
-          Date last seen by physician: {{ form.last_seen_by_physician_date }}
-          Reason: {{ form.last_seen_by_physician_reason }}
+            Date last seen by physician: {{ form.last_seen_by_physician_date }}
+            Reason: {{ form.last_seen_by_physician_reason }}
         </p>
-
-        <br>
-
         <p>
-          C-Bar activities and/or events take place out in the open,
-          possibly in an enclosed arena, in a stable area, and in
-          other enclosed structures. They take place on and around horses.
-          Exposure to other animals, insects, plants, and weather conditions
-          is possible. Do you have any known allergies
-          (such as animal, food, insects, or others) and/or health conditions
-          (such as asthma, heart problems, high blood pressure, or others)
-          that might be affected by your participation in these activities?
+            C-Bar activities and/or events take place out in the open,
+            possibly in an enclosed arena, in a stable area, and in
+            other enclosed structures. They take place on and around horses.
+            Exposure to other animals, insects, plants, and weather conditions
+            is possible. Do you have any known allergies
+            (such as animal, food, insects, or others) and/or health conditions
+            (such as asthma, heart problems, high blood pressure, or others)
+            that might be affected by your participation in these activities?
         </p>
-
-        <br>
-
         <p>
-          {{ allergies_conditions_that_exclude }}
-          If yes, please specify:
-           {{ allergies_conditions_that_exclude_description }}
+            {{ form.allergies_conditions_that_exclude }}
         </p>
-
         <p>
-          IMPORTANT: Your answer of “yes” to the previous question also
-          reflects that you are not relying on C-Bar, the facility provider,
-          the instructor, their assistants or agents, and/or others acting on
-          their behalf to prevent or reduce your exposure to any of these
-          conditions before, during, or after C-Bar activity.
+            If yes, please specify:
+             {{ form.allergies_conditions_that_exclude_description }}
         </p>
-
-        <br>
-
         <p>
-          Although C-Bar continually strives for and promotes safety in
-          equine activities, you will be solely responsible for your own
-          health and safety at all times. Please bring with you and
-          always be prepared to self-administer your own medications.
-          You are strongly encouraged to wear a visible “Medic-Alert”
-          bracelet or necklace during activities.
+            IMPORTANT: Your answer of “yes” to the previous question also
+            reflects that you are not relying on C-Bar, the facility provider,
+            the instructor, their assistants or agents, and/or others acting on
+            their behalf to prevent or reduce your exposure to any of these
+            conditions before, during, or after C-Bar activity.
         </p>
-
         <p>
-        {{ form.heat_exhaustion_stroke }}
-        Have you experienced heat exhaustion or heat stroke?
-
-        <br>
-
-        {{ form.tetanus_shot_last_ten_years }}
-        Within the last ten years, have you had immunizations or boosters for
-         Tetanus?
-
-        <br>
-
-        {{ seizures_last_six_monthes }}
-        Have you had any type of seizure in the last 6 months?
-
-        <br>
-
-        <!--need a booleanfield for taking any medication question-->
-        Are you currently taking any medications(including insulin)? If yes,
-         please list:
-
-        <br>
-
-        Medication: {{ form.medication_one_name }} Used for:
-         {{ medication_one_duration }}
-        <br>
-        How Often: {{ form.medication_one_frequency }}
-        <br>
-        Medication: {{ form.medication_two_name }} Used for:
-         {{ medication_two_duration }}
-        <br>
-        How Often: {{ form.medication_two_frequency }}
+            Although C-Bar continually strives for and promotes safety in
+            equine activities, you will be solely responsible for your own
+            health and safety at all times. Please bring with you and
+            always be prepared to self-administer your own medications.
+            You are strongly encouraged to wear a visible “Medic-Alert”
+            bracelet or necklace during activities.
         </p>
-
-        <br>
-
         <p>
-          Has your physician expressed concerns about you riding or
-          being near horses or engaging in the type of equine activities
-          for which you have completed this form?
+            {{ form.heat_exhaustion_stroke }}
+            Have you experienced heat exhaustion or heat stroke?
+            <br>
+            {{ form.tetanus_shot_last_ten_years }}
+            Within the last ten years, have you had immunizations or boosters for
+             Tetanus?
+            <br>
+            {{ form.seizures_last_six_monthes }}
+            Have you had any type of seizure in the last 6 months?
         </p>
-
         <p>
-        {{ form.doctor_concered_re_horse_activites }}
+            <!--need a booleanfield for taking any medication question-->
+            Are you currently taking any medications(including insulin)? If yes,
+             please list:
+            <br>
+            Medication: {{ form.medication_one_name }} Used for:
+             {{ form.medication_one_duration }}
+            <br>
+            How Often: {{ form.medication_one_frequency }}
+            <br>
+            Medication: {{ form.medication_two_name }} Used for:
+             {{ form.medication_two_duration }}
+            <br>
+            How Often: {{ form.medication_two_frequency }}
         </p>
-
         <p>
-          If yes, please attach a statement from your physician
-          allowing your participation in these activities.
+            Has your physician expressed concerns about you riding or
+            being near horses or engaging in the type of equine activities
+            for which you have completed this form?
         </p>
-
-        <br>
-
         <p>
-          Do you have any physical and/or mental health conditions,
-          problems, and/or disabilities, which may affect your ability
-          to safely ride a horse or participate in the activities for
-          which you have completed this form (being mindful that horses
-          have a very quick reaction time)?
+            {{ form.doctor_concered_re_horse_activites }}
         </p>
-
         <p>
-        {{ form.physical_or_mental_issues_affecting_riding }}
+            If yes, please attach a statement from your physician
+            allowing your participation in these activities.
         </p>
-
         <p>
-          If yes, please specify:
-           {{ form.physical_or_mental_issues_affecting_riding_description }}
+            Do you have any physical and/or mental health conditions,
+            problems, and/or disabilities, which may affect your ability
+            to safely ride a horse or participate in the activities for
+            which you have completed this form (being mindful that horses
+            have a very quick reaction time)?
         </p>
-
         <p>
-          In the past 5 years have you had any activity restriction from
-          horseback riding or participation in the activities for which
-          you have completed this form?
+            {{ form.physical_or_mental_issues_affecting_riding }}
         </p>
-
         <p>
-          {{ form.restriction_for_horse_activity_last_five_years }}
+            If yes, please specify:
+             {{ form.physical_or_mental_issues_affecting_riding_description }}
         </p>
-
         <p>
-          If yes, please specify:
-           {{ form.restriction_for_horse_activity_last_five_years_description }}
+            In the past 5 years have you had any activity restriction from
+            horseback riding or participation in the activities for which
+            you have completed this form?
         </p>
-
         <p>
-          Do you presently have any activity restriction for safely riding
-          a horse or participating in the activities for which you have
-          completed this form?
+            {{ form.restriction_for_horse_activity_last_five_years }}
         </p>
-
         <p>
-          {{ form.present_restrictions_for_horse_activity }}
+            If yes, please specify:
+             {{ form.restriction_for_horse_activity_last_five_years_description }}
         </p>
-
         <p>
-          If yes, please attach a statement from your physician indicating
-          the nature of your activity restriction and the prognosis for the
-          future restriction.
+            Do you presently have any activity restriction for safely riding
+            a horse or participating in the activities for which you have
+            completed this form?
         </p>
-
         <p>
-          In the last 6 months, have you had ANY surgeries
-          (i.e. gall bladder removal, wisdom teeth extraction, etc.)
-          that would limit your ability to participate in the activities
-          for which you have completed this form?
+            {{ form.present_restrictions_for_horse_activity }}
         </p>
-
         <p>
-          {{ form.limiting_surgeries_last_six_monthes }}
+            If yes, please attach a statement from your physician indicating
+            the nature of your activity restriction and the prognosis for the
+            future restriction.
         </p>
-
         <p>
-          If yes, please specify: <!--need a last 6 month surgery description-->
+            In the last 6 months, have you had ANY surgeries
+            (i.e. gall bladder removal, wisdom teeth extraction, etc.)
+            that would limit your ability to participate in the activities
+            for which you have completed this form?
         </p>
-
         <p>
-          I have completed the above information to the best of my
-          knowledge and will assume the responsibility for my own
-          health and safety during any C-Bar activity I am involved.
+            {{ form.limiting_surgeries_last_six_monthes }}
         </p>
-
         <p>
-          Signature: {{ form.signature }} Date: {{ form.date }}
+            If yes, please specify:
+             <!--need a last 6 month surgery description-->
+        </p>
+        <p>
+            I have completed the above information to the best of my
+            knowledge and will assume the responsibility for my own
+            health and safety during any C-Bar activity I am involved.
+        </p>
+        <p>
+            Signature: {{ form.signature }} Date: {{ form.date }}
+        </p>
+        <p>
+            <input type="submit" value="Submit" />
         </p>
 {% endblock %}
