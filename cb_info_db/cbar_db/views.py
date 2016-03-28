@@ -53,35 +53,60 @@ def public_form_media(request):
         # check whether it's valid:
         if form.is_valid():
             # Create an instance of the MediaRelease model to hold form data
-            logger.error("Creating MediaRelease instance...")
             try:
-                form_data_media=models.MediaRelease(
-                    participant_id=models.Participant.objects.get(
-                        name=form.cleaned_data['name']
-                    ),
-                    consent=form.cleaned_data['consent'],
-                    signature=form.cleaned_data['signature'],
-                    date=form.cleaned_data['date']
+                # Find the participant that matches the name and birth date from
+                # the form data:
+                participant=models.Participant.objects.get(
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date']
                 )
-                logger.error("Saving MediaRelease instance...")
-                new_data=form_data_media.save()
-                logger.error("Sucessfully saved Media Release form")
+
             except ObjectDoesNotExist:
-                """ Triggered if the PK found by name doesn't exist
-                    AKA: The participant record doesn't exist.
-                 """
-                logger.error(
-                    "Couldn't find Participant FK to save media release form."
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/public/media.html",
+                    {
+                        'form': form,
+                        'error_text': ("The requested participant isn't in the"
+                        " database."),
+                    }
                 )
 
-        # redirect to a new URL:
-        return HttpResponseRedirect('/')
+            # Create a new MediaRelease for the participant and save it:
+            form_data_media=models.MediaRelease(
+                participant_id=participant,
+                consent=form.cleaned_data['consent'],
+                signature=form.cleaned_data['signature'],
+                date=form.cleaned_data['date']
+            )
+            form_data_media.save()
 
-    # if a GET (or any other method) we'll create a blank form
+            # redirect to a new URL:
+            return HttpResponseRedirect('/')
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/public/media.html",
+                {
+                    'form': form,
+                    'error_text': "Error validating form.",
+                }
+            )
+
     else:
+        # If request type is GET (or any other method) create a blank form.
         form=forms.MediaReleaseForm()
 
-    return render(request, 'cbar_db/forms/public/media.html', {'form': form})
+        return render(
+            request,
+            'cbar_db/forms/public/media.html',
+            {'form': form}
+        )
 
 
 def public_form_background(request):
