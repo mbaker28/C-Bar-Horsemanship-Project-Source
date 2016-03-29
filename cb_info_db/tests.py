@@ -57,30 +57,3 @@ class TestViews(TestCase):
         """ Tests whether the Seizure Evaluation form loads. """
         response = self.client.get(reverse('public-form-seizure'))
         self.assertEqual(response.status_code, 200) # Loaded...
-
-
-class TestForms(TestCase):
-    def setUp(self):
-        test_participant=models.Participant(
-            name="TEST Jarvis",
-            birth_date="2016-03-28",
-            email="jarvis@starkenterprises.com",
-            weight="170",
-            gender="M",
-            guardian_name="Tony Stark",
-            height="72",
-            minor_status="G",
-            address_street="123 Stark Tower",
-            address_city="New York",
-            address_zip="10016",
-            phone_home="(123) 456-7890",
-            phone_cell_work="(444) 392-0098",
-            school_institution=""
-        )
-        test_participant.save()
-
-    def test_test_participant_exists(self):
-        """ Test whether the test participant exists. """
-        p=models.Participant.objects.get(name="TEST Jarvis")
-
-        self.assert
