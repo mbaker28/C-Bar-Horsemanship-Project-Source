@@ -38,6 +38,26 @@ def public_form_media(request):
 
 def public_form_background(request):
     """ Background Check Authorization form view. """
+    if request.method == 'POST':
+        loggeyMclogging.error("Request is of type POST")
+        form=forms.BackgroundCheckForm(request.POST)
+
+    if form.is_valid():
+        loggeyMclogging.error("The form is valid")
+        try:
+             participant=models.Participant.objects.get(
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date']
+                )
+        except ObjectDoesNotExist:
+            return render(
+                request,
+                "cbar_db/forms/public/public_form_background.html",
+                {
+                    'form': form,
+                    'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                }
+            )
     return render(request, 'cbar_db/forms/public/background.html')
 
 

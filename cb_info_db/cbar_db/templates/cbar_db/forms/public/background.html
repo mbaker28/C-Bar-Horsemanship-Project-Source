@@ -1,20 +1,46 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    Background Check Authorization form
-    <p>I, {{ form.name }} of lawful age, do hereby authorize C-Bar Therapeutic
+    <h1>Background Check Authorization</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    <form action="{% url 'public-form-background' %}" method="post">
+        {% csrf_token %}
+        <p>
+            I, {{ form.name }}<span class="error_message">
+         {{ form.name.errors.as_text }} </span> of lawful age, do hereby
+         authorize C-Bar Therapeutic
          Riding to receive information from federal, state, and local law
          enforcement agencies, courts, and offender registries, and/or private
          investigative agencies, regarding any charge or conviction for a felony
          or misdemeanor offense.  I agree to provide C-Bar all information
          required to properly identify me for this specific purpose, including
          but not limited to current and previous residential addresses, social
-         security number and driver’s license number.
-
-         Signature: {{ form.signature }}  Date: {{ form.date }}
+         security number and driver’s license number.</p>
+        <p> Signature: {{ form.signature }}
+         <span class="error_message">
+                {{ form.signature.errors.as_text }}
+        </span>
+         Date: {{ form.date }}
+         <span class="error_message">
+             {{ form.date.errors.as_text }}
+         </span>
+         </p>
+         <p>
          Date of Birth {{ form.birth_date }}
+         <span class="error_message">
+            <form.birth_date.errors.as_text }}
+        </span>
+        </p>
+        <p>
          Drivers License Number {{form.driver_license_num}}
+         <span class="error_message">
+             {{ form.driver_license_num.errors.as_text }}
+         </span>
+         </p>
 
 
 
-    </p>
 {% endblock %}
