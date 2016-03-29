@@ -86,6 +86,12 @@ LIKERT_LIKE_CHOICES_NO_PC=(
     (ATTEMPTS, "Attempts")
 )
 
+CONSENT="Y"
+NO_CONSENT="N"
+CONSENT_CHOICES=(
+    (CONSENT, "consent"),
+    (NO_CONSENT, "do not consent")
+)
 
 class Participant(models.Model):
     participant_id=models.AutoField(primary_key=True) # Auto generated PK
@@ -293,8 +299,9 @@ class AuthorizeEmergencyMedicalTreatment(models.Model):
     alt_emerg_procedure=models.CharField(max_length=500, null=True)
     consents_emerg_med_treatment=models.CharField(
         max_length=1,
-        choices=YES_NO_CHOICES
+        choices=CONSENT_CHOICES
     )
+    signature=models.CharField(max_length=NAME_LENGTH)
 
 
 class EvalHorsemanship(models.Model):

@@ -1,11 +1,14 @@
 # PURPOSE: This file contains all of the test that are run by Shippable.
 
+from datetime import *
 from django.test import TestCase
 from django.test.utils import setup_test_environment
 from django.test import Client
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from cbar_db import models
 from cbar_db import forms
+from cbar_db import views
 
 class TestViews(TestCase):
     def setUp(self):
@@ -59,28 +62,455 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200) # Loaded...
 
 
-class TestForms(TestCase):
+class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        # Create a Participant record and save it
         test_participant=models.Participant(
-            name="TEST Jarvis",
-            birth_date="2016-03-28",
-            email="jarvis@starkenterprises.com",
-            weight="170",
+            name="TEST Bruce Wayne",
+            birth_date="1984-6-24",
+            email="bruce@wayneenterprises.com",
+            weight=185.0,
             gender="M",
-            guardian_name="Tony Stark",
-            height="72",
+            guardian_name="Alfred Pennyworth",
+            height=72.0,
             minor_status="G",
-            address_street="123 Stark Tower",
-            address_city="New York",
-            address_zip="10016",
-            phone_home="(123) 456-7890",
-            phone_cell_work="(444) 392-0098",
-            school_institution=""
+            address_street="1234 Wayne St.",
+            address_city="Gotham",
+            address_zip="424278",
+            phone_home="(300) 200-100",
+            phone_cell_work="(300) 500-600",
+            school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
 
-    def test_test_participant_exists(self):
-        """ Test whether the test participant exists. """
-        p=models.Participant.objects.get(name="TEST Jarvis")
+        # Create a Participant record and save it
+        test_participant_no_med_record=models.Participant(
+            name="TEST The Doctor",
+            birth_date="1235-8-14",
+            email="thedoctor@galifrey.com",
+            weight=190,
+            gender="M",
+            height=76.0,
+            minor_status="A",
+            address_street="The TARDIS",
+            address_city="Time and space",
+            address_zip="889922",
+            phone_home="(300) 200-100",
+            phone_cell_work="(300) 500-600",
+        )
+        test_participant_no_med_record.save()
 
-        self.assert
+        test_medical_info=models.MedicalInfo(
+            participant_id=test_participant,
+            date="2016-1-1",
+            primary_physician_name="Dr. Default",
+            primary_physician_phone="(111) 111-1111",
+            last_seen_by_physician_date="2016-1-1",
+            last_seen_by_physician_reason="Normal check up visit.",
+            allergies_conditions_that_exclude=False,
+            heat_exhaustion_stroke=False,
+            tetanus_shot_last_ten_years=True,
+            seizures_last_six_monthes=False,
+            doctor_concered_re_horse_activites=False,
+            physical_or_mental_issues_affecting_riding=False,
+            restriction_for_horse_activity_last_five_years=False,
+            present_restrictions_for_horse_activity=False,
+            limiting_surgeries_last_six_monthes=False,
+            signature="TEST Bruce Wayne"
+        )
+        test_medical_info.save()
+
+    def test_emergency_authorization_form_finds_valid_participant(self):
+        """ Tests whether the form finds a valid participant record if a
+         matching (name, date) is entered """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2015-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+        form=forms.EmergencyMedicalReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertEquals(found_participant, True)
+
+    def test_emergency_authorization_form_not_valid_participant_name(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching date, but not a matching name. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Not A Person",
+            "birth_date": "1984-6-24",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2015-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+        form=forms.EmergencyMedicalReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertEquals(found_participant, False)
+
+    def test_emergency_authorization_form_not_valid_birth_date(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching name, but not a matching date. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1000-1-1",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2015-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+        form=forms.EmergencyMedicalReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertEquals(found_participant, False)
+
+    def test_emergency_authorization_form_saves_with_valid_data(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2016-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # DISABLED: We don't have a post form url redirect location or view yet
+        # Assert the the redirect url matches the post-form page:
+        # self.assertEqual(
+        #     resp['Location'],
+        #     'http://testserver/thank you place'
+        # )
+
+        # Attempt to retreive the updated MedicalInfo record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+
+            print("Retrieving updated MedicalInfo record...")
+            medical_info_in_db=models.MedicalInfo.objects.get(
+                participant_id=participant_in_db,
+                date=form_data["date"]
+            )
+            print("Successfully retrieved updated MedicalInfo record.")
+        except:
+            print("ERROR: Unable to retreive updated MedicalInfo record!")
+
+        # Check that the stored MedicalInfo attributes were updated correctly:
+        print("Checking stored MedicalInfo attributes...")
+        self.assertEqual(
+            medical_info_in_db.primary_physician_name,
+            form_data["primary_physician_name"]
+        )
+        self.assertEqual(
+            medical_info_in_db.primary_physician_phone,
+            form_data["primary_physician_phone"]
+        )
+        print("Stored MedicalInfo attributes were updated correctly.")
+
+        # Attempt to retreive the new AuthorizeEmergencyMedicalTreatment record:
+        try:
+            print("Retrieving new AuthorizeEmergencyMedicalTreatment record...")
+            auth_emerg_in_db=(models.AuthorizeEmergencyMedicalTreatment
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print(
+                "Successfully retrieved new AuthorizeEmergencyMedicalTreatment"
+                " record."
+            )
+        except:
+            print(
+                "ERROR: Unable to retreive new"
+                " AuthorizeEmergencyMedicalTreatment record!"
+            )
+
+        # Check that the attributes in the AuthorizeEmergencyMedicalTreatment
+        # were set correctly:
+        print(
+            "Checking stored AuthorizeEmergencyMedicalTreatment attributes..."
+        )
+        self.assertEqual(
+            auth_emerg_in_db.pref_medical_facility,
+            form_data["pref_medical_facility"]
+        )
+        self.assertEqual(
+            auth_emerg_in_db.insurance_provider,
+            form_data["insurance_provider"]
+        )
+        self.assertEqual(
+            auth_emerg_in_db.insurance_policy_num,
+            form_data["insurance_policy_num"]
+        )
+        self.assertEqual(
+            auth_emerg_in_db.emerg_contact_name,
+            form_data["emerg_contact_name"]
+        )
+        self.assertEqual(
+            auth_emerg_in_db.emerg_contact_phone,
+            form_data["emerg_contact_phone"]
+        )
+        self.assertEqual(
+            auth_emerg_in_db.emerg_contact_relation,
+            form_data["emerg_contact_relation"]
+        )
+        self.assertEqual(
+            auth_emerg_in_db.consents_emerg_med_treatment,
+            form_data["consents_emerg_med_treatment"]
+        )
+        self.assertEqual(
+            # Format the retrieved date so it matches the input format:
+            "{d.year}-{d.month}-{d.day}".format(d=auth_emerg_in_db.date),
+            form_data["date"]
+        )
+        self.assertEqual(
+            auth_emerg_in_db.signature,
+            form_data["signature"]
+        )
+
+    def test_emergency_authorization_form_with_invalid_participant_name(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         an invalid participant name, displays an error message. """
+
+        form_data={
+            "name": "TEST Not A Person",
+            "birth_date": "1984-6-24",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2016-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_emergency_authorization_form_with_invalid_participant_date(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1900-1-1",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2016-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_emergency_authorization_form_with_invalid_form_data(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "blahblahnotdate",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_emergency_authorization_form_with_no_medical_info(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         valid data, but without a matching MedicalInfo record, displays an
+         error message. """
+
+        form_data={
+            "name": "TEST The Doctor",
+            "birth_date": "1235-8-14",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2016-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_MEDICAL_INFO_NOT_FOUND
+            )
+        )
