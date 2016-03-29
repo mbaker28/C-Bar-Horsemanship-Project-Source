@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from cbar_db import models
 from cbar_db import forms
+from cbar_db import views
 
 class TestViews(TestCase):
     def setUp(self):
@@ -84,6 +85,23 @@ class TestEmergencyAuthorizationForm(TestCase):
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
+
+        # Create a Participant record and save it
+        test_participant_no_med_record=models.Participant(
+            name="TEST The Doctor",
+            birth_date="1235-8-14",
+            email="thedoctor@galifrey.com",
+            weight=190,
+            gender="M",
+            height=76.0,
+            minor_status="A",
+            address_street="The TARDIS",
+            address_city="Time and space",
+            address_zip="889922",
+            phone_home="(300) 200-100",
+            phone_cell_work="(300) 500-600",
+        )
+        test_participant_no_med_record.save()
 
         test_medical_info=models.MedicalInfo(
             participant_id=test_participant,
@@ -362,4 +380,137 @@ class TestEmergencyAuthorizationForm(TestCase):
         self.assertEqual(
             auth_emerg_in_db.signature,
             form_data["signature"]
+        )
+
+    def test_emergency_authorization_form_with_invalid_participant_name(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         an invalid participant name, displays an error message. """
+
+        form_data={
+            "name": "TEST Not A Person",
+            "birth_date": "1984-6-24",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2016-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_emergency_authorization_form_with_invalid_participant_date(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1900-1-1",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2016-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_emergency_authorization_form_with_invalid_form_data(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "blahblahnotdate",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_emergency_authorization_form_with_no_medical_info(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         valid data, but without a matching MedicalInfo record, displays an
+         error message. """
+
+        form_data={
+            "name": "TEST The Doctor",
+            "birth_date": "1235-8-14",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "(111) 222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2016-1-1",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_MEDICAL_INFO_NOT_FOUND
+            )
         )
