@@ -1,12 +1,26 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     <h1>LIABILITY RELEASE</h1>
-    <p><strong>Warning: </strong>Under Oklahoma law, an equine professional is not liable for an injury to or death of a participant in equine activities resulting from the inherent risks of equine activities pursuant to the Statutes of Oklahoma, Title 76, Section 50.</p>
-    <br />
+    <p><strong>Warning: </strong>Under Oklahoma law, an equine professional is
+        not liable for an injury to or death of a participant in equine
+        activities resulting from the inherent risks of equine activities
+        pursuant to the Statutes of Oklahoma, Title 76, Section 50.</p>
 
     <form action="{% url 'public-form-liability' %}" method="post">
       {% csrf_token %}
-      <p>{{ form.name }} (name of participant) would like to participate in the C-Bar Horsemanship sponsored program(s). I acknowledge the potential risks involved in the various activities performed in the programs (e.g., horseback riding and other equine-assisted activities, wagon/hay rides, campfire cooking, and normal play). I feel that the possible benefits to myself/son/daughter/ward are greater than the risk assumed. I herby, intending to be legally bound, for myself, my heirs, and assigns, executors, or administrators, waive and release forever all claims for damages against C-Bar Horsemanship, LLC., its owner, board of directors, instructors, therapists, aides, voluneers, employees, and/or the property owner for any and all injuries and/or losses I/my son/my daughter/my ward may sustain while participating in C-Bar Horsemanship sponsored programs.</p>
+      <p>{{ form.name }} (name of participant) would like to participate in the
+          C-Bar Horsemanship sponsored program(s). I acknowledge the potential
+          risks involved in the various activities performed in the programs
+          (e.g., horseback riding and other equine-assisted activities,
+          wagon/hay rides, campfire cooking, and normal play). I feel that the
+          possible benefits to myself/son/daughter/ward are greater than the
+          risk assumed. I herby, intending to be legally bound, for myself,
+          my heirs, and assigns, executors, or administrators, waive and
+          release forever all claims for damages against C-Bar Horsemanship,
+          LLC., its owner, board of directors, instructors, therapists, aides,
+          voluneers, employees, and/or the property owner for any and all
+          injuries and/or losses I/my son/my daughter/my ward may sustain while
+          participating in C-Bar Horsemanship sponsored programs.</p>
 
       <p>Signature: {{ form.signature }}     Date: {{ form.date }}</p>
 
