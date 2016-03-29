@@ -514,3 +514,188 @@ class TestEmergencyAuthorizationForm(TestCase):
                 views.ERROR_TEXT_MEDICAL_INFO_NOT_FOUND
             )
         )
+
+class TestBackGroundCheck(TestCase):
+    def setUP(self):
+        setup_test_environment()
+        client=Client()
+    test_participant=models.Participant(
+    name="TEST Barry Allen"
+    birth_date="1994-6-25"
+    date="1994-5-4"
+    signature="TEST Barry Allen"
+    driver_license_num="kgjenekkidik123"
+    )
+    test_participant.save()
+
+    def test_background_check_form_finds_valid_participant(self):
+        found_participant=False
+
+        form_data={
+            "name": "TEST Barry Allen",
+            "birth_date":"1994-6-25",
+            "signature":"TEST Barry Allen",
+            "date":"1994-5-4",
+            "driver_license_num":"kgjenekkidik123"
+        }
+        form=forms.BackgroundCheckForm(form_data)
+
+        if form.is_valid()
+            print("form is Valid.")
+
+            try:
+                print("Finding Participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found Participant")
+                found_participant=False
+            else:
+                print("The Form is not Valid")
+
+            self.assertEquals(found_participant,True)
+    def test_background_check_form_not_valid_participant_name
+
+        found_participant=False
+
+        form_data={
+            "name":"TEST Not a person",
+            "birth_date":"1994-6-25",
+            "signature":"TEST Barry Allen",
+            "date":"1994-5-4",
+            "driver_license_num":"kgjenekkidik123"
+        }
+        form=forms.BackgroundCheckForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid.")
+
+            try:
+                print("found participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found Participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+        else:
+            print("Form is not valid")
+
+        self.assertEquals(found_participant,False)
+    def test_background_check_form_not_valid_birth_date(self):
+            found_participant=False
+
+            form_data={
+            "name":"TEST Barry Allen",
+            "birth_date":"1994-6-25",
+            "signature":"TEST Barry Allen",
+            "date":"1994-5-4",
+            "driver_license_num":"kgjenekkidik123"
+            }
+            form=forms.BackgroundCheckForm(form_data)
+
+            if form.is_valid():
+                print("Form is Valid")
+
+                try:
+                    print("finding participant...")
+                    participant_instance=models.Participant.objects.get(
+                    name=fomr.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                    )
+                    print("Found Participant")
+                    found_participant=True
+
+                except ObjectDoesNotExist:
+                    found_participant=False
+            else:
+                print("form is not valid.")
+
+            self.assertEquals(found_participant, False)
+    def test_background_check_form_saves_with_valid_data(self):
+
+        form_data={
+        "name":"TEST Barry Allen",
+        "birth_date":"1994-6-25",
+        "signature":"TEST Barry Allen",
+        "date":"1994-5-4",
+        "driver_license_num":"kgjenekkidik123"
+        }
+
+        response=self.client.post9reverse("public-form-backround", form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"]
+                birth_date=form_data["birth_date"]
+            )
+
+            print("Retrieving updated BackgroundCheck")
+            public_form_background_in_db=models.BackgroundCheck.objects.get(
+                name=form_data["name"]
+                birth_date=form_data["birth_date"]
+            )
+            print("Successfully rerieved updated BackgroundCheck record.")
+        except:
+            print("ERROR: Unable to rereive updated BackgroundCheck record")
+
+        print("checking stored BackgroundCheck attributes...")
+
+        self.assertEqual(
+            public_form_background_in_db.signature,
+            form_data["signature"]
+        )
+        self.assertEqual(
+            "{d.year}-{d.month}-{d.day}".format(
+            d=public_form_background_in_db.date)
+        )
+        self.assertEqual(
+            public_form_background_in_db.driver_license_num,
+            form_data["driver_license_num"]
+        )
+    def test_background_check_form_with_invalid_participant_name(self):
+
+        form_data={
+        "name":"TEST Barry Allen",
+        "birth_date":"1994-6-25",
+        "signature":"TEST Barry Allen",
+        "date":"1994-5-4",
+        "driver_license_num":"kgjenekkidik123"
+        }
+
+        response=self.client.post(reverse("public_form_background"), form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_background_check_form_with_invalid_form_data(self):
+
+        form_data={
+        "name":"TEST Barry Allen",
+        "birth_date":"1994-6-25",
+        "signature":"TEST Barry Allen",
+        "date":"blahblahnotdate",
+        "driver_license_num":"kgjenekkidik123"
+        }
+
+        response=self.client.post(reverse("public_form_background"),form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
