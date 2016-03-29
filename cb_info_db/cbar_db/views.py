@@ -5,6 +5,17 @@ import logging
 from cbar_db import forms
 from cbar_db import models
 
+ERROR_TEXT_PARTICIPANT_NOT_FOUND=(
+    "The requested participant isn't in the database."
+)
+ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
+    "The requested participant does not have their medical information on file."
+    " Please fill out a medical release first."
+)
+ERROR_TEXT_FORM_INVALID=(
+    "Error validating form."
+)
+
 loggeyMcLogging=logging.getLogger(__name__)
 
 def index_public(request):
@@ -64,8 +75,7 @@ def public_form_emerg_auth(request):
                     "cbar_db/forms/public/emergency_authorization.html",
                     {
                         'form': form,
-                        'error_text': ("The requested participant isn't in the"
-                        " database."),
+                        'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
                     }
                 )
 
@@ -95,9 +105,7 @@ def public_form_emerg_auth(request):
                     {
                         'form': form,
                         'error_text': (
-                            "The requested participant does not have their"
-                            " medical information on file. Please fill out a"
-                            " medical release first."
+                            ERROR_TEXT_MEDICAL_INFO_NOT_FOUND
                         ),
                     }
                 )
@@ -136,7 +144,7 @@ def public_form_emerg_auth(request):
                 "cbar_db/forms/public/emergency_authorization.html",
                 {
                     'form': form,
-                    'error_text': "Error validating form.",
+                    'error_text': ERROR_TEXT_FORM_INVALID,
                 }
             )
 
