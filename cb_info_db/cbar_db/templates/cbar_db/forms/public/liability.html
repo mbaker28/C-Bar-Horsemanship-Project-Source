@@ -1,6 +1,11 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     <h1>Liability Release</h1>
+    {% if error_text %}
+    <p><strong>
+    {{ error_text }}
+    </strong></p>
+    {% endif %}
     <p><strong>Warning: </strong>Under Oklahoma law, an equine professional is
         not liable for an injury to or death of a participant in equine
         activities resulting from the inherent risks of equine activities
