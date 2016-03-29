@@ -31,7 +31,7 @@ def public_form_liability(request):
     """ Liability Release form view.
 
      If Participant exists:
-        Create new instance of MediaReleaseForm and save it to the DB
+        Create new instance of LiabilityReleaseForm and save it to the DB
     Else:
         Give an error
     """
