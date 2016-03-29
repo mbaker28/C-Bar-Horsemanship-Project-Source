@@ -88,7 +88,7 @@ def public_form_liability(request):
 
     else:
         # If request type is GET (or any other method) create a blank form.
-        form=forms.MediaReleaseForm()
+        form=forms.LiabilityReleaseForm()
 
         return render(
             request,
