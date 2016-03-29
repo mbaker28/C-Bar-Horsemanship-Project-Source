@@ -193,7 +193,37 @@ def public_form_background(request):
                     'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
                 }
             )
-    return render(request, 'cbar_db/forms/public/background.html')
+        public_form_background=models.BackgroundCheck(
+            participant_id=participant
+            date=form.cleaned_data['date']
+            signature=form.cleaned_data['signature']
+            driver_license_num=form.cleaned_data['driver_license_num']
+            )
+    else:
+        form=forms.BackgroundCheckForm()
+        return render(
+            request,
+            'cbar_db/forms/public/public_form_background.html',
+            {
+                'form': form,
+                'error_text':ERROR_TEXT_FORM_INVALID,
+            }
+        )
+    else:
+        form=forms.BackgroundCheckForm()
+
+        return render (
+            request,
+            'cbar_db/forms/public/public_form_background.html',
+            {
+                'form':form,
+            }
+        )
+
+
+
+
+
 
 
 def public_form_seizure(request):
