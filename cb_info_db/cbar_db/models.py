@@ -928,31 +928,12 @@ class EvalPhysical(models.Model):
     )
 
 
-class Medication(models.Model):
-    class Meta: # Sets up PK as (participant_id, medication_name)
-        unique_together=(("participant_id","medication_name"))
-
-    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    medication_name=models.CharField(
-        max_length=SHORT_ANSWER_LENGTH,
-        primary_key=True
-    )
-
-    duration_taken=models.CharField(max_length=25)
-    frequency=models.CharField(max_length=25)
-
-
 class MedicalInfo(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
-    medication_name=models.ForeignKey(
-        Medication,
-        null=True,
-        on_delete=models.SET_NULL
-    )
     physical_release=models.ForeignKey(
         PhysRelease,
         null=True,
@@ -1016,6 +997,20 @@ class MedicalInfo(models.Model):
         max_length=1,
         choices=YES_NO_CHOICES
     )
+
+
+class Medication(models.Model):
+    class Meta: # Sets up PK as (medical_info_id, medication_name)
+        unique_together=(("medical_info_id","medication_name"))
+
+    medical_info_id=models.ForeignKey(MedicalInfo, on_delete=models.CASCADE, null=True)
+    medication_name=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        primary_key=True
+    )
+
+    duration_taken=models.CharField(max_length=25)
+    frequency=models.CharField(max_length=25)
 
 
 class SeizureType(models.Model):
