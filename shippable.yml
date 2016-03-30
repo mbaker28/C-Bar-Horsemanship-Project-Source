@@ -30,3 +30,4 @@ build:
         - cd cb_info_db
         - coverage run ./manage.py test --settings cb_info_db.settings_shippable
         - coverage xml -o /root/src/bitbucket.org/OKBU_CS_Capstone_15-16/c-bar_info_db_source/shippable/codecoverage/coverage.xml
+    cache: true
