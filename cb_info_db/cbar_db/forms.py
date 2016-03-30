@@ -54,7 +54,11 @@ class MedicalReleaseForm(forms.Form):
         )
     )
 
-    #currently taking medications code goes here
+    currently_taking_any_medication=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("currently_taking_any_medication").choices
+        )
+    )
     medication_one_name=forms.CharField(
         max_length=(models.Medication._meta
             .get_field("medication_name").max_length
@@ -131,6 +135,8 @@ class MedicalReleaseForm(forms.Form):
             .get_field("limiting_surgeries_last_six_monthes").choices
         )
     )
+
+    birth_date=forms.DateField()
 
     signature=forms.CharField(
         max_length=models.MedicalInfo._meta.get_field("signature").max_length

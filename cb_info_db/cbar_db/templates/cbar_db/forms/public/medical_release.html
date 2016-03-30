@@ -13,6 +13,9 @@
             information will help us do that.
         </p>
         <p>
+            Birth date: {{ form.birth_date }}
+        </p>
+        <p>
             Name of family physician: {{ form.primary_physician_name }}
             Phone: {{ form.primary_physician_phone }}
         </p>
@@ -64,9 +67,12 @@
             Have you had any type of seizure in the last 6 months?
         </p>
         <p>
-            <!--need a booleanfield for taking any medication question-->
-            Are you currently taking any medications(including insulin)? If yes,
-             please list:
+            Are you currently taking any medications(including insulin)?
+            <br>
+            {{ form.currently_taking_any_medication }}
+        </p>
+        <p>
+            If yes, please list:
             <br>
             Medication: {{ form.medication_one_name }} Used for:
              {{ form.medication_one_duration }}
