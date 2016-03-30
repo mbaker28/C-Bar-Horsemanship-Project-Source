@@ -614,7 +614,44 @@ class TestMediaReleaseForm(TestCase):
         # We should say we could find the participant:
         self.assertTrue(found_participant)
 
-    def test_media_release_form_invalid_birth_date(self):
+    def test_media_release_form_not_valid_participant_name(self):
+        """ Verify that a Media Release form view, populated with an invalid
+         participant name, displays an error message. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST I'm Not Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "consent": "Y",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-1-1"
+        }
+        form=forms.MediaReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertFalse(found_participant)
+
+    def test_media_release_form_not_valid_birth_date(self):
         """ Verify that a Media Release form view, populated with an invalid
          participant birth date, displays an error message. """
 
@@ -651,12 +688,79 @@ class TestMediaReleaseForm(TestCase):
         # We should say we could not find the participant:
         self.assertFalse(found_participant)
 
-    def test_media_release_form_invalid_name(self):
-        """ Verify that a Media Release form view, populated with an invalid
-         participant name, displays an error message. """
+    def test_media_release_form_saves_with_valid_data(self):
+        """ Verify that a Media Release form view, populated with
+         valid data, correctly saves the form to the database. """
 
-        # If we are able to find the matching record, we set this to True:
-        found_participant=False
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "consent": "Y",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-1-1"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-media"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # DISABLED: We don't have a post form url redirect location or view yet
+        # Assert the the redirect url matches the post-form page:
+        # self.assertEqual(
+        #     resp['Location'],
+        #     'http://testserver/thank you place'
+        # )
+
+        # Attempt to retreive the updated MedicalInfo record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retreive the new MediaRelease record:
+        try:
+            print("Retrieving new MediaRelease record...")
+            media_release_in_db=(models.MediaRelease
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print(
+                "Successfully retrieved new MediaRelease record."
+            )
+        except:
+            print(
+                "ERROR: Unable to retreive new MediaRelease record!"
+            )
+
+        # Check that the attributes in the MediaRelease were set correctly:
+        print(
+            "Checking stored MediaRelease attributes..."
+        )
+        self.assertEqual(
+            media_release_in_db.consent,
+            form_data["consent"]
+        )
+        self.assertEqual(
+            media_release_in_db.signature,
+            form_data["signature"]
+        )
+        self.assertEqual(
+            # Format the retrieved date so it matches the input format:
+            "{d.year}-{d.month}-{d.day}".format(d=media_release_in_db.date),
+            form_data["date"]
+        )
+
+    def test_media_release_form_with_invalid_participant_name(self):
+        """ Verify that a Media Release form view, populated with
+         an invalid participant name, displays an error message. """
 
         form_data={
             "name": "TEST I'm Not Bruce Wayne",
@@ -665,25 +769,64 @@ class TestMediaReleaseForm(TestCase):
             "signature": "TEST Bruce Wayne",
             "date": "2016-1-1"
         }
-        form=forms.MediaReleaseForm(form_data)
 
-        if form.is_valid(): # Performs validation, needed for form.cleaned_data
-            print("Form is valid.")
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-media"), form_data)
 
-            try:
-                print("Finding participant...")
-                participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["name"],
-                    birth_date=form.cleaned_data["birth_date"]
-                )
-                print("Found participant.")
-                found_participant=True
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
 
-            except ObjectDoesNotExist:
-                found_participant=False
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
 
-        else:
-            print("Form is not valid.")
+    def test_media_release_form_with_invalid_participant_date(self):
+        """ Verify that a Media Release form view, populated with
+         an invalid participant date, displays an error message. """
 
-        # We should say we could not find the participant:
-        self.assertFalse(found_participant)
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "2000-1-2",
+            "consent": "Y",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-1-1"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-media"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        form_data={
+            "name": "TEST Bruce Wayne with a super long name zzzzzzzzzzzzzzzzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+                "zzzzzzzz",
+            "birth_date": "this isn't a date",
+            "consent": "Y",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-1-1"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-media"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
