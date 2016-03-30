@@ -249,13 +249,6 @@ class Diagnosis(models.Model):
 
 
 class MediaRelease(models.Model):
-    CONSENT="Y"
-    NO_CONSENT="N"
-    CONSENT_CHOICES=(
-        (CONSENT, "consent"),
-        (NO_CONSENT, "do not consent")
-    )
-
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))
 
