@@ -1012,6 +1012,10 @@ class MedicalInfo(models.Model):
         choices=YES_NO_CHOICES
     )
     signature=models.CharField(max_length=NAME_LENGTH)
+    currently_taking_any_medication=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
 
 
 class SeizureType(models.Model):
