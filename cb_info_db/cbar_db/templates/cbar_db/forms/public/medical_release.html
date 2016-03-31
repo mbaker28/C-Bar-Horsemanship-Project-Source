@@ -1,6 +1,11 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     <h1>Health Information &amp; Medical History</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
     <form action="{% url 'public-form-med-release' %}" method="post">
         {% csrf_token %}
         <p>
@@ -14,14 +19,29 @@
         </p>
         <p>
             Birth date: {{ form.birth_date }}
+            <span class="error_message">
+                {{ form.birth_date.errors.as_text }}
+            </span>
         </p>
         <p>
             Name of family physician: {{ form.primary_physician_name }}
+            <span class="error_message">
+                {{ form.primary_physician_name.errors.as_text }}
+            </span>
             Phone: {{ form.primary_physician_phone }}
+            <span class="error_message">
+                {{ form.primary_physician_phone.errors.as_text }}
+            </span>
         </p>
         <p>
             Date last seen by physician: {{ form.last_seen_by_physician_date }}
+            <span class="error_message">
+                {{ form.last_seen_by_physician_date.errors.as_text }}
+            </span>
             Reason: {{ form.last_seen_by_physician_reason }}
+            <span class="error_message">
+                {{ form.last_seen_by_physician_reason.errors.as_text }}
+            </span>
         </p>
         <p>
             C-Bar activities and/or events take place out in the open,
@@ -35,10 +55,16 @@
         </p>
         <p>
             {{ form.allergies_conditions_that_exclude }}
+            <span class="error_message">
+                {{ form.allergies_conditions_that_exclude.errors.as_text }}
+            </span>
         </p>
         <p>
             If yes, please specify:
              {{ form.allergies_conditions_that_exclude_description }}
+             <span class="error_message">
+                 {{ form.allergies_conditions_that_exclude_description.errors.as_text }}
+             </span>
         </p>
         <p>
             IMPORTANT: Your answer of “yes” to the previous question also
@@ -56,33 +82,68 @@
             bracelet or necklace during activities.
         </p>
         <p>
-            {{ form.heat_exhaustion_stroke }}
             Have you experienced heat exhaustion or heat stroke?
             <br>
-            {{ form.tetanus_shot_last_ten_years }}
-            Within the last ten years, have you had immunizations or boosters for
-             Tetanus?
-            <br>
-            {{ form.seizures_last_six_monthes }}
-            Have you had any type of seizure in the last 6 months?
+            {{ form.heat_exhaustion_stroke }}
+            <span class="error_message">
+                {{ form.heat_exhaustion_stroke.errors.as_text }}
+            </span>
         </p>
         <p>
-            Are you currently taking any medications(including insulin)?
+            Within the last ten years, have you had immunizations or boosters for
+             Tetanus?
+             <br>
+            {{ form.tetanus_shot_last_ten_years }}
+            <span class="error_message">
+                {{ form.tetanus_shot_last_ten_years.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Have you had any type of seizure in the last 6 months?
+            <br>
+            {{ form.seizures_last_six_monthes }}
+            <span class="error_message">
+                {{ form.seizures_last_six_monthes.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Are you currently taking any medications (including insulin)?
             <br>
             {{ form.currently_taking_any_medication }}
+            <span class="error_message">
+                {{ form.currently_taking_any_medication.errors.as_text }}
+            </span>
         </p>
         <p>
             If yes, please list:
             <br>
-            Medication: {{ form.medication_one_name }} Used for:
+            Medication: {{ form.medication_one_name }}
+            <span class="error_message">
+                {{ form.medication_one_name.errors.as_text }}
+            </span> Used for:
              {{ form.medication_one_duration }}
+             <span class="error_message">
+                 {{ form.medication_one_duration.errors.as_text }}
+             </span>
             <br>
             How Often: {{ form.medication_one_frequency }}
+            <span class="error_message">
+                {{ form.medication_one_frequency.errors.as_text }}
+            </span>
             <br>
-            Medication: {{ form.medication_two_name }} Used for:
+            Medication: {{ form.medication_two_name }}
+            <span class="error_message">
+                {{ form.medication_two_name.errors.as_text }}
+            </span> Used for:
              {{ form.medication_two_duration }}
+             <span class="error_message">
+                 {{ form.medication_two_duration.errors.as_text }}
+             </span>
             <br>
             How Often: {{ form.medication_two_frequency }}
+            <span class="error_message">
+                {{ form.medication_two_frequency.errors.as_text }}
+            </span>
         </p>
         <p>
             Has your physician expressed concerns about you riding or
@@ -91,10 +152,14 @@
         </p>
         <p>
             {{ form.doctor_concered_re_horse_activites }}
+            <span class="error_message">
+                {{ form.doctor_concered_re_horse_activites.errors.as_text }}
+            </span>
         </p>
         <p>
             If yes, please attach a statement from your physician
             allowing your participation in these activities.
+            <span style="color: red">WE NEED A FIELD FOR THIS</span>
         </p>
         <p>
             Do you have any physical and/or mental health conditions,
@@ -105,10 +170,16 @@
         </p>
         <p>
             {{ form.physical_or_mental_issues_affecting_riding }}
+            <span class="error_message">
+                {{ form.physical_or_mental_issues_affecting_riding.errors.as_text }}
+            </span>
         </p>
         <p>
             If yes, please specify:
              {{ form.physical_or_mental_issues_affecting_riding_description }}
+             <span class="error_message">
+                 {{ form.physical_or_mental_issues_affecting_riding_description.errors.as_text }}
+             </span>
         </p>
         <p>
             In the past 5 years have you had any activity restriction from
@@ -117,10 +188,16 @@
         </p>
         <p>
             {{ form.restriction_for_horse_activity_last_five_years }}
+            <span class="error_message">
+                {{ form.restriction_for_horse_activity_last_five_years.errors.as_text }}
+            </span>
         </p>
         <p>
             If yes, please specify:
              {{ form.restriction_for_horse_activity_last_five_years_description }}
+            <span class="error_message">
+             {{ form.restriction_for_horse_activity_last_five_years_description.errors.as_text }}
+            </span>
         </p>
         <p>
             Do you presently have any activity restriction for safely riding
@@ -129,8 +206,12 @@
         </p>
         <p>
             {{ form.present_restrictions_for_horse_activity }}
+            <span class="error_message">
+                {{ form.present_restrictions_for_horse_activity.errors.as_text }}
+            </span>
         </p>
         <p>
+            <span style="color: red">WE NEED A FIELD FOR THIS</span>
             If yes, please attach a statement from your physician indicating
             the nature of your activity restriction and the prognosis for the
             future restriction.
@@ -143,10 +224,16 @@
         </p>
         <p>
             {{ form.limiting_surgeries_last_six_monthes }}
+            <span class="error_message">
+                {{ form.limiting_surgeries_last_six_monthes.errors.as_text }}
+            </span>
         </p>
         <p>
             If yes, please specify:
-             <!--need a last 6 month surgery description-->
+             {{ form.limiting_surgeries_last_six_monthes_description }}
+             <span class="error_message">
+                 {{ form.limiting_surgeries_last_six_monthes_description.errors.as_text }}
+             </span>
         </p>
         <p>
             I have completed the above information to the best of my
@@ -154,7 +241,13 @@
             health and safety during any C-Bar activity I am involved.
         </p>
         <p>
-            Signature: {{ form.signature }} Date: {{ form.date }}
+            Signature: {{ form.signature }}
+            <span class="error_message">
+                {{ form.signature.errors.as_text }}
+            </span> Date: {{ form.date }}
+            <span class="error_message">
+                {{ form.date.errors.as_text }}
+            </span>
         </p>
         <p>
             <input type="submit" value="Submit" />
