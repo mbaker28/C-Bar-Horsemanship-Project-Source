@@ -1043,7 +1043,7 @@ class TestMedicalReleaseForm(TestCase):
         self.assertFalse(found_participant)
 
     def test_medical_release_form_saves_with_valid_data(self):
-        """ Verify that an Emergency Authorization form view, populated with
+        """ Verify that a Medical Release form view, populated with
          valid data, correctly saves the form to the database. """
 
         form_data={
@@ -1130,4 +1130,156 @@ class TestMedicalReleaseForm(TestCase):
         self.assertEqual(
             medical_info_in_db.primary_physician_name,
             form_data["primary_physician_name"]
+        )
+
+    def test_medical_release_form_with_invalid_participant_name(self):
+        """ Verify that a Medical Release form view, populated with
+         an invalid participant name, displays an error message. """
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man",
+            "primary_physician_phone": "1112223333",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "9 months",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "Asprin",
+            "medication_two_duration": "2012-now",
+            "medication_two_frequency": "3-4 hours (as needed)",
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": "N",
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": "Y",
+            # TODO: description of present restriction description/etc.
+            "limiting_surgeries_last_six_monthes": "N",
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1984-6-24",
+            "signature": "TEST Not Bruce Wayne",
+            "date": "2016-3-30"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-med-release"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_medical_release_form_with_invalid_participant_date(self):
+        """ Verify that a Medical Release form view, populated with
+         an invalid participant name, displays an error message. """
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man",
+            "primary_physician_phone": "1112223333",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "9 months",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "Asprin",
+            "medication_two_duration": "2012-now",
+            "medication_two_frequency": "3-4 hours (as needed)",
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": "N",
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": "Y",
+            # TODO: description of present restriction description/etc.
+            "limiting_surgeries_last_six_monthes": "N",
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1455-9-30",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-3-30"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-med-release"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_medical_release_form_with_invalid_form_data(self):
+        """ Verify that a Medical Release form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man with a super long name"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+            "primary_physician_phone": "11122233332u3094890238402",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "9 months",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "Asprin",
+            "medication_two_duration": "2012-now",
+            "medication_two_frequency": "3-4 hours (as needed)",
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": "N",
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": "Y",
+            # TODO: description of present restriction description/etc.
+            "limiting_surgeries_last_six_monthes": "N",
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1984-6-24",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-3-30"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-med-release"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
         )
