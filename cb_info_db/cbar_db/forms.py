@@ -62,29 +62,35 @@ class MedicalReleaseForm(forms.Form):
     medication_one_name=forms.CharField(
         max_length=(models.Medication._meta
             .get_field("medication_name").max_length
-        )
+        ),
+        required=False
     )
     medication_one_duration=forms.CharField(
         max_length=(models.Medication._meta
             .get_field("duration_taken").max_length
-        )
+        ),
+        required=False
     )
     medication_one_frequency=forms.CharField(
-        max_length=models.Medication._meta.get_field("frequency").max_length
+        max_length=models.Medication._meta.get_field("frequency").max_length,
+        required=False
     )
 
     medication_two_name=forms.CharField(
         max_length=(models.Medication._meta
             .get_field("medication_name").max_length
-        )
+        ),
+        required=False
     )
     medication_two_duration=forms.CharField(
         max_length=(models.Medication._meta
             .get_field("duration_taken").max_length
-        )
+        ),
+        required=False
     )
     medication_two_frequency=forms.CharField(
-        max_length=models.Medication._meta.get_field("frequency").max_length
+        max_length=models.Medication._meta.get_field("frequency").max_length,
+        required=False
     )
 
     # If yes -> Physician Release required:
@@ -134,6 +140,14 @@ class MedicalReleaseForm(forms.Form):
         choices=(models.MedicalInfo._meta
             .get_field("limiting_surgeries_last_six_monthes").choices
         )
+    )
+
+    limiting_surgeries_last_six_monthes_description=forms.CharField(
+        max_length=(models.MedicalInfo._meta
+            .get_field("limiting_surgeries_last_six_monthes_description")
+            .max_length
+        ),
+        required=False
     )
 
     birth_date=forms.DateField()
