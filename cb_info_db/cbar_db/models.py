@@ -992,6 +992,10 @@ class MedicalInfo(models.Model):
         max_length=1,
         choices=YES_NO_CHOICES
     )
+    limiting_surgeries_last_six_monthes_description=models.CharField(
+        max_length=500,
+        null=True
+    )
     signature=models.CharField(max_length=NAME_LENGTH)
     currently_taking_any_medication=models.CharField(
         max_length=1,
