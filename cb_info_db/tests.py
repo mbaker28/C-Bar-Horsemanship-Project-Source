@@ -830,3 +830,304 @@ class TestMediaReleaseForm(TestCase):
                 views.ERROR_TEXT_FORM_INVALID
             )
         )
+
+
+class TestMedicalReleaseForm(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        # Create a Participant record and save it
+        test_participant=models.Participant(
+            name="TEST Bruce Wayne",
+            birth_date="1984-6-24",
+            email="bruce@wayneenterprises.com",
+            weight=185.0,
+            gender="M",
+            guardian_name="Alfred Pennyworth",
+            height=72.0,
+            minor_status="G",
+            address_street="1234 Wayne St.",
+            address_city="Gotham",
+            address_zip="424278",
+            phone_home="(300) 200-100",
+            phone_cell_work="(300) 500-600",
+            school_institution="Ra's Al Ghul School of Ninjutsu"
+        )
+        test_participant.save()
+
+    def test_medical_release_form_finds_valid_participant(self):
+        """ Tests whether the form finds a valid participant record if a
+         matching (name, date) is entered """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man",
+            "primary_physician_phone": "1112223333",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "9 months",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "Asprin",
+            "medication_two_duration": "2012-now",
+            "medication_two_frequency": "3-4 hours (as needed)",
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": "N",
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": "Y",
+            # TODO: description of present restriction description/etc.
+            "limiting_surgeries_last_six_monthes": "N",
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1984-6-24",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-3-30"
+        }
+        form=forms.MedicalReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["signature"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertTrue(found_participant)
+
+    def test_medical_release_form_not_valid_participant_name(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching date, but not a matching name. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man",
+            "primary_physician_phone": "1112223333",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "9 months",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "Asprin",
+            "medication_two_duration": "2012-now",
+            "medication_two_frequency": "3-4 hours (as needed)",
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": "N",
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": "Y",
+            # TODO: description of present restriction description/etc.
+            "limiting_surgeries_last_six_monthes": "N",
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1984-6-24",
+            "signature": "TEST I'm Batman!",
+            "date": "2016-3-30"
+        }
+        form=forms.MedicalReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["signature"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertFalse(found_participant)
+
+    def test_medical_release_form_not_valid_participant_birth_date(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching name, but not a matching date. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man",
+            "primary_physician_phone": "1112223333",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "9 months",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "Asprin",
+            "medication_two_duration": "2012-now",
+            "medication_two_frequency": "3-4 hours (as needed)",
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": "N",
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": "Y",
+            # TODO: description of present restriction description/etc.
+            "limiting_surgeries_last_six_monthes": "N",
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1000-1-1",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-3-30"
+        }
+        form=forms.MedicalReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["signature"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertFalse(found_participant)
+
+    def test_medical_release_form_saves_with_valid_data(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man",
+            "primary_physician_phone": "1112223333",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "9 months",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "Asprin",
+            "medication_two_duration": "2012-now",
+            "medication_two_frequency": "3-4 hours (as needed)",
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": "N",
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": "Y",
+            # TODO: description of present restriction description/etc.
+            "limiting_surgeries_last_six_monthes": "N",
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1984-6-24",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-3-30"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-med-release"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # DISABLED: We don't have a post form url redirect location or view yet
+        # Assert the the redirect url matches the post-form page:
+        # self.assertEqual(
+        #     resp['Location'],
+        #     'http://testserver/thank you place'
+        # )
+
+        # Attempt to retrieve the new Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["signature"],
+                birth_date=form_data["birth_date"]
+            )
+            print("Successfully retrieved participant record.")
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retrieve the MedicalInfo record:
+        try:
+            print("Retrieving new MedicalInfo record...")
+            medical_info_in_db=models.MedicalInfo.objects.get(
+                participant_id=participant_in_db,
+                date=form_data["date"]
+            )
+            print("Successfully retrieved new MedicalInfo record.")
+        except:
+            print("ERROR: Unable to retrieve MedicalInfo record!")
+
+        # Attempt to retrieve the Medication records:
+        try:
+            print("Retrieving new Medication record...")
+            # medical_info_in_db=models.MedicalInfo.objects.get(
+            #     participant_id=participant_in_db,
+            #     date=form_data["date"]
+            # )
+            # print("Successfully retrieved new Medication record.")
+        except:
+            print("ERROR: Unable to retrieve Medication record!")
+
+        # Check that the new MedicalInfo record's attributes were set correctly:
+        print("Checking stored MedicalInfo attributes...")
+        self.assertEqual(
+            medical_info_in_db.primary_physician_name,
+            form_data["primary_physician_name"]
+        )
