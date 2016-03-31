@@ -31,7 +31,7 @@ urlpatterns = [
 
     # Background Check Authorization form
     url(r'^forms/public/background/$', views.public_form_background,
-        name='public-form-backround'),
+        name='public-form-background'),
 
     # Seizure Evaluation form
     url(r'^forms/public/seizure/$', views.public_form_seizure,
