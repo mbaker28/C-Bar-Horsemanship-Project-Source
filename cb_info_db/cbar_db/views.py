@@ -174,57 +174,57 @@ def public_form_media(request):
 def public_form_background(request):
     """ Background Check Authorization form view. """
     if request.method == 'POST':
-        loggeyMclogging.error("Request is of type POST")
+        loggeyMcLogging.error("Request is of type POST")
         form=forms.BackgroundCheckForm(request.POST)
 
-    if form.is_valid():
-        loggeyMclogging.error("The form is valid")
-        try:
-             participant=models.Participant.objects.get(
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+            try:
+                participant=models.Participant.objects.get(
                     name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date']
                 )
-        except ObjectDoesNotExist:
+            except ObjectDoesNotExist:
+                return render(
+                    request,
+                    "cbar_db/forms/public/background.html",
+                    {
+                        'form': form,
+                        'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                    }
+                )
+
+            public_form_background=models.BackgroundCheck(
+                participant_id=participant,
+                date=form.cleaned_data['date'],
+                signature=form.cleaned_data['signature'],
+                driver_license_num=form.cleaned_data['driver_license_num']
+            )
+            public_form_background.save()
+
+            # Redirect to the home page:
+            return HttpResponseRedirect('/')
+
+        else:
+            form=forms.BackgroundCheckForm()
             return render(
                 request,
-                "cbar_db/forms/public/public_form_background.html",
+                'cbar_db/forms/public/background.html',
                 {
                     'form': form,
-                    'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                    'error_text':ERROR_TEXT_FORM_INVALID,
                 }
             )
-        public_form_background=models.BackgroundCheck(
-            participant_id=participant
-            date=form.cleaned_data['date']
-            signature=form.cleaned_data['signature']
-            driver_license_num=form.cleaned_data['driver_license_num']
-            )
-    else:
-        form=forms.BackgroundCheckForm()
-        return render(
-            request,
-            'cbar_db/forms/public/public_form_background.html',
-            {
-                'form': form,
-                'error_text':ERROR_TEXT_FORM_INVALID,
-            }
-        )
     else:
         form=forms.BackgroundCheckForm()
 
         return render (
             request,
-            'cbar_db/forms/public/public_form_background.html',
+            'cbar_db/forms/public/background.html',
             {
                 'form':form,
             }
         )
-
-
-
-
-
-
 
 def public_form_seizure(request):
     """ Seizure Evaluation form view. """
