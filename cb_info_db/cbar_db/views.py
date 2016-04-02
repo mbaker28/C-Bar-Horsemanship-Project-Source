@@ -327,13 +327,12 @@ def public_form_liability(request):
                     "cbar_db/forms/public/liability.html",
                     {
                         'form': form,
-                        'error_text': ("The requested participant isn't in the"
-                        " database."),
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
                     }
                 )
 
             # Create a new LiabilityRelease for the participant and save it:
-            form_data_liability=models.AuthorizeEmergencyMedicalTreatment(
+            form_data_liability=models.LiabilityRelease(
                 participant_id=participant,
                 signature=form.cleaned_data['signature'],
                 date=form.cleaned_data['date']
@@ -351,7 +350,7 @@ def public_form_liability(request):
                 "cbar_db/forms/public/liability.html",
                 {
                     'form': form,
-                    'error_text': "Error validating form.",
+                    'error_text': ERROR_TEXT_FORM_INVALID,
                 }
             )
 

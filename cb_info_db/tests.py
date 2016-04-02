@@ -1513,10 +1513,10 @@ class TestLiabilityReleaseForm(TestCase):
             name="TEST Peter Parker",
             birth_date="1985-4-02",
             email="peter@spider-man.com",
-            weight="195",
+            weight=195,
             gender="M",
             guardian_name="Aunt May",
-            height="72",
+            height=72,
             minor_status="G",
             address_street="123 Apartment Street",
             address_city="New York",
@@ -1578,7 +1578,7 @@ class TestLiabilityReleaseForm(TestCase):
         response=self.client.post(reverse("public-form-liability"), form_data)
 
         # Assert that the reponse code is a 302 (redirect):
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
         # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
