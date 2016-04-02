@@ -1677,7 +1677,7 @@ class TestLiabilityReleaseForm(TestCase):
         self.assertEquals(found_participant, False)
 
     def test_liability_release_form_with_invalid_form_data(self):
-        """ Verify that an Emergency Authorization form view, populated with
+        """ Verify that an Liability Release form view, populated with
          an invalid participant date, displays an error message. """
 
         form_data={
@@ -1697,5 +1697,49 @@ class TestLiabilityReleaseForm(TestCase):
         self.assertTrue(
             response.context["error_text"] == (
                 views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_liability_release_form_with_invalid_participant_name(self):
+
+        form_data={
+            "name": "TEST Not Peter Parker",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+
+        response=self.client.post(reverse("public-form-liability"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_liability_release_form_with_invalid_participant_date(self):
+        """ Verify that an Liability Release form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1000-1-1",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-liability"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
             )
         )
