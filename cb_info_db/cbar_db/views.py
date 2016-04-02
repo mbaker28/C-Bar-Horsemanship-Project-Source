@@ -34,9 +34,144 @@ def public_form_application(request):
 
 
 def public_form_med_release(request):
-    """ Medical Release form view. """
-    return render(request, 'cbar_db/forms/public/medical_release.html')
+    """ Medical Release form view. Handles viewing and saving the form.
 
+    Viewing form (GET): Display the form
+    Saving form (POST):
+        -Do something
+    """
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        # Create a form instance and populate it with data from the request:
+        form=forms.MedicalReleaseForm(request.POST)
+
+        # Check whether the form data entered is valid:
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+            # Find the participant's record based on their (name, birth_date):
+            try:
+                participant=models.Participant.objects.get(
+                    name=form.cleaned_data['signature'],
+                    birth_date=form.cleaned_data['birth_date']
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/public/medical_release.html",
+                    {
+                        'form': form,
+                        'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                    }
+                )
+
+            medical_info=models.MedicalInfo(
+                participant_id=participant,
+                date=form.cleaned_data["date"],
+                primary_physician_name=(
+                    form.cleaned_data["primary_physician_name"]
+                ),
+                primary_physician_phone=(
+                    form.cleaned_data["primary_physician_phone"]
+                ),
+                last_seen_by_physician_date=(
+                    form.cleaned_data["last_seen_by_physician_date"]
+                ),
+                last_seen_by_physician_reason=(
+                    form.cleaned_data["last_seen_by_physician_reason"]
+                ),
+                allergies_conditions_that_exclude=(
+                    form.cleaned_data["allergies_conditions_that_exclude"]
+                ),
+                allergies_conditions_that_exclude_description=(
+                    form.cleaned_data["allergies_conditions_that_exclude"
+                        "_description"]
+                ),
+                heat_exhaustion_stroke=(
+                    form.cleaned_data["heat_exhaustion_stroke"]
+                ),
+                tetanus_shot_last_ten_years=(
+                    form.cleaned_data["tetanus_shot_last_ten_years"]
+                ),
+                seizures_last_six_monthes=(
+                    form.cleaned_data["seizures_last_six_monthes"]
+                ),
+                currently_taking_any_medication=(
+                    form.cleaned_data["currently_taking_any_medication"]
+                ),
+                doctor_concered_re_horse_activites=(
+                    form.cleaned_data["doctor_concered_re_horse_activites"]
+                ),
+                physical_or_mental_issues_affecting_riding=(
+                    form.cleaned_data["physical_or_mental_issues_affecting"
+                        "_riding"]
+                ),
+                physical_or_mental_issues_affecting_riding_description=(
+                    form.cleaned_data["physical_or_mental_issues_affecting"
+                        "_riding_description"]
+                ),
+                restriction_for_horse_activity_last_five_years=(
+                    form.cleaned_data["restriction_for_horse_activity_last"
+                        "_five_years"]
+                ),
+                restriction_for_horse_activity_last_five_years_description=(
+                    form.cleaned_data["restriction_for_horse_activity_last_five"
+                        "_years_description"]
+                ),
+                present_restrictions_for_horse_activity=(
+                    form.cleaned_data["present_restrictions_for_horse_activity"]
+                ),
+                limiting_surgeries_last_six_monthes=(
+                    form.cleaned_data["limiting_surgeries_last_six_monthes"]
+                ),
+                signature=(form.cleaned_data["signature"])
+            )
+            medical_info.save()
+
+            medication_one=models.Medication(
+                medical_info_id=medical_info,
+                medication_name=form.cleaned_data["medication_one_name"],
+                duration_taken=form.cleaned_data["medication_one_duration"],
+                frequency=form.cleaned_data["medication_one_frequency"]
+            )
+            medication_one.save()
+            medication_two=models.Medication(
+                medical_info_id=medical_info,
+                medication_name=form.cleaned_data["medication_two_name"],
+                duration_taken=form.cleaned_data["medication_two_duration"],
+                frequency=form.cleaned_data["medication_two_frequency"]
+            )
+            medication_two.save()
+
+            # Redirect to the home page:
+            return HttpResponseRedirect('/')
+
+        else:
+            # The form is not valid
+            loggeyMcLogging.error("The form is NOT valid")
+
+            return render(
+                request,
+                "cbar_db/forms/public/medical_release.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+    else:
+        # If request type is GET (or any other method) create a blank form and
+        # display it:
+        form=forms.MedicalReleaseForm()
+        return render(
+            request,
+            'cbar_db/forms/public/medical_release.html',
+            {
+                'form': form
+            }
+        )
 
 def public_form_emerg_auth(request):
     """ Emegency Medical Treatment Authorization form view. Handles viewing and
