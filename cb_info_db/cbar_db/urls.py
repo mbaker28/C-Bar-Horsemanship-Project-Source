@@ -4,6 +4,7 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
+    ######################### Publicly accessible #########################
     # Website index
     url(r'^$', views.index_public, name='index-public'),
 
@@ -38,12 +39,18 @@ urlpatterns = [
     url(r'^forms/public/seizure/$', views.public_form_seizure,
         name='public-form-seizure'),
 
-############################# Private #############################
 
+    ######################### User login required #########################
+    # Login page
     url(r'^user/login/$', auth_views.login,
         {'template_name': 'cbar_db/admin/login.html'},
         name='user-login'),
 
+    # Admin index page
     url(r'^admin/$', views.index_private_admin,
         name='index-private-admin'),
+
+    # Participant record overview page
+    url(r'^admin/participant/[0-9]+/$', views.participant_record,
+        name='participant-record'),
 ]

@@ -442,3 +442,8 @@ def index_private_admin(request):
         'cbar_db/admin/admin.html',
         {'participants':participants}
     )
+
+@login_required
+def participant_record(request):
+    """ Participant record view. """
+    return render(request, 'cbar_db/admin/participant.html')
