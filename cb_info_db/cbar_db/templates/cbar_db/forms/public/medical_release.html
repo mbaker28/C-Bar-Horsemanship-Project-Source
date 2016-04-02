@@ -1,4 +1,255 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    Medical Release form
+    <h1>Health Information &amp; Medical History</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    <form action="{% url 'public-form-med-release' %}" method="post">
+        {% csrf_token %}
+        <p>
+            As you provide the following information, please keep in mind that
+            this will NOT be used to exclude you from participating in C-Bar
+            activities. It is for us to use to help provide you with the best
+            service possible and to place you in activities that maximize
+            safety and effectiveness. We strive to make C-Bar a pleasant and
+            fulfilling experience for everyone that visits our site. This
+            information will help us do that.
+        </p>
+        <p>
+            Birth date: {{ form.birth_date }}
+            <span class="error_message">
+                {{ form.birth_date.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Name of family physician: {{ form.primary_physician_name }}
+            <span class="error_message">
+                {{ form.primary_physician_name.errors.as_text }}
+            </span>
+            Phone: {{ form.primary_physician_phone }}
+            <span class="error_message">
+                {{ form.primary_physician_phone.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Date last seen by physician: {{ form.last_seen_by_physician_date }}
+            <span class="error_message">
+                {{ form.last_seen_by_physician_date.errors.as_text }}
+            </span>
+            Reason: {{ form.last_seen_by_physician_reason }}
+            <span class="error_message">
+                {{ form.last_seen_by_physician_reason.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            C-Bar activities and/or events take place out in the open,
+            possibly in an enclosed arena, in a stable area, and in
+            other enclosed structures. They take place on and around horses.
+            Exposure to other animals, insects, plants, and weather conditions
+            is possible. Do you have any known allergies
+            (such as animal, food, insects, or others) and/or health conditions
+            (such as asthma, heart problems, high blood pressure, or others)
+            that might be affected by your participation in these activities?
+        </p>
+        <p>
+            {{ form.allergies_conditions_that_exclude }}
+            <span class="error_message">
+                {{ form.allergies_conditions_that_exclude.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            If yes, please specify:
+             {{ form.allergies_conditions_that_exclude_description }}
+             <span class="error_message">
+                 {{ form.allergies_conditions_that_exclude_description.errors.as_text }}
+             </span>
+        </p>
+        <p>
+            IMPORTANT: Your answer of “yes” to the previous question also
+            reflects that you are not relying on C-Bar, the facility provider,
+            the instructor, their assistants or agents, and/or others acting on
+            their behalf to prevent or reduce your exposure to any of these
+            conditions before, during, or after C-Bar activity.
+        </p>
+        <p>
+            Although C-Bar continually strives for and promotes safety in
+            equine activities, you will be solely responsible for your own
+            health and safety at all times. Please bring with you and
+            always be prepared to self-administer your own medications.
+            You are strongly encouraged to wear a visible “Medic-Alert”
+            bracelet or necklace during activities.
+        </p>
+        <p>
+            Have you experienced heat exhaustion or heat stroke?
+            <br>
+            {{ form.heat_exhaustion_stroke }}
+            <span class="error_message">
+                {{ form.heat_exhaustion_stroke.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Within the last ten years, have you had immunizations or boosters for
+             Tetanus?
+             <br>
+            {{ form.tetanus_shot_last_ten_years }}
+            <span class="error_message">
+                {{ form.tetanus_shot_last_ten_years.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Have you had any type of seizure in the last 6 months?
+            <br>
+            {{ form.seizures_last_six_monthes }}
+            <span class="error_message">
+                {{ form.seizures_last_six_monthes.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Are you currently taking any medications (including insulin)?
+            <br>
+            {{ form.currently_taking_any_medication }}
+            <span class="error_message">
+                {{ form.currently_taking_any_medication.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            If yes, please list:
+            <br>
+            Medication: {{ form.medication_one_name }}
+            <span class="error_message">
+                {{ form.medication_one_name.errors.as_text }}
+            </span> Used for:
+             {{ form.medication_one_duration }}
+             <span class="error_message">
+                 {{ form.medication_one_duration.errors.as_text }}
+             </span>
+            <br>
+            How Often: {{ form.medication_one_frequency }}
+            <span class="error_message">
+                {{ form.medication_one_frequency.errors.as_text }}
+            </span>
+            <br>
+            Medication: {{ form.medication_two_name }}
+            <span class="error_message">
+                {{ form.medication_two_name.errors.as_text }}
+            </span> Used for:
+             {{ form.medication_two_duration }}
+             <span class="error_message">
+                 {{ form.medication_two_duration.errors.as_text }}
+             </span>
+            <br>
+            How Often: {{ form.medication_two_frequency }}
+            <span class="error_message">
+                {{ form.medication_two_frequency.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Has your physician expressed concerns about you riding or
+            being near horses or engaging in the type of equine activities
+            for which you have completed this form?
+        </p>
+        <p>
+            {{ form.doctor_concered_re_horse_activites }}
+            <span class="error_message">
+                {{ form.doctor_concered_re_horse_activites.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            If yes, please attach a statement from your physician
+            allowing your participation in these activities.
+            <span style="color: red">WE NEED A FIELD FOR THIS</span>
+        </p>
+        <p>
+            Do you have any physical and/or mental health conditions,
+            problems, and/or disabilities, which may affect your ability
+            to safely ride a horse or participate in the activities for
+            which you have completed this form (being mindful that horses
+            have a very quick reaction time)?
+        </p>
+        <p>
+            {{ form.physical_or_mental_issues_affecting_riding }}
+            <span class="error_message">
+                {{ form.physical_or_mental_issues_affecting_riding.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            If yes, please specify:
+             {{ form.physical_or_mental_issues_affecting_riding_description }}
+             <span class="error_message">
+                 {{ form.physical_or_mental_issues_affecting_riding_description.errors.as_text }}
+             </span>
+        </p>
+        <p>
+            In the past 5 years have you had any activity restriction from
+            horseback riding or participation in the activities for which
+            you have completed this form?
+        </p>
+        <p>
+            {{ form.restriction_for_horse_activity_last_five_years }}
+            <span class="error_message">
+                {{ form.restriction_for_horse_activity_last_five_years.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            If yes, please specify:
+             {{ form.restriction_for_horse_activity_last_five_years_description }}
+            <span class="error_message">
+             {{ form.restriction_for_horse_activity_last_five_years_description.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Do you presently have any activity restriction for safely riding
+            a horse or participating in the activities for which you have
+            completed this form?
+        </p>
+        <p>
+            {{ form.present_restrictions_for_horse_activity }}
+            <span class="error_message">
+                {{ form.present_restrictions_for_horse_activity.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            <span style="color: red">WE NEED A FIELD FOR THIS</span>
+            If yes, please attach a statement from your physician indicating
+            the nature of your activity restriction and the prognosis for the
+            future restriction.
+        </p>
+        <p>
+            In the last 6 months, have you had ANY surgeries
+            (i.e. gall bladder removal, wisdom teeth extraction, etc.)
+            that would limit your ability to participate in the activities
+            for which you have completed this form?
+        </p>
+        <p>
+            {{ form.limiting_surgeries_last_six_monthes }}
+            <span class="error_message">
+                {{ form.limiting_surgeries_last_six_monthes.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            If yes, please specify:
+             {{ form.limiting_surgeries_last_six_monthes_description }}
+             <span class="error_message">
+                 {{ form.limiting_surgeries_last_six_monthes_description.errors.as_text }}
+             </span>
+        </p>
+        <p>
+            I have completed the above information to the best of my
+            knowledge and will assume the responsibility for my own
+            health and safety during any C-Bar activity I am involved.
+        </p>
+        <p>
+            Signature: {{ form.signature }}
+            <span class="error_message">
+                {{ form.signature.errors.as_text }}
+            </span> Date: {{ form.date }}
+            <span class="error_message">
+                {{ form.date.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            <input type="submit" value="Submit" />
+        </p>
 {% endblock %}

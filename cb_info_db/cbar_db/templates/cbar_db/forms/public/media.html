@@ -1,4 +1,47 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    Media Release form
+    <h1>Photo &amp; Media Release</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    <form action="{% url 'public-form-media' %}" method="post">
+        {% csrf_token %}
+        <p>
+            Authorization is given to C-Bar Therapeutic Riding to use and/or
+             reproduce any and all photographs and/or any other audio/visual
+             materials taken of visitors, volunteers, participants, or staff
+             for promotional material, educational activities, and exhibitions
+             or for any other use for the benefit of the program.
+        </p>
+        <p>
+            I, {{ form.name }}
+            <span class="error_message">
+                {{ form.name.errors.as_text }}
+            </span>
+
+            , born {{ form.birth_date }}
+            <span class="error_message">
+                {{ form.birth_date.errors.as_text }}
+            </span>
+
+            , {{ form.consent }}
+            <span class="error_message">
+                {{ form.consent.errors.as_text }}
+            </span> to the above.
+        </p>
+        <p>
+            Signature: {{ form.signature }}.
+            <span class="error_message">
+                {{ form.signature.errors.as_text }}
+            </span>
+
+             Date: {{ form.date }}
+            <span class="error_message">
+                {{ form.date.errors.as_text }}
+            </span>
+        </p>
+        <input type="submit" value="Submit" />
+    </form>
 {% endblock %}

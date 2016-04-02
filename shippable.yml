@@ -25,6 +25,7 @@ build:
         - virtualenv -p $SHIPPABLE_PYTHON  $HOME/bldve/
         - source $HOME/bldve/bin/activate
         - pip install -U pip
+        - pip install -U wheel
         - "pip install -r requirements.txt"
         # Run the tests
         - cd cb_info_db
