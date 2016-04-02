@@ -59,7 +59,7 @@ class TestViews(TestCase):
         response = self.client.get(reverse('public-form-seizure'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
-class LiabilityReleaseForm(TestCase):
+class TestLiabilityReleaseForm(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
         client=Client() # Make a test client (someone viewing the database)
