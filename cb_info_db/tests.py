@@ -60,7 +60,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200) # Loaded...
 
 class LiabilityReleaseForm(TestCase):
-     def setUp(self):
+    def setUp(self):
         setup_test_environment() # Initaliaze the test environment
         client=Client() # Make a test client (someone viewing the database)
         test_participant=models.Participant(
@@ -115,7 +115,7 @@ class LiabilityReleaseForm(TestCase):
         # We should say we could find the participant:
         self.assertEquals(found_participant, True)
 
-     def test_emergency_authorization_form_saves_with_valid_data(self):
+    def test_emergency_authorization_form_saves_with_valid_data(self):
         """ Verify that an Liability Release form view, populated with
          valid data, correctly saves the form to the database. """
 
