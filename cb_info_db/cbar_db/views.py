@@ -435,4 +435,10 @@ def public_form_seizure(request):
 @login_required
 def index_private_admin(request):
     """ Logged in user index view. """
-    return render(request, 'cbar_db/admin/admin.html')
+    participants=models.Participant.objects.all()
+
+    return render(
+        request,
+        'cbar_db/admin/admin.html',
+        {'participants':participants}
+    )

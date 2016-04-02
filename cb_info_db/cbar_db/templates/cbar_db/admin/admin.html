@@ -1,6 +1,10 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    <p>
-        Welcome to the Admin Panel.
-    </p>
+    <h1>Administration</h1>
+    <h2>Participants</h2>
+    <ul>
+        {% for participant in participants %}
+            <li>{{ participant.name }} ({{ participant.birth_date }})</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
