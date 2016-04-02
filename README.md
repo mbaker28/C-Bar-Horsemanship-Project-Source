@@ -58,6 +58,12 @@ You can even run one specific test function by running this:
 python manage.py test tests.ClassNameToTest.function_to_test
 ```
 
+__Note:__ You can append ` --settings cb_info_db.settings_test` to the above
+commands to run the tests using SQLite 3. This backend allows the test database
+to be created in memory instead of disk, massively speeding up the test process.
+However, __you should always run tests at least once without the postfix to make
+sure they pass.__
+
 ### Coverage Reports
 
 Coverage reports are useful for telling you what needs to be tested. To generate
