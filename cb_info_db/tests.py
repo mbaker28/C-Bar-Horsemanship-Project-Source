@@ -1591,7 +1591,8 @@ class TestLiabilityReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["name"]
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
             )
 
             print("Retrieving updated LiabilityRelease record...")
@@ -1602,3 +1603,99 @@ class TestLiabilityReleaseForm(TestCase):
             print("Successfully retrieved updated LiabilityRelease record.")
         except:
             print("ERROR: Unable to retreive updated LiabilityRelease record!")
+
+    def test_liability_release_form_not_valid_participant_name(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching date, but not a matching name. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Not A Person",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+        form=forms.LiabilityReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertEquals(found_participant, False)
+
+    def test_liability_release_form_not_valid_birth_date(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching name, but not a matching date. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1001-1-1",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+        form=forms.LiabilityReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertEquals(found_participant, False)
+
+    def test_liability_release_form_with_invalid_form_data(self):
+        """ Verify that an Emergency Authorization form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "sdfsfsfsf"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-liability"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
