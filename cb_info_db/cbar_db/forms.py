@@ -76,6 +76,8 @@ class SeizureEvaluationForm(forms.Form):
 
     during_seizure_confused_etc=forms.BooleanField()
 
+    #may need a boolean field in the models.py
+
     during_seizure_other=forms.CharField(
         max_length=(models.SeizureEval._meta
             .get_field("during_seizure_other").max_length
