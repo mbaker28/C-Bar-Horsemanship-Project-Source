@@ -69,7 +69,7 @@ def public_form_liability(request):
                 )
 
             # Create a new LiabilityRelease for the participant and save it:
-            form_data_liability=models.LiabilityRelease(
+            form_data_liability=models.AuthorizeEmergencyMedicalTreatment(
                 participant_id=participant,
                 signature=form.cleaned_data['signature'],
                 date=form.cleaned_data['date']

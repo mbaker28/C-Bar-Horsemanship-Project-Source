@@ -17,7 +17,10 @@
           <span class="error_message">
               {{ form.name.errors.as_text }}
           </span>
-          (name of participant) would like to participate in the
+          (name of participant), born {{ form.birth_date }}
+          <span class="error_message">
+              {{ form.birth_date.errors.as_text }}
+          </span>, would like to participate in the
           C-Bar Horsemanship sponsored program(s). I acknowledge the potential
           risks involved in the various activities performed in the programs
           (e.g., horseback riding and other equine-assisted activities,

@@ -65,7 +65,7 @@ class TestLiabilityReleaseForm(TestCase):
         client=Client() # Make a test client (someone viewing the database)
         test_participant=models.Participant(
             name="TEST Peter Parker",
-            birth_date="2016-03-31",
+            birth_date="1985-4-02",
             email="peter@spider-man.com",
             weight="195",
             gender="M",
@@ -83,13 +83,14 @@ class TestLiabilityReleaseForm(TestCase):
 
     def test_liability_release_form_finds_valid_participant(self):
         """ Tests whether the form finds a valid participant record if a
-         matching name is entered """
+         matching (name, date) is entered """
 
         # If we are able to find the matching record, we set this to True:
         found_participant=False
 
         form_data={
             "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
             "signature": "TEST Peter Parker",
             "date": "2016-03-31"
         }
@@ -101,7 +102,8 @@ class TestLiabilityReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["name"]
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
                 found_participant=True
@@ -115,12 +117,13 @@ class TestLiabilityReleaseForm(TestCase):
         # We should say we could find the participant:
         self.assertEquals(found_participant, True)
 
-    def test_emergency_authorization_form_saves_with_valid_data(self):
+    def test_liability_release_form_saves_with_valid_data(self):
         """ Verify that an Liability Release form view, populated with
          valid data, correctly saves the form to the database. """
 
         form_data={
             "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
             "signature": "TEST Peter Parker",
             "date": "2016-03-31"
         }
@@ -129,7 +132,7 @@ class TestLiabilityReleaseForm(TestCase):
         response=self.client.post(reverse("public-form-liability"), form_data)
 
         # Assert that the reponse code is a 302 (redirect):
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
