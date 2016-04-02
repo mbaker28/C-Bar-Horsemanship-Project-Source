@@ -1086,7 +1086,7 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude": True,
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
             "heat_exhaustion_stroke": "N",
@@ -1148,7 +1148,7 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude": True,
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
             "heat_exhaustion_stroke": "N",
@@ -1210,7 +1210,7 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude": True,
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
             "heat_exhaustion_stroke": "N",
@@ -1269,7 +1269,7 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude": True,
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
             "heat_exhaustion_stroke": "N",
@@ -1359,7 +1359,7 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude": True,
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
             "heat_exhaustion_stroke": "N",
@@ -1409,7 +1409,7 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude": True,
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
             "heat_exhaustion_stroke": "N",
@@ -1461,7 +1461,7 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "11122233332u3094890238402",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": "Y",
+            "allergies_conditions_that_exclude": True,
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
             "heat_exhaustion_stroke": "N",

@@ -58,6 +58,13 @@ YES_NO_CHOICES=(
     (NO, "No")
 )
 
+YES_BOOL=True
+NO_BOOL=False
+YES_NO_BOOL_CHOICES=(
+    (YES_BOOL, "Yes"),
+    (NO_BOOL, "No")
+)
+
 UNSATISFACTORY="U"
 POOR="P"
 FAIR="F"
@@ -944,9 +951,9 @@ class MedicalInfo(models.Model):
     primary_physician_phone=models.CharField(max_length=PHONE_LENGTH)
     last_seen_by_physician_date=models.DateField()
     last_seen_by_physician_reason=models.CharField(max_length=250)
-    allergies_conditions_that_exclude=models.CharField(
+    allergies_conditions_that_exclude=models.BooleanField(
         max_length=1,
-        choices=YES_NO_CHOICES
+        choices=YES_NO_BOOL_CHOICES
     )
     allergies_conditions_that_exclude_description=models.CharField(
         max_length=500,
