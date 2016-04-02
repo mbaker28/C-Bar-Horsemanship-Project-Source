@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 import logging
 from cbar_db import forms
@@ -430,3 +431,8 @@ def public_form_background(request):
 def public_form_seizure(request):
     """ Seizure Evaluation form view. """
     return render(request, 'cbar_db/forms/public/seizure.html')
+
+@login_required
+def index_private_admin(request):
+    """ Logged in user index view. """
+    return render(request, 'cbar_db/admin/admin.html')

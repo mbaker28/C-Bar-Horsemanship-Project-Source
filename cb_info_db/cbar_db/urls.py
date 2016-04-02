@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
 
 from . import views
 
@@ -36,4 +37,13 @@ urlpatterns = [
     # Seizure Evaluation form
     url(r'^forms/public/seizure/$', views.public_form_seizure,
         name='public-form-seizure'),
+
+############################# Private #############################
+
+    url(r'^user/login/$', auth_views.login,
+        {'template_name': 'cbar_db/admin/login.html'},
+        name='user-login'),
+
+    url(r'^admin/$', views.index_private_admin,
+        name='index-private-admin'),
 ]
