@@ -1,0 +1,27 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Media Release Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            The participant has stated that they <strong>
+            {{ media_release.get_consent_display }}</strong> to the media
+            release statement.
+        </p>
+
+        <hr />
+
+        <p>
+            <strong>Participant's Name:</strong> {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong> {{ participant.birth_date }}
+        </p>
+        <p>
+            <strong>Media Release Date:</strong> {{ media_release.date }}
+        </p>
+    {% endif %}
+{% endblock %}

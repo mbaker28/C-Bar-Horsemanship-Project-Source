@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 import logging
+import time
 from cbar_db import forms
 from cbar_db import models
 
@@ -581,5 +582,67 @@ def participant_record(request, participant_id):
             'emergency_authorizations': emergency_authorizations,
             'liability_releases': liability_releases,
             'background_checks': background_checks
+        }
+    )
+
+@login_required
+def report_media_release(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Media Release form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_media.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Media Release's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_media.html",
+            {
+                'error_text': "The requested date is not valid",
+            }
+        )
+
+    # Find the MediaRelease record:
+    try:
+        media_release=models.MediaRelease.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_media.html",
+            {
+                'error_text': "The requested Media Release does not exist.",
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_media.html",
+        {
+            "media_release": media_release,
+            "participant": participant
         }
     )

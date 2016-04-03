@@ -101,7 +101,7 @@
             <div class="floating_block">
                 <strong>Media Releases</strong><br />
                 {% for media_release in media_releases %}
-                    <a href="{% url 'participant-record' participant.participant_id %}">
+                    <a href="{% url 'report-media-release' participant.participant_id media_release.date.year media_release.date.month media_release.date.day %}">
                         {{ media_release.date }}
                     </a><br />
                 {% endfor %}
