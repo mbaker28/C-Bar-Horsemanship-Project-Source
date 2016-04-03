@@ -1,4 +1,19 @@
 {% extends "cbar_db/template.html" %}
+{% block header %}
+    <style type="text/css">
+        .floating_block_wrapper {
+            text-align: center;
+        }
+
+        .floating_block_wrapper > .floating_block {
+            padding: 1.5em;
+            display: inline-block;
+            vertical-align: top;
+            width: 12em;
+            text-align: left;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <h1>
         {% if participant %}
@@ -13,103 +28,92 @@
         </strong></p>
     {% endif %}
     {% if participant %}
-        <div id="participant_general_info" style="float: left;">
-            <h3>General Information</h3>
-            <p>
-                <strong>Birth Date</strong><br /> {{ participant.birth_date }}
-            </p>
-            <p>
+        <div id="participant_general_info" class="floating_block_wrapper">
+            <h2>General Information</h2>
+            <div class="floating_block">
+                <strong>Home Phone</strong><br /> {{ participant.phone_home }}
+            </div>
+            <div class="floating_block">
+                <strong>Cell Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
+            </div>
+            <div class="floating_block">
+                <strong>Work Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
+            </div>
+            <div class="floating_block">
                 <strong>Email</strong><br /> <a href="mailto</strong><br />{{ participant.email }}">
                     {{ participant.email }}</a>
-            </p>
-            <p>
-                <strong>School/Institution</strong><br /> {{ participant.school_institution }}
-            </p>
-            <p>
-                <strong>Height</strong><br /> {{ participant.height }}" <!-- Convert this to Ft'In"" -->
-            </p>
-            <p>
-                <strong>Weight</strong><br /> {{ participant.weight }} lb
-            </p>
-            <p>
-                <strong>Gender</strong><br /> {{ participant.get_gender_display }}
-            </p>
-            <p>
-                <strong>Minor Status</strong><br /> {{ participant.get_minor_status_display }}
-            </p>
-            <p>
+            </div>
+            <div class="floating_block">
                 <strong>Guardian Name</strong><br /> {{ participant.guardian_name }}
-            </p>
-            <p>
+            </div>
+            <div class="floating_block">
                 <strong>Address</strong><br />
                 {{ participant.address_street }}<br />
                 {{ participant.address_city }}<br />
                 {{ participant.address_zip }}<br />
-            </p>
-            <p>
-                <strong>Home Phone</strong><br /> {{ participant.phone_home }}
-            </p>
-            <p>
-                <strong>Cell Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
-            </p>
-            <p>
-                <strong>Work Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
-            </p>
+            </div>
+            <div class="floating_block">
+                <strong>Minor Status</strong><br /> {{ participant.get_minor_status_display }}
+            </div>
+            <div class="floating_block">
+                <strong>Birth Date</strong><br /> {{ participant.birth_date }}
+            </div>
+            <div class="floating_block">
+                <strong>Height</strong><br /> {{ participant.height }}" <!-- Convert this to Ft'In"" -->
+            </div>
+            <div class="floating_block">
+                <strong>Weight</strong><br /> {{ participant.weight }} lb
+            </div>
+            <div class="floating_block">
+                <strong>Gender</strong><br /> {{ participant.get_gender_display }}
+            </div>
+            <div class="floating_block">
+                <strong>School/Institution</strong><br /> {{ participant.school_institution }}
+            </div>
         </div>
 
-        <div id="participant_media_releases" style="float: left;">
-            <h3>Media Releases</h3>
-            {% for media_release in media_releases %}
-                <li>
+        <h2>Releases and Authorizations</h2>
+        <div id="releases_and_authorizations" class="floating_block_wrapper">
+            <div class="floating_block">
+                <strong>Emergency Medical Treatment Authorizations</strong><br />
+                {% for emergency_authorization in emergency_authorizations %}
+                <a href="{% url 'participant-record' participant.participant_id %}">
+                    {{ emergency_authorization.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong> Medical Releases</strong><br />
+                {% for medical_release in medical_releases %}
+                <a href="{% url 'participant-record' participant.participant_id %}">
+                    {{ medical_release.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Liability Releases</strong><br />
+                {% for liability_release in liability_releases %}
+                <a href="{% url 'participant-record' participant.participant_id %}">
+                    {{ liability_release.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Media Releases</strong><br />
+                {% for media_release in media_releases %}
                     <a href="{% url 'participant-record' participant.participant_id %}">
-                        {{ media_release.date }} Media Release
-                    </a>
-                </li>
-            {% endfor %}
-        </div>
-
-        <div id="participant_medical_releases" style="float: left;">
-            <h3>Medical Releases</h3>
-            {% for medical_release in medical_releases %}
-                <li>
+                        {{ media_release.date }}
+                    </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Background Check Authorizations</strong><br />
+                {% for background_check in background_checks %}
                     <a href="{% url 'participant-record' participant.participant_id %}">
-                        {{ medical_release.date }} Medical Release
-                    </a>
-                </li>
-            {% endfor %}
-        </div>
-
-        <div id="participant_emergency_authorizations" style="float: left;">
-            <h3>Emergency Medical Treatment Authorizations</h3>
-            {% for emergency_authorization in emergency_authorizations %}
-                <li>
-                    <a href="{% url 'participant-record' participant.participant_id %}">
-                        {{ emergency_authorization.date }} Emergency Medical Treatment Authorization
-                    </a>
-                </li>
-            {% endfor %}
-        </div>
-
-        <div id="participant_liability_releases" style="float: left;">
-            <h3>Liability Releases</h3>
-            {% for liability_release in liability_releases %}
-                <li>
-                    <a href="{% url 'participant-record' participant.participant_id %}">
-                        {{ liability_release.date }} Liability Release
-                    </a>
-                </li>
-            {% endfor %}
-        </div>
-
-        <div id="participant_background_check_authorizations" style="float: left;">
-            <h3>Background Check Authorizations</h3>
-            {% for background_check in background_checks %}
-                <li>
-                    <a href="{% url 'participant-record' participant.participant_id %}">
-                        {{ background_check.date }} Background Check Authorization
-                    </a>
-                </li>
-            {% endfor %}
+                        {{ background_check.date }}
+                    </a><br />
+                {% endfor %}
+            </div>
         </div>
     {% endif %}
 {% endblock %}
