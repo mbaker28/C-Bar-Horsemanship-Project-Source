@@ -553,6 +553,24 @@ def participant_record(request, participant_id):
             models.AuthorizeEmergencyMedicalTreatment.objects.none()
         )
 
+    # Find our Participant's LiabilityRelease instances
+    try:
+        liability_releases=(models.LiabilityRelease.objects.filter(
+                participant_id=participant
+            )
+        )
+    except:
+        liability_releases=models.LiabilityRelease.objects.none()
+
+    # Find our Participant's BackgroundCheck instances
+    try:
+        background_checks=(models.BackgroundCheck.objects.filter(
+                participant_id=participant
+            )
+        )
+    except:
+        liability_releases=models.BackgroundCheck.objects.none()
+
     return render(
         request,
         'cbar_db/admin/participant.html',
@@ -560,6 +578,8 @@ def participant_record(request, participant_id):
             'participant': participant,
             'media_releases': media_releases,
             'medical_releases': medical_releases,
-            'emergency_authorizations': emergency_authorizations
+            'emergency_authorizations': emergency_authorizations,
+            'liability_releases': liability_releases,
+            'background_checks': background_checks
         }
     )
