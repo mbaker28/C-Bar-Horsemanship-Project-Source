@@ -13,7 +13,8 @@
         </strong></p>
     {% endif %}
     {% if participant %}
-        <div id="participant_general_info">
+        <div id="participant_general_info" style="float: left;">
+            <h3>General Information</h3>
             <p>
                 <strong>Birth Date</strong><br /> {{ participant.birth_date }}
             </p>
@@ -54,6 +55,39 @@
             <p>
                 <strong>Work Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
             </p>
+        </div>
+
+        <div id="participant_media_releases" style="float: left;">
+            <h3>Media Releases</h3>
+            {% for media_release in media_releases %}
+                <li>
+                    <a href="{% url 'participant-record' participant.participant_id %}">
+                        {{ media_release.date }} Media Release
+                    </a>
+                </li>
+            {% endfor %}
+        </div>
+
+        <div id="participant_medical_releases" style="float: left;">
+            <h3>Medical Releases</h3>
+            {% for medical_release in medical_releases %}
+                <li>
+                    <a href="{% url 'participant-record' participant.participant_id %}">
+                        {{ medical_release.date }} Medical Release
+                    </a>
+                </li>
+            {% endfor %}
+        </div>
+
+        <div id="participant_emergency_authorization" style="float: left;">
+            <h3>Emergency Medical Treatment Authorizations</h3>
+            {% for emergency_authorization in emergency_authorizations %}
+                <li>
+                    <a href="{% url 'participant-record' participant.participant_id %}">
+                        {{ emergency_authorization.date }} Emergency Medical Treatment Authorization
+                    </a>
+                </li>
+            {% endfor %}
         </div>
     {% endif %}
 {% endblock %}

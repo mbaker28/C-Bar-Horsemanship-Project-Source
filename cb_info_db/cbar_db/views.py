@@ -462,8 +462,41 @@ def participant_record(request, participant_id):
             }
         )
 
+    # Find our Participant's MediaRelease instances
+    try:
+        media_releases=models.MediaRelease.objects.filter(
+            participant_id=participant
+        )
+    except:
+        media_releases=models.MediaRelease.objects.none()
+
+    # Find our Participant's MedicalInfo instances
+    try:
+        medical_releases=models.MedicalInfo.objects.filter(
+            participant_id=participant
+        )
+    except:
+        medical_releases=models.MedicalInfo.objects.none()
+
+    # Find our Participant's AuthorizeEmergencyMedicalTreatment instances
+    try:
+        emergency_authorizations=(models.AuthorizeEmergencyMedicalTreatment
+            .objects.filter(
+                participant_id=participant
+            )
+        )
+    except:
+        medical_releases=(
+            models.AuthorizeEmergencyMedicalTreatment.objects.none()
+        )
+
     return render(
         request,
         'cbar_db/admin/participant.html',
-        {'participant': participant}
+        {
+            'participant': participant,
+            'media_releases': media_releases,
+            'medical_releases': medical_releases,
+            'emergency_authorizations': emergency_authorizations
+        }
     )
