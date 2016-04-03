@@ -265,6 +265,15 @@ class MediaRelease(models.Model):
     signature=models.CharField(max_length=NAME_LENGTH)
 
 
+class LiabilityRelease(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
+    signature=models.CharField(max_length=NAME_LENGTH)
+
+
 class BackgroundCheck(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))

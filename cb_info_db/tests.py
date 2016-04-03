@@ -1503,3 +1503,243 @@ class TestMedicalReleaseForm(TestCase):
                 views.ERROR_TEXT_FORM_INVALID
             )
         )
+
+
+class TestLiabilityReleaseForm(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+        test_participant=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_zip="10018",
+            phone_home="(123) 456-7890",
+            phone_cell_work="(444) 393-0098",
+            school_institution="SHIELD"
+        )
+        test_participant.save()
+
+    def test_liability_release_form_finds_valid_participant(self):
+        """ Tests whether the form finds a valid participant record if a
+         matching (name, date) is entered """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+        form=forms.LiabilityReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertEquals(found_participant, True)
+
+    def test_liability_release_form_saves_with_valid_data(self):
+        """ Verify that an Liability Release form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-liability"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # DISABLED: We don't have a post form url redirect location or view yet
+        # Assert the the redirect url matches the post-form page:
+        # self.assertEqual(
+        #     resp['Location'],
+        #     'http://testserver/thank you place'
+        # )
+
+        # Attempt to retreive the updated MedicalInfo record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+
+            print("Retrieving updated LiabilityRelease record...")
+            liability_release_in_db=models.LiabilityRelease.objects.get(
+                participant_id=participant_in_db,
+                date=form_data["date"]
+            )
+            print("Successfully retrieved updated LiabilityRelease record.")
+        except:
+            print("ERROR: Unable to retreive updated LiabilityRelease record!")
+
+    def test_liability_release_form_not_valid_participant_name(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching date, but not a matching name. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Not A Person",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+        form=forms.LiabilityReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertEquals(found_participant, False)
+
+    def test_liability_release_form_not_valid_birth_date(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching name, but not a matching date. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1001-1-1",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+        form=forms.LiabilityReleaseForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could not find the participant:
+        self.assertEquals(found_participant, False)
+
+    def test_liability_release_form_with_invalid_form_data(self):
+        """ Verify that an Liability Release form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "sdfsfsfsf"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-liability"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_liability_release_form_with_invalid_participant_name(self):
+
+        form_data={
+            "name": "TEST Not Peter Parker",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+
+        response=self.client.post(reverse("public-form-liability"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_liability_release_form_with_invalid_participant_date(self):
+        """ Verify that an Liability Release form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1000-1-1",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-liability"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
