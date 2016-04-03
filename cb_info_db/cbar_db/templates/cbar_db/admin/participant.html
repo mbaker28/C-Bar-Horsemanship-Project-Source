@@ -1,4 +1,59 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    <h1>Participant</h1>
+    <h1>
+        {% if participant %}
+            {{ participant.name }}
+        {% else %}
+            Participant Record
+        {% endif %}
+    </h1>
+    {% if error_text %}
+        <p style="text-align: center"><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    {% if participant %}
+        <div id="participant_general_info">
+            <p>
+                <strong>Birth Date</strong><br /> {{ participant.birth_date }}
+            </p>
+            <p>
+                <strong>Email</strong><br /> <a href="mailto</strong><br />{{ participant.email }}">
+                    {{ participant.email }}</a>
+            </p>
+            <p>
+                <strong>School/Institution</strong><br /> {{ participant.school_institution }}
+            </p>
+            <p>
+                <strong>Height</strong><br /> {{ participant.height }}" <!-- Convert this to Ft'In"" -->
+            </p>
+            <p>
+                <strong>Weight</strong><br /> {{ participant.weight }} lb
+            </p>
+            <p>
+                <strong>Gender</strong><br /> {{ participant.get_gender_display }}
+            </p>
+            <p>
+                <strong>Minor Status</strong><br /> {{ participant.get_minor_status_display }}
+            </p>
+            <p>
+                <strong>Guardian Name</strong><br /> {{ participant.guardian_name }}
+            </p>
+            <p>
+                <strong>Address</strong><br />
+                {{ participant.address_street }}<br />
+                {{ participant.address_city }}<br />
+                {{ participant.address_zip }}<br />
+            </p>
+            <p>
+                <strong>Home Phone</strong><br /> {{ participant.phone_home }}
+            </p>
+            <p>
+                <strong>Cell Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
+            </p>
+            <p>
+                <strong>Work Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
+            </p>
+        </div>
+    {% endif %}
 {% endblock %}

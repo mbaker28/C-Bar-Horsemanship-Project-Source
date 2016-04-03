@@ -444,6 +444,26 @@ def index_private_admin(request):
     )
 
 @login_required
-def participant_record(request):
+def participant_record(request, participant_id):
     """ Participant record view. """
-    return render(request, 'cbar_db/admin/participant.html')
+
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/participant.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    return render(
+        request,
+        'cbar_db/admin/participant.html',
+        {'participant': participant}
+    )

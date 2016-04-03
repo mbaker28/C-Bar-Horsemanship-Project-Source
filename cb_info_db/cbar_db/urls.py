@@ -51,6 +51,7 @@ urlpatterns = [
         name='index-private-admin'),
 
     # Participant record overview page
-    url(r'^admin/participant/[0-9]+/$', views.participant_record,
+    url(r'^admin/participant/(?P<participant_id>[0-9]+)/$',
+        views.participant_record,
         name='participant-record'),
 ]
