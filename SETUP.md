@@ -120,6 +120,29 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 ```
 
+## Setting up Gulp.js
+
+1) Pull the repository
+
+2) Install gulp globally. Run:
+
+```bash
+npm install --global gulp-cli
+```
+
+3) Install gulp locally. Open a terminal in the root level of the `source`
+ repository and Run:
+
+```bash
+npm install --save-dev gulp
+```
+
+4) Install the required gulp extensions. Run:
+
+```bash
+npm install --save-dev gulp-less gulp-watch gulp-uglify gulp-cssnano del
+```
+
 ## Under Linux
 
 1) If you have not already, clone this repository. __Make sure there are no spaces or special characters in the path name.__

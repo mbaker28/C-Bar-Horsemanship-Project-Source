@@ -58,6 +58,13 @@ YES_NO_CHOICES=(
     (NO, "No")
 )
 
+YES_BOOL=True
+NO_BOOL=False
+YES_NO_BOOL_CHOICES=(
+    (YES_BOOL, "Yes"),
+    (NO_BOOL, "No")
+)
+
 UNSATISFACTORY="U"
 POOR="P"
 FAIR="F"
@@ -86,6 +93,12 @@ LIKERT_LIKE_CHOICES_NO_PC=(
     (ATTEMPTS, "Attempts")
 )
 
+CONSENT="Y"
+NO_CONSENT="N"
+CONSENT_CHOICES=(
+    (CONSENT, "consent"),
+    (NO_CONSENT, "do not consent")
+)
 
 class Participant(models.Model):
     participant_id=models.AutoField(primary_key=True) # Auto generated PK
@@ -248,7 +261,16 @@ class MediaRelease(models.Model):
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
-    consent=models.CharField(max_length=1, choices=YES_NO_CHOICES)
+    consent=models.CharField(max_length=1, choices=CONSENT_CHOICES)
+    signature=models.CharField(max_length=NAME_LENGTH)
+
+
+class LiabilityRelease(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField(primary_key=True)
     signature=models.CharField(max_length=NAME_LENGTH)
 
 
@@ -286,8 +308,9 @@ class AuthorizeEmergencyMedicalTreatment(models.Model):
     alt_emerg_procedure=models.CharField(max_length=500, null=True)
     consents_emerg_med_treatment=models.CharField(
         max_length=1,
-        choices=YES_NO_CHOICES
+        choices=CONSENT_CHOICES
     )
+    signature=models.CharField(max_length=NAME_LENGTH)
 
 
 class EvalHorsemanship(models.Model):
@@ -921,31 +944,12 @@ class EvalPhysical(models.Model):
     )
 
 
-class Medication(models.Model):
-    class Meta: # Sets up PK as (participant_id, medication_name)
-        unique_together=(("participant_id","medication_name"))
-
-    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    medication_name=models.CharField(
-        max_length=SHORT_ANSWER_LENGTH,
-        primary_key=True
-    )
-
-    duration_taken=models.CharField(max_length=25)
-    frequency=models.CharField(max_length=25)
-
-
 class MedicalInfo(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
-    medication_name=models.ForeignKey(
-        Medication,
-        null=True,
-        on_delete=models.SET_NULL
-    )
     physical_release=models.ForeignKey(
         PhysRelease,
         null=True,
@@ -956,28 +960,67 @@ class MedicalInfo(models.Model):
     primary_physician_phone=models.CharField(max_length=PHONE_LENGTH)
     last_seen_by_physician_date=models.DateField()
     last_seen_by_physician_reason=models.CharField(max_length=250)
-    allergies_conditions_that_exclude=models.BooleanField()
+    allergies_conditions_that_exclude=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
     allergies_conditions_that_exclude_description=models.CharField(
         max_length=500,
         null=True
     )
-    heat_exhaustion_stroke=models.BooleanField()
-    tetanus_shot_last_ten_years=models.BooleanField()
-    seizures_last_six_monthes=models.BooleanField()
-    doctor_concered_re_horse_activites=models.BooleanField() # If yes -> PhysRelease required
-    physical_or_mental_issues_affecting_riding=models.BooleanField()
+    heat_exhaustion_stroke=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
+    tetanus_shot_last_ten_years=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
+    seizures_last_six_monthes=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
+    doctor_concered_re_horse_activites=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
+    physical_or_mental_issues_affecting_riding=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
     physical_or_mental_issues_affecting_riding_description=models.CharField(
         max_length=500,
         null=True
     )
-    restriction_for_horse_activity_last_five_years=models.BooleanField()
+    restriction_for_horse_activity_last_five_years=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
     restriction_for_horse_activity_last_five_years_description=models.CharField(
         max_length=500,
         null=True
     )
-    present_restrictions_for_horse_activity=models.BooleanField() # If yes -> PhysRelease required
-    limiting_surgeries_last_six_monthes=models.BooleanField()
+    present_restrictions_for_horse_activity=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    ) # If yes -> PhysRelease required
+    limiting_surgeries_last_six_monthes=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
+    limiting_surgeries_last_six_monthes_description=models.CharField(
+        max_length=500,
+        null=True
+    )
     signature=models.CharField(max_length=NAME_LENGTH)
+    currently_taking_any_medication=models.BooleanField(
+        choices=YES_NO_BOOL_CHOICES
+    )
+
+
+class Medication(models.Model):
+    class Meta: # Sets up PK as (medical_info_id, medication_name)
+        unique_together=(("medical_info_id","medication_name"))
+
+    medical_info_id=models.ForeignKey(MedicalInfo, on_delete=models.CASCADE, null=True)
+    medication_name=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        primary_key=True
+    )
+
+    duration_taken=models.CharField(max_length=25)
+    frequency=models.CharField(max_length=25)
 
 
 class SeizureType(models.Model):
