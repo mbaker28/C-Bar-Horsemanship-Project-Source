@@ -1,6 +1,45 @@
 from django import forms
 from cbar_db import models
 
+class ApplicationForm(forms.Form):
+    name = forms.CharField(
+        max_length=models.Participant._meta.get_field("name").max_length
+    )
+
+    birth_date = forms.DateField()
+
+    school_institution = forms.CharField(
+        max_length=models.Participant._meta.get_field("school_institution").max_length
+    )
+
+    guardian_name = forms.CharField(
+        max_length=models.Participant._meta.get_field("guardian_name").max_length
+    )
+
+    address_street = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_street").max_length
+    )
+
+    address_city = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_city").max_length
+    )
+
+    address_zip = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_zip").max_length
+    )
+
+    phone_home = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_home").max_length
+    )
+
+    phone_cell_work = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_cell_work").max_length
+    )
+
+    email = forms.CharField(
+        max_length=models.Participant._meta.get_field("email").max_length
+    )
+
 class LiabilityReleaseForm(forms.Form):
     name = forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
