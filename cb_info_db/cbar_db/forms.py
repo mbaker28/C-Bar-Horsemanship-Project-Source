@@ -8,11 +8,13 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
+#addd a birth_date field
+
     date=forms.DateField()
 
     guardian_name=forms.CharField(
         max_length=(models.Participant._meta
-            .get_field)("guardian_name").max_length
+            .get_field("guardian_name").max_length
         )
     )
 
@@ -76,7 +78,8 @@ class SeizureEvaluationForm(forms.Form):
 
     during_seizure_confused_etc=forms.BooleanField()
 
-    #may need a boolean field in the models.py
+    #TODO: Rename during_seizure_other to during_seizure_other_description and
+    #      and add a during_seizure_other BooleanField in models.py
 
     during_seizure_other=forms.CharField(
         max_length=(models.SeizureEval._meta
@@ -96,11 +99,11 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-    signature=forms.CharField(
-        max_length=(models.SeizureEval._meta
-            .get_field("signature").max_length
-        )
-    )
+    # signature=forms.CharField(
+    #     max_length=(models.SeizureEval._meta
+    #         .get_field("signature").max_length
+    #     )
+    # )
 
     date=forms.DateField()
 
@@ -373,4 +376,3 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("signature").max_length
         )
     )
-
