@@ -8,6 +8,26 @@ class ApplicationForm(forms.Form):
 
     birth_date = forms.DateField()
 
+    height = forms.DecimalField(
+        max_digits=models.Participant._meta.get_field("height").max_digits,
+        decimal_places=models.Participant._meta.get_field("height").decimal_places
+    )
+
+    weight = forms.DecimalField(
+        max_digits=models.Participant._meta.get_field("weight").max_digits,
+        decimal_places=models.Participant._meta.get_field("weight").decimal_places
+    )
+
+    gender = forms.CharField(
+        max_length=models.Participant._meta.get_field("gender").max_length,
+        choices=models.Participant._meta.get_field("gender").choices
+    )
+
+    minor_status = forms.CharField(
+        max_length=models.Participant._meta.get_field("minor_status").max_length,
+        choices=models.Participant._meta.get_field("minor_status").choices
+    )
+
     school_institution = forms.CharField(
         max_length=models.Participant._meta.get_field("school_institution").max_length
     )
