@@ -36,9 +36,13 @@ class ApplicationForm(forms.Form):
         max_length=models.Participant._meta.get_field("phone_cell_work").max_length
     )
 
-    email = forms.CharField(
-        max_length=models.Participant._meta.get_field("email").max_length
+    email = forms.EmailField()
+
+    signature = forms.CharField(
+        max_length=models.LiabilityRelease._meta.get_field("signature").max_length
     )
+
+    date = forms.DateField()
 
 class LiabilityReleaseForm(forms.Form):
     name = forms.CharField(

@@ -57,6 +57,15 @@
             <span class="error_text">
                 {{ form.email.errors.as_text }}
             </span>
+            <br />
+            Signature: {{ form.signature }}
+            <span class="error_text">
+                {{ form.signature.errors.as_text }}
+            </span>
+            Date: {{ form.date }}
+            <span class="error_text">
+                {{ form.date.errors.as_text }}
+            </span>
         </p>
         <input type="Submit" value="Submit" />
     </form>
