@@ -1,4 +1,63 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    Application form
+    <h1>Application</h1>
+    {% if error_text %}
+        <p></strong>
+            {{ error_text }}
+        </p></strong>
+    {% endif %}
+    <form action="{% url 'public_form_application %'}" method="post">
+        {% csrf_token %}
+        <p>
+            Name: {{ form.name }}
+            <span class="error_message">
+                {{ form.name.errors.as_text }}
+            </span>
+            Date of Birth: {{ form.birth_date }}
+            <span class="error_message">
+                {{ form.birth_date.errors.as_text }}
+            </span>
+            <br />
+            School or Institution presently attending:
+            {{ form.school_institution }}
+            <span class="error_message">
+                {{ form.school_institution.errors.as_text }}
+            </span>
+            <br />
+            If minor or adult with legal guardian, parent or legal guardian
+            name(s): {{ form.guardian_name }}
+            <span class="error_message">
+                {{ form.guardian_name.errors.as_text }}
+            </span>
+            <br />
+            Street Address: {{ form.address_street }}
+            <span class="error_message">
+                {{ form.address_street.errors.as_text }}
+            </span>
+            <br />
+            City: {{ form.address_city }}
+            <span class="error_message">
+                {{ form.address_city.errors.as_text }}
+            </span>
+            Zip Code: {{ form.address_zip }}
+            <span class="error_message">
+                {{ form.address_zip.errors.as_text }}
+            </span>
+            <br />
+            Home Phone: {{ form.phone_home }}
+            <span class="error_text">
+                {{ form.phone_home.errors.as_text }}
+            </span>
+            Cell/Work Phone: {{ form.phone_cell_work }}
+            <span class="error_text">
+                {{ form.phone_cell_work }}
+            </span>
+            <br />
+            E-Mail Address: {{ form.email }}
+            <span class="error_text">
+                {{ form.email.errors.as_text }}
+            </span>
+        </p>
+        <input type="Submit" value="Submit" />
+    </form>
 {% endblock %}
