@@ -45,16 +45,16 @@
             </span>
         </p>
         <p>
-            <!-- Cell Phone: {{ ********* }}
+            <!-- Cell Phone:
             <span class="error_message">
-                {{ form..errors.as_text }}
+
             </span> -->
         </p>
         <p>
             <!-- Type of Seizure (if more than one, please list all types):
-            {{ ********* }}
+
             <span class="error_message">
-                {{ form..errors.as_text }}
+
             </span> -->
         </p>
         <p>
@@ -65,9 +65,9 @@
         </p>
         <p>
             <!-- Frequency of Seizure
-            {{ ********* }}
+
             <span class="error_message">
-                {{ form..errors.as_text }}
+
             </span> -->
         </p>
         <p>
@@ -97,9 +97,9 @@
             </span>
         </p>
         <p>
-            <!-- Current Medications: {{ ********* }}
+            <!-- Current Medications:
             <span class="error_message">
-                {{ form..errors.as_text }}
+
             </span> -->
         </p>
         <p>
@@ -189,7 +189,7 @@
             </span>
         </p>
         <p>
-            {{ form.actions_to_take }} Allow {{  }} minutes to rest and re-orient
+            {{ form.actions_to_take }} Allow  minutes to rest and re-orient
             <span class="error_message">
                 {{ form.actions_to_take.errors.as_text }}
             </span>
@@ -218,4 +218,8 @@
                 {{ form.date.errors.as_text }}
             </span>
         </p>
+        <p>
+            <input type="submit" value="Submit" />
+        </p>
+    </form>
 {% endblock %}
