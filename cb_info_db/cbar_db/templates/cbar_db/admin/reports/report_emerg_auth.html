@@ -1,0 +1,65 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Emergency Medical Authorization Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            The participant has stated that they
+             <strong>
+                 {{ emerg_auth.get_consents_emerg_med_treatment_display }}
+            </strong> to the Emergency Medical Treatment Authorization statement
+        </p>
+
+        <hr />
+
+        <p>
+            <strong>Participant's Name:</strong> {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong> {{ participant.birth_date }}
+        </p>
+        <p>
+            <strong>Primary Physician's Name:</strong>
+             {{ medical_info.primary_physician_name }}
+        </p>
+        <p>
+            <strong>Primary Physician's Phone:</strong>
+             {{ medical_info.primary_physician_phone }}
+        </p>
+        <p>
+            <strong>Preferred Medical Facility:</strong>
+             {{ emerg_auth.pref_medical_facility }}
+        </p>
+        <p>
+            <strong>Insurance Provider:</strong>
+             {{ emerg_auth.insurance_provider }}
+        </p>
+        <p>
+            <strong>Insurance Policy Number:</strong>
+             {{ emerg_auth.insurance_policy_num }}
+        </p>
+        <p>
+            <strong>Emergency Contact Name:</strong>
+             {{ emerg_auth.emerg_contact_name }}
+        </p>
+        <p>
+            <strong>Emergency Contact Phone:</strong>
+             {{ emerg_auth.emerg_contact_phone}}
+        </p>
+        <p>
+            <strong>Emergency Contact Relation:</strong>
+             {{ emerg_auth.emerg_contact_relation }}
+        </p>
+        <p>
+            <strong>Date:</strong>
+             {{ emerg_auth.date }}
+        </p>
+        <p>
+            <strong>Signature:</strong>
+            {{ emerg_auth.signature }}
+        </p>
+    {% endif %}
+{% endblock %}

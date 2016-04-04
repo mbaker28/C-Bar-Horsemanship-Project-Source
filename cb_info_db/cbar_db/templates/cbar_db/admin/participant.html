@@ -77,7 +77,7 @@
             <div class="floating_block">
                 <strong>Emergency Medical Treatment Authorizations</strong><br />
                 {% for emergency_authorization in emergency_authorizations %}
-                <a href="{% url 'participant-record' participant.participant_id %}">
+                <a href="{% url 'report-emerg-auth' participant.participant_id emergency_authorization.date.year emergency_authorization.date.month emergency_authorization.date.day %}">
                     {{ emergency_authorization.date }}
                 </a><br />
                 {% endfor %}

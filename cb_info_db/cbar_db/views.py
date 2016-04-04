@@ -230,6 +230,12 @@ def public_form_emerg_auth(request):
                 medical_info.primary_physician_phone=(
                     form.cleaned_data['primary_physician_phone']
                 )
+                medical_info.date=(
+                    form.cleaned_data["date"]
+                )
+
+                # TODO: We need to save a NEW MedicalInfo record, with info
+                #       from the current one. Not just update the current one.
 
                 # Save the updated record
                 medical_info.save()
@@ -634,7 +640,7 @@ def report_media_release(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_media.html",
             {
-                'error_text': "The requested Media Release does not exist.",
+                'error_text': "The Media Release requested is not available",
             }
         )
 
@@ -643,6 +649,90 @@ def report_media_release(request, participant_id, year, month, day):
         "cbar_db/admin/reports/report_media.html",
         {
             "media_release": media_release,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_emerg_auth(request, participant_id, year, month, day):
+    """ Displays the data entered in a previous Emergency Medical
+     Authorization form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_emerg_auth.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Emergency Medical Treatment Authorization's date from the
+    # URL attributes:
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_emerg_auth.html",
+            {
+                'error_text': "The requested date is not valid",
+            }
+        )
+
+    # Find the AuthorizeEmergencyMedicalTreatment record:
+    try:
+        emerg_auth=models.AuthorizeEmergencyMedicalTreatment.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_emerg_auth.html",
+            {
+                'error_text': ("The requested Emergency Medical Treatment"
+                    " Authorization is not available"),
+            }
+        )
+
+    # Find the MedicalInfo record:
+    try:
+        medical_info=models.MedicalInfo.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MedicalInfo record doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_emerg_auth.html",
+            {
+                'error_text': ("The requested Medical Info record"
+                    " is not available"),
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_emerg_auth.html",
+        {
+            "emerg_auth": emerg_auth,
+            "medical_info": medical_info,
             "participant": participant
         }
     )
