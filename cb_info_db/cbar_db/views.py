@@ -30,8 +30,74 @@ def index_public_forms(request):
 
 def public_form_application(request):
     """ Application form view. """
-    return render(request, 'cbar_db/forms/public/application.html')
 
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.ApplicationForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create an instance of the ApplicationForm model to hold form data
+            try:
+                # Find the participant that matches the name and birth date from
+                # the form data:
+                participant=models.Participant.objects.get(
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date']
+                )
+
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/public/application.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                    }
+                )
+
+            # Create a new ApplicationForm for the participant and save it:
+            form_data_application=models.Participant(
+                participant_id=participant,
+                school_institution=form.cleaned_data['school_institution'],
+                guardian_name=form.cleaned_data['guardian_name'],
+                address_street=form.cleaned_data['address_street'],
+                address_city=form.cleaned_data['address_city'],
+                address_zip=form.cleaned_data['address_zip'],
+                phone_home=form.cleaned_data['phone_home'],
+                phone_cell_work=form.cleaned_data['phone_cell_work'],
+                email=form.cleaned_data['email'],
+                signature=form.cleaned_data['signature'],
+                date=form.cleaned_data['date']
+            )
+            form_data_application.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/')
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/public/application.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.ApplicationForm()
+
+        return render(
+            request,
+            'cbar_db/forms/public/application.html',
+            {'form': form}
+        )
 
 def public_form_med_release(request):
     """ Medical Release form view. Handles viewing and saving the form.
