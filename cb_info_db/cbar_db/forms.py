@@ -18,13 +18,13 @@ class ApplicationForm(forms.Form):
         decimal_places=models.Participant._meta.get_field("weight").decimal_places
     )
 
-    gender = forms.CharField(
-        max_length=models.Participant._meta.get_field("gender").max_length,
+    gender = forms.ChoiceField(
+        #max_length=models.Participant._meta.get_field("gender").max_length,
         choices=models.Participant._meta.get_field("gender").choices
     )
 
-    minor_status = forms.CharField(
-        max_length=models.Participant._meta.get_field("minor_status").max_length,
+    minor_status = forms.ChoiceField(
+        #max_length=models.Participant._meta.get_field("minor_status").max_length,
         choices=models.Participant._meta.get_field("minor_status").choices
     )
 
