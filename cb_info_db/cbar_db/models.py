@@ -116,6 +116,8 @@ class Participant(models.Model):
     phone_home=models.CharField(max_length=PHONE_LENGTH)
     phone_cell_work=models.CharField(max_length=PHONE_LENGTH)
     school_institution=models.CharField(max_length=150, blank=True)
+    #date=models.DateField(primary_key=True)
+    signature=models.CharField(max_length=NAME_LENGTH)
 
 
 class Caregiver(models.Model):

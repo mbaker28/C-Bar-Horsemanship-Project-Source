@@ -33,7 +33,8 @@ class ApplicationForm(forms.Form):
     )
 
     guardian_name = forms.CharField(
-        max_length=models.Participant._meta.get_field("guardian_name").max_length
+        max_length=models.Participant._meta.get_field("guardian_name").max_length,
+        required=False
     )
 
     address_street = forms.CharField(

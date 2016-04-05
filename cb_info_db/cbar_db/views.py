@@ -60,7 +60,7 @@ def public_form_application(request):
             except ObjectDoesNotExist:
                 # Create a new ApplicationForm for the participant and save it:
                 form_data_application=models.Participant(
-                    participant_id=participant,
+                    #participant_id=participant
                     name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date'],
                     height=form.cleaned_data['height'],
@@ -76,7 +76,7 @@ def public_form_application(request):
                     phone_cell_work=form.cleaned_data['phone_cell_work'],
                     email=form.cleaned_data['email'],
                     signature=form.cleaned_data['signature'],
-                    date=form.cleaned_data['date']
+                    #date=form.cleaned_data['date']
                 )
                 form_data_application.save()
 
