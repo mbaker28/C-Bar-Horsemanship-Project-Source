@@ -81,7 +81,8 @@ class TestEmergencyAuthorizationForm(TestCase):
             address_city="Gotham",
             address_zip="424278",
             phone_home="(300) 200-100",
-            phone_cell_work="(300) 500-600",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -99,7 +100,8 @@ class TestEmergencyAuthorizationForm(TestCase):
             address_city="Time and space",
             address_zip="889922",
             phone_home="(300) 200-100",
-            phone_cell_work="(300) 500-600",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
         )
         test_participant_no_med_record.save()
 
@@ -536,7 +538,8 @@ class TestMediaReleaseForm(TestCase):
             address_city="Gotham",
             address_zip="424278",
             phone_home="(300) 200-100",
-            phone_cell_work="(300) 500-600",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -554,7 +557,8 @@ class TestMediaReleaseForm(TestCase):
             address_city="Time and space",
             address_zip="889922",
             phone_home="(300) 200-100",
-            phone_cell_work="(300) 500-600",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
         )
         test_participant_no_med_record.save()
 
@@ -861,7 +865,7 @@ class TestBackGroundCheck(TestCase):
             address_city="Gotham",
             address_zip="424278",
             phone_home="(300) 200-100",
-            phone_cell_work="(300) 500-600",
+            phone_cell="(300) 500-600",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -1071,7 +1075,7 @@ class TestMedicalReleaseForm(TestCase):
             address_city="Gotham",
             address_zip="424278",
             phone_home="(300) 200-100",
-            phone_cell_work="(300) 500-600",
+            phone_cell="(300) 500-600",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -1522,7 +1526,8 @@ class TestLiabilityReleaseForm(TestCase):
             address_city="New York",
             address_zip="10018",
             phone_home="(123) 456-7890",
-            phone_cell_work="(444) 393-0098",
+            phone_cell="(444) 393-0098",
+            phone_work="(598) 039-3008",
             school_institution="SHIELD"
         )
         test_participant.save()
