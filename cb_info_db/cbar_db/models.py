@@ -1029,19 +1029,6 @@ class SeizureType(models.Model):
 
 
 class SeizureEval(models.Model):
-    DO_NOTHING="DN"
-    DISMOUNT="DM"
-    ALLOW_TIME="AT"
-    REPORT_IMMEDIATELY="RI"
-    SEND_NOTE="SN"
-    ACTIONS_TO_TAKE_CHOICES=(
-        (DO_NOTHING, "Do nothing"),
-        (DISMOUNT, "Dismount from horse"),
-        (ALLOW_TIME, "Allow time to rest and re-orient"), # -> How many minutes?
-        (REPORT_IMMEDIATELY, "Report observations to parents/guardians"
-            " immediately"),
-        (SEND_NOTE, "Send note home to parent/guardian")
-    )
 
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))
@@ -1065,13 +1052,21 @@ class SeizureEval(models.Model):
     during_seizure_cry_etc=models.BooleanField()
     during_seizure_bladder_bowel=models.BooleanField()
     during_seizure_confused_etc=models.BooleanField()
-    during_seizure_other=models.CharField(max_length=500, null=True)
+    during_seizure_other=models.BooleanField()
+    during_seizure_other_description=models.CharField(max_length=500, null=True)
     knows_when_will_occur=models.BooleanField()
     can_communicate_when_will_occur=models.BooleanField()
-    actions_to_take=models.CharField(
-        max_length=2,
-        choices=ACTIONS_TO_TAKE_CHOICES
+    action_to_take_do_nothing=models.BooleanField()
+    action_to_take_dismount=models.BooleanField()
+    action_to_take_allow_time=models.BooleanField()
+    action_to_take_allow_time_how_long=models.DecimalField(
+        max_digits=2,
+        decimal_places=0
     )
+    action_to_take_report_immediately=models.BooleanField()
+    action_to_take_send_note=models.BooleanField()
+    seizure_frequency=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    signature=models.CharField(max_length=NAME_LENGTH)
 
 
 class AdaptationsNeeded(models.Model):

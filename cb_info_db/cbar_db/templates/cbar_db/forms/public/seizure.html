@@ -21,9 +21,9 @@
             </span>
         </p>
         <p>
-            Date: {{ form.date }}
+            Birth Date: {{ form.birth_date }}
             <span class="error_message">
-                {{ form.date.errors.as_text }}
+                {{ form.birth_date.errors.as_text }}
             </span>
         </p>
         <p>
@@ -148,11 +148,11 @@
                 {{ form.during_seizure_confused_etc.errors.as_text }}
             </span>
         </p>
-        <!-- may need a boolean field in the models.py for other-->
         <p>
-            Other (Please explain: {{ form.during_seizure_other }} )
+            {{ form.during_seizure_other }} Other (Please explain:
+             {{ form.during_seizure_other_description }} )
             <span class="error_message">
-                {{ form.during_seizure_other.errors.as_text }}
+                {{ form.during_seizure_other_description.errors.as_text }}
             </span>
         </p>
         <p>
@@ -177,42 +177,47 @@
             you suggest we take?
         </p>
         <p>
-            {{ form.actions_to_take }} Do nothing
+            {{ form.action_to_take_do_nothing }} Do nothing
             <span class="error_message">
-                {{ form.actions_to_take.errors.as_text }}
+                {{ form.action_to_take_do_nothing.errors.as_text }}
             </span>
         </p>
         <p>
-            {{ form.actions_to_take }} Dismount from horse
+            {{ form.action_to_take_dismount }} Dismount from horse
             <span class="error_message">
-                {{ form.actions_to_take.errors.as_text }}
+                {{ form.action_to_take_dismount.errors.as_text }}
             </span>
         </p>
         <p>
-            {{ form.actions_to_take }} Allow  minutes to rest and re-orient
+            {{ form.action_to_take_allow_time }} Allow
             <span class="error_message">
-                {{ form.actions_to_take.errors.as_text }}
+                {{ form.action_to_take_allow_time.errors.as_text }}
+            </span>
+            {{ form.action_to_take_allow_time_how_long }} minutes to rest and
+             re-orient
+            <span class="error_message">
+                {{ form.action_to_take_allow_time_how_long.errors.as_text }}
             </span>
         </p>
         <p>
-            {{ form.actions_to_take }} Report observations to parents/guardians
-            immediately, or send note home to parent/guardian
+            {{ form.action_to_take_report_immediately }} Report observations to
+             parents/guardians immediately.
             <span class="error_message">
-                {{ form.actions_to_take.errors.as_text }}
+                {{ form.action_to_take_report_immediately.errors.as_text }}
             </span>
         </p>
         <p>
-            Student/Parent/Guardian: {{ form.signature }}
+            {{ form.action_to_take_send_note }} Send note home to
+             parent/guardian.
+            <span class="error_message">
+                {{ form.action_to_take_send_note.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Student/Parent/Guardian signature: {{ form.signature }}
             <span class="error_message">
                 {{ form.signature.errors.as_text }}
             </span>
-            Date: {{ form.date }}
-            <span class="error_message">
-                {{ form.date.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            <!-- need a C-Bar Staff signature in models.py -->
             Date: {{ form.date }}
             <span class="error_message">
                 {{ form.date.errors.as_text }}
