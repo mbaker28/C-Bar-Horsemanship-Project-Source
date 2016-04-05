@@ -264,3 +264,44 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("signature").max_length
         )
     )
+class Donation(forms.Form)
+    donation_adopt_horse=forms.CharField(
+        max_length=(models.Donation._meta.get_field("donation_adopt_horse")
+            .maxlength)
+    )
+    donation_adopt_participant=forms.CharField(
+        max_length=(models.Donation._meta.get_field
+            ("donation_adopt_participant").max_length)
+    )
+    donation_monetary=forms.CharField(
+        max_length=(models.Donation._meta.get_field("donation_monetary")
+            .max_length)
+    )
+    donation_choices=forms.ChoiceField(
+        choices=(models.Donation._meta.get_field("donation_choices").choices)
+    )
+    donation_id=forms.CharField(
+        max_length=(models.Donation._meta.get_field("donation_id")
+            .max_length)
+    )
+    donor_id=forms.CharField(
+        max_length=(models.Donation._meta.get_field("donor_id")
+            .max_length)
+    )
+    horse_id=forms.CharField(
+        max_length=(models.Donation._meta.get_field("horse_id")
+            .max_length)
+    )
+    participant_id=forms.CharField(
+        max_length=(models.Donation._meta.get_field("participant_id")
+            .max_length)
+    )
+    amount=forms.DecimalField(
+        max_length=(models.Donation._meta.get_field("amount")
+            .max_length)
+    )
+    donation_type=forms.CharField(
+        max_length=(models.Donation._meta.get_field("donation_type")
+            .max_length)
+    )
+    
