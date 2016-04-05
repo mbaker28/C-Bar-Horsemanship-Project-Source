@@ -8,6 +8,9 @@ from cbar_db import models
 ERROR_TEXT_PARTICIPANT_NOT_FOUND=(
     "The requested participant isn't in the database."
 )
+ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS=(
+    "The participant already exists in the database."
+)
 ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
     "The requested participant does not have their medical information on file."
     " Please fill out a medical release first."
@@ -45,34 +48,37 @@ def public_form_application(request):
                     name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date']
                 )
-
-            except ObjectDoesNotExist:
-                # The participant doesn't exist.
-                # Set the error message and redisplay the form:
                 return render(
                     request,
                     "cbar_db/forms/public/application.html",
                     {
                         'form': form,
-                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                        'error_text': ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS,
                     }
                 )
 
-            # Create a new ApplicationForm for the participant and save it:
-            form_data_application=models.Participant(
-                participant_id=participant,
-                school_institution=form.cleaned_data['school_institution'],
-                guardian_name=form.cleaned_data['guardian_name'],
-                address_street=form.cleaned_data['address_street'],
-                address_city=form.cleaned_data['address_city'],
-                address_zip=form.cleaned_data['address_zip'],
-                phone_home=form.cleaned_data['phone_home'],
-                phone_cell_work=form.cleaned_data['phone_cell_work'],
-                email=form.cleaned_data['email'],
-                signature=form.cleaned_data['signature'],
-                date=form.cleaned_data['date']
-            )
-            form_data_application.save()
+            except ObjectDoesNotExist:
+                # Create a new ApplicationForm for the participant and save it:
+                form_data_application=models.Participant(
+                    participant_id=participant,
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date'],
+                    height=form.cleaned_data['height'],
+                    weight=form.cleaned_data['weight'],
+                    gender=form.cleaned_data['gender'],
+                    minor_status=form.cleaned_data['minor_status'],
+                    school_institution=form.cleaned_data['school_institution'],
+                    guardian_name=form.cleaned_data['guardian_name'],
+                    address_street=form.cleaned_data['address_street'],
+                    address_city=form.cleaned_data['address_city'],
+                    address_zip=form.cleaned_data['address_zip'],
+                    phone_home=form.cleaned_data['phone_home'],
+                    phone_cell_work=form.cleaned_data['phone_cell_work'],
+                    email=form.cleaned_data['email'],
+                    signature=form.cleaned_data['signature'],
+                    date=form.cleaned_data['date']
+                )
+                form_data_application.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
