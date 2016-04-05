@@ -776,7 +776,7 @@ def report_med_release(request, participant_id, year, month, day):
 
     # Find the MedicalInfo record:
     try:
-        emerg_auth=models.AuthorizeEmergencyMedicalTreatment.objects.get(
+        medical_info=models.MedicalInfo.objects.get(
             participant_id=participant,
             date=time.strftime("%Y-%m-%d", date)
         )
@@ -787,15 +787,27 @@ def report_med_release(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_med_release.html",
             {
-                'error_text': ("The requested Emergency Medical Treatment"
-                    " Authorization is not available"),
+                'error_text': ("The requested Medical Info record"
+                    " is not available"),
             }
         )
+
+    # Find any Medication record(s):
+    try:
+        medications=models.Medication.objects.filter(
+            medical_info_id=medical_info
+        )
+    except ObjectDoesNotExist:
+        # No Medication records exist for this participant exist.
+        # Pass an empty queryset:
+        medications=models.Medication.objects.none()
 
     return render(
         request,
         "cbar_db/admin/reports/report_med_release.html",
         {
-            "participant": participant
+            "participant": participant,
+            "medical_info": medical_info,
+            "medications": medications
         }
     )

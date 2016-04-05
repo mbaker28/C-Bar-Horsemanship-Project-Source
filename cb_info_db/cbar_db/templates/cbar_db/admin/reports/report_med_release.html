@@ -1,10 +1,86 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
+    <h1>Health Information &amp; Medical History Report</h1>
     {% if error_text %}
         <p>
             {{ error_text }}
         </p>
     {% else %}
-        
+        <p>
+            <strong>Participant's Name:</strong>
+             {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong>
+             {{ participant.birth_date }}
+        </p>
+
+        <hr />
+
+        <p>
+            <strong>Primary Physician's Name:</strong>
+             {{ medical_info.primary_physician_name }}
+        </p>
+        <p>
+            <strong>Primary Physician's Phone:</strong>
+             {{ medical_info.primary_physician_phone }}
+        </p>
+        <p>
+            <strong>Last Seen By Physician:</strong>
+             {{ medical_info.last_seen_by_physician_date }}
+             <strong>Reason:</strong>
+             {{ medical_info.last_seen_by_physician_reason }}
+        </p>
+        <p>
+            <strong>
+                Allergies or Conditions that exclude from participation:
+            </strong>
+             {{ medical_info.get_allergies_conditions_that_exclude_display }}
+            <strong> Description:</strong>
+            {{ medical_info.allergies_conditions_that_exclude_description }}
+        </p>
+        <p>
+            <strong>Experienced heat exhaustion or stroke:</strong>
+             {{ medical_info.get_heat_exhaustion_stroke_display }}
+        </p>
+        <p>
+            <strong>Had tetanus in the last ten years:</strong>
+             {{ medical_info.get_tetanus_shot_last_ten_years_display }}
+        </p>
+
+        <hr />
+
+        <p>
+            <strong>Currently taking any medications?</strong>
+             {{ medical_info.get_currently_taking_any_medication_display }}
+        </p>
+        {% for medication in medications %}
+            <p>
+                <strong>Medication Name:</strong>
+                 {{ medication.medication_name }}<br />
+                <strong>Duration Taken:</strong>
+                 {{ medication.duration_taken }}<br />
+                <strong>Frequency Taken:</strong>
+            </p>
+        {% endfor %}
+
+        <hr />
+
+        <p>
+            <strong>Doctor concerned regarding horse activities?</strong>
+             {{ medical_info.get_doctor_concered_re_horse_activites_display }}
+        </p>
+        <p>
+            <strong>Any physical or mental issues affecting riding?</strong>
+            {{ medical_info.get_physical_or_mental_issues_affecting_display }}
+        </p>
+        <p>
+            <strong>
+                Any restrictions for horse activity in the last five years?
+            </strong>
+             {{ medical_info.get_restriction_for_horse_activity_last_five_years_display }}
+             <strong>Description:</strong>
+             {{ medical_info.restriction_for_horse_activity_last_five_years_description }}
+        </p>
     {% endif %}
 {% endblock %}
