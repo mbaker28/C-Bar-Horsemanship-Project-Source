@@ -494,7 +494,7 @@ def public_form_seizure(request):
     """ Seizure Evaluation form view. """
     return render(request, 'cbar_db/forms/public/seizure.html')
 
-def Donation(request)
+def Donation(request):
 
     if request.method == 'POST':
         loggeyMcLogging.error("request is of type POST")
@@ -546,22 +546,22 @@ def Donation(request)
                 form.cleaned_data["amount"]
             )
         )
-        else:
-            loggeyMcLogging.error("The form is NOT Valid")
-            return render(
-                request,
-                'cbar_db/forms/donation.html',
-                {
-                    'form': form,
-                    'error_text': ERROR_TEXT_FORM_INVALID
-                }
-            )
     else:
-        form.forms.Donation()
+        loggeyMcLogging.error("The form is NOT Valid")
         return render(
             request,
             'cbar_db/forms/donation.html',
             {
-                'form': form
-            }
-        )
+                'form': form,
+                'error_text': ERROR_TEXT_FORM_INVALID
+        }
+    )
+    else:
+            form.forms.Donation()
+            return render(
+                request,
+                'cbar_db/forms/donation.html',
+                {
+                    'form': form
+                }
+            )
