@@ -264,7 +264,7 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("signature").max_length
         )
     )
-class Donation(forms.Form)
+class Donation(forms.Form):
     donation_adopt_horse=forms.CharField(
         max_length=(models.Donation._meta.get_field("donation_adopt_horse")
             .maxlength)
@@ -304,4 +304,3 @@ class Donation(forms.Form)
         max_length=(models.Donation._meta.get_field("donation_type")
             .max_length)
     )
-    
