@@ -8,7 +8,7 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-#addd a birth_date field
+    birth_date=forms.DateField()
 
     date=forms.DateField()
 
@@ -44,7 +44,10 @@ class SeizureEvaluationForm(forms.Form):
 
     date_of_last_seizure=forms.DateField()
 
-    #needs a "frequency of seizures" field in models.py
+    seizure_frequency=forms.CharField(max_length=(models.SeizureEval
+            ._meta.get_field("seizure_frequency").max_length
+        )
+    )
 
     duration_of_last_seizure=forms.DurationField()
 
@@ -82,12 +85,11 @@ class SeizureEvaluationForm(forms.Form):
 
     during_seizure_confused_etc=forms.BooleanField()
 
-    #TODO: Rename during_seizure_other to during_seizure_other_description and
-    #      and add a during_seizure_other BooleanField in models.py
+    during_seizure_other=forms.BooleanField()
 
-    during_seizure_other=forms.CharField(
+    during_seizure_other_description=forms.CharField(
         max_length=(models.SeizureEval._meta
-            .get_field("during_seizure_other").max_length
+            .get_field("during_seizure_other_description").max_length
         )
     )
 
@@ -97,21 +99,25 @@ class SeizureEvaluationForm(forms.Form):
 
     #not sure where "what are the signs?" field is on models.py
 
-    actions_to_take=forms.ChoiceField(
-        choices=(models.SeizureEval._meta
-            .get_field("actions_to_take").choices
+    action_to_take_do_nothing=forms.BooleanField()
+    action_to_take_dismount=forms.BooleanField()
+    action_to_take_allow_time=forms.BooleanField()
+    action_to_take_allow_time_how_long=forms.DecimalField(
+        max_digits=2,
+        decimal_places=0
+    )
+    action_to_take_report_immediately=forms.BooleanField()
+    action_to_take_send_note=forms.BooleanField()
+
+    signature=forms.CharField(
+        max_length=(models.SeizureEval._meta
+            .get_field("signature").max_length
         )
     )
 
-    # signature=forms.CharField(
-    #     max_length=(models.SeizureEval._meta
-    #         .get_field("signature").max_length
-    #     )
-    # )
-
     date=forms.DateField()
 
-    #C-Bar staff signature needed in models.py
+    # C-Bar staff signature needed in models.py? Re: Issue #26
 
     date=forms.DateField()
 
