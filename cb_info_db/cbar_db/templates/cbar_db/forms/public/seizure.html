@@ -39,16 +39,16 @@
             </span>
         </p>
         <p>
-            Work Phone: {{ form.phone_cell_work }}
+            Work Phone: {{ form.phone_work }}
             <span class="error_message">
-                {{ form.phone_cell_work.errors.as_text }}
+                {{ form.phone_work.errors.as_text }}
             </span>
         </p>
         <p>
-            <!-- Cell Phone:
+            Cell Phone: {{ form.phone_cell }}
             <span class="error_message">
-
-            </span> -->
+                {{ form.phone_cell.errors.as_text }}
+            </span>
         </p>
         <p>
             <!-- Type of Seizure (if more than one, please list all types):

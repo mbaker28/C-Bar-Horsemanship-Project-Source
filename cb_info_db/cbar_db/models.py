@@ -114,7 +114,8 @@ class Participant(models.Model):
     address_city=models.CharField(max_length=50)
     address_zip=models.CharField(max_length=6)
     phone_home=models.CharField(max_length=PHONE_LENGTH)
-    phone_cell_work=models.CharField(max_length=PHONE_LENGTH)
+    phone_cell=models.CharField(max_length=PHONE_LENGTH)
+    phone_work=models.CharField(max_length=PHONE_LENGTH)
     school_institution=models.CharField(max_length=150, blank=True)
 
 

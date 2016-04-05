@@ -24,13 +24,17 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-    phone_cell_work=forms.CharField(
+    phone_cell=forms.CharField(
         max_length=(models.Participant._meta
-            .get_field("phone_cell_work").max_length
+            .get_field("phone_cell").max_length
         )
     )
 
-    #do I need two of the phone_cell_work.....
+    phone_work=forms.CharField(
+        max_length=(models.Participant._meta
+            .get_field("phone_work").max_length
+        )
+    )
 
     name=forms.CharField(                       #???????
         max_length=(models.SeizureType._meta    #???????
