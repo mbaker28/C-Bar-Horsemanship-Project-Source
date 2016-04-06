@@ -51,11 +51,19 @@
             </span>
         </p>
         <p>
-            <!-- Type of Seizure (if more than one, please list all types):
-
+            Type of Seizure (if more than one, please list all types):
+             {{ form.seizure_name_one }}
             <span class="error_message">
-
-            </span> -->
+                {{ form.seizure_name_one.errors.as_text }}
+            </span>
+            {{ form.seizure_name_two }}
+           <span class="error_message">
+               {{ form.seizure_name_two.errors.as_text }}
+           </span>
+           {{ form.seizure_name_three }}
+          <span class="error_message">
+              {{ form.seizure_name_three.errors.as_text }}
+          </span>
         </p>
         <p>
             Date of Last Seizure: {{ form.date_of_last_seizure }}

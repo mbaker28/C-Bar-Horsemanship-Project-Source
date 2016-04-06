@@ -35,12 +35,18 @@ class SeizureEvaluationForm(forms.Form):
             .get_field("phone_work").max_length
         )
     )
-    #TODO: Is this supposed to be under name or seizure type
-    # name=forms.CharField(                       #???????
-    #     max_length=(models.SeizureType._meta    #???????
-    #         .get_field("name").max_length           #???????
-    #     )
-    # )
+
+    seizure_name_one=forms.CharField(
+        max_length=models.SeizureType._meta.get_field("name").max_length
+    )
+    seizure_name_two=forms.CharField(
+        max_length=models.SeizureType._meta.get_field("name").max_length,
+        required=False
+    )
+    seizure_name_three=forms.CharField(
+        max_length=models.SeizureType._meta.get_field("name").max_length,
+        required=False
+    )
 
     date_of_last_seizure=forms.DateField()
 
@@ -73,46 +79,48 @@ class SeizureEvaluationForm(forms.Form):
 
     #what should I do for current medications field???????
 
-    during_seizure_stare=forms.BooleanField()
+    during_seizure_stare=forms.BooleanField(required=False)
 
     during_seizure_stare_length=forms.CharField(max_length=(models.SeizureEval
             ._meta.get_field("during_seizure_stare_length").max_length
         )
     )
 
-    during_seizure_walks=forms.BooleanField()
+    during_seizure_walks=forms.BooleanField(required=False)
 
-    during_seizure_aimless=forms.BooleanField()
+    during_seizure_aimless=forms.BooleanField(required=False)
 
-    during_seizure_cry_etc=forms.BooleanField()
+    during_seizure_cry_etc=forms.BooleanField(required=False)
 
-    during_seizure_bladder_bowel=forms.BooleanField()
+    during_seizure_bladder_bowel=forms.BooleanField(required=False)
 
-    during_seizure_confused_etc=forms.BooleanField()
+    during_seizure_confused_etc=forms.BooleanField(required=False)
 
-    during_seizure_other=forms.BooleanField()
+    during_seizure_other=forms.BooleanField(required=False)
 
     during_seizure_other_description=forms.CharField(
         max_length=(models.SeizureEval._meta
             .get_field("during_seizure_other_description").max_length
-        )
+        ),
+        required=False
     )
 
-    knows_when_will_occur=forms.BooleanField()
+    knows_when_will_occur=forms.BooleanField(required=False)
 
-    can_communicate_when_will_occur=forms.BooleanField()
+    can_communicate_when_will_occur=forms.BooleanField(required=False)
 
     #not sure where "what are the signs?" field is on models.py
 
-    action_to_take_do_nothing=forms.BooleanField()
-    action_to_take_dismount=forms.BooleanField()
-    action_to_take_allow_time=forms.BooleanField()
+    action_to_take_do_nothing=forms.BooleanField(required=False)
+    action_to_take_dismount=forms.BooleanField(required=False)
+    action_to_take_allow_time=forms.BooleanField(required=False)
     action_to_take_allow_time_how_long=forms.DecimalField(
         max_digits=2,
-        decimal_places=0
+        decimal_places=0,
+        required=False
     )
-    action_to_take_report_immediately=forms.BooleanField()
-    action_to_take_send_note=forms.BooleanField()
+    action_to_take_report_immediately=forms.BooleanField(required=False)
+    action_to_take_send_note=forms.BooleanField(required=False)
 
     signature=forms.CharField(
         max_length=(models.SeizureEval._meta

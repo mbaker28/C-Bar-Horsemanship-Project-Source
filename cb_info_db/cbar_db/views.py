@@ -492,6 +492,11 @@ def public_form_background(request):
 
 def public_form_seizure(request):
     """ Seizure Evaluation form view. """
+
+    #TODO:
+    #   -Add code to save seizure names (in SeizureType)
+    #   -Add code to handle current medications
+
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -527,9 +532,8 @@ def public_form_seizure(request):
                 phone_home=form.cleaned_data["phone_home"],
                 phone_cell=form.cleaned_data["phone_cell"],
                 phone_work=form.cleaned_data["phone_work"],
-                #Refer to TODO seizure type comment below the parentheses,
                 date_of_last_seizure=form.cleaned_data["date_of_last_seizure"],
-                #we will need a frequency of seizures here,
+                seizure_frequency=form.cleaned_data["seizure_frequency"],
                 duration_of_last_seizure=form.cleaned_data["duration_of_last_seizure"],
                 typical_cause=form.cleaned_data["typical_cause"],
                 seizure_indicators=form.cleaned_data["seizure_indicators"],
@@ -542,22 +546,33 @@ def public_form_seizure(request):
                 during_seizure_cry_etc=form.cleaned_data["during_seizure_cry_etc"],
                 during_seizure_bladder_bowel=form.cleaned_data["during_seizure_bladder_bowel"],
                 during_seizure_confused_etc=form.cleaned_data["during_seizure_confused_etc"],
-                #will during_seizure_other boolean here,
-                # during_seizure_other_description=form.cleaned_data["during_seizure_other_description"],
+                during_seizure_other=form.cleaned_data["during_seizure_other"],
+                during_seizure_other_description=form.cleaned_data["during_seizure_other_description"],
                 knows_when_will_occur=form.cleaned_data["knows_when_will_occur"],
                 can_communicate_when_will_occur=form.cleaned_data["can_communicate_when_will_occur"],
-                #what are the signs will go here
                 actions_to_take=form.cleaned_data["actions_to_take"],
-                #signature=form.cleaned_data["signature"],
-                #date=form.cleaned_data["date"],
-                #C-Bar staff signature
-                #date=form.cleaned_data["date"],
+                signature=form.cleaned_data["signature"],
+                #C-Bar staff signature?
             )
+            seizure_data.save()
 
-            #TODO: Change the FK for seizure type
-            #TODO: add signature date fields to models.py for c-bar staff and
-            #participant
-            #TODO: Needs a signature field in models.py
+            seizure_type_one=models.SeizureEval(
+                seizure_eval=seizure_data,
+                name=form.cleaned_data['seizure_name_one']
+            )
+            seizure_type_one.save()
+
+            seizure_type_two=models.SeizureEval(
+                seizure_eval=seizure_data,
+                name=form.cleaned_data['seizure_name_two']
+            )
+            seizure_type_two.save()
+
+            seizure_type_three=models.SeizureEval(
+                seizure_eval=seizure_data,
+                name=form.cleaned_data['seizure_name_three']
+            )
+            seizure_type_three.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
