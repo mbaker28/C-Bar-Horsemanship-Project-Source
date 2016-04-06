@@ -1041,12 +1041,15 @@ class SeizureEval(models.Model):
         on_delete=models.SET_NULL
     )
     date_of_last_seizure=models.DateField()
-    duration_of_last_seizure=models.DurationField()
+    duration_of_last_seizure=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     typical_cause=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     seizure_indicators=models.CharField(max_length=500)
     after_effect=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     during_seizure_stare=models.BooleanField()
-    during_seizure_stare_length=models.DurationField(null=True)
+    during_seizure_stare_length=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
     during_seizure_walks=models.BooleanField()
     during_seizure_aimless=models.BooleanField()
     during_seizure_cry_etc=models.BooleanField()

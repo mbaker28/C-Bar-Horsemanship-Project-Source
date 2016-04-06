@@ -35,12 +35,12 @@ class SeizureEvaluationForm(forms.Form):
             .get_field("phone_work").max_length
         )
     )
-
-    name=forms.CharField(                       #???????
-        max_length=(models.SeizureType._meta    #???????
-            .get_field("name").max_length           #???????
-        )
-    )
+    #TODO: Is this supposed to be under name or seizure type
+    # name=forms.CharField(                       #???????
+    #     max_length=(models.SeizureType._meta    #???????
+    #         .get_field("name").max_length           #???????
+    #     )
+    # )
 
     date_of_last_seizure=forms.DateField()
 
@@ -49,8 +49,10 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-    duration_of_last_seizure=forms.DurationField()
-
+    duration_of_last_seizure=forms.CharField(max_length=(models.SeizureEval
+            ._meta.get_field("duration_of_last_seizure").max_length
+        )
+    )
     typical_cause=forms.CharField(
         max_length=(models.SeizureEval._meta
             .get_field("typical_cause").max_length
@@ -73,7 +75,10 @@ class SeizureEvaluationForm(forms.Form):
 
     during_seizure_stare=forms.BooleanField()
 
-    during_seizure_stare_length=forms.DurationField()
+    during_seizure_stare_length=forms.CharField(max_length=(models.SeizureEval
+            ._meta.get_field("during_seizure_stare_length").max_length
+        )
+    )
 
     during_seizure_walks=forms.BooleanField()
 
@@ -115,11 +120,10 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-    date=forms.DateField()
 
     # C-Bar staff signature needed in models.py? Re: Issue #26
 
-    date=forms.DateField()
+
 
 
 class LiabilityReleaseForm(forms.Form):

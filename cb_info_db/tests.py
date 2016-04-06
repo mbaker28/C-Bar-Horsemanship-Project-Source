@@ -1748,3 +1748,90 @@ class TestLiabilityReleaseForm(TestCase):
                 views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
             )
         )
+
+
+class TestSeizureEvaluationForm(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+        test_participant=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_zip="10018",
+            phone_home="(123) 456-7890",
+            phone_cell="(444) 393-0098",
+            phone_work="(598) 039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant.save()
+
+    def test_seizure_evaluation_form_finds_valid_participant(self):
+        """ Tests whether the form finds a valid participant record if a
+         matching (name, date) is entered """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "2016-03-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "(123) 123-4567",
+            "phone_cell": "(321) 765-4321",
+            "phone_work": "(987) 654-3210",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True
+        }
+        form=forms.SeizureEvaluationForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertEquals(found_participant, True)
