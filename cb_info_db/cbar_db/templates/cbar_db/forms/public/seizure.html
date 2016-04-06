@@ -72,11 +72,10 @@
             </span>
         </p>
         <p>
-            <!-- Frequency of Seizure
-
+            Frequency of Seizures: {{ form.seizure_frequency }}
             <span class="error_message">
-
-            </span> -->
+                {{ form.seizure_frequency.errors.as_text }}
+            </span>
         </p>
         <p>
             Duration of Last Seizure: {{ form.duration_of_last_seizure }}
@@ -85,7 +84,7 @@
             </span>
         </p>
         <p>
-            Typical Causes of Seizure of Activity {{ form.typical_cause }}
+            Typical Causes of Seizure Activity: {{ form.typical_cause }}
             <span class="error_message">
                 {{ form.typical_cause.errors.as_text }}
             </span>

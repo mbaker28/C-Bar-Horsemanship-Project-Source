@@ -524,14 +524,17 @@ def public_form_seizure(request):
                     }
                 )
 
+            # Update the participant's Participant record and save it:
+            participant.phone_home=form.cleaned_data["phone_home"]
+            participant.phone_cell=form.cleaned_data["phone_cell"]
+            participant.phone_work=form.cleaned_data["phone_work"]
+            participant.guardian_name=form.cleaned_data["guardian_name"]
+            participant.save()
+
             # Create a new SeizureEval for the participant and save it:
             seizure_data=models.SeizureEval(
                 participant_id=participant,
                 date=form.cleaned_data["date"],
-                guardian_name=form.cleaned_data["guardian_name"],
-                phone_home=form.cleaned_data["phone_home"],
-                phone_cell=form.cleaned_data["phone_cell"],
-                phone_work=form.cleaned_data["phone_work"],
                 date_of_last_seizure=form.cleaned_data["date_of_last_seizure"],
                 seizure_frequency=form.cleaned_data["seizure_frequency"],
                 duration_of_last_seizure=form.cleaned_data["duration_of_last_seizure"],
@@ -550,25 +553,29 @@ def public_form_seizure(request):
                 during_seizure_other_description=form.cleaned_data["during_seizure_other_description"],
                 knows_when_will_occur=form.cleaned_data["knows_when_will_occur"],
                 can_communicate_when_will_occur=form.cleaned_data["can_communicate_when_will_occur"],
-                actions_to_take=form.cleaned_data["actions_to_take"],
+                action_to_take_dismount=form.cleaned_data["action_to_take_dismount"],
+                action_to_take_send_note=form.cleaned_data["action_to_take_send_note"],
+                action_to_take_do_nothing=form.cleaned_data["action_to_take_do_nothing"],
+                action_to_take_allow_time=form.cleaned_data["action_to_take_allow_time"],
+                action_to_take_allow_time_how_long=form.cleaned_data["action_to_take_allow_time_how_long"],
+                action_to_take_report_immediately=form.cleaned_data["action_to_take_report_immediately"],
                 signature=form.cleaned_data["signature"],
-                #C-Bar staff signature?
             )
             seizure_data.save()
 
-            seizure_type_one=models.SeizureEval(
+            seizure_type_one=models.SeizureType(
                 seizure_eval=seizure_data,
                 name=form.cleaned_data['seizure_name_one']
             )
             seizure_type_one.save()
 
-            seizure_type_two=models.SeizureEval(
+            seizure_type_two=models.SeizureType(
                 seizure_eval=seizure_data,
                 name=form.cleaned_data['seizure_name_two']
             )
             seizure_type_two.save()
 
-            seizure_type_three=models.SeizureEval(
+            seizure_type_three=models.SeizureType(
                 seizure_eval=seizure_data,
                 name=form.cleaned_data['seizure_name_three']
             )
@@ -596,5 +603,7 @@ def public_form_seizure(request):
         return render(
             request,
             'cbar_db/forms/public/seizure.html',
-            {'form': form}
+            {
+                'form': form
+            }
         )
