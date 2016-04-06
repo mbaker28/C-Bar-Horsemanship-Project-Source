@@ -1036,29 +1036,29 @@ class SeizureEval(models.Model):
     typical_cause=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     seizure_indicators=models.CharField(max_length=500)
     after_effect=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    during_seizure_stare=models.BooleanField()
+    during_seizure_stare=models.NullBooleanField()
     during_seizure_stare_length=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,
         null=True
     )
-    during_seizure_walks=models.BooleanField()
-    during_seizure_aimless=models.BooleanField()
-    during_seizure_cry_etc=models.BooleanField()
-    during_seizure_bladder_bowel=models.BooleanField()
-    during_seizure_confused_etc=models.BooleanField()
-    during_seizure_other=models.BooleanField()
+    during_seizure_walks=models.NullBooleanField()
+    during_seizure_aimless=models.NullBooleanField()
+    during_seizure_cry_etc=models.NullBooleanField()
+    during_seizure_bladder_bowel=models.NullBooleanField()
+    during_seizure_confused_etc=models.NullBooleanField()
+    during_seizure_other=models.NullBooleanField()
     during_seizure_other_description=models.CharField(max_length=500, null=True)
-    knows_when_will_occur=models.BooleanField()
-    can_communicate_when_will_occur=models.BooleanField()
-    action_to_take_do_nothing=models.BooleanField()
-    action_to_take_dismount=models.BooleanField()
-    action_to_take_allow_time=models.BooleanField()
+    knows_when_will_occur=models.NullBooleanField()
+    can_communicate_when_will_occur=models.NullBooleanField()
+    action_to_take_do_nothing=models.NullBooleanField()
+    action_to_take_dismount=models.NullBooleanField()
+    action_to_take_allow_time=models.NullBooleanField()
     action_to_take_allow_time_how_long=models.DecimalField(
         max_digits=2,
         decimal_places=0
     )
-    action_to_take_report_immediately=models.BooleanField()
-    action_to_take_send_note=models.BooleanField()
+    action_to_take_report_immediately=models.NullBooleanField()
+    action_to_take_send_note=models.NullBooleanField()
     seizure_frequency=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     signature=models.CharField(max_length=NAME_LENGTH)
 
