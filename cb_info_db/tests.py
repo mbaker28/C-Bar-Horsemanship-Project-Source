@@ -1783,12 +1783,14 @@ class TestSeizureEvaluationForm(TestCase):
         form_data={
             "name": "TEST Peter Parker",
             "birth_date": "1985-4-02",
-            "signature": "TEST Peter Parker",
             "date": "2016-03-31",
             "guardian_name": "Bob Burger",
             "phone_home": "(123) 123-4567",
             "phone_cell": "(321) 765-4321",
             "phone_work": "(987) 654-3210",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "",
+            "seizure_name_three": "",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -1811,7 +1813,8 @@ class TestSeizureEvaluationForm(TestCase):
             "action_to_take_allow_time": True,
             "action_to_take_allow_time_how_long": 15,
             "action_to_take_report_immediately": True,
-            "action_to_take_send_note": True
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
         }
         form=forms.SeizureEvaluationForm(form_data)
 
