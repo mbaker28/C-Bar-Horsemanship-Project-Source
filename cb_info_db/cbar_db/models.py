@@ -1024,10 +1024,6 @@ class Medication(models.Model):
     frequency=models.CharField(max_length=25)
 
 
-class SeizureType(models.Model):
-    name=models.CharField(max_length=50, primary_key=True)
-
-
 class SeizureEval(models.Model):
 
     class Meta: # Sets up PK as (participant_id, date)
@@ -1035,11 +1031,6 @@ class SeizureEval(models.Model):
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
-    type_of_seizure=models.ForeignKey(
-        SeizureType,
-        null=True,
-        on_delete=models.SET_NULL
-    )
     date_of_last_seizure=models.DateField()
     duration_of_last_seizure=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     typical_cause=models.CharField(max_length=SHORT_ANSWER_LENGTH)
@@ -1070,6 +1061,14 @@ class SeizureEval(models.Model):
     action_to_take_send_note=models.BooleanField()
     seizure_frequency=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     signature=models.CharField(max_length=NAME_LENGTH)
+
+
+class SeizureType(models.Model):
+    class Meta: # Sets up PK as (seizure_eval, name)
+        unique_together=(("seizure_eval","name"))
+
+    seizure_eval=models.ForeignKey(SeizureEval, on_delete=models.CASCADE)
+    name=models.CharField(max_length=50, primary_key=True)
 
 
 class AdaptationsNeeded(models.Model):
