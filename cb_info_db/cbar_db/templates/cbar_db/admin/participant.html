@@ -109,7 +109,7 @@
             <div class="floating_block">
                 <strong>Background Check Authorizations</strong><br />
                 {% for background_check in background_checks %}
-                    <a href="{% url 'participant-record' participant.participant_id %}">
+                    <a href="{% url 'report-background' participant.participant_id background_check.date.year background_check.date.month background_check.date.day %}">
                         {{ background_check.date }}
                     </a><br />
                 {% endfor %}

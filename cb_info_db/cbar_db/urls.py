@@ -74,4 +74,9 @@ urlpatterns = [
     url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/liability/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_liability,
         name='report-liability'),
+
+    # Background Check Authorization form report view
+    url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/background/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+        views.report_background,
+        name='report-background'),
 ]

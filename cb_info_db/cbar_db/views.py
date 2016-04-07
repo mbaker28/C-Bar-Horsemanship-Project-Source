@@ -873,3 +873,67 @@ def report_liability(request, participant_id, year, month, day):
             "participant": participant
         }
     )
+
+@login_required
+def report_background(request, participant_id, year, month, day):
+    """ Displays the data entered in a previous Background Check Authorization
+     form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_background.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Backgorund Check Authorization's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_background.html",
+            {
+                'error_text': "The requested date is not valid",
+            }
+        )
+
+    # Find the BackgroundCheck record:
+    try:
+        background_check=models.BackgroundCheck.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The BackgroundCheck doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_background.html",
+            {
+                'error_text': "The Background Check Authorization requested is"
+                    " not available",
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_background.html",
+        {
+            "background_check": background_check,
+            "participant": participant
+        }
+    )
