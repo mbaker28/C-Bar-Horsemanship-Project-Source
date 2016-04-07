@@ -64,10 +64,6 @@ class ApplicationForm(forms.Form):
 
     email = forms.EmailField()
 
-    signature = forms.CharField(
-        max_length=models.Participant._meta.get_field("name").max_length
-    )
-
     date = forms.DateField()
 
 
