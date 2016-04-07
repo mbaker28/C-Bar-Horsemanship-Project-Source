@@ -1,6 +1,7 @@
 from django import forms
 from cbar_db import models
 
+
 class ApplicationForm(forms.Form):
     name = forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
@@ -65,6 +66,138 @@ class ApplicationForm(forms.Form):
 
     date = forms.DateField()
 
+
+class SeizureEvaluationForm(forms.Form):
+    name=forms.CharField(
+        max_length=(models.Participant._meta
+            .get_field("name").max_length
+        )
+    )
+
+    birth_date=forms.DateField()
+
+    date=forms.DateField()
+
+    guardian_name=forms.CharField(
+        max_length=(models.Participant._meta
+            .get_field("guardian_name").max_length
+        )
+    )
+
+    phone_home=forms.CharField(
+        max_length=(models.Participant._meta
+            .get_field("phone_home").max_length
+        )
+    )
+
+    phone_cell=forms.CharField(
+        max_length=(models.Participant._meta
+            .get_field("phone_cell").max_length
+        )
+    )
+
+    phone_work=forms.CharField(
+        max_length=(models.Participant._meta
+            .get_field("phone_work").max_length
+        )
+    )
+
+    seizure_name_one=forms.CharField(
+        max_length=models.SeizureType._meta.get_field("name").max_length
+    )
+    seizure_name_two=forms.CharField(
+        max_length=models.SeizureType._meta.get_field("name").max_length,
+        required=False
+    )
+    seizure_name_three=forms.CharField(
+        max_length=models.SeizureType._meta.get_field("name").max_length,
+        required=False
+    )
+
+    date_of_last_seizure=forms.DateField()
+
+    seizure_frequency=forms.CharField(max_length=(models.SeizureEval
+            ._meta.get_field("seizure_frequency").max_length
+        )
+    )
+
+    duration_of_last_seizure=forms.CharField(max_length=(models.SeizureEval
+            ._meta.get_field("duration_of_last_seizure").max_length
+        )
+    )
+    typical_cause=forms.CharField(
+        max_length=(models.SeizureEval._meta
+            .get_field("typical_cause").max_length
+        )
+    )
+
+    seizure_indicators=forms.CharField(
+        max_length=(models.SeizureEval._meta
+            .get_field("seizure_indicators").max_length
+        )
+    )
+
+    after_effect=forms.CharField(
+        max_length=(models.SeizureEval._meta
+            .get_field("after_effect").max_length
+        )
+    )
+
+    #what should I do for current medications field???????
+
+    during_seizure_stare=forms.BooleanField(required=False)
+
+    during_seizure_stare_length=forms.CharField(max_length=(models.SeizureEval
+            ._meta.get_field("during_seizure_stare_length").max_length
+        )
+    )
+
+    during_seizure_walks=forms.BooleanField(required=False)
+
+    during_seizure_aimless=forms.BooleanField(required=False)
+
+    during_seizure_cry_etc=forms.BooleanField(required=False)
+
+    during_seizure_bladder_bowel=forms.BooleanField(required=False)
+
+    during_seizure_confused_etc=forms.BooleanField(required=False)
+
+    during_seizure_other=forms.BooleanField(required=False)
+
+    during_seizure_other_description=forms.CharField(
+        max_length=(models.SeizureEval._meta
+            .get_field("during_seizure_other_description").max_length
+        ),
+        required=False
+    )
+
+    knows_when_will_occur=forms.BooleanField(required=False)
+
+    can_communicate_when_will_occur=forms.BooleanField(required=False)
+
+    #not sure where "what are the signs?" field is on models.py
+
+    action_to_take_do_nothing=forms.BooleanField(required=False)
+    action_to_take_dismount=forms.BooleanField(required=False)
+    action_to_take_allow_time=forms.BooleanField(required=False)
+    action_to_take_allow_time_how_long=forms.DecimalField(
+        max_digits=2,
+        decimal_places=0,
+        required=False
+    )
+    action_to_take_report_immediately=forms.BooleanField(required=False)
+    action_to_take_send_note=forms.BooleanField(required=False)
+
+    signature=forms.CharField(
+        max_length=(models.SeizureEval._meta
+            .get_field("signature").max_length
+        )
+    )
+
+
+    # C-Bar staff signature needed in models.py? Re: Issue #26
+
+
 class LiabilityReleaseForm(forms.Form):
     name = forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
@@ -76,6 +209,7 @@ class LiabilityReleaseForm(forms.Form):
         max_length=models.LiabilityRelease._meta.get_field("signature").max_length
     )
     date = forms.DateField()
+
 
 class MedicalReleaseForm(forms.Form):
     primary_physician_name=forms.CharField(

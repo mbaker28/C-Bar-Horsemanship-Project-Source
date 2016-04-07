@@ -564,4 +564,118 @@ def public_form_background(request):
 
 def public_form_seizure(request):
     """ Seizure Evaluation form view. """
-    return render(request, 'cbar_db/forms/public/seizure.html')
+
+    #TODO:
+    #   -Add code to save seizure names (in SeizureType)
+    #   -Add code to handle current medications
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.SeizureEvaluationForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create an instance of the SeizureEval model to hold form data
+            try:
+                # Find the participant that matches the name and birth date from
+                # the form data:
+                participant=models.Participant.objects.get(
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date']
+                )
+
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/public/seizure.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND
+                    }
+                )
+
+            # Update the participant's Participant record and save it:
+            participant.phone_home=form.cleaned_data["phone_home"]
+            participant.phone_cell=form.cleaned_data["phone_cell"]
+            participant.phone_work=form.cleaned_data["phone_work"]
+            participant.guardian_name=form.cleaned_data["guardian_name"]
+            participant.save()
+
+            # Create a new SeizureEval for the participant and save it:
+            seizure_data=models.SeizureEval(
+                participant_id=participant,
+                date=form.cleaned_data["date"],
+                date_of_last_seizure=form.cleaned_data["date_of_last_seizure"],
+                seizure_frequency=form.cleaned_data["seizure_frequency"],
+                duration_of_last_seizure=form.cleaned_data["duration_of_last_seizure"],
+                typical_cause=form.cleaned_data["typical_cause"],
+                seizure_indicators=form.cleaned_data["seizure_indicators"],
+                after_effect=form.cleaned_data["after_effect"],
+                #Current medications will go here,
+                during_seizure_stare=form.cleaned_data["during_seizure_stare"],
+                during_seizure_stare_length=form.cleaned_data["during_seizure_stare_length"],
+                during_seizure_walks=form.cleaned_data["during_seizure_walks"],
+                during_seizure_aimless=form.cleaned_data["during_seizure_aimless"],
+                during_seizure_cry_etc=form.cleaned_data["during_seizure_cry_etc"],
+                during_seizure_bladder_bowel=form.cleaned_data["during_seizure_bladder_bowel"],
+                during_seizure_confused_etc=form.cleaned_data["during_seizure_confused_etc"],
+                during_seizure_other=form.cleaned_data["during_seizure_other"],
+                during_seizure_other_description=form.cleaned_data["during_seizure_other_description"],
+                knows_when_will_occur=form.cleaned_data["knows_when_will_occur"],
+                can_communicate_when_will_occur=form.cleaned_data["can_communicate_when_will_occur"],
+                action_to_take_dismount=form.cleaned_data["action_to_take_dismount"],
+                action_to_take_send_note=form.cleaned_data["action_to_take_send_note"],
+                action_to_take_do_nothing=form.cleaned_data["action_to_take_do_nothing"],
+                action_to_take_allow_time=form.cleaned_data["action_to_take_allow_time"],
+                action_to_take_allow_time_how_long=form.cleaned_data["action_to_take_allow_time_how_long"],
+                action_to_take_report_immediately=form.cleaned_data["action_to_take_report_immediately"],
+                signature=form.cleaned_data["signature"],
+            )
+            seizure_data.save()
+
+            seizure_type_one=models.SeizureType(
+                seizure_eval=seizure_data,
+                name=form.cleaned_data['seizure_name_one']
+            )
+            seizure_type_one.save()
+
+            seizure_type_two=models.SeizureType(
+                seizure_eval=seizure_data,
+                name=form.cleaned_data['seizure_name_two']
+            )
+            seizure_type_two.save()
+
+            seizure_type_three=models.SeizureType(
+                seizure_eval=seizure_data,
+                name=form.cleaned_data['seizure_name_three']
+            )
+            seizure_type_three.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/')
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/public/seizure.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.SeizureEvaluationForm()
+
+        return render(
+            request,
+            'cbar_db/forms/public/seizure.html',
+            {
+                'form': form
+            }
+        )
