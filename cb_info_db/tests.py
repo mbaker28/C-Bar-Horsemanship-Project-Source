@@ -10,7 +10,7 @@ from cbar_db import models
 from cbar_db import forms
 from cbar_db import views
 
-class TestViews(TestCase):
+class TestPublicViews(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
         client = Client() # Make a test client (someone viewing the database)
