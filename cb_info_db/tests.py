@@ -1795,9 +1795,95 @@ class TestAdminIndex(TestCase):
 
     def test_admin_index_redirects_if_user_not_logged_in(self):
         """ Tests whether the Admin Index page redirects to the login page if
-         the user is logged in."""
+         the user is not logged in."""
 
         response = self.client.get(reverse('index-private-admin'))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+
+class TestParticipantRecord(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16",
+            email="arrow@archeryandthings.com",
+            weight=188,
+            gender="M",
+            height=69,
+            minor_status="A",
+            address_street="4568 Rich Person Rd.",
+            address_city="Example City",
+            address_zip="486878",
+            phone_home="(789) 132-0024",
+            phone_cell="(789) 456-8800",
+            phone_work="(789) 039-3008",
+            school_institution="Team Arrow"
+        )
+        test_participant.save()
+
+    def test_participant_record_loads_if_user_logged_in_no_releases(self):
+        """ Tests whether the Participant report page loads if the user is
+         logged in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse('participant-record',
+                kwargs={
+                    'participant_id':test_participant_in_db.participant_id
+                }
+            )
+        )
+
+        self.assertQuerysetEqual(
+            response.context["media_releases"],
+            models.MediaRelease.objects.none()
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_participant_record_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Participant Record page redirects to the login
+         page if the user is not logged in."""
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse('participant-record',
+                kwargs={
+                    'participant_id':test_participant_in_db.participant_id
+                }
+            )
+        )
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
