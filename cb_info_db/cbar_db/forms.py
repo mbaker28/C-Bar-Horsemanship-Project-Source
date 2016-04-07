@@ -64,7 +64,7 @@ class ApplicationForm(forms.Form):
 
     email = forms.EmailField()
 
-    date = forms.DateField()
+    #date = forms.DateField()
 
 
 class SeizureEvaluationForm(forms.Form):
