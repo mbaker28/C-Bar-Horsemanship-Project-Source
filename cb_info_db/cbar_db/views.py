@@ -60,7 +60,6 @@ def public_form_application(request):
             except ObjectDoesNotExist:
                 # Create a new ApplicationForm for the participant and save it:
                 form_data_application=models.Participant(
-                    #participant_id=participant
                     name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date'],
                     height=form.cleaned_data['height'],
@@ -73,10 +72,14 @@ def public_form_application(request):
                     address_city=form.cleaned_data['address_city'],
                     address_zip=form.cleaned_data['address_zip'],
                     phone_home=form.cleaned_data['phone_home'],
-                    phone_cell_work=form.cleaned_data['phone_cell_work'],
+                    phone_cell=form.cleaned_data['phone_cell'],
+                    phone_work=form.cleaned_data['phone_work'],
                     email=form.cleaned_data['email'],
-                    signature=form.cleaned_data['signature'],
-                    #date=form.cleaned_data['date']
+
+                    # TODO: These two fields don't exist in the Participant
+                    #       class. Do we even need them?
+                    #           signature=form.cleaned_data['signature'],
+                    #           date=form.cleaned_data['date']
                 )
                 form_data_application.save()
 

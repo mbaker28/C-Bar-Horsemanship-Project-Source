@@ -54,14 +54,18 @@ class ApplicationForm(forms.Form):
         max_length=models.Participant._meta.get_field("phone_home").max_length
     )
 
-    phone_cell_work = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_cell_work").max_length
+    phone_cell = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_cell").max_length
+    )
+
+    phone_work = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_cell").max_length
     )
 
     email = forms.EmailField()
 
     signature = forms.CharField(
-        max_length=models.LiabilityRelease._meta.get_field("signature").max_length
+        max_length=models.Participant._meta.get_field("name").max_length
     )
 
     date = forms.DateField()
