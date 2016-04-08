@@ -10,6 +10,7 @@ from cbar_db import models
 from cbar_db import forms
 from cbar_db import views
 
+
 class TestPublicViews(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
@@ -1864,11 +1865,6 @@ class TestParticipantRecord(TestCase):
             )
         )
 
-        self.assertQuerysetEqual(
-            response.context["media_releases"],
-            models.MediaRelease.objects.none()
-        )
-
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_participant_record_redirects_if_user_not_logged_in(self):
@@ -1896,3 +1892,189 @@ class TestParticipantRecord(TestCase):
 
         # Assert the url we were redirected to contains the base login page url:
         self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_participant_record_shows_error_if_invalid_participant_name(self):
+        """ Tests whether the Participant report page shows the correct error if
+         the user is logged in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse('participant-record',
+                kwargs={
+                    'participant_id': 999999999999999999999999999999999999999999
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+
+class TestMediaReleaseReport(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16",
+            email="arrow@archeryandthings.com",
+            weight=188,
+            gender="M",
+            height=69,
+            minor_status="A",
+            address_street="4568 Rich Person Rd.",
+            address_city="Example City",
+            address_zip="486878",
+            phone_home="(789) 132-0024",
+            phone_cell="(789) 456-8800",
+            phone_work="(789) 039-3008",
+            school_institution="Team Arrow"
+        )
+        test_participant.save()
+
+        media_release=models.MediaRelease(
+            participant_id=test_participant,
+            date="2014-3-5",
+            consent="Y",
+            signature="TEST Oliver Queen"
+        )
+        media_release.save()
+
+    def test_media_release_report_loads_if_user_logged_in(self):
+        """ Tests whether the Media Release report page loads if the user is
+         logged in and valid URL parameters are passed (participant_id, year,
+         month, day)."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-media-release",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_media_release_report_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Media release report page redirects to the login
+         page if the user is not logged in."""
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse("report-media-release",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_media_release_report_shows_error_if_invalid_participant_id(self):
+        """ Tests whether the Media Release report page shows the correct error
+         if the user is logged in but an invalid participant_id is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-media-release",
+                kwargs={
+                    "participant_id":999999999999999999999999999999999999999999,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_media_release_report_shows_error_if_invalid_media_release_date(self):
+        """ Tests whether the Media Release report page shows the correct error
+         if the user is logged in and but an invalid date for the Media Release
+         is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        response = self.client.get(
+            reverse("report-media-release",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "9999",
+                    "month": "12",
+                    "day": "31"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                "The Media Release requested is not available"
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
