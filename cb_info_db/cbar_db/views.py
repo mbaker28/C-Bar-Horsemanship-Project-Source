@@ -533,50 +533,33 @@ def participant_record(request, participant_id):
         )
 
     # Find our Participant's MediaRelease instances
-    try:
-        media_releases=models.MediaRelease.objects.filter(
-            participant_id=participant
-        )
-    except:
-        media_releases=models.MediaRelease.objects.none()
+    media_releases=models.MediaRelease.objects.filter(
+        participant_id=participant
+    )
 
     # Find our Participant's MedicalInfo instances
-    try:
-        medical_releases=models.MedicalInfo.objects.filter(
-            participant_id=participant
-        )
-    except:
-        medical_releases=models.MedicalInfo.objects.none()
+    medical_releases=models.MedicalInfo.objects.filter(
+        participant_id=participant
+    )
 
     # Find our Participant's AuthorizeEmergencyMedicalTreatment instances
-    try:
-        emergency_authorizations=(models.AuthorizeEmergencyMedicalTreatment
-            .objects.filter(
-                participant_id=participant
-            )
+    emergency_authorizations=(models.AuthorizeEmergencyMedicalTreatment
+        .objects.filter(
+            participant_id=participant
         )
-    except:
-        medical_releases=(
-            models.AuthorizeEmergencyMedicalTreatment.objects.none()
-        )
+    )
 
     # Find our Participant's LiabilityRelease instances
-    try:
-        liability_releases=(models.LiabilityRelease.objects.filter(
-                participant_id=participant
-            )
+    liability_releases=(models.LiabilityRelease.objects.filter(
+            participant_id=participant
         )
-    except:
-        liability_releases=models.LiabilityRelease.objects.none()
+    )
 
     # Find our Participant's BackgroundCheck instances
-    try:
-        background_checks=(models.BackgroundCheck.objects.filter(
-                participant_id=participant
-            )
+    background_checks=(models.BackgroundCheck.objects.filter(
+            participant_id=participant
         )
-    except:
-        liability_releases=models.BackgroundCheck.objects.none()
+    )
 
     return render(
         request,
