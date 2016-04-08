@@ -17,6 +17,9 @@ ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
 ERROR_TEXT_FORM_INVALID=(
     "Error validating form."
 )
+ERROR_TEXT_INVALID_DATE=(
+    "The requested date is not valid"
+)
 
 loggeyMcLogging=logging.getLogger(__name__)
 
@@ -606,7 +609,7 @@ def report_media_release(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_media.html",
             {
-                'error_text': "The requested date is not valid",
+                'error_text': ERROR_TEXT_INVALID_DATE,
             }
         )
 
@@ -670,7 +673,7 @@ def report_emerg_auth(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_emerg_auth.html",
             {
-                'error_text': "The requested date is not valid",
+                'error_text': ERROR_TEXT_INVALID_DATE,
             }
         )
 
@@ -753,7 +756,7 @@ def report_med_release(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_med_release.html",
             {
-                'error_text': "The requested date is not valid",
+                'error_text': ERROR_TEXT_INVALID_DATE,
             }
         )
 
@@ -827,7 +830,7 @@ def report_liability(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_liability.html",
             {
-                'error_text': "The requested date is not valid",
+                'error_text': ERROR_TEXT_INVALID_DATE,
             }
         )
 
@@ -890,7 +893,7 @@ def report_background(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_background.html",
             {
-                'error_text': "The requested date is not valid",
+                'error_text': ERROR_TEXT_INVALID_DATE,
             }
         )
 
