@@ -20,6 +20,9 @@ ERROR_TEXT_FORM_INVALID=(
 ERROR_TEXT_INVALID_DATE=(
     "The requested date is not valid"
 )
+ERROR_TEXT_MEDIA_RELEASE_NOT_AVAILABLE=(
+    "The Media Release requested is not available"
+)
 
 loggeyMcLogging=logging.getLogger(__name__)
 
@@ -626,7 +629,7 @@ def report_media_release(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_media.html",
             {
-                'error_text': "The Media Release requested is not available",
+                'error_text': ERROR_TEXT_MEDIA_RELEASE_NOT_AVAILABLE,
             }
         )
 

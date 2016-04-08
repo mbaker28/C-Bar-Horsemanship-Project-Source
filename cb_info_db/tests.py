@@ -1957,6 +1957,25 @@ class TestMediaReleaseReport(TestCase):
         )
         media_release.save()
 
+        test_participant_no_media_release=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_zip="10018",
+            phone_home="(123) 456-7890",
+            phone_cell="(444) 393-0098",
+            phone_work="(598) 039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant_no_media_release.save()
+
     def test_media_release_report_loads_if_user_logged_in(self):
         """ Tests whether the Media Release report page loads if the user is
          logged in and valid URL parameters are passed (participant_id, year,
@@ -2044,9 +2063,9 @@ class TestMediaReleaseReport(TestCase):
 
         self.assertEqual(response.status_code, 200) # Loaded...
 
-    def test_media_release_report_shows_error_if_invalid_media_release_date(self):
+    def test_media_release_report_shows_error_if_invalid_form_date(self):
         """ Tests whether the Media Release report page shows the correct error
-         if the user is logged in and but an invalid date for the Media Release
+         if the user is logged in but an invalid date for the Media Release
          is passed."""
 
         test_user=models.User.objects.get(
@@ -2064,17 +2083,116 @@ class TestMediaReleaseReport(TestCase):
             reverse("report-media-release",
                 kwargs={
                     "participant_id": test_participant_in_db.participant_id,
-                    "year": "9999",
-                    "month": "12",
-                    "day": "31"
+                    "year": "68904315",
+                    "month": "155",
+                    "day": "11122"
                 }
             )
         )
 
         self.assertTrue(
             response.context["error_text"] == (
-                "The Media Release requested is not available"
+                views.ERROR_TEXT_INVALID_DATE
             )
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_media_release_report_shows_error_if_no_media_release(self):
+        """ Tests whether the Media Release report page shows the correct error
+         if the user is logged in and all parameters passed are valid, but the
+         Media Release record does not exist."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+        )
+
+        response = self.client.get(
+            reverse("report-media-release",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "2016",
+                    "month": "1",
+                    "day": "1"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_MEDIA_RELEASE_NOT_AVAILABLE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+
+class TestEmergencyAuthorizationReport(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16",
+            email="arrow@archeryandthings.com",
+            weight=188,
+            gender="M",
+            height=69,
+            minor_status="A",
+            address_street="4568 Rich Person Rd.",
+            address_city="Example City",
+            address_zip="486878",
+            phone_home="(789) 132-0024",
+            phone_cell="(789) 456-8800",
+            phone_work="(789) 039-3008",
+            school_institution="Team Arrow"
+        )
+        test_participant.save()
+
+        emergency_authorization=models.MediaRelease(
+            participant_id=test_participant,
+            date="2014-3-5",
+            pref_medical_facility="Shawnee Medical Center",
+            insurance_provider="Blue Cross Blue Shield of Oklahoma",
+            insurance_policy_num="EI238901AAK7",
+            emerg_contact_name="John Jacobs",
+            emerg_contact_phone="(406) 892-7012",
+            emerg_contact_relation="Brother In-Law",
+            alt_emerg_procedure="",
+            consents_emerg_med_treatment="Y",
+            signature="TEST Oliver Queen"
+        )
+        emergency_authorization.save()
+
+        test_participant_no_emerg_auth=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_zip="10018",
+            phone_home="(123) 456-7890",
+            phone_cell="(444) 393-0098",
+            phone_work="(598) 039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant_no_emerg_auth.save()
