@@ -36,4 +36,8 @@ urlpatterns = [
     # Seizure Evaluation form
     url(r'^forms/public/seizure/$', views.public_form_seizure,
         name='public-form-seizure'),
+
+    # Donation form
+    url(r'^forms/public/donation/$', views.public_form_donation,
+        name='public-form-donation'),
 ]
