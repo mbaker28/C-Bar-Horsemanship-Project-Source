@@ -494,58 +494,24 @@ def public_form_seizure(request):
     """ Seizure Evaluation form view. """
     return render(request, 'cbar_db/forms/public/seizure.html')
 
-def Donation(request):
+def public_form_donation(request):
 
     if request.method == 'POST':
-        loggeyMcLogging.error("request is of type POST")
-        forms=forms.Donation(request.POST)
+        loggeyMcLogging.error("Request is of type POST")
+        form=forms.Donation(request.POST)
 
         if form.is_valid():
             loggeyMcLogging.error("The form is valid")
-            try:
-                participant=models.Participant.objects.get(
-                    name=form.cleaned_data['signature'],
-                    birth_date=form.cleaned_data['birth_date']
-                )
-            except ObjectDoesNotExist:
-                return render(
-                    request,
-                    "cbar_db/forms/public/Donation.html",
-                    {
-                        'form': form,
-                        'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
-                    }
-                )
 
-            Donation=models.Donation(
-                donation_adopt_horse=(form
-                    .cleaned_data["donation_adopt_horse"]
-                ),
-                donation_adopt_participant=(form.cleaned_data
-                    ["donation_adopt_participant"]
-                ),
-                donation_monetary=(
-                    form.cleaned_data["donation_monetary"]
-                ),
-                donation_choices=(forms.cleaned_data
-                    ["donation_choices"]
-                ),
-                donation_id=(
-                    form.cleaned_data["donation_id"]
-                ),
-                donor_id=(
-                    form.cleaned_data["donor_id"]
-                ),
-                horse_id=(
-                    form.cleaned_data["horse_id"]
-                ),
-                participant_id=(
-                    form.cleaned_data["participant_id"]
+            donation=models.Donation(
+                donation_type=(forms.cleaned_data
+                    ["donation_type"]
                 ),
                 amount=(
                     form.cleaned_data["amount"]
                 )
             )
+            donation.save()
         else:
             loggeyMcLogging.error("The form is NOT Valid")
             return render(
@@ -556,9 +522,9 @@ def Donation(request):
                     'error_text': ERROR_TEXT_FORM_INVALID
             }
         )
-        
+
     else:
-        form.forms.Donation()
+        form=forms.Donation()
         return render(
             request,
             'cbar_db/forms/donation.html',
