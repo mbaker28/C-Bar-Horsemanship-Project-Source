@@ -1984,7 +1984,7 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_cell": "(321) 765-4321",
             "phone_work": "(987) 654-3210",
             "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "",
+            "seizure_name_two": "Super sciency name",
             "seizure_name_three": "",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
@@ -2175,8 +2175,46 @@ class TestSeizureEvaluationForm(TestCase):
             seizure_eval_in_db.signature,
             form_data["signature"]
         )
-        #TODO: we need to figure out what to do with seizure_name_one,
-        #seizure_name_two, seizure_name_three because they are not in models.py
+
+        # Retrieve the SeizureType record matching seizure_name_one:
+        found_seizure_one=False
+        try:
+            print("Retrieving seizure name/type one...")
+            seizure_type_one_in_db=models.SeizureType.objects.get(
+                seizure_eval=seizure_eval_in_db,
+                name=form_data["seizure_name_one"]
+            )
+            found_seizure_one=True
+        except:
+            print("ERROR: Could't retrieve seizure name/type one!")
+        self.assertTrue(found_seizure_one)
+
+        # Retrieve the SeizureType record matching seizure_name_two:
+        found_seizure_two=False
+        try:
+            print("Retrieving seizure name/type two...")
+            seizure_type_two_in_db=models.SeizureType.objects.get(
+                seizure_eval=seizure_eval_in_db,
+                name=form_data["seizure_name_two"]
+            )
+            found_seizure_two=True
+        except:
+            print("ERROR: Could't retrieve seizure name/type two!")
+        self.assertTrue(found_seizure_two)
+
+        # Retrieve the SeizureType record matching seizure_name_three:
+        found_seizure_three=False
+        try:
+            print("Retrieving seizure name/type three...")
+            seizure_type_three_in_db=models.SeizureType.objects.get(
+                seizure_eval=seizure_eval_in_db,
+                name=form_data["seizure_name_three"]
+            )
+            found_seizure_three=True
+        except:
+            print("ERROR: Could't retrieve seizure name/type three!")
+        self.assertTrue(found_seizure_three)
+
 
     def test_seizure_evaluation_form_with_invalid_participant_name(self):
         """ Verify that a Seizure Evaluation form view, populated with
