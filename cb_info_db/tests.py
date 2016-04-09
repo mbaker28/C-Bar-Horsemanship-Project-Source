@@ -2078,7 +2078,9 @@ class TestSeizureEvaluationForm(TestCase):
             form_data["phone_work"]
         )
         self.assertEqual(
-            "{d.year}-{d.month}-{d.day}".format(d=seizure_eval_in_db.date_of_last_seizure),
+            "{d.year}-{d.month}-{d.day}".format(
+                d=seizure_eval_in_db.date_of_last_seizure
+            ),
             form_data["date_of_last_seizure"]
         )
         self.assertEqual(
