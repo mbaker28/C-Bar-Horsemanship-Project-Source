@@ -1,0 +1,28 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+<p>
+    <h1> Donation page </h1>
+</p>
+{% if error_text %}
+    <p><strong>
+        {{ error_text }}
+    </strong></p>
+{% endif % }
+<form action"{% url 'Donation' %}" method="post">
+    {% csrf_token %}
+    <p>
+        What would you like to donate too? {{ form.donation_type }}
+        <span class="error_message">
+            {{ form.donation_type.error.as_text }}
+        </span>
+    </p>
+    <p>
+        Adopt a Horse:
+    </p>
+    <p>
+        Adopt a Participant:
+    </p>
+    <p>
+        Flat Money Donation:
+
+{% endblock %}
