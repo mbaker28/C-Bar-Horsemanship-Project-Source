@@ -132,14 +132,16 @@ def public_form_med_release(request):
             medical_info.save()
 
             medication_one=models.Medication(
-                medical_info_id=medical_info,
+                participant_id=participant,
+                date=form.cleaned_data["date"],
                 medication_name=form.cleaned_data["medication_one_name"],
                 duration_taken=form.cleaned_data["medication_one_duration"],
                 frequency=form.cleaned_data["medication_one_frequency"]
             )
             medication_one.save()
             medication_two=models.Medication(
-                medical_info_id=medical_info,
+                participant_id=participant,
+                date=form.cleaned_data["date"],
                 medication_name=form.cleaned_data["medication_two_name"],
                 duration_taken=form.cleaned_data["medication_two_duration"],
                 frequency=form.cleaned_data["medication_two_frequency"]
@@ -494,8 +496,7 @@ def public_form_background(request):
 def public_form_seizure(request):
     """ Seizure Evaluation form view. """
 
-    #TODO:
-    #   -Add code to handle current medications
+    #TODO: Add code to handle current medications
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':

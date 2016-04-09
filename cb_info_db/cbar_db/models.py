@@ -1011,10 +1011,14 @@ class MedicalInfo(models.Model):
 
 
 class Medication(models.Model):
-    class Meta: # Sets up PK as (medical_info_id, medication_name)
-        unique_together=(("medical_info_id","medication_name"))
+    class Meta: # Sets up PK as (participant_id, date, medication_name)
+        unique_together=(("participant_id", "date", "medication_name"))
 
-    medical_info_id=models.ForeignKey(MedicalInfo, on_delete=models.CASCADE, null=True)
+    participant_id=models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+    )
+    date=models.DateField()
     medication_name=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,
         primary_key=True
