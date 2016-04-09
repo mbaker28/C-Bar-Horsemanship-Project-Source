@@ -490,11 +490,11 @@ def public_form_background(request):
             }
         )
 
+
 def public_form_seizure(request):
     """ Seizure Evaluation form view. """
 
     #TODO:
-    #   -Add code to save seizure names (in SeizureType)
     #   -Add code to handle current medications
 
     # if this is a POST request we need to process the form data
