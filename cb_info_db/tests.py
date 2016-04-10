@@ -1751,6 +1751,720 @@ class TestLiabilityReleaseForm(TestCase):
         )
 
 
+class TestSeizureEvaluationForm(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+        test_participant=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_zip="10018",
+            phone_home="(123) 456-7890",
+            phone_cell="(444) 393-0098",
+            phone_work="(598) 039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant.save()
+
+    def test_seizure_evaluation_form_finds_valid_participant(self):
+        """ Tests whether the form finds a valid participant record if a
+         matching (name, date) is entered """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "(123) 123-4567",
+            "phone_cell": "(321) 765-4321",
+            "phone_work": "(987) 654-3210",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+        form=forms.SeizureEvaluationForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertEquals(found_participant, True)
+
+    def test_seizure_evaluation_form_not_valid_participant_name(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching date, but not a matching name. """
+
+         # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Not A Person",
+            "birth_date": "1985-4-02",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "(123) 123-4567",
+            "phone_cell": "(321) 765-4321",
+            "phone_work": "(987) 654-3210",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+        form=forms.SeizureEvaluationForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+         # We should say we could not find the participant:
+        self.assertEquals(found_participant, False)
+
+    def test_seizure_evaluation_form_not_valid_birth_date(self):
+        """ Tests whether the form finds a participant record if the input has a
+         matching name, but not a matching date. """
+
+         # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1000-1-1",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "(123) 123-4567",
+            "phone_cell": "(321) 765-4321",
+            "phone_work": "(987) 654-3210",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+        form=forms.SeizureEvaluationForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+         # We should say we could not find the participant:
+        self.assertEquals(found_participant, False)
+
+    def test_seizure_evaluation_form_saves_with_valid_data(self):
+        """ Verify that a Seizure Evaluation form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "(123) 123-4567",
+            "phone_cell": "(321) 765-4321",
+            "phone_work": "(987) 654-3210",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "10+ years",
+            "medication_one_frequency": "A couple of times a week",
+            "medication_two_name": "Blah Test Medicine",
+            "medication_two_duration": "",
+            "medication_two_frequency": "",
+            "medication_three_name": "Sciency Medicine Name",
+            "medication_three_duration": "3 weeks",
+            "medication_three_frequency": "Every 2 hours, as needed",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "Super sciency name",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-seizure"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # DISABLED: We don't have a post form url redirect location or view yet
+        # Assert the the redirect url matches the post-form page:
+        # self.assertEqual(
+        #     resp['Location'],
+        #     'http://testserver/thank you place'
+        # )
+
+        # Attempt to retreive the Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retreive the new SeizureEval record:
+        try:
+            print("Retrieving new SeizureEval record...")
+            seizure_eval_in_db=(models.SeizureEval
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print(
+                "Successfully retrieved new SeizureEval record."
+            )
+        except:
+            print(
+                "ERROR: Unable to retreive new SeizureEval record!"
+            )
+
+        # Check that the attributes in the SeizureEval were set correctly:
+        print(
+            "Checking stored SeizureEval attributes..."
+        )
+        self.assertEqual(
+            # Format the retrieved date so it matches the input format:
+            "{d.year}-{d.month}-{d.day}".format(d=seizure_eval_in_db.date),
+            form_data["date"]
+        )
+        self.assertEqual(
+            participant_in_db.guardian_name,
+            form_data["guardian_name"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_home,
+            form_data["phone_home"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_cell,
+            form_data["phone_cell"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_work,
+            form_data["phone_work"]
+        )
+        self.assertEqual(
+            "{d.year}-{d.month}-{d.day}".format(
+                d=seizure_eval_in_db.date_of_last_seizure
+            ),
+            form_data["date_of_last_seizure"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.seizure_frequency,
+            form_data["seizure_frequency"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.duration_of_last_seizure,
+            form_data["duration_of_last_seizure"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.typical_cause,
+            form_data["typical_cause"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.seizure_indicators,
+            form_data["seizure_indicators"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.after_effect,
+            form_data["after_effect"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_stare,
+            form_data["during_seizure_stare"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_stare_length,
+            form_data["during_seizure_stare_length"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_walks,
+            form_data["during_seizure_walks"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_aimless,
+            form_data["during_seizure_aimless"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_cry_etc,
+            form_data["during_seizure_cry_etc"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_bladder_bowel,
+            form_data["during_seizure_bladder_bowel"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_confused_etc,
+            form_data["during_seizure_confused_etc"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_other,
+            form_data["during_seizure_other"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.during_seizure_other_description,
+            form_data["during_seizure_other_description"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.knows_when_will_occur,
+            form_data["knows_when_will_occur"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.can_communicate_when_will_occur,
+            form_data["can_communicate_when_will_occur"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.action_to_take_do_nothing,
+            form_data["action_to_take_do_nothing"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.action_to_take_dismount,
+            form_data["action_to_take_dismount"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.action_to_take_allow_time,
+            form_data["action_to_take_allow_time"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.action_to_take_allow_time_how_long,
+            form_data["action_to_take_allow_time_how_long"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.action_to_take_report_immediately,
+            form_data["action_to_take_report_immediately"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.action_to_take_send_note,
+            form_data["action_to_take_send_note"]
+        )
+        self.assertEqual(
+            seizure_eval_in_db.signature,
+            form_data["signature"]
+        )
+
+        # Retrieve the SeizureType record matching seizure_name_one:
+        found_seizure_one=False
+        try:
+            print("Retrieving seizure name/type one...")
+            seizure_type_one_in_db=models.SeizureType.objects.get(
+                seizure_eval=seizure_eval_in_db,
+                name=form_data["seizure_name_one"]
+            )
+            found_seizure_one=True
+        except:
+            print("ERROR: Could't retrieve seizure name/type one!")
+        self.assertTrue(found_seizure_one)
+
+        # Retrieve the SeizureType record matching seizure_name_two:
+        found_seizure_two=False
+        try:
+            print("Retrieving seizure name/type two...")
+            seizure_type_two_in_db=models.SeizureType.objects.get(
+                seizure_eval=seizure_eval_in_db,
+                name=form_data["seizure_name_two"]
+            )
+            found_seizure_two=True
+        except:
+            print("ERROR: Could't retrieve seizure name/type two!")
+        self.assertTrue(found_seizure_two)
+
+        # Retrieve the SeizureType record matching seizure_name_three:
+        found_seizure_three=False
+        try:
+            print("Retrieving seizure name/type three...")
+            seizure_type_three_in_db=models.SeizureType.objects.get(
+                seizure_eval=seizure_eval_in_db,
+                name=form_data["seizure_name_three"]
+            )
+            found_seizure_three=True
+        except:
+            print("ERROR: Could't retrieve seizure name/type three!")
+        self.assertTrue(found_seizure_three)
+
+        # Attempt to retreive the new Medication record for medication_one_name:
+        found_medication_one=False
+        try:
+            print("Retrieving new Medication record for medication_one_name...")
+            medication_one_in_db=(models.Medication
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"],
+                    medication_name=form_data["medication_one_name"]
+                )
+            )
+            found_medication_one=True
+        except:
+            print("ERROR: Unable to retreive Medication record for"
+                " medication_one_name!"
+            )
+        self.assertTrue(found_medication_one)
+        self.assertEqual(
+            medication_one_in_db.duration_taken,
+            form_data["medication_one_duration"]
+        )
+        self.assertEqual(
+            medication_one_in_db.frequency,
+            form_data["medication_one_frequency"]
+        )
+
+        # Attempt to retreive the new Medication record for medication_two_name:
+        found_medication_two=False
+        try:
+            print("Retrieving new Medication record for medication_two_name...")
+            medication_two_in_db=(models.Medication
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"],
+                    medication_name=form_data["medication_two_name"]
+                )
+            )
+            found_medication_two=True
+        except:
+            print("ERROR: Unable to retreive Medication record for"
+                " medication_two_name!"
+            )
+        self.assertTrue(found_medication_two)
+        self.assertEqual(
+            medication_two_in_db.duration_taken,
+            form_data["medication_two_duration"]
+        )
+        self.assertEqual(
+            medication_two_in_db.frequency,
+            form_data["medication_two_frequency"]
+        )
+
+        # Attempt to retreive the new Medication record for medication_three_name:
+        found_medication_three=False
+        try:
+            print("Retrieving new Medication record for medication_three_name...")
+            medication_three_in_db=(models.Medication
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"],
+                    medication_name=form_data["medication_three_name"]
+                )
+            )
+            found_medication_three=True
+        except:
+            print("ERROR: Unable to retreive Medication record for"
+                " medication_three_name!"
+            )
+        self.assertTrue(found_medication_three)
+        self.assertEqual(
+            medication_three_in_db.duration_taken,
+            form_data["medication_three_duration"]
+        )
+        self.assertEqual(
+            medication_three_in_db.frequency,
+            form_data["medication_three_frequency"]
+        )
+
+    def test_seizure_evaluation_form_with_invalid_participant_name(self):
+        """ Verify that a Seizure Evaluation form view, populated with
+         an invalid participant name, displays an error message. """
+
+        form_data={
+            "name": "TEST I'm Not Peter Parker",
+            "birth_date": "1985-4-02",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "(123) 123-4567",
+            "phone_cell": "(321) 765-4321",
+            "phone_work": "(987) 654-3210",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-seizure"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_seizure_evaluation_form_with_invalid_participant_date(self):
+        """ Verify that a Seizure Evaluation form view, populated with
+         an invalid participant date, displays an error message. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "2000-1-2",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "(123) 123-4567",
+            "phone_cell": "(321) 765-4321",
+            "phone_work": "(987) 654-3210",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-seizure"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        form_data={
+            "name": "TEST Peter Parker with a super long name zzzzzzzzzzzzzzzzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+                "zzzzzzzz",
+            "birth_date": "this isn't a date",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "(123) 123-4567",
+            "phone_cell": "(321) 765-4321",
+            "phone_work": "(987) 654-3210",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-seizure"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+
+        
 class TestAdminIndex(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment

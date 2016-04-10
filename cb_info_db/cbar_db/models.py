@@ -1011,10 +1011,14 @@ class MedicalInfo(models.Model):
 
 
 class Medication(models.Model):
-    class Meta: # Sets up PK as (medical_info_id, medication_name)
-        unique_together=(("medical_info_id","medication_name"))
+    class Meta: # Sets up PK as (participant_id, date, medication_name)
+        unique_together=(("participant_id", "date", "medication_name"))
 
-    medical_info_id=models.ForeignKey(MedicalInfo, on_delete=models.CASCADE, null=True)
+    participant_id=models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+    )
+    date=models.DateField()
     medication_name=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,
         primary_key=True
@@ -1024,10 +1028,6 @@ class Medication(models.Model):
     frequency=models.CharField(max_length=25)
 
 
-class SeizureType(models.Model):
-    name=models.CharField(max_length=50, primary_key=True)
-
-
 class SeizureEval(models.Model):
 
     class Meta: # Sets up PK as (participant_id, date)
@@ -1035,38 +1035,44 @@ class SeizureEval(models.Model):
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField(primary_key=True)
-    type_of_seizure=models.ForeignKey(
-        SeizureType,
-        null=True,
-        on_delete=models.SET_NULL
-    )
     date_of_last_seizure=models.DateField()
-    duration_of_last_seizure=models.DurationField()
+    duration_of_last_seizure=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     typical_cause=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     seizure_indicators=models.CharField(max_length=500)
     after_effect=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    during_seizure_stare=models.BooleanField()
-    during_seizure_stare_length=models.DurationField(null=True)
-    during_seizure_walks=models.BooleanField()
-    during_seizure_aimless=models.BooleanField()
-    during_seizure_cry_etc=models.BooleanField()
-    during_seizure_bladder_bowel=models.BooleanField()
-    during_seizure_confused_etc=models.BooleanField()
-    during_seizure_other=models.BooleanField()
+    during_seizure_stare=models.NullBooleanField()
+    during_seizure_stare_length=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    during_seizure_walks=models.NullBooleanField()
+    during_seizure_aimless=models.NullBooleanField()
+    during_seizure_cry_etc=models.NullBooleanField()
+    during_seizure_bladder_bowel=models.NullBooleanField()
+    during_seizure_confused_etc=models.NullBooleanField()
+    during_seizure_other=models.NullBooleanField()
     during_seizure_other_description=models.CharField(max_length=500, null=True)
-    knows_when_will_occur=models.BooleanField()
-    can_communicate_when_will_occur=models.BooleanField()
-    action_to_take_do_nothing=models.BooleanField()
-    action_to_take_dismount=models.BooleanField()
-    action_to_take_allow_time=models.BooleanField()
+    knows_when_will_occur=models.NullBooleanField()
+    can_communicate_when_will_occur=models.NullBooleanField()
+    action_to_take_do_nothing=models.NullBooleanField()
+    action_to_take_dismount=models.NullBooleanField()
+    action_to_take_allow_time=models.NullBooleanField()
     action_to_take_allow_time_how_long=models.DecimalField(
         max_digits=2,
         decimal_places=0
     )
-    action_to_take_report_immediately=models.BooleanField()
-    action_to_take_send_note=models.BooleanField()
+    action_to_take_report_immediately=models.NullBooleanField()
+    action_to_take_send_note=models.NullBooleanField()
     seizure_frequency=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     signature=models.CharField(max_length=NAME_LENGTH)
+
+
+class SeizureType(models.Model):
+    class Meta: # Sets up PK as (seizure_eval, name)
+        unique_together=(("seizure_eval","name"))
+
+    seizure_eval=models.ForeignKey(SeizureEval, on_delete=models.CASCADE)
+    name=models.CharField(max_length=50, primary_key=True)
 
 
 class AdaptationsNeeded(models.Model):
