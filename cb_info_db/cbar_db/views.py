@@ -496,8 +496,6 @@ def public_form_background(request):
 def public_form_seizure(request):
     """ Seizure Evaluation form view. """
 
-    #TODO: Add code to handle current medications
-
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
