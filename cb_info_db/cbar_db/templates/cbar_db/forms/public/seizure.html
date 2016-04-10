@@ -103,12 +103,53 @@
                 {{ form.after_effect.errors.as_text }}
             </span>
         </p>
+        <hr />
         <p>
-            <!-- Current Medications:
-            <span class="error_message">
-
-            </span> -->
+            <strong>Current Medications</strong><br />
         </p>
+        <p>
+            Name: {{ form.medication_one_name }}
+            <span class="error_message">
+                {{ form.medication_one_name.errors.as_text }}
+            </span><br />
+            Duration: {{ form.medication_one_duration }}
+            <span class="error_message">
+                {{ form.medication_one_duration.errors.as_text }}
+            </span>
+            Frequency: {{ form.medication_one_frequency }}
+            <span class="error_message">
+                {{ form.medication_one_frequency.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Name: {{ form.medication_two_name }}
+            <span class="error_message">
+                {{ form.medication_two_name.errors.as_text }}
+            </span><br />
+            Duration: {{ form.medication_two_duration }}
+            <span class="error_message">
+                {{ form.medication_two_duration.errors.as_text }}
+            </span>
+            Frequency: {{ form.medication_two_frequency }}
+            <span class="error_message">
+                {{ form.medication_two_frequency.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Name: {{ form.medication_three_name }}
+            <span class="error_message">
+                {{ form.medication_three_name.errors.as_text }}
+            </span><br />
+            Duration: {{ form.medication_three_duration }}
+            <span class="error_message">
+                {{ form.medication_three_duration.errors.as_text }}
+            </span>
+            Frequency: {{ form.medication_three_frequency }}
+            <span class="error_message">
+                {{ form.medication_three_frequency.errors.as_text }}
+            </span>
+        </p>
+        <hr />
         <p>
             During a seizure, I/my child:
         </p>

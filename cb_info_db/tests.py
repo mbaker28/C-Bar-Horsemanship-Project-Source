@@ -1983,6 +1983,15 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_home": "(123) 123-4567",
             "phone_cell": "(321) 765-4321",
             "phone_work": "(987) 654-3210",
+            "medication_one_name": "Excedrin",
+            "medication_one_duration": "10+ years",
+            "medication_one_frequency": "A couple of times a week",
+            "medication_two_name": "Blah Test Medicine",
+            "medication_two_duration": "",
+            "medication_two_frequency": "",
+            "medication_three_name": "Sciency Medicine Name",
+            "medication_three_duration": "3 weeks",
+            "medication_three_frequency": "Every 2 hours, as needed",
             "seizure_name_one": "Sudden and violent",
             "seizure_name_two": "Super sciency name",
             "seizure_name_three": "",
@@ -2025,7 +2034,7 @@ class TestSeizureEvaluationForm(TestCase):
         #     'http://testserver/thank you place'
         # )
 
-        # Attempt to retreive the updated SeizureEval record:
+        # Attempt to retreive the Participant record:
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
@@ -2052,7 +2061,7 @@ class TestSeizureEvaluationForm(TestCase):
                 "ERROR: Unable to retreive new SeizureEval record!"
             )
 
-        # Check that the attributes in the MediaRelease were set correctly:
+        # Check that the attributes in the SeizureEval were set correctly:
         print(
             "Checking stored SeizureEval attributes..."
         )
@@ -2215,6 +2224,83 @@ class TestSeizureEvaluationForm(TestCase):
             print("ERROR: Could't retrieve seizure name/type three!")
         self.assertTrue(found_seizure_three)
 
+        # Attempt to retreive the new Medication record for medication_one_name:
+        found_medication_one=False
+        try:
+            print("Retrieving new Medication record for medication_one_name...")
+            medication_one_in_db=(models.Medication
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"],
+                    medication_name=form_data["medication_one_name"]
+                )
+            )
+            found_medication_one=True
+        except:
+            print("ERROR: Unable to retreive Medication record for"
+                " medication_one_name!"
+            )
+        self.assertTrue(found_medication_one)
+        self.assertEqual(
+            medication_one_in_db.duration_taken,
+            form_data["medication_one_duration"]
+        )
+        self.assertEqual(
+            medication_one_in_db.frequency,
+            form_data["medication_one_frequency"]
+        )
+
+        # Attempt to retreive the new Medication record for medication_two_name:
+        found_medication_two=False
+        try:
+            print("Retrieving new Medication record for medication_two_name...")
+            medication_two_in_db=(models.Medication
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"],
+                    medication_name=form_data["medication_two_name"]
+                )
+            )
+            found_medication_two=True
+        except:
+            print("ERROR: Unable to retreive Medication record for"
+                " medication_two_name!"
+            )
+        self.assertTrue(found_medication_two)
+        self.assertEqual(
+            medication_two_in_db.duration_taken,
+            form_data["medication_two_duration"]
+        )
+        self.assertEqual(
+            medication_two_in_db.frequency,
+            form_data["medication_two_frequency"]
+        )
+
+        # Attempt to retreive the new Medication record for medication_three_name:
+        found_medication_three=False
+        try:
+            print("Retrieving new Medication record for medication_three_name...")
+            medication_three_in_db=(models.Medication
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"],
+                    medication_name=form_data["medication_three_name"]
+                )
+            )
+            found_medication_three=True
+        except:
+            print("ERROR: Unable to retreive Medication record for"
+                " medication_three_name!"
+            )
+        self.assertTrue(found_medication_three)
+        self.assertEqual(
+            medication_three_in_db.duration_taken,
+            form_data["medication_three_duration"]
+        )
+        self.assertEqual(
+            medication_three_in_db.frequency,
+            form_data["medication_three_frequency"]
+        )
 
     def test_seizure_evaluation_form_with_invalid_participant_name(self):
         """ Verify that a Seizure Evaluation form view, populated with

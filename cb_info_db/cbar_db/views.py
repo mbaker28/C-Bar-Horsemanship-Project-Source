@@ -542,7 +542,6 @@ def public_form_seizure(request):
                 typical_cause=form.cleaned_data["typical_cause"],
                 seizure_indicators=form.cleaned_data["seizure_indicators"],
                 after_effect=form.cleaned_data["after_effect"],
-                #Current medications will go here,
                 during_seizure_stare=form.cleaned_data["during_seizure_stare"],
                 during_seizure_stare_length=form.cleaned_data["during_seizure_stare_length"],
                 during_seizure_walks=form.cleaned_data["during_seizure_walks"],
@@ -581,6 +580,36 @@ def public_form_seizure(request):
                 name=form.cleaned_data['seizure_name_three']
             )
             seizure_type_three.save()
+
+            if form.cleaned_data["medication_one_name"] != "":
+                medication_one=models.Medication(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    medication_name=form.cleaned_data["medication_one_name"],
+                    duration_taken=form.cleaned_data["medication_one_duration"],
+                    frequency=form.cleaned_data["medication_one_frequency"]
+                )
+                medication_one.save()
+
+            if form.cleaned_data["medication_two_name"] != "":
+                medication_two=models.Medication(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    medication_name=form.cleaned_data["medication_two_name"],
+                    duration_taken=form.cleaned_data["medication_two_duration"],
+                    frequency=form.cleaned_data["medication_two_frequency"]
+                )
+                medication_two.save()
+
+            if form.cleaned_data["medication_three_name"] != "":
+                medication_three=models.Medication(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    medication_name=form.cleaned_data["medication_three_name"],
+                    duration_taken=form.cleaned_data["medication_three_duration"],
+                    frequency=form.cleaned_data["medication_three_frequency"]
+                )
+                medication_three.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
