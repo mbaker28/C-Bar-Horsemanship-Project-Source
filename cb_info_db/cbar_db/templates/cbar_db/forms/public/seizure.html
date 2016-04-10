@@ -1,4 +1,278 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    Seizure Evaluation form
+    <h1>SEIZURE EVALUATION FORM</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    <form action="{% url 'public-form-seizure' %}" method="post">
+        {% csrf_token %}
+        <p><b>Instructions: </b>
+            Equine-assisted activities are a risky activity; therefore, conditions
+            that increase that risk are carefully analyzed.  The safety of all the
+            participants, volunteers, and the horses is considered.  Please complete
+            thoroughly to maximize safety.
+        </p>
+        <p>
+            Participant's Name: {{ form.name }}
+            <span class="error_message">
+                {{ form.name.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Birth Date: {{ form.birth_date }}
+            <span class="error_message">
+                {{ form.birth_date.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Parent/Guardian Name: {{ form.guardian_name }}
+            <span class="error_message">
+                {{ form.guardian_name.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Home Phone: {{ form.phone_home }}
+            <span class="error_message">
+                {{ form.phone_home.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Work Phone: {{ form.phone_work }}
+            <span class="error_message">
+                {{ form.phone_work.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Cell Phone: {{ form.phone_cell }}
+            <span class="error_message">
+                {{ form.phone_cell.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Type of Seizure (if more than one, please list all types):
+             {{ form.seizure_name_one }}
+            <span class="error_message">
+                {{ form.seizure_name_one.errors.as_text }}
+            </span>
+            {{ form.seizure_name_two }}
+           <span class="error_message">
+               {{ form.seizure_name_two.errors.as_text }}
+           </span>
+           {{ form.seizure_name_three }}
+          <span class="error_message">
+              {{ form.seizure_name_three.errors.as_text }}
+          </span>
+        </p>
+        <p>
+            Date of Last Seizure: {{ form.date_of_last_seizure }}
+            <span class="error_message">
+                {{form.date_of_last_seizure.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Frequency of Seizures: {{ form.seizure_frequency }}
+            <span class="error_message">
+                {{ form.seizure_frequency.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Duration of Last Seizure: {{ form.duration_of_last_seizure }}
+            <span class="error_message">
+                {{ form.duration_of_last_seizure.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Typical Causes of Seizure Activity: {{ form.typical_cause }}
+            <span class="error_message">
+                {{ form.typical_cause.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Seizure activity indicators: (aura, behaviors or
+            manifestations of oncoming seizure activity)
+            {{ form.seizure_indicators }}
+            <span class="error_message">
+                {{ form.seizure_indicators.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            After Affect: {{ form.after_effect }}
+            <span class="error_message">
+                {{ form.after_effect.errors.as_text }}
+            </span>
+        </p>
+        <hr />
+        <p>
+            <strong>Current Medications</strong><br />
+        </p>
+        <p>
+            Name: {{ form.medication_one_name }}
+            <span class="error_message">
+                {{ form.medication_one_name.errors.as_text }}
+            </span><br />
+            Duration: {{ form.medication_one_duration }}
+            <span class="error_message">
+                {{ form.medication_one_duration.errors.as_text }}
+            </span>
+            Frequency: {{ form.medication_one_frequency }}
+            <span class="error_message">
+                {{ form.medication_one_frequency.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Name: {{ form.medication_two_name }}
+            <span class="error_message">
+                {{ form.medication_two_name.errors.as_text }}
+            </span><br />
+            Duration: {{ form.medication_two_duration }}
+            <span class="error_message">
+                {{ form.medication_two_duration.errors.as_text }}
+            </span>
+            Frequency: {{ form.medication_two_frequency }}
+            <span class="error_message">
+                {{ form.medication_two_frequency.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Name: {{ form.medication_three_name }}
+            <span class="error_message">
+                {{ form.medication_three_name.errors.as_text }}
+            </span><br />
+            Duration: {{ form.medication_three_duration }}
+            <span class="error_message">
+                {{ form.medication_three_duration.errors.as_text }}
+            </span>
+            Frequency: {{ form.medication_three_frequency }}
+            <span class="error_message">
+                {{ form.medication_three_frequency.errors.as_text }}
+            </span>
+        </p>
+        <hr />
+        <p>
+            During a seizure, I/my child:
+        </p>
+        <p>
+            {{ form.during_seizure_stare }} May stare briefly
+            <span class="error_message">
+                {{ form.during_seizure_stare.errors.as_text }}
+            </span>
+            (How long? {{ form.during_seizure_stare_length }} )
+            <span class="error_message">
+                {{ form.during_seizure_stare_length.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.during_seizure_walks }} May walk around
+            <span class="error_message">
+                {{ form.during_seizure_walks.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.during_seizure_aimless }} May perform aimless activities
+            <span class="error_message">
+                {{ form.during_seizure_aimless.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.during_seizure_cry_etc }} May suddenly cry / fall / become
+            rigid, followed by muscle jerks / saliva on lips / bluish skin color
+            <span class="error_message">
+                {{ form.during_seizure_cry_etc.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.during_seizure_bladder_bowel }} May experience loss of
+            bladder or bowel control
+            <span class="error_message">
+                {{ form.during_seizure_bladder_bowel.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.during_seizure_confused_etc }} May be confused, have a
+            headache, be fatigued, followed by full return of consciousness
+            <span class="error_message">
+                {{ form.during_seizure_confused_etc.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.during_seizure_other }} Other (Please explain:
+             {{ form.during_seizure_other_description }} )
+            <span class="error_message">
+                {{ form.during_seizure_other_description.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Are you / is your child able to know when a seizure may occur?
+            {{ form.knows_when_will_occur }}
+            <span class="error_message">
+                {{ form.knows_when_will_occur.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Can you / they communicate it? {{ form.can_communicate_when_will_occur }}
+            <span class="error_message">
+                {{ form.can_communicate_when_will_occur.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            <!-- I believe we may need a what are the signs charfield in models.py -->
+        </p>
+        <p>
+            Should you / your child experience a seizure while at C-Bar
+            Horsemanship, beyond employing general first aid, what actions do
+            you suggest we take?
+        </p>
+        <p>
+            {{ form.action_to_take_do_nothing }} Do nothing
+            <span class="error_message">
+                {{ form.action_to_take_do_nothing.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.action_to_take_dismount }} Dismount from horse
+            <span class="error_message">
+                {{ form.action_to_take_dismount.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.action_to_take_allow_time }} Allow
+            <span class="error_message">
+                {{ form.action_to_take_allow_time.errors.as_text }}
+            </span>
+            {{ form.action_to_take_allow_time_how_long }} minutes to rest and
+             re-orient
+            <span class="error_message">
+                {{ form.action_to_take_allow_time_how_long.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.action_to_take_report_immediately }} Report observations to
+             parents/guardians immediately.
+            <span class="error_message">
+                {{ form.action_to_take_report_immediately.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            {{ form.action_to_take_send_note }} Send note home to
+             parent/guardian.
+            <span class="error_message">
+                {{ form.action_to_take_send_note.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Student/Parent/Guardian signature: {{ form.signature }}
+            <span class="error_message">
+                {{ form.signature.errors.as_text }}
+            </span>
+            Date: {{ form.date }}
+            <span class="error_message">
+                {{ form.date.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            <input type="submit" value="Submit" />
+        </p>
+    </form>
 {% endblock %}
