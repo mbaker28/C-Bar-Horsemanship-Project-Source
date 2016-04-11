@@ -913,14 +913,13 @@ def report_med_release(request, participant_id, year, month, day):
             date=time.strftime("%Y-%m-%d", date)
         )
     except ObjectDoesNotExist:
-        # The MediaRelease doesn't exist.
+        # The MedicalInfo doesn't exist.
         # Set the error message and redisplay the form:
         return render(
             request,
             "cbar_db/admin/reports/report_med_release.html",
             {
-                'error_text': ("The requested Medical Info record"
-                    " is not available"),
+                'error_text': ERROR_TEXT_MEDICAL_INFO_NOT_FOUND,
             }
         )
 
