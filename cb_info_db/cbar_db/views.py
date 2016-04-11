@@ -925,14 +925,10 @@ def report_med_release(request, participant_id, year, month, day):
         )
 
     # Find any Medication record(s):
-    try:
-        medications=models.Medication.objects.filter(
-            medical_info_id=medical_info
-        )
-    except ObjectDoesNotExist:
-        # No Medication records exist for this participant exist.
-        # Pass an empty queryset:
-        medications=models.Medication.objects.none()
+    medications=models.Medication.objects.filter(
+        participant_id=participant,
+        date=time.strftime("%Y-%m-%d", date)
+    )
 
     return render(
         request,
