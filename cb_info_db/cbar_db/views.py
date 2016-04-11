@@ -23,6 +23,9 @@ ERROR_TEXT_INVALID_DATE=(
 ERROR_TEXT_MEDIA_RELEASE_NOT_AVAILABLE=(
     "The Media Release requested is not available"
 )
+ERROR_TEXT_EMERG_AUTH_NOT_AVAILABLE=(
+    "The requested Emergency Medical Treatment Authorization is not available."
+)
 
 loggeyMcLogging=logging.getLogger(__name__)
 
@@ -829,14 +832,13 @@ def report_emerg_auth(request, participant_id, year, month, day):
             date=time.strftime("%Y-%m-%d", date)
         )
     except ObjectDoesNotExist:
-        # The MediaRelease doesn't exist.
+        # The AuthorizeEmergencyMedicalTreatment record doesn't exist.
         # Set the error message and redisplay the form:
         return render(
             request,
             "cbar_db/admin/reports/report_emerg_auth.html",
             {
-                'error_text': ("The requested Emergency Medical Treatment"
-                    " Authorization is not available"),
+                'error_text': ERROR_TEXT_EMERG_AUTH_NOT_AVAILABLE,
             }
         )
 
@@ -853,8 +855,7 @@ def report_emerg_auth(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_emerg_auth.html",
             {
-                'error_text': ("The requested Medical Info record"
-                    " is not available"),
+                'error_text': ERROR_TEXT_MEDICAL_INFO_NOT_FOUND,
             }
         )
 
@@ -1068,4 +1069,3 @@ def report_background(request, participant_id, year, month, day):
             "participant": participant
         }
     )
-

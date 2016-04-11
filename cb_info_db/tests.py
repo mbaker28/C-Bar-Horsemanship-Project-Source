@@ -2464,7 +2464,7 @@ class TestSeizureEvaluationForm(TestCase):
         )
 
 
-        
+
 class TestAdminIndex(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
@@ -2620,7 +2620,7 @@ class TestParticipantRecord(TestCase):
         response = self.client.get(
             reverse('participant-record',
                 kwargs={
-                    'participant_id': 999999999999999999999999999999999999999999
+                    'participant_id': 9999999999
                 }
             )
         )
@@ -2761,7 +2761,7 @@ class TestMediaReleaseReport(TestCase):
         response = self.client.get(
             reverse("report-media-release",
                 kwargs={
-                    "participant_id":999999999999999999999999999999999999999999,
+                    "participant_id":9999999999,
                     "year": "2014",
                     "month": "3",
                     "day": "5"
@@ -2877,7 +2877,7 @@ class TestEmergencyAuthorizationReport(TestCase):
         )
         test_participant.save()
 
-        emergency_authorization=models.MediaRelease(
+        emergency_authorization=models.AuthorizeEmergencyMedicalTreatment(
             participant_id=test_participant,
             date="2014-3-5",
             pref_medical_facility="Shawnee Medical Center",
@@ -2891,6 +2891,27 @@ class TestEmergencyAuthorizationReport(TestCase):
             signature="TEST Oliver Queen"
         )
         emergency_authorization.save()
+
+        test_medical_info=models.MedicalInfo(
+            participant_id=test_participant,
+            date="2014-3-5",
+            primary_physician_name="Dr. Default",
+            primary_physician_phone="(111) 111-1111",
+            last_seen_by_physician_date="2016-1-1",
+            last_seen_by_physician_reason="Normal check up visit.",
+            allergies_conditions_that_exclude=False,
+            heat_exhaustion_stroke=False,
+            tetanus_shot_last_ten_years=True,
+            seizures_last_six_monthes=False,
+            doctor_concered_re_horse_activites=False,
+            physical_or_mental_issues_affecting_riding=False,
+            restriction_for_horse_activity_last_five_years=False,
+            present_restrictions_for_horse_activity=False,
+            limiting_surgeries_last_six_monthes=False,
+            signature="TEST Oliver Queen",
+            currently_taking_any_medication=False
+        )
+        test_medical_info.save()
 
         test_participant_no_emerg_auth=models.Participant(
             name="TEST Peter Parker",
@@ -2910,3 +2931,229 @@ class TestEmergencyAuthorizationReport(TestCase):
             school_institution="SHIELD"
         )
         test_participant_no_emerg_auth.save()
+
+        test_participant_no_med_record=models.Participant(
+            name="TEST The Doctor",
+            birth_date="1235-8-14",
+            email="thedoctor@galifrey.com",
+            weight=190,
+            gender="M",
+            height=76.0,
+            minor_status="A",
+            address_street="The TARDIS",
+            address_city="Time and space",
+            address_zip="889922",
+            phone_home="(300) 200-100",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
+        )
+        test_participant_no_med_record.save()
+
+        emergency_authorization=models.AuthorizeEmergencyMedicalTreatment(
+            participant_id=test_participant_no_med_record,
+            date="2014-3-5",
+            pref_medical_facility="Shawnee Medical Center",
+            insurance_provider="Blue Cross Blue Shield of Oklahoma",
+            insurance_policy_num="EI238901AAK7",
+            emerg_contact_name="John Jacobs",
+            emerg_contact_phone="(406) 892-7012",
+            emerg_contact_relation="Brother In-Law",
+            alt_emerg_procedure="",
+            consents_emerg_med_treatment="Y",
+            signature="TEST The Doctor"
+        )
+        emergency_authorization.save()
+
+    def test_emergency_auth_report_loads_if_user_logged_in(self):
+        """ Tests whether the Emergency Medical Release Authorization report
+         page loads if the user is logged in and valid URL parameters are passed
+         (participant_id, year, month, day). """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-emerg-auth",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_emergency_auth_report_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Emergency Medical Treatment Authorization report
+         page redirects to the login page if the user is not logged in. """
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse("report-emerg-auth",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_emergency_auth_report_shows_error_if_invalid_participant_id(self):
+        """ Tests whether the Emergency Medical Treatment Authorization report
+         page shows the correct error if the user is logged in but an invalid
+         participant_id is passed. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-emerg-auth",
+                kwargs={
+                    "participant_id":9999999999,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_emergency_auth_report_shows_error_if_invalid_form_date(self):
+        """ Tests whether the Emergency Medical Treatment Authorization report
+         page shows the correct error if the user is logged in but an invalid
+         date for the Emergency Medical Treatment Authorization is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        response = self.client.get(
+            reverse("report-emerg-auth",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "68904315",
+                    "month": "155",
+                    "day": "11122"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_INVALID_DATE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_emergency_auth_report_shows_error_if_no_emerg_auth(self):
+        """ Tests whether the Emergency Medical Treatment Authorization report
+         page shows the correct error if the user is logged in and all
+         parameters passed are valid, but the Emergency Medical Treatment
+         Authorization record does not exist. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+        )
+
+        response = self.client.get(
+            reverse("report-emerg-auth",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "2016",
+                    "month": "1",
+                    "day": "1"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_EMERG_AUTH_NOT_AVAILABLE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_emergency_auth_report_shows_error_if_no_medical_info(self):
+        """ Tests whether the Emergency Medical Treatment Authorization report
+         page shows the correct error if the user is logged in and all
+         parameters passed are valid, but the Medical Info record does not exist. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST The Doctor",
+            birth_date="1235-8-14",
+        )
+
+        response = self.client.get(
+            reverse("report-emerg-auth",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_MEDICAL_INFO_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
