@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 import logging
+import time
 from cbar_db import forms
 from cbar_db import models
 
@@ -14,6 +16,21 @@ ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
 )
 ERROR_TEXT_FORM_INVALID=(
     "Error validating form."
+)
+ERROR_TEXT_INVALID_DATE=(
+    "The requested date is not valid"
+)
+ERROR_TEXT_MEDIA_RELEASE_NOT_AVAILABLE=(
+    "The Media Release requested is not available"
+)
+ERROR_TEXT_EMERG_AUTH_NOT_AVAILABLE=(
+    "The requested Emergency Medical Treatment Authorization is not available."
+)
+ERROR_TEXT_LIABILITY_RELEASE_NOT_AVAILABLE=(
+    "The Liability Release requested is not available."
+)
+ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE=(
+    "The Background Check Authorization requested is not available."
 )
 
 loggeyMcLogging=logging.getLogger(__name__)
@@ -230,6 +247,12 @@ def public_form_emerg_auth(request):
                 medical_info.primary_physician_phone=(
                     form.cleaned_data['primary_physician_phone']
                 )
+                medical_info.date=(
+                    form.cleaned_data["date"]
+                )
+
+                # TODO: We need to save a NEW MedicalInfo record, with info
+                #       from the current one. Not just update the current one.
 
                 # Save the updated record
                 medical_info.save()
@@ -635,3 +658,414 @@ def public_form_seizure(request):
                 'form': form
             }
         )
+
+@login_required
+def index_private_admin(request):
+    """ Logged in user index view. """
+    participants=models.Participant.objects.all()
+
+    return render(
+        request,
+        'cbar_db/admin/admin.html',
+        {'participants':participants}
+    )
+
+@login_required
+def participant_record(request, participant_id):
+    """ Participant record view. """
+
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/participant.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Find our Participant's MediaRelease instances
+    media_releases=models.MediaRelease.objects.filter(
+        participant_id=participant
+    )
+
+    # Find our Participant's MedicalInfo instances
+    medical_releases=models.MedicalInfo.objects.filter(
+        participant_id=participant
+    )
+
+    # Find our Participant's AuthorizeEmergencyMedicalTreatment instances
+    emergency_authorizations=(models.AuthorizeEmergencyMedicalTreatment
+        .objects.filter(
+            participant_id=participant
+        )
+    )
+
+    # Find our Participant's LiabilityRelease instances
+    liability_releases=(models.LiabilityRelease.objects.filter(
+            participant_id=participant
+        )
+    )
+
+    # Find our Participant's BackgroundCheck instances
+    background_checks=(models.BackgroundCheck.objects.filter(
+            participant_id=participant
+        )
+    )
+
+    return render(
+        request,
+        'cbar_db/admin/participant.html',
+        {
+            'participant': participant,
+            'media_releases': media_releases,
+            'medical_releases': medical_releases,
+            'emergency_authorizations': emergency_authorizations,
+            'liability_releases': liability_releases,
+            'background_checks': background_checks
+        }
+    )
+
+@login_required
+def report_media_release(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Media Release form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_media.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Media Release's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_media.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the MediaRelease record:
+    try:
+        media_release=models.MediaRelease.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_media.html",
+            {
+                'error_text': ERROR_TEXT_MEDIA_RELEASE_NOT_AVAILABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_media.html",
+        {
+            "media_release": media_release,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_emerg_auth(request, participant_id, year, month, day):
+    """ Displays the data entered in a previous Emergency Medical
+     Authorization form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_emerg_auth.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Emergency Medical Treatment Authorization's date from the
+    # URL attributes:
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_emerg_auth.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the AuthorizeEmergencyMedicalTreatment record:
+    try:
+        emerg_auth=models.AuthorizeEmergencyMedicalTreatment.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The AuthorizeEmergencyMedicalTreatment record doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_emerg_auth.html",
+            {
+                'error_text': ERROR_TEXT_EMERG_AUTH_NOT_AVAILABLE,
+            }
+        )
+
+    # Find the MedicalInfo record:
+    try:
+        medical_info=models.MedicalInfo.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MedicalInfo record doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_emerg_auth.html",
+            {
+                'error_text': ERROR_TEXT_MEDICAL_INFO_NOT_FOUND,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_emerg_auth.html",
+        {
+            "emerg_auth": emerg_auth,
+            "medical_info": medical_info,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_med_release(request, participant_id, year, month, day):
+    """ Displays the data entered in a previous Medical Release/Info form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_med_release.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Medical Release's date from the URL attributes:
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        # The requested date can't be parsed
+        loggeyMcLogging.error("Couldn't parse the date")
+
+        return render(
+            request,
+            "cbar_db/admin/reports/report_med_release.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the MedicalInfo record:
+    try:
+        medical_info=models.MedicalInfo.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MedicalInfo doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_med_release.html",
+            {
+                'error_text': ERROR_TEXT_MEDICAL_INFO_NOT_FOUND,
+            }
+        )
+
+    # Find any Medication record(s):
+    medications=models.Medication.objects.filter(
+        participant_id=participant,
+        date=time.strftime("%Y-%m-%d", date)
+    )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_med_release.html",
+        {
+            "participant": participant,
+            "medical_info": medical_info,
+            "medications": medications
+        }
+    )
+
+@login_required
+def report_liability(request, participant_id, year, month, day):
+    """ Displays the data entered in a previous Liability Release form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_liability.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Liability Release's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_liability.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the LiabilityRelease record:
+    try:
+        liability_release=models.LiabilityRelease.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The LiabilityRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_liability.html",
+            {
+                'error_text': ERROR_TEXT_LIABILITY_RELEASE_NOT_AVAILABLE
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_liability.html",
+        {
+            "liability_release": liability_release,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_background(request, participant_id, year, month, day):
+    """ Displays the data entered in a previous Background Check Authorization
+     form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_background.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Backgorund Check Authorization's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_background.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the BackgroundCheck record:
+    try:
+        background_check=models.BackgroundCheck.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The BackgroundCheck doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_background.html",
+            {
+                'error_text': ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_background.html",
+        {
+            "background_check": background_check,
+            "participant": participant
+        }
+    )

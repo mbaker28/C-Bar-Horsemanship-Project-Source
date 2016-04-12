@@ -1,0 +1,26 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Liability Release Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            The participant has stated via their electronic signature that they
+             <strong>agree</strong> to the liability release statement.
+        </p>
+
+        <hr />
+
+        <p>
+            <strong>Participant's Name:</strong> {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong> {{ participant.birth_date }}
+        </p>
+        <p>
+            <strong>Liability Release Date:</strong> {{ liability_release.date }}
+        </p>
+    {% endif %}
+{% endblock %}
