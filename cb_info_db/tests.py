@@ -3560,7 +3560,7 @@ class TestLiabilityReleaseReport(TestCase):
 
         self.assertEqual(response.status_code, 200) # Loaded...
 
-    def test_liability_release_report_shows_error_if_no_medical_info(self):
+    def test_liability_release_report_shows_error_if_no_liability_release(self):
         """ Tests whether the Liability Release report page shows the correct
          error if the user is logged in and all parameters passed are valid, but
          the LiabilityRelease record does not exist. """
@@ -3590,6 +3590,219 @@ class TestLiabilityReleaseReport(TestCase):
         self.assertTrue(
             response.context["error_text"] == (
                 views.ERROR_TEXT_LIABILITY_RELEASE_NOT_AVAILABLE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+
+class TestBackgroundCheckReport(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16",
+            email="arrow@archeryandthings.com",
+            weight=188,
+            gender="M",
+            height=69,
+            minor_status="A",
+            address_street="4568 Rich Person Rd.",
+            address_city="Example City",
+            address_zip="486878",
+            phone_home="(789) 132-0024",
+            phone_cell="(789) 456-8800",
+            phone_work="(789) 039-3008",
+            school_institution="Team Arrow"
+        )
+        test_participant.save()
+
+        background_check=models.BackgroundCheck(
+            participant_id=test_participant,
+            date="2014-3-5",
+            signature="TEST Oliver Queen",
+            driver_license_num="79801234AB"
+        )
+        background_check.save()
+
+        test_participant_no_background_check=models.Participant(
+            name="TEST The Doctor",
+            birth_date="1235-8-14",
+            email="thedoctor@galifrey.com",
+            weight=190,
+            gender="M",
+            height=76.0,
+            minor_status="A",
+            address_street="The TARDIS",
+            address_city="Time and space",
+            address_zip="889922",
+            phone_home="(300) 200-100",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
+        )
+        test_participant_no_background_check.save()
+
+    def test_background_check_report_loads_if_user_logged_in(self):
+        """ Tests whether the Background Check Release report page loads if the
+         user is logged in and valid URL parameters are passed (participant_id,
+         year, month, day). """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-background",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_background_check_report_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Backgorund Check release report page redirects to
+         the login page if the user is not logged in. """
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse("report-background",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_background_check_report_shows_error_if_invalid_participant(self):
+        """ Tests whether the Background Check Release report page shows the
+         correct error if the user is logged in but an invalid participant_id is
+         passed. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-background",
+                kwargs={
+                    "participant_id":9999999999,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_background_check_report_shows_error_if_invalid_form_date(self):
+        """ Tests whether the Background Check Release report page shows the
+         correct error if the user is logged in but an invalid date for the
+         Background Check Release is passed. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        response = self.client.get(
+            reverse("report-background",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "68904315",
+                    "month": "155",
+                    "day": "11122"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_INVALID_DATE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_background_check_report_shows_error_if_no_background_check(self):
+        """ Tests whether the Background Check Release report page shows the
+         correct error if the user is logged in and all parameters passed are
+         valid, but the BackgroundCheck record does not exist. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST The Doctor",
+            birth_date="1235-8-14",
+        )
+
+        response = self.client.get(
+            reverse("report-background",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE
             )
         )
 

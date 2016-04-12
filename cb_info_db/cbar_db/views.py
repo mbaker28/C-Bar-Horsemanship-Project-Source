@@ -29,6 +29,9 @@ ERROR_TEXT_EMERG_AUTH_NOT_AVAILABLE=(
 ERROR_TEXT_LIABILITY_RELEASE_NOT_AVAILABLE=(
     "The Liability Release requested is not available."
 )
+ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE=(
+    "The Background Check Authorization requested is not available."
+)
 
 loggeyMcLogging=logging.getLogger(__name__)
 
@@ -1054,8 +1057,7 @@ def report_background(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_background.html",
             {
-                'error_text': "The Background Check Authorization requested is"
-                    " not available",
+                'error_text': ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE
             }
         )
 
