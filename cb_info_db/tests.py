@@ -61,6 +61,57 @@ class TestViews(TestCase):
         response = self.client.get(reverse('public-form-seizure'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
+class TestApplicationForm(testCase):
+    def setUp(self):
+        setup_test_environment() #Initialize the test enviornment
+        client=Client() #Make a test client (someone viewing the database)
+
+    def test_application_form_creates_participant(self):
+        """ Tests whether the form creates a participant record once all
+            fields are entered. """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "name": "TEST Matt Murdock,
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_zip": "654321",
+            "phone_home": "(400) 100-200",
+            "phone_cell": "(400) 200-300",
+            "phone_work": "(400) 300-400",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Searching database...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Participant already exists.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertEquals(found_participant, True)
 
 class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
