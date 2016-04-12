@@ -26,6 +26,9 @@ ERROR_TEXT_MEDIA_RELEASE_NOT_AVAILABLE=(
 ERROR_TEXT_EMERG_AUTH_NOT_AVAILABLE=(
     "The requested Emergency Medical Treatment Authorization is not available."
 )
+ERROR_TEXT_LIABILITY_RELEASE_NOT_AVAILABLE=(
+    "The Liability Release requested is not available."
+)
 
 loggeyMcLogging=logging.getLogger(__name__)
 
@@ -988,7 +991,7 @@ def report_liability(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_liability.html",
             {
-                'error_text': "The Liability Release requested is not available",
+                'error_text': ERROR_TEXT_LIABILITY_RELEASE_NOT_AVAILABLE
             }
         )
 
