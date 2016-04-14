@@ -164,11 +164,7 @@ class SeizureEvaluationForm(forms.Form):
     )
 
     knows_when_will_occur=forms.BooleanField(required=False)
-
     can_communicate_when_will_occur=forms.BooleanField(required=False)
-
-    #not sure where "what are the signs?" field is on models.py
-
     action_to_take_do_nothing=forms.BooleanField(required=False)
     action_to_take_dismount=forms.BooleanField(required=False)
     action_to_take_allow_time=forms.BooleanField(required=False)
