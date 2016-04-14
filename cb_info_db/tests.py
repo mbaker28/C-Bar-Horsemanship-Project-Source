@@ -112,7 +112,7 @@ class TestApplicationForm(testCase):
 
         # We should say we could find the participant:
         self.assertEquals(found_participant, True)
-
+        
 class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
