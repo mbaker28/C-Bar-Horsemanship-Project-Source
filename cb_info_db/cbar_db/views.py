@@ -32,6 +32,9 @@ ERROR_TEXT_LIABILITY_RELEASE_NOT_AVAILABLE=(
 ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE=(
     "The Background Check Authorization requested is not available."
 )
+ERROR_TEXT_SEIZURE_EVAL_NOT_AVAILABLE=(
+    "The Seizure Evaluation requested is not available."
+)
 
 loggeyMcLogging=logging.getLogger(__name__)
 
@@ -39,16 +42,13 @@ def index_public(request):
     """ Website index view. """
     return render(request, 'cbar_db/index.html')
 
-
 def index_public_forms(request):
     """ Public forms index view. """
     return render(request, 'cbar_db/forms/public/public.html')
 
-
 def public_form_application(request):
     """ Application form view. """
     return render(request, 'cbar_db/forms/public/application.html')
-
 
 def public_form_med_release(request):
     """ Medical Release form view. Handles viewing and saving the form.
@@ -320,7 +320,6 @@ def public_form_emerg_auth(request):
             }
         )
 
-
 def public_form_liability(request):
     """ Liability Release form view.
 
@@ -459,7 +458,6 @@ def public_form_media(request):
             {'form': form}
         )
 
-
 def public_form_background(request):
     """ Background Check Authorization form view. """
     if request.method == 'POST':
@@ -514,7 +512,6 @@ def public_form_background(request):
                 'form':form,
             }
         )
-
 
 def public_form_seizure(request):
     """ Seizure Evaluation form view. """
@@ -718,16 +715,23 @@ def participant_record(request, participant_id):
         )
     )
 
+    # Find our Participant's SeizureEval instances
+    seizure_evals=(models.SeizureEval.objects.filter(
+            participant_id=participant
+        )
+    )
+
     return render(
         request,
-        'cbar_db/admin/participant.html',
+        "cbar_db/admin/participant.html",
         {
-            'participant': participant,
-            'media_releases': media_releases,
-            'medical_releases': medical_releases,
-            'emergency_authorizations': emergency_authorizations,
-            'liability_releases': liability_releases,
-            'background_checks': background_checks
+            "participant": participant,
+            "media_releases": media_releases,
+            "medical_releases": medical_releases,
+            "emergency_authorizations": emergency_authorizations,
+            "liability_releases": liability_releases,
+            "background_checks": background_checks,
+            "seizure_evals": seizure_evals
         }
     )
 
@@ -1066,6 +1070,79 @@ def report_background(request, participant_id, year, month, day):
         "cbar_db/admin/reports/report_background.html",
         {
             "background_check": background_check,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_seizure(request, participant_id, year, month, day):
+    """ Displays the data entered in a previous Seizure Evaluation form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_seizure.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Backgorund Check Authorization's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_seizure.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the SeizureEval record:
+    try:
+        seizure_eval=models.SeizureEval.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The SeizureEval doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_seizure.html",
+            {
+                'error_text': ERROR_TEXT_SEIZURE_EVAL_NOT_AVAILABLE
+            }
+        )
+
+    seizure_types=models.SeizureType.objects.filter(
+        seizure_eval=seizure_eval
+    )
+
+    medications=models.Medication.objects.filter(
+        participant_id=participant,
+        date=time.strftime("%Y-%m-%d", date)
+    )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_seizure.html",
+        {
+            "seizure_eval": seizure_eval,
+            "seizure_types": seizure_types,
+            "medications": medications,
             "participant": participant
         }
     )
