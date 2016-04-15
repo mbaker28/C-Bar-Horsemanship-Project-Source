@@ -79,4 +79,20 @@ urlpatterns = [
     url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/background/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_background,
         name='report-background'),
+
+    # Donation form index
+    url(r'^forms/public/donation/$', views.donation_index,
+        name='donation-index'),
+
+    # Adopt a Participant donation form
+    url(r'^forms/public/donation/participant$', views.donation_participant,
+        name='donation-participant'),
+
+    # Adopt a Horse donation form
+    url(r'^forms/public/donation/horse$', views.donation_horse,
+        name='donation-horse'),
+
+    # Monetary donation form
+    url(r'^forms/public/donation/monetary$', views.donation_monetary,
+        name='donation-monetary'),
 ]

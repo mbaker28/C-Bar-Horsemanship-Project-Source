@@ -447,3 +447,13 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("signature").max_length
         )
     )
+
+
+class ParticipantAdoptionForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    donation_type=forms.ChoiceField(
+        choices=models.Donation._meta.get_field("donation_type").choices
+    )
