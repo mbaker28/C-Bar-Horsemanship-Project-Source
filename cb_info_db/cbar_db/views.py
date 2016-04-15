@@ -247,12 +247,6 @@ def public_form_emerg_auth(request):
                 medical_info.primary_physician_phone=(
                     form.cleaned_data['primary_physician_phone']
                 )
-                medical_info.date=(
-                    form.cleaned_data["date"]
-                )
-
-                # TODO: We need to save a NEW MedicalInfo record, with info
-                #       from the current one. Not just update the current one.
 
                 # Save the updated record
                 medical_info.save()
@@ -1069,3 +1063,51 @@ def report_background(request, participant_id, year, month, day):
             "participant": participant
         }
     )
+
+def donation_index(request):
+    """ Index for donations view. """
+    return render(request, 'cbar_db/forms/donation/donation_index.html')
+
+def donation_participant(request):
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        form=forms.ParticipantAdoptionForm(request.POST)
+
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+
+            donation=models.Donation(
+                donation_type=(forms.cleaned_data
+                    ["donation_type"]
+                ),
+                amount=(
+                    form.cleaned_data["amount"]
+                )
+            )
+            donation.save()
+        else:
+            loggeyMcLogging.error("The form is NOT Valid")
+            return render(
+                request,
+                'cbar_db/forms/donation/donation_participant.html',
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+            }
+        )
+
+    else:
+        form=forms.ParticipantAdoptionForm()
+        return render(
+            request,
+            'cbar_db/forms/donation/donation_participant.html',
+            {
+                'form': form
+            }
+        )
+
+def donation_horse(request):
+    return render(request, 'cbar_db/forms/donation/donation_horse.html')
+
+def donation_monetary(request):
+    return render(request, 'cbar_db/forms/donation/donation_monetary.html')
