@@ -8,19 +8,7 @@
     {% endif %}
     <form action="{% url 'public-form-donation' %}" method="post">
         {% csrf_token %}
-        <div id="DonationChoices">
-        <p>
-            What would you like to donate too? {{ form.donation_type }}
-            <span class="error_message">
-                {{ form.donation_type.error.as_text }}
-            </span>
-        </p>
-        <p>
-            Adopt a Horse: {{ form.amount }}
-            <span class="error_message">
-                {{ form.donation_type.error.as_text }}
-            </span>
-        </p>
+        <div>
         <p>
             Adopt a Participant: {{  form.amount }}
             <span class="error_message">
@@ -28,11 +16,17 @@
             </span>
         </p>
         <p>
-            Flat Money Donation: {{ form.amount }}
+            Your Name: {{ form.donor_name }}
             <span class="error_message">
-                {{ form.donation_type.error.as_text }}
+                {{ form.donor_name.error.as_text }}
             </span>
         </p>
+        <p>
+            Your Email address:{{ form.donor_email }}
+            <span class="error_message">
+                {{ form.donor_email.error.as_text }}
+            </span>
+
     </div>
     <div id="SubmitButton">
         <input type="Submit" value="Submit">
