@@ -453,7 +453,7 @@ class EmergencyMedicalReleaseForm(forms.Form):
     )
 
 
-class Donation(forms.Form):
+class ParticipantAdoptionForm(forms.Form):
     amount=forms.DecimalField(
         max_digits=models.Donation._meta.get_field("amount").max_digits,
         decimal_places=models.Donation._meta.get_field("amount").decimal_places

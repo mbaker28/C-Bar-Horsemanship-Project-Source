@@ -637,11 +637,14 @@ def public_form_seizure(request):
         )
 
 
-def public_form_donation(request):
+def donation_index(request):
+    """ Index for donations view. """
+    return render(request, 'cbar_db/forms/donation/donation_index.html')
 
+def donation_participant(request):
     if request.method == 'POST':
         loggeyMcLogging.error("Request is of type POST")
-        form=forms.Donation(request.POST)
+        form=forms.ParticipantAdoptionForm(request.POST)
 
         if form.is_valid():
             loggeyMcLogging.error("The form is valid")
@@ -659,7 +662,7 @@ def public_form_donation(request):
             loggeyMcLogging.error("The form is NOT Valid")
             return render(
                 request,
-                'cbar_db/forms/donation.html',
+                'cbar_db/forms/donation/donation_participant.html',
                 {
                     'form': form,
                     'error_text': ERROR_TEXT_FORM_INVALID
@@ -667,11 +670,17 @@ def public_form_donation(request):
         )
 
     else:
-        form=forms.Donation()
+        form=forms.ParticipantAdoptionForm()
         return render(
             request,
-            'cbar_db/forms/donation.html',
+            'cbar_db/forms/donation/donation_participant.html',
             {
                 'form': form
             }
         )
+
+def donation_horse(request):
+    return render(request, 'cbar_db/forms/donation/donation_horse.html')
+
+def donation_monetary(request):
+    return render(request, 'cbar_db/forms/donation/donation_monetary.html')

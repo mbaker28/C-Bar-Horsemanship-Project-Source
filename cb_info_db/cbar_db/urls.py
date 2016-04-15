@@ -37,7 +37,19 @@ urlpatterns = [
     url(r'^forms/public/seizure/$', views.public_form_seizure,
         name='public-form-seizure'),
 
-    # Donation form
-    url(r'^forms/public/donation/$', views.public_form_donation,
-        name='public-form-donation'),
+    # Donation form index
+    url(r'^forms/public/donation/$', views.donation_index,
+        name='donation-index'),
+
+    # Adopt a Participant donation form
+    url(r'^forms/public/donation/participant$', views.donation_participant,
+        name='donation-participant'),
+
+    # Adopt a Horse donation form
+    url(r'^forms/public/donation/horse$', views.donation_horse,
+        name='donation-horse'),
+
+    # Monetary donation form
+    url(r'^forms/public/donation/monetary$', views.donation_monetary,
+        name='donation-monetary'),
 ]
