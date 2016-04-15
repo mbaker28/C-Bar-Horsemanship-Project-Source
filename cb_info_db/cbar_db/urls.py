@@ -78,7 +78,7 @@ urlpatterns = [
     # Background Check Authorization form report view
     url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/background/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_background,
-        name='report-seizure'),
+        name='report-background'),
 
     # Seizure Evaluation form report view
     url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/seizure/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
