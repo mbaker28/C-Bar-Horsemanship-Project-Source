@@ -3807,3 +3807,109 @@ class TestBackgroundCheckReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+
+class TestSeizureEvaluationReport(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16",
+            email="arrow@archeryandthings.com",
+            weight=188,
+            gender="M",
+            height=69,
+            minor_status="A",
+            address_street="4568 Rich Person Rd.",
+            address_city="Example City",
+            address_zip="486878",
+            phone_home="(789) 132-0024",
+            phone_cell="(789) 456-8800",
+            phone_work="(789) 039-3008",
+            school_institution="Team Arrow"
+        )
+        test_participant.save()
+
+        seizure_eval=models.SeizureEval(
+            participant_id=test_participant,
+            date="2014-3-5",
+            date_of_last_seizure="2013-3-4",
+            duration_of_last_seizure="A couple of seconds",
+            typical_cause="Eggplants",
+            seizure_indicators="Blank stare",
+            after_effect="Fatigued, disoriented",
+            during_seizure_stare="",
+            during_seizure_stare_length="",
+            during_seizure_walks="",
+            during_seizure_aimless="",
+            during_seizure_cry_etc="",
+            during_seizure_bladder_bowel="",
+            during_seizure_confused_etc="",
+            during_seizure_other="",
+            during_seizure_other_description="",
+            knows_when_will_occur="",
+            can_communicate_when_will_occur="",
+            action_to_take_do_nothing="",
+            action_to_take_dismount="",
+            action_to_take_allow_time="",
+            action_to_take_allow_time_how_long=15,
+            action_to_take_report_immediately="",
+            action_to_take_send_note="",
+            seizure_frequency="Every couple of months",
+            signature="Alfred Pennyworth",
+        )
+        seizure_eval.save()
+
+        test_participant_no_background_check=models.Participant(
+            name="TEST The Doctor",
+            birth_date="1235-8-14",
+            email="thedoctor@galifrey.com",
+            weight=190,
+            gender="M",
+            height=76.0,
+            minor_status="A",
+            address_street="The TARDIS",
+            address_city="Time and space",
+            address_zip="889922",
+            phone_home="(300) 200-100",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
+        )
+        test_participant_no_background_check.save()
+
+    def test_seizure_eval_report_loads_if_user_logged_in(self):
+        """ Tests whether the Seizure Evaluation report page loads if the
+         user is logged in and valid URL parameters are passed (participant_id,
+         year, month, day). """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-seizure",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
