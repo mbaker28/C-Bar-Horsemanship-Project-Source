@@ -1723,6 +1723,90 @@ class TestMedicalReleaseForm(TestCase):
             )
         )
 
+    def test_medical_release_form_empty_medication_name_field(self):
+        """ Regression test for Issue #24. Empty Medication fields should not be
+         saved as new Medication records. """
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man",
+            "primary_physician_phone": "1112223333",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": False,
+            "tetanus_shot_last_ten_years": True,
+            "seizures_last_six_monthes": False,
+            "currently_taking_any_medication": True,
+            "medication_one_name": "Excedrin",
+            "medication_one_reason": "Headaches",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "",
+            "medication_two_reason": "",
+            "medication_two_frequency": "",
+            "doctor_concered_re_horse_activites": True,
+            "physical_or_mental_issues_affecting_riding": True,
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": True,
+            # TODO: description of present restriction description/etc.
+            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1984-6-24",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-3-30"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-med-release"), form_data)
+
+        # Attempt to retrieve the new Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["signature"],
+                birth_date=form_data["birth_date"]
+            )
+            print("Successfully retrieved participant record.")
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retrieve the first Medication record (has a non "" name),
+        # which should have been saved:
+        try:
+            print("Retrieving the first Medication record...")
+            medication_in_db=models.Medication.objects.get(
+                participant_id=participant_in_db,
+                date=form_data["date"],
+                medication_name=form_data["medication_one_name"]
+            )
+            print("Successfully retrieved first Medication record.")
+            found_medication_one=True
+        except:
+            print("ERROR: Unable to retrieve valid Medication record!")
+            found_medication_one=False
+        self.assertTrue(found_medication_one)
+
+        # Attempt to retrieve the second Medication record (with a "" name),
+        # which should not have been saved:
+        try:
+            print("Retrieving the second Medication record...")
+            medication_in_db=models.Medication.objects.get(
+                participant_id=participant_in_db,
+                date=form_data["date"],
+                medication_name=form_data["medication_two_name"]
+            )
+            print("Successfully retrieved second Medication record.")
+            found_medication_two=True
+        except:
+            print("ERROR: Retrieved a Medication record with an empty string"
+                " for a name!")
+            found_medication_two=False
+        self.assertFalse(found_medication_two)
+
 
 class TestLiabilityReleaseForm(TestCase):
     def setUp(self):
