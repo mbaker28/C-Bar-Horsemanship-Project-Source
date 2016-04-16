@@ -228,7 +228,7 @@ def public_form_med_release(request):
                 participant_id=participant,
                 date=form.cleaned_data["date"],
                 medication_name=form.cleaned_data["medication_one_name"],
-                duration_taken=form.cleaned_data["medication_one_duration"],
+                reason_taken=form.cleaned_data["medication_one_reason"],
                 frequency=form.cleaned_data["medication_one_frequency"]
             )
             medication_one.save()
@@ -236,7 +236,7 @@ def public_form_med_release(request):
                 participant_id=participant,
                 date=form.cleaned_data["date"],
                 medication_name=form.cleaned_data["medication_two_name"],
-                duration_taken=form.cleaned_data["medication_two_duration"],
+                reason_taken=form.cleaned_data["medication_two_reason"],
                 frequency=form.cleaned_data["medication_two_frequency"]
             )
             medication_two.save()
@@ -680,7 +680,7 @@ def public_form_seizure(request):
                     participant_id=participant,
                     date=form.cleaned_data["date"],
                     medication_name=form.cleaned_data["medication_one_name"],
-                    duration_taken=form.cleaned_data["medication_one_duration"],
+                    reason_taken=form.cleaned_data["medication_one_reason"],
                     frequency=form.cleaned_data["medication_one_frequency"]
                 )
                 medication_one.save()
@@ -690,7 +690,7 @@ def public_form_seizure(request):
                     participant_id=participant,
                     date=form.cleaned_data["date"],
                     medication_name=form.cleaned_data["medication_two_name"],
-                    duration_taken=form.cleaned_data["medication_two_duration"],
+                    reason_taken=form.cleaned_data["medication_two_reason"],
                     frequency=form.cleaned_data["medication_two_frequency"]
                 )
                 medication_two.save()
@@ -700,7 +700,7 @@ def public_form_seizure(request):
                     participant_id=participant,
                     date=form.cleaned_data["date"],
                     medication_name=form.cleaned_data["medication_three_name"],
-                    duration_taken=form.cleaned_data["medication_three_duration"],
+                    reason_taken=form.cleaned_data["medication_three_reason"],
                     frequency=form.cleaned_data["medication_three_frequency"]
                 )
                 medication_three.save()

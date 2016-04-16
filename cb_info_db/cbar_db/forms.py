@@ -149,9 +149,9 @@ class SeizureEvaluationForm(forms.Form):
         ),
         required=False
     )
-    medication_one_duration=forms.CharField(
+    medication_one_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )
@@ -168,9 +168,9 @@ class SeizureEvaluationForm(forms.Form):
         ),
         required=False
     )
-    medication_two_duration=forms.CharField(
+    medication_two_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )
@@ -187,9 +187,9 @@ class SeizureEvaluationForm(forms.Form):
         ),
         required=False
     )
-    medication_three_duration=forms.CharField(
+    medication_three_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )
@@ -324,9 +324,9 @@ class MedicalReleaseForm(forms.Form):
         ),
         required=False
     )
-    medication_one_duration=forms.CharField(
+    medication_one_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )
@@ -341,9 +341,9 @@ class MedicalReleaseForm(forms.Form):
         ),
         required=False
     )
-    medication_two_duration=forms.CharField(
+    medication_two_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )

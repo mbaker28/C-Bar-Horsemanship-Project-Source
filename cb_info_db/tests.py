@@ -1306,10 +1306,10 @@ class TestMedicalReleaseForm(TestCase):
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
             "medication_one_name": "Excedrin",
-            "medication_one_duration": "9 months",
+            "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
-            "medication_two_duration": "2012-now",
+            "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
             "doctor_concered_re_horse_activites": True,
             "physical_or_mental_issues_affecting_riding": True,
@@ -1368,10 +1368,10 @@ class TestMedicalReleaseForm(TestCase):
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
             "medication_one_name": "Excedrin",
-            "medication_one_duration": "9 months",
+            "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
-            "medication_two_duration": "2012-now",
+            "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
             "doctor_concered_re_horse_activites": True,
             "physical_or_mental_issues_affecting_riding": True,
@@ -1430,10 +1430,10 @@ class TestMedicalReleaseForm(TestCase):
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
             "medication_one_name": "Excedrin",
-            "medication_one_duration": "9 months",
+            "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
-            "medication_two_duration": "2012-now",
+            "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
             "doctor_concered_re_horse_activites": True,
             "physical_or_mental_issues_affecting_riding": True,
@@ -1489,10 +1489,10 @@ class TestMedicalReleaseForm(TestCase):
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
             "medication_one_name": "Excedrin",
-            "medication_one_duration": "9 months",
+            "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
-            "medication_two_duration": "2012-now",
+            "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
             "doctor_concered_re_horse_activites": True,
             "physical_or_mental_issues_affecting_riding": True,
@@ -1579,10 +1579,10 @@ class TestMedicalReleaseForm(TestCase):
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
             "medication_one_name": "Excedrin",
-            "medication_one_duration": "9 months",
+            "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
-            "medication_two_duration": "2012-now",
+            "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
             "doctor_concered_re_horse_activites": True,
             "physical_or_mental_issues_affecting_riding": True,
@@ -1629,10 +1629,10 @@ class TestMedicalReleaseForm(TestCase):
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
             "medication_one_name": "Excedrin",
-            "medication_one_duration": "9 months",
+            "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
-            "medication_two_duration": "2012-now",
+            "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
             "doctor_concered_re_horse_activites": True,
             "physical_or_mental_issues_affecting_riding": True,
@@ -1681,10 +1681,10 @@ class TestMedicalReleaseForm(TestCase):
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
             "medication_one_name": "Excedrin",
-            "medication_one_duration": "9 months",
+            "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
-            "medication_two_duration": "2012-now",
+            "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
             "doctor_concered_re_horse_activites": True,
             "physical_or_mental_issues_affecting_riding": True,
@@ -2190,13 +2190,13 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_cell": "(321) 765-4321",
             "phone_work": "(987) 654-3210",
             "medication_one_name": "Excedrin",
-            "medication_one_duration": "10+ years",
+            "medication_one_reason": "Headachey stuff",
             "medication_one_frequency": "A couple of times a week",
             "medication_two_name": "Blah Test Medicine",
-            "medication_two_duration": "",
+            "medication_two_reason": "",
             "medication_two_frequency": "",
             "medication_three_name": "Sciency Medicine Name",
-            "medication_three_duration": "3 weeks",
+            "medication_three_reason": "Things that hurt",
             "medication_three_frequency": "Every 2 hours, as needed",
             "seizure_name_one": "Sudden and violent",
             "seizure_name_two": "Super sciency name",
@@ -2448,8 +2448,8 @@ class TestSeizureEvaluationForm(TestCase):
             )
         self.assertTrue(found_medication_one)
         self.assertEqual(
-            medication_one_in_db.duration_taken,
-            form_data["medication_one_duration"]
+            medication_one_in_db.reason_taken,
+            form_data["medication_one_reason"]
         )
         self.assertEqual(
             medication_one_in_db.frequency,
@@ -2474,8 +2474,8 @@ class TestSeizureEvaluationForm(TestCase):
             )
         self.assertTrue(found_medication_two)
         self.assertEqual(
-            medication_two_in_db.duration_taken,
-            form_data["medication_two_duration"]
+            medication_two_in_db.reason_taken,
+            form_data["medication_two_reason"]
         )
         self.assertEqual(
             medication_two_in_db.frequency,
@@ -2500,8 +2500,8 @@ class TestSeizureEvaluationForm(TestCase):
             )
         self.assertTrue(found_medication_three)
         self.assertEqual(
-            medication_three_in_db.duration_taken,
-            form_data["medication_three_duration"]
+            medication_three_in_db.reason_taken,
+            form_data["medication_three_reason"]
         )
         self.assertEqual(
             medication_three_in_db.frequency,
