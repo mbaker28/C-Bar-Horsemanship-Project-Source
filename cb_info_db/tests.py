@@ -313,7 +313,7 @@ class TestEmergencyAuthorizationForm(TestCase):
 
         test_medical_info=models.MedicalInfo(
             participant_id=test_participant,
-            date="2016-1-1",
+            date="2015-1-1",
             primary_physician_name="Dr. Default",
             primary_physician_phone="(111) 111-1111",
             last_seen_by_physician_date="2016-1-1",
@@ -331,6 +331,15 @@ class TestEmergencyAuthorizationForm(TestCase):
             currently_taking_any_medication=False
         )
         test_medical_info.save()
+
+        test_medication=models.Medication(
+            participant_id=test_participant,
+            date="2015-1-1",
+            medication_name="Supersciencymediph",
+            reason_taken="reasons and stuff",
+            frequency="Every 2-3 hours when in pain"
+        )
+        test_medication.save()
 
     def test_emergency_authorization_form_finds_valid_participant(self):
         """ Tests whether the form finds a valid participant record if a

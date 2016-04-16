@@ -1016,7 +1016,7 @@ class Medication(models.Model):
     )
 
     reason_taken=models.CharField(max_length=50)
-    frequency=models.CharField(max_length=25)
+    frequency=models.CharField(max_length=50)
 
 
 class SeizureEval(models.Model):

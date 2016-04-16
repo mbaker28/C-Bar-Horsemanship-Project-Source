@@ -276,7 +276,9 @@ def public_form_emerg_auth(request):
     Saving form (POST):
         If participant exists:
             Update record in Participant
-            Update record in MedicalInfo
+            Create new record in MedicalInfo with old & updated information
+            Create copies of Medication records linked with old MedicalInfo
+                Update their dates to match updated MedicalInfo
             Create new record in AuthorizeEmergencyMedicalTreatment
         Else:
             Give an error
@@ -311,10 +313,25 @@ def public_form_emerg_auth(request):
 
             # If no exception, the participant exists. Update their records:
             try:
-                # If the participant has a MedicalInfo record, retrieve it:
-                medical_info=models.MedicalInfo.objects.get(
+                # If the participant has a MedicalInfo record,
+                # retrieve the most recent one:
+                medical_info=models.MedicalInfo.objects.filter(
+                    participant_id=participant
+                ).latest("date")
+
+                # Create a new copy of medications from the old MedicalInfo
+                # record and update their dates so that they will link to the
+                # current medical_info record:
+                medications=models.Medication.objects.filter(
+                    date=medical_info.date,
                     participant_id=participant
                 )
+                for medication in medications:
+                    medication.pk=None
+                    medication.date=form.cleaned_data["date"]
+                    medication.save()
+
+                medical_info.pk=None # PK=none -> .save() makes a new copy
 
                 # Update the fields:
                 medical_info.primary_physician_name=(
@@ -327,11 +344,9 @@ def public_form_emerg_auth(request):
                     form.cleaned_data["date"]
                 )
 
-                # TODO: We need to save a NEW MedicalInfo record, with info
-                #       from the current one. Not just update the current one.
-
-                # Save the updated record
+                # Save the new, updated record
                 medical_info.save()
+
             except ObjectDoesNotExist:
                 # The participant has no MedicalInfo record, prompt them to fill
                 # out the Medical Release first.
