@@ -51,13 +51,6 @@ MINOR_STATUS_CHOICES=(
     (ADULT_WITHOUT_GUARDIAN, "Independent adult")
 )
 
-YES="Y"
-NO="N"
-YES_NO_CHOICES=(
-    (YES, "Yes"),
-    (NO, "No")
-)
-
 YES_BOOL=True
 NO_BOOL=False
 YES_NO_BOOL_CHOICES=(
@@ -289,7 +282,7 @@ class ConfidentialityPolicy(models.Model):
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
-    agreement=models.CharField(max_length=1, choices=YES_NO_CHOICES)
+    agreement=models.BooleanField(choices=YES_NO_BOOL_CHOICES)
 
 
 class AuthorizeEmergencyMedicalTreatment(models.Model):
