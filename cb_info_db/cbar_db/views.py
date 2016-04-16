@@ -10,6 +10,9 @@ from cbar_db import models
 ERROR_TEXT_PARTICIPANT_NOT_FOUND=(
     "The requested participant isn't in the database."
 )
+ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS=(
+    "The participant already exists in the database."
+)
 ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
     "The requested participant does not have their medical information on file."
     " Please fill out a medical release first."
@@ -48,7 +51,80 @@ def index_public_forms(request):
 
 def public_form_application(request):
     """ Application form view. """
-    return render(request, 'cbar_db/forms/public/application.html')
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.ApplicationForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create an instance of the ApplicationForm model to hold form data
+            try:
+                # Find the participant that matches the name and birth date from
+                # the form data:
+                participant=models.Participant.objects.get(
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date']
+                )
+                return render(
+                    request,
+                    "cbar_db/forms/public/application.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS,
+                    }
+                )
+
+            except ObjectDoesNotExist:
+                # Create a new ApplicationForm for the participant and save it:
+                form_data_application=models.Participant(
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date'],
+                    height=form.cleaned_data['height'],
+                    weight=form.cleaned_data['weight'],
+                    gender=form.cleaned_data['gender'],
+                    minor_status=form.cleaned_data['minor_status'],
+                    school_institution=form.cleaned_data['school_institution'],
+                    guardian_name=form.cleaned_data['guardian_name'],
+                    address_street=form.cleaned_data['address_street'],
+                    address_city=form.cleaned_data['address_city'],
+                    address_zip=form.cleaned_data['address_zip'],
+                    phone_home=form.cleaned_data['phone_home'],
+                    phone_cell=form.cleaned_data['phone_cell'],
+                    phone_work=form.cleaned_data['phone_work'],
+                    email=form.cleaned_data['email'],
+
+                    # TODO: These two fields don't exist in the Participant
+                    #       class. Do we even need them?
+                    #           signature=form.cleaned_data['signature'],
+                    #           date=form.cleaned_data['date']
+                )
+                form_data_application.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/')
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/public/application.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.ApplicationForm()
+
+        return render(
+            request,
+            'cbar_db/forms/public/application.html',
+            {'form': form}
+        )
 
 def public_form_med_release(request):
     """ Medical Release form view. Handles viewing and saving the form.

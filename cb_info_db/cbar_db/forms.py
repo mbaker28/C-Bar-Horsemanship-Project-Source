@@ -1,9 +1,73 @@
 from django import forms
 from cbar_db import models
 
-class SeizureEvaluationForm(forms.Form):
-    #TODO: C-Bar staff signature needed in models.py? Re: Issue #26
 
+class ApplicationForm(forms.Form):
+    name = forms.CharField(
+        max_length=models.Participant._meta.get_field("name").max_length
+    )
+
+    birth_date = forms.DateField()
+
+    height = forms.DecimalField(
+        max_digits=models.Participant._meta.get_field("height").max_digits,
+        decimal_places=models.Participant._meta.get_field("height").decimal_places
+    )
+
+    weight = forms.DecimalField(
+        max_digits=models.Participant._meta.get_field("weight").max_digits,
+        decimal_places=models.Participant._meta.get_field("weight").decimal_places
+    )
+
+    gender = forms.ChoiceField(
+        #max_length=models.Participant._meta.get_field("gender").max_length,
+        choices=models.Participant._meta.get_field("gender").choices
+    )
+
+    minor_status = forms.ChoiceField(
+        #max_length=models.Participant._meta.get_field("minor_status").max_length,
+        choices=models.Participant._meta.get_field("minor_status").choices
+    )
+
+    school_institution = forms.CharField(
+        max_length=models.Participant._meta.get_field("school_institution").max_length
+    )
+
+    guardian_name = forms.CharField(
+        max_length=models.Participant._meta.get_field("guardian_name").max_length,
+        required=False
+    )
+
+    address_street = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_street").max_length
+    )
+
+    address_city = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_city").max_length
+    )
+
+    address_zip = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_zip").max_length
+    )
+
+    phone_home = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_home").max_length
+    )
+
+    phone_cell = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_cell").max_length
+    )
+
+    phone_work = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_cell").max_length
+    )
+
+    email = forms.EmailField()
+
+    #date = forms.DateField()
+
+
+class SeizureEvaluationForm(forms.Form):
     name=forms.CharField(
         max_length=(models.Participant._meta
             .get_field("name").max_length
@@ -164,11 +228,7 @@ class SeizureEvaluationForm(forms.Form):
     )
 
     knows_when_will_occur=forms.BooleanField(required=False)
-
     can_communicate_when_will_occur=forms.BooleanField(required=False)
-
-    #not sure where "what are the signs?" field is on models.py
-
     action_to_take_do_nothing=forms.BooleanField(required=False)
     action_to_take_dismount=forms.BooleanField(required=False)
     action_to_take_allow_time=forms.BooleanField(required=False)
