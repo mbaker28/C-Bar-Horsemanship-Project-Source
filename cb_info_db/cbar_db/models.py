@@ -1022,7 +1022,7 @@ class Medication(models.Model):
         max_length=SHORT_ANSWER_LENGTH,
     )
 
-    duration_taken=models.CharField(max_length=25)
+    reason_taken=models.CharField(max_length=50)
     frequency=models.CharField(max_length=25)
 
 
