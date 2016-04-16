@@ -1032,7 +1032,7 @@ def report_background(request, participant_id, year, month, day):
             }
         )
 
-    # Parse the Backgorund Check Authorization's date from the URL attributes
+    # Parse the Background Check Authorization's date from the URL attributes
     try:
         loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
         date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
@@ -1094,7 +1094,7 @@ def report_seizure(request, participant_id, year, month, day):
             }
         )
 
-    # Parse the Backgorund Check Authorization's date from the URL attributes
+    # Parse the SeizureEval's date from the URL attributes
     try:
         loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
         date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
