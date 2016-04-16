@@ -127,12 +127,7 @@ def public_form_application(request):
         )
 
 def public_form_med_release(request):
-    """ Medical Release form view. Handles viewing and saving the form.
-
-    Viewing form (GET): Display the form
-    Saving form (POST):
-        -Do something
-    """
+    """ Medical Release form view. Handles viewing and saving the form. """
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -224,22 +219,24 @@ def public_form_med_release(request):
             )
             medical_info.save()
 
-            medication_one=models.Medication(
-                participant_id=participant,
-                date=form.cleaned_data["date"],
-                medication_name=form.cleaned_data["medication_one_name"],
-                reason_taken=form.cleaned_data["medication_one_reason"],
-                frequency=form.cleaned_data["medication_one_frequency"]
-            )
-            medication_one.save()
-            medication_two=models.Medication(
-                participant_id=participant,
-                date=form.cleaned_data["date"],
-                medication_name=form.cleaned_data["medication_two_name"],
-                reason_taken=form.cleaned_data["medication_two_reason"],
-                frequency=form.cleaned_data["medication_two_frequency"]
-            )
-            medication_two.save()
+            if form.cleaned_data["medication_one_name"] != "":
+                medication_one=models.Medication(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    medication_name=form.cleaned_data["medication_one_name"],
+                    reason_taken=form.cleaned_data["medication_one_reason"],
+                    frequency=form.cleaned_data["medication_one_frequency"]
+                )
+                medication_one.save()
+            if form.cleaned_data["medication_two_name"] != "":
+                medication_two=models.Medication(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    medication_name=form.cleaned_data["medication_two_name"],
+                    reason_taken=form.cleaned_data["medication_two_reason"],
+                    frequency=form.cleaned_data["medication_two_frequency"]
+                )
+                medication_two.save()
 
             # Redirect to the home page:
             return HttpResponseRedirect('/')
