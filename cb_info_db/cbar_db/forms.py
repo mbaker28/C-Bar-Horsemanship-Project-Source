@@ -143,13 +143,69 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-    #what should I do for current medications field???????
+    medication_one_name=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("medication_name").max_length
+        ),
+        required=False
+    )
+    medication_one_duration=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("duration_taken").max_length
+        ),
+        required=False
+    )
+    medication_one_frequency=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("frequency").max_length
+        ),
+        required=False
+    )
+
+    medication_two_name=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("medication_name").max_length
+        ),
+        required=False
+    )
+    medication_two_duration=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("duration_taken").max_length
+        ),
+        required=False
+    )
+    medication_two_frequency=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("frequency").max_length
+        ),
+        required=False
+    )
+
+    medication_three_name=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("medication_name").max_length
+        ),
+        required=False
+    )
+    medication_three_duration=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("duration_taken").max_length
+        ),
+        required=False
+    )
+    medication_three_frequency=forms.CharField(
+        max_length=(models.Medication._meta
+            .get_field("frequency").max_length
+        ),
+        required=False
+    )
 
     during_seizure_stare=forms.BooleanField(required=False)
 
     during_seizure_stare_length=forms.CharField(max_length=(models.SeizureEval
             ._meta.get_field("during_seizure_stare_length").max_length
-        )
+        ),
+        required=False
     )
 
     during_seizure_walks=forms.BooleanField(required=False)
@@ -172,11 +228,7 @@ class SeizureEvaluationForm(forms.Form):
     )
 
     knows_when_will_occur=forms.BooleanField(required=False)
-
     can_communicate_when_will_occur=forms.BooleanField(required=False)
-
-    #not sure where "what are the signs?" field is on models.py
-
     action_to_take_do_nothing=forms.BooleanField(required=False)
     action_to_take_dismount=forms.BooleanField(required=False)
     action_to_take_allow_time=forms.BooleanField(required=False)
@@ -193,9 +245,6 @@ class SeizureEvaluationForm(forms.Form):
             .get_field("signature").max_length
         )
     )
-
-
-    # C-Bar staff signature needed in models.py? Re: Issue #26
 
 
 class LiabilityReleaseForm(forms.Form):

@@ -8,8 +8,15 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     margin: 0.5em;
-    color: @color_blue_dark;
     text-align: center;
+}
+
+h1 {
+    color: @color_blue_dark;
+}
+
+h2, h3, h4, h5, h6 {
+    color: @color_background_brown;
 }
 
 a {
@@ -32,6 +39,7 @@ a:hover {
     background-color: @color_grey_very_light;
     padding: 1.5em;
     margin-bottom: 3em;
+    overflow: hidden;
 }
 
 #header a {

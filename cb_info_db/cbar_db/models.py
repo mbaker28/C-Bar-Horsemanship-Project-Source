@@ -129,8 +129,6 @@ class Caregiver(models.Model):
 
 
 class Session(models.Model):
-    class Meta:  # Sets up PK as (session_id, date)
-        unique_together=(("session_ID", "date"))
     session_ID=models.AutoField(primary_key=True) # Auto generated PK
     date=models.DateTimeField()
     tack=models.CharField(max_length=250)
@@ -146,7 +144,6 @@ class SessionGoals(models.Model):
     class Meta: # Sets up PK as (participant_id, session_id)
         unique_together=(("participant_id", "session_id"))
 
-    session_goals_id=models.AutoField(primary_key=True) # Auto generated PK
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     session_id=models.ForeignKey(Session, on_delete=models.CASCADE)
     goal_type=models.CharField(max_length=1, choices=GOAL_CHOICES)
@@ -159,7 +156,7 @@ class PhysRelease(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     health_provider_name=models.CharField(max_length=NAME_LENGTH)
     health_provider_title=models.CharField(max_length=50)
     health_provider_address=models.CharField(max_length=255)
@@ -214,7 +211,7 @@ class ObservationEvaluation(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     class_id=models.ForeignKey(Grouping, null=True, on_delete=models.SET_NULL)
 
 
@@ -235,7 +232,6 @@ class ParticipantType(models.Model):
     participant_type=models.CharField(
         max_length=1,
         choices=TYPE_CHOICES,
-        primary_key=True
     )
 
 
@@ -251,7 +247,7 @@ class Diagnosis(models.Model):
         unique_together=(("participant_id","diagnosis"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    diagnosis=models.CharField(max_length=255, primary_key=True)
+    diagnosis=models.CharField(max_length=255)
     diagnosis_type=models.CharField(
         max_length=1,
         choices=DIAGNOSIS_CHOICES,
@@ -263,7 +259,7 @@ class MediaRelease(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     consent=models.CharField(max_length=1, choices=CONSENT_CHOICES)
     signature=models.CharField(max_length=NAME_LENGTH)
 
@@ -273,7 +269,7 @@ class LiabilityRelease(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     signature=models.CharField(max_length=NAME_LENGTH)
 
 
@@ -282,7 +278,7 @@ class BackgroundCheck(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     signature=models.CharField(max_length=NAME_LENGTH)
     driver_license_num=models.CharField(max_length=18)
 
@@ -292,7 +288,7 @@ class ConfidentialityPolicy(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     agreement=models.CharField(max_length=1, choices=YES_NO_CHOICES)
 
 
@@ -301,7 +297,8 @@ class AuthorizeEmergencyMedicalTreatment(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
+
     pref_medical_facility=models.CharField(max_length=70)
     insurance_provider=models.CharField(max_length=70)
     insurance_policy_num=models.CharField(max_length=20)
@@ -321,7 +318,7 @@ class EvalHorsemanship(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     rules_and_reasons=models.NullBooleanField()
     parts_of_horse=models.NullBooleanField()
     parts_of_saddle_english=models.NullBooleanField()
@@ -363,7 +360,7 @@ class EvalAttitude(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
 
     # Attiude choices:
     walking_through_barn=models.CharField(
@@ -460,7 +457,7 @@ class EvalRidingExercises(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
 
     # Long-answer:
     comments=models.CharField(max_length=500, null=True)
@@ -750,7 +747,7 @@ class EvalPhysical(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
 
     # Likert like choices:
     arms_head_walk=models.CharField(
@@ -952,7 +949,7 @@ class MedicalInfo(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     physical_release=models.ForeignKey(
         PhysRelease,
         null=True,
@@ -1013,13 +1010,16 @@ class MedicalInfo(models.Model):
 
 
 class Medication(models.Model):
-    class Meta: # Sets up PK as (medical_info_id, medication_name)
-        unique_together=(("medical_info_id","medication_name"))
+    class Meta: # Sets up PK as (participant_id, date, medication_name)
+        unique_together=(("participant_id", "date", "medication_name"))
 
-    medical_info_id=models.ForeignKey(MedicalInfo, on_delete=models.CASCADE, null=True)
+    participant_id=models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+    )
+    date=models.DateField()
     medication_name=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,
-        primary_key=True
     )
 
     duration_taken=models.CharField(max_length=25)
@@ -1032,7 +1032,7 @@ class SeizureEval(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField(primary_key=True)
+    date=models.DateField()
     date_of_last_seizure=models.DateField()
     duration_of_last_seizure=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     typical_cause=models.CharField(max_length=SHORT_ANSWER_LENGTH)
@@ -1070,7 +1070,7 @@ class SeizureType(models.Model):
         unique_together=(("seizure_eval","name"))
 
     seizure_eval=models.ForeignKey(SeizureEval, on_delete=models.CASCADE)
-    name=models.CharField(max_length=50, primary_key=True)
+    name=models.CharField(max_length=50)
 
 
 class AdaptationsNeeded(models.Model):
@@ -1121,11 +1121,11 @@ class AdaptationsNeeded(models.Model):
         (DMT_OVER_CREST, "Over crest")
     )
 
-    class Meta: # Sets up PK as (participant_id, adaptation_id)
-        unique_together=(("participant_id","adaptation_id"))
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    adaptation_id=models.AutoField(primary_key=True)
+    date=models.DateField()
 
     mount_assistance_required=models.CharField(
         max_length=1,
@@ -1259,4 +1259,4 @@ class AuthorizedUser(models.Model):
         unique_together=(("participant_id","authorized_user_id"))
 
     participant_id=models.ForeignKey(Participant)
-    authorized_user_id = models.OneToOneField(User, primary_key=True)
+    authorized_user_id = models.OneToOneField(User)
