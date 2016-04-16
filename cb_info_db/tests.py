@@ -3913,3 +3913,132 @@ class TestSeizureEvaluationReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_seizure_eval_report_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Seizure Evaluation report page redirects to
+         the login page if the user is not logged in. """
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse("report-seizure",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_seizure_eval_report_shows_error_if_invalid_participant(self):
+        """ Tests whether the Seizure Evaluation report page shows the
+         correct error if the user is logged in but an invalid participant_id is
+         passed. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-seizure",
+                kwargs={
+                    "participant_id":9999999999,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_seizure_eval_report_shows_error_if_invalid_form_date(self):
+        """ Tests whether the Seizure Evaluation report page shows the
+         correct error if the user is logged in but an invalid date for the
+         Background Check Release is passed. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Oliver Queen",
+            birth_date="1985-05-16"
+        )
+
+        response = self.client.get(
+            reverse("report-seizure",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "68904315",
+                    "month": "155",
+                    "day": "11122"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_INVALID_DATE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_seizure_eval_report_shows_error_if_no_seizure_eval(self):
+        """ Tests whether the Seizure Evaluation report page shows the
+         correct error if the user is logged in and all parameters passed are
+         valid, but the SeizureEval record does not exist. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST The Doctor",
+            birth_date="1235-8-14",
+        )
+
+        response = self.client.get(
+            reverse("report-seizure",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_SEIZURE_EVAL_NOT_AVAILABLE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
