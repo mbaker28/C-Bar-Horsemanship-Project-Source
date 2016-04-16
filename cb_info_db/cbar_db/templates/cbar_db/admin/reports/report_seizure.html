@@ -1,0 +1,176 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Seizure Evaluation Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            <strong>Participant's Name:</strong> {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong> {{ participant.birth_date }}
+        </p>
+        <p>
+            <strong>Seizure Evaluation Date:</strong> {{ seizure_eval.date }}
+        </p>
+        <p>
+            <strong>Student/Parent/Guardian's Signature:</strong>
+             {{seizure_eval.signature}}
+        </p>
+
+        <h2>Contact Information</h2>
+        <p>
+            <strong>Home Phone:</strong> {{ participant.phone_home }}
+        </p>
+        <p>
+            <strong>Home Cell:</strong> {{ participant.phone_cell }}
+        </p>
+        <p>
+            <strong>Home Work:</strong> {{ participant.phone_work }}
+        </p>
+        <p>
+            <strong>Parent/Guardian Name:</strong> {{ participant.guardian_name }}
+        </p>
+
+        <h2>Seizures Information</h2>
+        <p>
+            <strong>Seizure Types:</strong>
+            {% for seizure_type in seizure_types %}
+                {% if forloop.last %}
+                 {{ seizure_type.name }}.
+                {% else %}
+                 {{ seizure_type.name }},
+                {% endif %}
+            {% endfor %}
+        </p>
+        <p>
+            <strong>Date of Last Seizure:</strong>
+             {{ seizure_eval.date_of_last_seizure }}
+        </p>
+        <p>
+            <strong>Frequency of Seizures:</strong>
+             {{ seizure_eval.seizure_frequency }}
+        </p>
+        <p>
+            <strong>Duration of last Seizure:</strong>
+             {{ seizure_eval.duration_of_last_seizure }}
+        </p>
+        <p>
+            <strong>Typical Causes of Seizure Activity:</strong>
+             {{ seizure_eval.typical_cause }}
+        </p>
+        <p>
+            <strong>Seizure activity indicators:</strong>
+             {{ seizure_eval.seizure_indicators }}
+        </p>
+        <p>
+            <strong>After Effect:</strong>
+             {{ seizure_eval.after_effect }}
+        </p>
+
+        <h2>Current Medications</h2>
+        {% for medication in medications %}
+            <p>
+                <strong>Medication Name:</strong>
+                 {{ medication.medication_name }}
+                <strong>Duration:</strong> {{ medication.duration_taken }}
+                <strong> Frequency:</strong> {{ medication.frequency }}
+            </p>
+        {% endfor %}
+
+        <h2>Symptoms and Warning Signs</h2>
+        <p>
+            <strong>During a seizure, the participant may:</strong>
+            <ul>
+                {% if seizure_eval.during_seizure_stare %}
+                    <li>
+                        Stare (for {{ seizure_eval.during_seizure_stare_length }})
+                    </li>
+                {% endif %}
+                {% if seizure_eval.during_seizure_walks %}
+                    <li>
+                        Walk around
+                    </li>
+                {% endif %}
+                {% if seizure_eval.during_seizure_aimless %}
+                    <li>
+                        Perform aimless activites
+                    </li>
+                {% endif %}
+                {% if seizure_eval.during_seizure_cry_etc %}
+                    <li>
+                        Suddenly cry / fall / become rigid, followed by muscle
+                         jerks / saliva on lips / bluish skin color
+                    </li>
+                {% endif %}
+                {% if seizure_eval.during_seizure_bladder_bowel %}
+                    <li>
+                        May experience loss of bladder or bowel control
+                    </li>
+                {% endif %}
+                {% if seizure_eval.during_seizure_confused_etc %}
+                    <li>
+                        May be confused, have a headache, be fatigued, followed
+                         by full return of consciousness
+                    </li>
+                {% endif %}
+                {% if seizure_eval.during_seizure_other %}
+                    <li>
+                        {{ seizure_eval.during_seizure_other_description }}
+                    </li>
+                {% endif %}
+            </ul>
+        </p>
+        <p>
+            <strong>Able to know when a seizure may occur: </strong>
+            {% if seizure_eval.knows_when_will_occur %}
+                Yes
+            {% else %}
+                No
+            {% endif %}
+        </p>
+        <p>
+            <strong>Able to communicate a seizure will occur: </strong>
+            {% if seizure_eval.can_communicate_when_will_occur %}
+                Yes
+            {% else %}
+                No
+            {% endif %}
+        </p>
+
+        <h2>Actions to Take During Seizure</h2>
+        <p>
+            <strong>Beyond employing general first aid, the following actions
+             are suggested: </strong>
+            <ul>
+                {% if seizure_eval.action_to_take_do_nothing %}
+                    <li>
+                        Do nothing
+                    </li>
+                {% endif %}
+                {% if seizure_eval.action_to_take_dismount %}
+                    <li>
+                        Dismount from horse
+                    </li>
+                {% endif %}
+                {% if seizure_eval.action_to_take_allow_time %}
+                    <li>
+                        Allow {{ form.action_to_take_allow_time_how_long }}
+                         minutes to rest and re-orient
+                    </li>
+                {% endif %}
+                {% if seizure_eval.action_to_take_report_immediately %}
+                    <li>
+                        Report observations to parents/guardians immediately
+                    </li>
+                {% endif %}
+                {% if seizure_eval.action_to_take_send_note %}
+                    <li>
+                        Send note home to parent/guardian
+                    </li>
+                {% endif %}
+            </ul>
+    {% endif %}
+{% endblock %}
