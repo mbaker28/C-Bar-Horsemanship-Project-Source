@@ -63,6 +63,211 @@ class TestPublicViews(TestCase):
         self.assertEqual(response.status_code, 200) # Loaded...
 
 
+class TestApplicationForm(TestCase):
+    def setUp(self):
+        setup_test_environment() #Initialize the test enviornment
+        client=Client() #Make a test client (someone viewing the database)
+
+        # Create a Participant record and save it
+        test_participant=models.Participant(
+            name="TEST Bruce Wayne",
+            birth_date="1984-6-24",
+            email="bruce@wayneenterprises.com",
+            weight=185.0,
+            gender="M",
+            guardian_name="Alfred Pennyworth",
+            height=72.0,
+            minor_status="G",
+            address_street="1234 Wayne St.",
+            address_city="Gotham",
+            address_zip="424278",
+            phone_home="(300) 200-100",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
+            school_institution="Ra's Al Ghul School of Ninjutsu"
+        )
+        test_participant.save()
+
+    def test_application_form_creates_participant(self):
+        """ Tests whether the form creates a participant record once all
+            fields are entered. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_zip": "654321",
+            "phone_home": "(400) 100-200",
+            "phone_cell": "(400) 200-300",
+            "phone_work": "(400) 300-400",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # DISABLED: We don't have a post form url redirect location or view yet
+        # Assert the the redirect url matches the post-form page:
+        # self.assertEqual(
+        #     resp['Location'],
+        #     'http://testserver/thank you place'
+        # )
+
+        # Attempt to retreive the updated Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Verify that all of the Participant fields were set correctly:
+        self.assertEqual(
+            participant_in_db.name,
+            form_data["name"]
+        )
+        self.assertEqual(
+            "{d.year}-{d.month}-{d.day}".format(d=participant_in_db.birth_date),
+            form_data["birth_date"]
+        )
+        self.assertEqual(
+            str(participant_in_db.height), # To string so can check against form
+            form_data["height"]
+        )
+        self.assertEqual(
+            str(participant_in_db.weight), # To string so can check against form
+            form_data["weight"]
+        )
+        self.assertEqual(
+            participant_in_db.gender,
+            form_data["gender"]
+        )
+        self.assertEqual(
+            participant_in_db.minor_status,
+            form_data["minor_status"]
+        )
+        self.assertEqual(
+            participant_in_db.school_institution,
+            form_data["school_institution"]
+        )
+        self.assertEqual(
+            participant_in_db.guardian_name,
+            form_data["guardian_name"]
+        )
+        self.assertEqual(
+            participant_in_db.address_street,
+            form_data["address_street"]
+        )
+        self.assertEqual(
+            participant_in_db.address_city,
+            form_data["address_city"]
+        )
+        self.assertEqual(
+            participant_in_db.address_zip,
+            form_data["address_zip"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_home,
+            form_data["phone_home"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_cell,
+            form_data["phone_cell"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_work,
+            form_data["phone_work"]
+        )
+        self.assertEqual(
+            participant_in_db.email,
+            form_data["email"]
+        )
+
+    def test_application_form_participant_already_exists(self):
+        """ Form throws error if the participant already exists. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_zip": "654321",
+            "phone_home": "(400) 100-200",
+            "phone_cell": "(400) 200-300",
+            "phone_work": "(400) 300-400",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        print(response.context)
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS
+            )
+        )
+
+    def test_application_form_participant_does_not_exist_with_invalid_data(self):
+        """ Form throws an error if the form data is not valid. """
+
+        form_data={
+            "name": "TEST sdf83sdf",
+            "birth_date": "sdf##df",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_zip": "654321",
+            "phone_home": "(400) 100-200",
+            "phone_cell": "(400) 200-300",
+            "phone_work": "(400) 300-400",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+
 class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
