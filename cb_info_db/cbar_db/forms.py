@@ -457,3 +457,13 @@ class ParticipantAdoptionForm(forms.Form):
     donation_type=forms.ChoiceField(
         choices=models.Donation._meta.get_field("donation_type").choices
     )
+
+
+class HorseAdoptionForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    donation_type=forms.ChoiceField(
+        choices=models.Donation._meta.get_field("donation_type").choices
+    )
