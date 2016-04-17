@@ -1115,12 +1115,17 @@ def donation_horse(request):
             loggeyMcLogging.error("The form is valid")
 
             donation=models.Donation(
-                donation_type=(forms.cleaned_data
+                donation_type=(form.cleaned_data
                     ["donation_type"]
                 ),
                 amount=(
                     form.cleaned_data["amount"]
-                )
+                ),
+                name=(
+                    form.cleaned_data["name"]
+                ),
+                email=(
+                    form.cleaned_data["email"]
             )
             donation.save()
         else:

@@ -467,3 +467,7 @@ class HorseAdoptionForm(forms.Form):
     donation_type=forms.ChoiceField(
         choices=models.Donation._meta.get_field("donation_type").choices
     )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()
