@@ -52,10 +52,14 @@
             <span class="error_message">
                 {{ form.address_street.errors.as_text }}
             </span>
-            <br />
             City: {{ form.address_city }}
             <span class="error_message">
                 {{ form.address_city.errors.as_text }}
+            </span>
+            <br />
+            State: {{ form.address_state }}
+            <span class="error_message">
+                {{ form.address_state.errors.as_text }}
             </span>
             Zip Code: {{ form.address_zip }}
             <span class="error_message">

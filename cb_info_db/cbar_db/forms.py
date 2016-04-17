@@ -1,5 +1,6 @@
 from django import forms
 from cbar_db import models
+from localflavor.us.forms import USStateField
 
 
 class ApplicationForm(forms.Form):
@@ -45,6 +46,8 @@ class ApplicationForm(forms.Form):
     address_city = forms.CharField(
         max_length=models.Participant._meta.get_field("address_city").max_length
     )
+
+    address_state = USStateField()
 
     address_zip = forms.CharField(
         max_length=models.Participant._meta.get_field("address_zip").max_length

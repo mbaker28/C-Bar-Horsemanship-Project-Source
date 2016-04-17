@@ -50,7 +50,7 @@
                 <strong>Address</strong><br />
                 {{ participant.address_street }}<br />
                 {{ participant.address_city }}<br />
-                {{ participant.address_zip }}<br />
+                {{ participant.address_state }} {{ participant.address_zip }}
             </div>
             <div class="floating_block">
                 <strong>Minor Status</strong><br /> {{ participant.get_minor_status_display }}

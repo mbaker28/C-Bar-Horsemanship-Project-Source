@@ -88,6 +88,7 @@ def public_form_application(request):
                     guardian_name=form.cleaned_data['guardian_name'],
                     address_street=form.cleaned_data['address_street'],
                     address_city=form.cleaned_data['address_city'],
+                    address_state=form.cleaned_data['address_state'],
                     address_zip=form.cleaned_data['address_zip'],
                     phone_home=form.cleaned_data['phone_home'],
                     phone_cell=form.cleaned_data['phone_cell'],
