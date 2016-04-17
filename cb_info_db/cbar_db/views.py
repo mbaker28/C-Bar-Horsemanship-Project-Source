@@ -1126,6 +1126,7 @@ def donation_horse(request):
                 ),
                 email=(
                     form.cleaned_data["email"]
+                )
             )
             donation.save()
         else:
