@@ -271,6 +271,54 @@ class TestApplicationForm(TestCase):
             )
         )
 
+    def test_application_form_with_no_phone_numbers_throws_error(self):
+        """ Verify that an Application form view, populated with no phone
+         numbers, displays an error message. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "",
+            "phone_cell": "",
+            "phone_work": "",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that each phone field threw the correct error:
+        self.assertFormError(
+            response,
+            "form",
+            "phone_home",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+        self.assertFormError(
+            response,
+            "form",
+            "phone_cell",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+        self.assertFormError(
+            response,
+            "form",
+            "phone_work",
+            forms.ERROR_TEXT_NO_PHONE
+        )
 
 class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
@@ -2734,7 +2782,6 @@ class TestSeizureEvaluationForm(TestCase):
             print("ERROR: Could't retrieve seizure name/type three!")
         self.assertTrue(found_seizure_three)
 
-
     def test_seizure_evaluation_form_with_invalid_participant_name(self):
         """ Verify that a Seizure Evaluation form view, populated with
          an invalid participant name, displays an error message. """
@@ -2893,6 +2940,73 @@ class TestSeizureEvaluationForm(TestCase):
             response.context["error_text"] == (
                 views.ERROR_TEXT_FORM_INVALID
             )
+        )
+
+    def test_seizure_evaluation_form_with_no_phone_numbers_throws_error(self):
+        """ Verify that a Seizure Evaluation form view, populated with no phone
+         numbers, displays an error message. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "",
+            "phone_cell": "",
+            "phone_work": "",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-seizure"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that each phone field threw the correct error:
+        self.assertFormError(
+            response,
+            "form",
+            "phone_home",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+        self.assertFormError(
+            response,
+            "form",
+            "phone_cell",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+        self.assertFormError(
+            response,
+            "form",
+            "phone_work",
+            forms.ERROR_TEXT_NO_PHONE
         )
 
 
