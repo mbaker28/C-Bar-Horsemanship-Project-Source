@@ -670,23 +670,26 @@ def public_form_seizure(request):
             )
             seizure_data.save()
 
-            seizure_type_one=models.SeizureType(
-                seizure_eval=seizure_data,
-                name=form.cleaned_data['seizure_name_one']
-            )
-            seizure_type_one.save()
+            if form.cleaned_data["seizure_name_one"] != "":
+                seizure_type_one=models.SeizureType(
+                    seizure_eval=seizure_data,
+                    name=form.cleaned_data['seizure_name_one']
+                )
+                seizure_type_one.save()
 
-            seizure_type_two=models.SeizureType(
-                seizure_eval=seizure_data,
-                name=form.cleaned_data['seizure_name_two']
-            )
-            seizure_type_two.save()
+            if form.cleaned_data["seizure_name_two"] != "":
+                seizure_type_two=models.SeizureType(
+                    seizure_eval=seizure_data,
+                    name=form.cleaned_data['seizure_name_two']
+                )
+                seizure_type_two.save()
 
-            seizure_type_three=models.SeizureType(
-                seizure_eval=seizure_data,
-                name=form.cleaned_data['seizure_name_three']
-            )
-            seizure_type_three.save()
+            if form.cleaned_data["seizure_name_three"] != "":
+                seizure_type_three=models.SeizureType(
+                    seizure_eval=seizure_data,
+                    name=form.cleaned_data['seizure_name_three']
+                )
+                seizure_type_three.save()
 
             if form.cleaned_data["medication_one_name"] != "":
                 medication_one=models.Medication(

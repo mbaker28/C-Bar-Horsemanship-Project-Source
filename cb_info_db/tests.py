@@ -2531,9 +2531,11 @@ class TestSeizureEvaluationForm(TestCase):
                 name=form_data["seizure_name_three"]
             )
             found_seizure_three=True
+            print("ERROR: Retrieved seizure name/type three!")
         except:
-            print("ERROR: Could't retrieve seizure name/type three!")
-        self.assertTrue(found_seizure_three)
+            print("Could't retrieve seizure name/type three. This is the"
+                " expected result")
+        self.assertFalse(found_seizure_three)
 
         # Attempt to retreive the new Medication record for medication_one_name:
         found_medication_one=False
