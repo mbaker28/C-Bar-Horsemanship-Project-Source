@@ -29,6 +29,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from localflavor.us.models import USStateField
 
 # Global Constants and Choices
 NAME_LENGTH=75
@@ -105,14 +106,12 @@ class Participant(models.Model):
     minor_status=models.CharField(max_length=1, choices=MINOR_STATUS_CHOICES)
     address_street=models.CharField(max_length=150)
     address_city=models.CharField(max_length=50)
+    address_state=USStateField()
     address_zip=models.CharField(max_length=6)
     phone_home=models.CharField(max_length=PHONE_LENGTH)
     phone_cell=models.CharField(max_length=PHONE_LENGTH)
     phone_work=models.CharField(max_length=PHONE_LENGTH)
     school_institution=models.CharField(max_length=150, blank=True)
-    #date=models.DateField(primary_key=True)
-    # signature=models.CharField(max_length=NAME_LENGTH)
-
 
 class Caregiver(models.Model):
     caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK
