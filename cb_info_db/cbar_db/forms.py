@@ -3,6 +3,9 @@ from cbar_db import models
 from localflavor.us.forms import USStateField
 
 
+ERROR_TEXT_NO_PHONE="Please enter at least one phone number."
+
+
 class ApplicationForm(forms.Form):
     name = forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
@@ -54,20 +57,38 @@ class ApplicationForm(forms.Form):
     )
 
     phone_home = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_home").max_length
+        max_length=models.Participant._meta.get_field("phone_home").max_length,
+        required=False
     )
 
     phone_cell = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_cell").max_length
+        max_length=models.Participant._meta.get_field("phone_cell").max_length,
+        required=False
     )
 
     phone_work = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_cell").max_length
+        max_length=models.Participant._meta.get_field("phone_cell").max_length,
+        required=False
     )
 
     email = forms.EmailField()
 
-    #date = forms.DateField()
+    def clean(self):
+        """ Automatically called when .is_valid() or .clean() is called. """
+
+        cleaned_data=super(ApplicationForm, self).clean()
+        phone_home=cleaned_data.get("phone_home")
+        phone_cell=cleaned_data.get("phone_cell")
+        phone_work=cleaned_data.get("phone_work")
+
+        # Verify that the user entered at least one phone number
+        if phone_home == "" and phone_cell == "" and phone_work == "":
+            # The user hasn't entered at least one phone number, so the form is
+            # invalid. Raise errors for each phone field:
+
+            self.add_error("phone_home", ERROR_TEXT_NO_PHONE)
+            self.add_error("phone_cell", ERROR_TEXT_NO_PHONE)
+            self.add_error("phone_work", ERROR_TEXT_NO_PHONE)
 
 
 class SeizureEvaluationForm(forms.Form):
@@ -90,19 +111,22 @@ class SeizureEvaluationForm(forms.Form):
     phone_home=forms.CharField(
         max_length=(models.Participant._meta
             .get_field("phone_home").max_length
-        )
+        ),
+        required=False
     )
 
     phone_cell=forms.CharField(
         max_length=(models.Participant._meta
             .get_field("phone_cell").max_length
-        )
+        ),
+        required=False
     )
 
     phone_work=forms.CharField(
         max_length=(models.Participant._meta
             .get_field("phone_work").max_length
-        )
+        ),
+        required=False
     )
 
     seizure_name_one=forms.CharField(
@@ -249,6 +273,22 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
+    def clean(self):
+        """ Automatically called when .is_valid() or .clean() is called. """
+
+        cleaned_data=super(SeizureEvaluationForm, self).clean()
+        phone_home=cleaned_data.get("phone_home")
+        phone_cell=cleaned_data.get("phone_cell")
+        phone_work=cleaned_data.get("phone_work")
+
+        # Verify that the user entered at least one phone number
+        if phone_home == "" and phone_cell == "" and phone_work == "":
+            # The user hasn't entered at least one phone number, so the form is
+            # invalid. Raise errors for each phone field:
+
+            self.add_error("phone_home", ERROR_TEXT_NO_PHONE)
+            self.add_error("phone_cell", ERROR_TEXT_NO_PHONE)
+            self.add_error("phone_work", ERROR_TEXT_NO_PHONE)
 
 class LiabilityReleaseForm(forms.Form):
     name = forms.CharField(
