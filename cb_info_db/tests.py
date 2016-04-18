@@ -2461,3 +2461,20 @@ class TestSeizureEvaluationForm(TestCase):
                 views.ERROR_TEXT_FORM_INVALID
             )
         )
+class AdoptParticipant(TestCase):
+    def setup(self):
+        setup_test_environment()
+        client=Client()
+
+        test_adopt_participant=models.Donor(
+            amount="5"
+            name="TEST Miguel"
+            email="Michael.Something@ftc.com"
+        )
+        test_adopt_participant.save
+
+        if form.is_valid():
+            print("Form is Valid")
+
+        else:
+            print("Form is not Valid")
