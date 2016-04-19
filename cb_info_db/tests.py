@@ -2461,7 +2461,8 @@ class TestSeizureEvaluationForm(TestCase):
                 views.ERROR_TEXT_FORM_INVALID
             )
         )
-class AdoptParticipant(TestCase):
+
+class TestAdoptParticipant(TestCase):
     def setup(self):
         setup_test_environment()
         client=Client()
@@ -2528,63 +2529,63 @@ class AdoptParticipant(TestCase):
 
         self.assertFalse(found_donor)
 
-def test_adopt_participant_not_valid_email(self):
+    def test_adopt_participant_not_valid_email(self):
 
-    found_participant=False
+        found_participant=False
 
-    form_data={
-        "name":"Test Michael",
-        "email":"Not an email",
-        "amount":"5",
-    }
-    form.forms.AdoptParticipantDonation(form_data)
+        form_data={
+            "name":"Test Michael",
+            "email":"Not an email",
+            "amount":"5",
+        }
+        form.forms.AdoptParticipantDonation(form_data)
 
-    if form.is_valid():
-        print("Form is Valid")
+        if form.is_valid():
+            print("Form is Valid")
 
-        try:
-            print("Finding participant...")
-            participant_instance=models.Participant.objects.get(
-                name=form.cleaned_data["name"],
-                birth_date=form.cleaned_data["birth_date"]
-            )
-            print("Found participant.")
-            found_participant=True
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
 
-        except ObjectDoesNotExist:
-            found_participant=False
+            except ObjectDoesNotExist:
+                found_participant=False
 
-    else:
-        print("form is not valid")
+        else:
+            print("form is not valid")
 
-        self.assertTrue(found_participant)
+            self.assertTrue(found_participant)
 
-def test_donation_adopt_participant_not_valid_amount(self):
-    found_participant=false
+    def test_donation_adopt_participant_not_valid_amount(self):
+        found_participant=false
 
-    form_data={
-        "name":"Test Michael",
-        "email":"Michael@ftc.com",
-        "amount":"-5",
-    }
-    form.froms.AdoptParticipantDonation(form_data)
+        form_data={
+            "name":"Test Michael",
+            "email":"Michael@ftc.com",
+            "amount":"-5",
+        }
+        form.froms.AdoptParticipantDonation(form_data)
 
-    if form.is_valid():
-        print("form is valid")
+        if form.is_valid():
+            print("form is valid")
 
-        try:
-            print("Finding participant...")
-            participant_instance=models.Participant.objects.get(
-                name=form.cleaned_data["name"],
-                birth_date=form.cleaned_data["birth_date"]
-            )
-            print("Found participant.")
-            found_participant=True
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name=form.cleaned_data["name"],
+                    birth_date=form.cleaned_data["birth_date"]
+                )
+                print("Found participant.")
+                found_participant=True
 
-        except ObjectDoesNotExist:
-            found_participant=False
+            except ObjectDoesNotExist:
+                found_participant=False
 
-    else:
-        print("Form is not valid.")
+        else:
+            print("Form is not valid.")
 
-    self.assertEquals(found_participant, true)
+        self.assertEquals(found_participant, true)
