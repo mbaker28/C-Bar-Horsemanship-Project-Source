@@ -2478,3 +2478,33 @@ class AdoptParticipant(TestCase):
 
         else:
             print("Form is not Valid")
+    def test_adopt_participant_form_saves_data(self):
+
+        form_data={
+            "amount":"5"
+            "Name": "TEST Miquel Johnson"
+            "email": "test@test.com"
+        }
+
+        response=self.client.post(reverse("AdoptParticipant"),form_data)
+
+        self.asserEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving new donor record")
+            Adopt_participant_in_db=(models.MediaRelease
+            .objects.get(
+                donor_id=donor_in_db,
+                date=form_data["date"]
+            )
+        )
+            print(
+                "successfully retrieved new Donor record."
+                )
+        except:
+            print(
+                "error: Unable to retrieve new Donor record!"
+            )
+        print(
+            "Checking stored donor attributes"
+        )
