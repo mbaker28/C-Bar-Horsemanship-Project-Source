@@ -2466,45 +2466,67 @@ class AdoptParticipant(TestCase):
         setup_test_environment()
         client=Client()
 
-        test_adopt_participant=models.Donor(
+        test_participant_donor=models.Donor(
             amount="5"
             name="TEST Miguel"
             email="Michael.Something@ftc.com"
         )
         test_adopt_participant.save
 
-        if form.is_valid():
-            print("Form is Valid")
+        test_participant_no_donor=models.Donor(
+            amount"2"
+            name="Test Michael"
+            email="nottest@test.com"
+        )
+        test_participant_no_donor.save()
 
-        else:
-            print("Form is not Valid")
-    def test_adopt_participant_form_saves_data(self):
+    def test_donation_form_finds_valid_donor(self):
+        found_partcipant=False
 
         form_data={
             "amount":"5"
-            "Name": "TEST Miquel Johnson"
-            "email": "test@test.com"
+            "name":"TEST Miguel"
+            "email":"Michael.Something@ftc.com"
         }
+        form=forms.DONATION_ADOPT_PARTICIPANT(form_data)
 
-        response=self.client.post(reverse("AdoptParticipant"),form_data)
+        if form.is_valid():
+            print("Form is valid")
 
-        self.asserEqual(response.status_code, 302)
+        else:
+            print("Form is not valid")
 
-        try:
-            print("Retrieving new donor record")
-            Adopt_participant_in_db=(models.MediaRelease
-            .objects.get(
-                donor_id=donor_in_db,
-                date=form_data["date"]
-            )
-        )
-            print(
-                "successfully retrieved new Donor record."
-                )
-        except:
-            print(
-                "error: Unable to retrieve new Donor record!"
-            )
-        print(
-            "Checking stored donor attributes"
-        )
+        self.assertTrue(found_donor)
+
+    def test_adopt_participant_not_valid_donor_name(self):
+        found_participant=False
+
+        form_data{
+            "name":"Test Michael"
+            "email":"Michael.Something@ftc.com"
+            "amount":"5"
+        }
+        forms=forms.DONATION_ADOPT_PARTICIPANT(form_data)
+
+        if form.is_valid():
+            print("Form is valid.")
+
+        else:
+            print("Form is not vaild.")
+
+        self.assertFalse(found_donor)
+def test_adopt_participant_not_valid_email
+
+    found_participant=False
+
+    form_data{
+        "name":"Test Michael"
+        "email":"Not an email"
+        "amount":"5"
+        }
+        form.forms.DONATION_ADOPT_PARTICIPANT(form_data)
+
+        if form.is_valid():
+            print("Form is Valid")
+        else:
+            print("form is not valid")
