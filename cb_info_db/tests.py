@@ -2511,6 +2511,18 @@ class AdoptParticipant(TestCase):
         if form.is_valid():
             print("Form is valid.")
 
+        try:
+            print("Finding participant...")
+            participant_instance=models.Participant.objects.get(
+                name=form.cleaned_data["name"],
+                birth_date=form.cleaned_data["birth_date"]
+            )
+            print("Found participant.")
+            found_participant=True
+
+        except ObjectDoesNotExist:
+            found_participant=False
+
         else:
             print("Form is not vaild.")
 
@@ -2528,5 +2540,18 @@ def test_adopt_participant_not_valid_email
 
         if form.is_valid():
             print("Form is Valid")
+
+        try:
+            print("Finding participant...")
+            participant_instance=models.Participant.objects.get(
+                name=form.cleaned_data["name"],
+                birth_date=form.cleaned_data["birth_date"]
+            )
+            print("Found participant.")
+            found_participant=True
+
+        except ObjectDoesNotExist:
+            found_participant=False
+
         else:
             print("form is not valid")
