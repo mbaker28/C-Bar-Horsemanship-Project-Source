@@ -2467,16 +2467,16 @@ class AdoptParticipant(TestCase):
         client=Client()
 
         test_participant_donor=models.Donor(
-            amount="5"
-            name="TEST Miguel"
-            email="Michael.Something@ftc.com"
+            amount="5",
+            name= "TEST Super Batman",
+            email="Michael.Something@ftc.com",
         )
         test_adopt_participant.save
 
         test_participant_no_donor=models.Donor(
-            amount"2"
-            name="Test Michael"
-            email="nottest@test.com"
+            amount="2",
+            name="",
+            email="nottest@test.com",
         )
         test_participant_no_donor.save()
 
@@ -2484,11 +2484,11 @@ class AdoptParticipant(TestCase):
         found_partcipant=False
 
         form_data={
-            "amount":"5"
-            "name":"TEST Miguel"
-            "email":"Michael.Something@ftc.com"
+            "amount":"5",
+            "name":"TEST Miguel",
+            "email":"Michael.Something@ftc.com",
         }
-        form=forms.DONATION_ADOPT_PARTICIPANT(form_data)
+        form=forms.AdoptParticipantDonation(form_data)
 
         if form.is_valid():
             print("Form is valid")
@@ -2501,12 +2501,12 @@ class AdoptParticipant(TestCase):
     def test_adopt_participant_not_valid_donor_name(self):
         found_participant=False
 
-        form_data{
-            "name":"Test Michael"
-            "email":"Michael.Something@ftc.com"
-            "amount":"5"
+        form_data={
+            "name":"Test Michael",
+            "email":"Michael.Something@ftc.com",
+            "amount":"5",
         }
-        forms=forms.DONATION_ADOPT_PARTICIPANT(form_data)
+        forms=forms.AdoptParticipantDonation(form_data)
 
         if form.is_valid():
             print("Form is valid.")
@@ -2527,19 +2527,20 @@ class AdoptParticipant(TestCase):
             print("Form is not vaild.")
 
         self.assertFalse(found_donor)
-def test_adopt_participant_not_valid_email
+
+def test_adopt_participant_not_valid_email(self):
 
     found_participant=False
 
-    form_data{
-        "name":"Test Michael"
-        "email":"Not an email"
-        "amount":"5"
-        }
-        form.forms.DONATION_ADOPT_PARTICIPANT(form_data)
+    form_data={
+        "name":"Test Michael",
+        "email":"Not an email",
+        "amount":"5",
+    }
+    form.forms.AdoptParticipantDonation(form_data)
 
-        if form.is_valid():
-            print("Form is Valid")
+    if form.is_valid():
+        print("Form is Valid")
 
         try:
             print("Finding participant...")
@@ -2553,5 +2554,37 @@ def test_adopt_participant_not_valid_email
         except ObjectDoesNotExist:
             found_participant=False
 
-        else:
-            print("form is not valid")
+    else:
+        print("form is not valid")
+
+        self.assertTrue(found_participant)
+
+def test_donation_adopt_participant_not_valid_amount(self):
+    found_participant=false
+
+    form_data={
+        "name":"Test Michael",
+        "email":"Michael@ftc.com",
+        "amount":"-5",
+    }
+    form.froms.AdoptParticipantDonation(form_data)
+
+    if form.is_valid():
+        print("form is valid")
+
+        try:
+            print("Finding participant...")
+            participant_instance=models.Participant.objects.get(
+                name=form.cleaned_data["name"],
+                birth_date=form.cleaned_data["birth_date"]
+            )
+            print("Found participant.")
+            found_participant=True
+
+        except ObjectDoesNotExist:
+            found_participant=False
+
+    else:
+        print("Form is not valid.")
+
+    self.assertEquals(found_participant, true)
