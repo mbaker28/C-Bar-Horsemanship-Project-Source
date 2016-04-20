@@ -30,10 +30,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from localflavor.us.models import USStateField
+from localflavor.us.models import PhoneNumberField
 
 # Global Constants and Choices
 NAME_LENGTH=75
-PHONE_LENGTH=15
 SHORT_ANSWER_LENGTH=100
 
 MALE="M"
@@ -108,16 +108,16 @@ class Participant(models.Model):
     address_city=models.CharField(max_length=50)
     address_state=USStateField()
     address_zip=models.CharField(max_length=6)
-    phone_home=models.CharField(max_length=PHONE_LENGTH, null=True)
-    phone_cell=models.CharField(max_length=PHONE_LENGTH, null=True)
-    phone_work=models.CharField(max_length=PHONE_LENGTH, null=True)
+    phone_home=PhoneNumberField()
+    phone_cell=PhoneNumberField()
+    phone_work=PhoneNumberField()
     school_institution=models.CharField(max_length=150, blank=True)
 
 class Caregiver(models.Model):
     caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     name=models.CharField(max_length=NAME_LENGTH)
-    phone=models.CharField(max_length=PHONE_LENGTH)
+    phone=PhoneNumberField()
 
 
 class Session(models.Model):
@@ -152,7 +152,7 @@ class PhysRelease(models.Model):
     health_provider_name=models.CharField(max_length=NAME_LENGTH)
     health_provider_title=models.CharField(max_length=50)
     health_provider_address=models.CharField(max_length=255)
-    health_provider_phone=models.CharField(max_length=PHONE_LENGTH)
+    health_provider_phone=PhoneNumberField()
     health_provider_signature=models.CharField(max_length=NAME_LENGTH)
     #health_provider_license_num length is based on National Provider Identifier
     health_provider_license_num=models.CharField(max_length=10)
@@ -295,7 +295,7 @@ class AuthorizeEmergencyMedicalTreatment(models.Model):
     insurance_provider=models.CharField(max_length=70)
     insurance_policy_num=models.CharField(max_length=20)
     emerg_contact_name=models.CharField(max_length=NAME_LENGTH)
-    emerg_contact_phone=models.CharField(max_length=PHONE_LENGTH)
+    emerg_contact_phone=PhoneNumberField()
     emerg_contact_relation=models.CharField(max_length=50)
     alt_emerg_procedure=models.CharField(max_length=500, null=True)
     consents_emerg_med_treatment=models.CharField(
@@ -949,7 +949,7 @@ class MedicalInfo(models.Model):
     )
 
     primary_physician_name=models.CharField(max_length=NAME_LENGTH)
-    primary_physician_phone=models.CharField(max_length=PHONE_LENGTH)
+    primary_physician_phone=PhoneNumberField()
     last_seen_by_physician_date=models.DateField()
     last_seen_by_physician_reason=models.CharField(max_length=250)
     allergies_conditions_that_exclude=models.BooleanField(
