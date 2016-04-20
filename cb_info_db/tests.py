@@ -2538,7 +2538,7 @@ class TestAdoptParticipant(TestCase):
             "email":"Not an email",
             "amount":"5",
         }
-        form.forms.AdoptParticipantDonation(form_data)
+        form=forms.AdoptParticipantDonation(form_data)
 
         if form.is_valid():
             print("Form is Valid")
@@ -2561,7 +2561,7 @@ class TestAdoptParticipant(TestCase):
             self.assertTrue(found_participant)
 
     def test_donation_adopt_participant_not_valid_amount(self):
-        found_participant=false
+        found_participant=False
 
         form_data={
             "name":"Test Michael",
