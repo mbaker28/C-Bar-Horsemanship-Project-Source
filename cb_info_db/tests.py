@@ -2500,3 +2500,57 @@ class TestAdoptParticipant(TestCase):
                 print("FUCK MICHAEL Donor Not found.")
 
         self.assertTrue(found_donor)
+
+    def test_form_finds_no_valid_donor(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Super Flash",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.ParticipantAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("FUCK MICHAEL Donor Not found.")
+
+        self.assertFalse(found_donor)
+
+    def test_form_finds_no_email(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Super Batman",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.ParticipantAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("FUCK MICHAEL Donor Not found.")
+
+        self.assertFalse(found_donor)
