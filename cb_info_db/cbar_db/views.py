@@ -1238,3 +1238,34 @@ def report_seizure(request, participant_id, year, month, day):
             "participant": participant
         }
     )
+
+@login_required
+def session_plan(request, participant_id):
+    """Data for session plan form."""
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        # Create a form instance and populate it with data from the request:
+        form=forms.SessionPlanForm(request.POST)
+
+        # Check whether the form data entered is valid:
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+            # Find the participant's record based on their (name, birth_date):
+            try:
+                participant=models.Participant.objects.get(
+                    name=form.cleaned_data['signature'],
+                    birth_date=form.cleaned_data['birth_date']
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/private/session_plan.html",
+                    {
+                        'form': form,
+                        'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                    }
+                )
