@@ -3807,3 +3807,96 @@ class TestBackgroundCheckReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+class TestMonetaryDonation(TestCase):
+    def setUp(self):
+        setup_test_environment()
+        client=Client()
+
+        test_participant_donor=models.Donor(
+            name="TEST Batt Maker",
+            email="Matt.Something@ftc.gov",
+        )
+        test_participant_donor.save()
+
+
+    def test_form_finds_valid_donor(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Batt Maker",
+            "email":"Matt.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.MonetaryDonationForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertTrue(found_donor)
+
+    def test_form_finds_no_valid_donor(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Matthias",
+            "email":"Matt.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.MonetaryDonationForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertFalse(found_donor)
+
+    def test_form_finds_no_email(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Matthew",
+            "email":"Matt.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.MonetaryDonationForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertFalse(found_donor)
