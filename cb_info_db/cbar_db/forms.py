@@ -1,6 +1,7 @@
 from django import forms
 from cbar_db import models
 from localflavor.us.forms import USStateField
+from localflavor.us.forms import USPhoneNumberField
 
 
 ERROR_TEXT_NO_PHONE="Please enter at least one phone number."
@@ -56,20 +57,11 @@ class ApplicationForm(forms.Form):
         max_length=models.Participant._meta.get_field("address_zip").max_length
     )
 
-    phone_home = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_home").max_length,
-        required=False
-    )
+    phone_home=USPhoneNumberField(required=False)
 
-    phone_cell = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_cell").max_length,
-        required=False
-    )
+    phone_cell=USPhoneNumberField(required=False)
 
-    phone_work = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_cell").max_length,
-        required=False
-    )
+    phone_work=USPhoneNumberField(required=False)
 
     email = forms.EmailField()
 
@@ -108,26 +100,11 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-    phone_home=forms.CharField(
-        max_length=(models.Participant._meta
-            .get_field("phone_home").max_length
-        ),
-        required=False
-    )
+    phone_home=USPhoneNumberField(required=False)
 
-    phone_cell=forms.CharField(
-        max_length=(models.Participant._meta
-            .get_field("phone_cell").max_length
-        ),
-        required=False
-    )
+    phone_cell=USPhoneNumberField(required=False)
 
-    phone_work=forms.CharField(
-        max_length=(models.Participant._meta
-            .get_field("phone_work").max_length
-        ),
-        required=False
-    )
+    phone_work=USPhoneNumberField(required=False)
 
     seizure_name_one=forms.CharField(
         max_length=models.SeizureType._meta.get_field("name").max_length
@@ -310,11 +287,7 @@ class MedicalReleaseForm(forms.Form):
         )
     )
 
-    primary_physician_phone=forms.CharField(
-        max_length=(models.MedicalInfo._meta
-            .get_field("primary_physician_phone").max_length
-        )
-    )
+    primary_physician_phone=USPhoneNumberField()
 
     last_seen_by_physician_date=forms.DateField()
 
@@ -506,11 +479,7 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("primary_physician_name").max_length
         )
     )
-    primary_physician_phone=forms.CharField(
-        max_length=(models.MedicalInfo._meta
-            .get_field("primary_physician_phone").max_length
-        )
-    )
+    primary_physician_phone=USPhoneNumberField()
 
     # Stored in AuthorizeEmergencyMedicalTreatment
     pref_medical_facility=forms.CharField(
@@ -533,11 +502,7 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("emerg_contact_name").max_length
         )
     )
-    emerg_contact_phone=forms.CharField(
-        max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
-            .get_field("emerg_contact_phone").max_length
-        )
-    )
+    emerg_contact_phone=USPhoneNumberField()
     emerg_contact_relation=forms.CharField(
         max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
             .get_field("emerg_contact_relation").max_length
