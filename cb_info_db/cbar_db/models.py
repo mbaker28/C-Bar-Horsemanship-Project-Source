@@ -181,9 +181,21 @@ class Donation(models.Model):
     )
 
     donation_id=models.AutoField(primary_key=True) # Auto generated PK
-    donor_id=models.ForeignKey(Donor, on_delete=models.CASCADE)
-    horse_id=models.ForeignKey(Horse, on_delete=models.CASCADE)
-    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    donor_id=models.ForeignKey(
+        Donor,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    horse_id=models.ForeignKey(
+        Horse,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    participant_id=models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        null=True
+    )
     amount=models.DecimalField(max_digits=10, decimal_places=2)
     # Commented out because I don"t think we"ll actually store payment info,
     # but it"s in the ERD...
