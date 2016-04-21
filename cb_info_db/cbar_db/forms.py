@@ -554,3 +554,86 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("signature").max_length
         )
     )
+
+class SessionPlanForm(forms.Form):
+    # Stored in Participant
+    name=forms.CharField(
+        max_length=models.Participant._meta.get_field("name").max_length
+    )
+    birth_date=forms.DateField()
+    gender=forms.ChoiceField(
+        choices=models.Participant._meta.get_field("gender").choices
+    )
+
+    # Stored in SessionPlan
+    horse=forms.CharField(
+        max_length=models.SessionPlan._meta.get_field("horse").max_length
+    )
+    tack=forms.CharField(
+        max_length=models.SessionPlan._meta.get_field("tack").max_length
+    )
+    primary_diagnosis=CharField(
+        max_length=models.SessionPlan._meta.get_field("primary_diagnosis").max_length
+    )
+    secondary_diagnosis=CharField(
+        max_length=models.SessionPlan._meta.get_field("secondary_diagnosis").max_length
+    )
+    mobility=ChoiceField(
+        choices=models.SessionPlan._meta.get_field("mobility").choices
+    )
+    session_month_year=DateField()
+    other_students=CharField(
+        max_length=models.SessionPlan._meta.get_field("other_students").max_length
+    )
+    mounting_notes=CharField(
+        max_length=models.SessionPlan._meta.get_field("mounting_notes").max_length
+    )
+    dismounting_notes=CharField(
+        max_length=models.SessionPlan._meta.get_field("dismounting_notes").max_length
+    )
+    physical_goals=CharField(
+        max_length=models.SessionPlan._meta.get_field("physical_goals").max_length
+    )
+    emotional_goals=CharField(
+        max_length=models.SessionPlan._meta.get_field("emotional_goals").max_length
+    )
+    cognitive_goals=CharField(
+        max_length=models.SessionPlan._meta.get_field("cognitive_goals").max_length
+    )
+    personal_goals=CharField(
+        max_length=models.SessionPlan._meta.get_field("personal_goals").max_length
+    )
+
+    # Stored in AdaptationsNeeded
+    num_sidewalkers_walk_spotter=DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_walk_spotter").max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_walk_spotter").decimal_places
+    )
+    num_sidewalkers_walk_heel_hold=DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_walk_heel_hold").max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_walk_heel_hold").decimal_places
+    )
+    num_sidewalkers_walk_over_thigh=DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_walk_over_thigh").max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_walk_over_thigh").decimal_places
+    )
+    num_sidewalkers_walk_other=DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_walk_other").max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_walk_other").decimal_places
+    )
+    num_sidewalkers_trot_spotter=DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_trot_spotter").max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_trot_spotter").decimal_places
+    )
+    num_sidewalkers_trot_heel_hold=DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_trot_heel_hold").max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_trot_heel_hold").decimal_places
+    )
+    num_sidewalkers_trot_over_thigh=DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_trot_over_thigh").max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_trot_over_thigh").decimal_places
+    )
+    num_sidewalkers_trot_other=DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_trot_other").max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field("num_sidewalkers_trot_other").decimal_places
+    )
