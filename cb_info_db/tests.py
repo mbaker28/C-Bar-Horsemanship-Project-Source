@@ -4612,7 +4612,7 @@ class TestAdoptParticipant(TestCase):
 
         test_participant_donor=models.Donor(
             name="TEST Super Batman",
-            email="Michael.Something@ftc.gov",
+            email="michael.something@ftc.gov",
         )
         test_participant_donor.save()
 
@@ -4703,7 +4703,7 @@ class TestAdoptParticipant(TestCase):
         form_data={
             "name":"TEST Super Aquaman",
             "email":"Michael.Something@ftc.gov",
-            "amount":"5",
+            "amount":"sadhiugiufe5",
         }
 
         response=self.client.post(reverse("donation-participant"),form_data)
@@ -4738,8 +4738,8 @@ class TestAdoptParticipant(TestCase):
     def test_donation_adopt_participant_saves_with_valid_data(self):
 
         form_data={
-            "name":"TEST Super Batman",
-            "email":"Michael.Something@ftc.gov",
+            "name": "TEST Super Batman",
+            "email": "michael.something@ftc.gov",
             "amount":"5",
         }
 
@@ -4753,21 +4753,22 @@ class TestAdoptParticipant(TestCase):
                 name=form_data["name"],
                 email=form_data["email"]
             )
-            try:
-                print("Retrieving Donation Record")
-                donation_in_db=models.Donation.objects.get(
-                    donor_id=donor_in_db,
-                    email=form_data["email"]
-                )
-                print(
-                "successfully Retrieved new Donation record."
-                )
-            except:
-                print(
-                "Error: Unable to retreice new Donation Record!"
-                )
         except:
             print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+            "successfully Retrieved new Donation record."
+            )
+        except:
+            print(
+            "Error: Unable to retreice new Donation Record!"
+            )
 
         print(
             "Checking stored Donation attributes..."

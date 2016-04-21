@@ -780,6 +780,10 @@ def donation_participant(request):
                 amount=form.cleaned_data["amount"]
             )
             donation.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/')
+            
         else:
             loggeyMcLogging.error("The form is NOT Valid")
             return render(
