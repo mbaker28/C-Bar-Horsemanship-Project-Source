@@ -11,6 +11,9 @@ urlpatterns = [
     # Public forms index
     url(r'^forms/public/$', views.index_public_forms, name='index-public-forms'),
 
+    # Form saved message
+    url(r'^forms/saved/$', views.form_saved, name='form-saved'),
+
     # Application form
     url(r'^forms/public/application/$', views.public_form_application,
         name='public-form-application'),
