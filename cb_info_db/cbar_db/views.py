@@ -1240,7 +1240,7 @@ def report_seizure(request, participant_id, year, month, day):
     )
 
 @login_required
-def session_plan(request, participant_id):
+def private_form_session_plan(request):
     """Data for session plan form."""
 
     # if this is a POST request we need to process the form data
@@ -1269,3 +1269,65 @@ def session_plan(request, participant_id):
                         'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
                     }
                 )
+            session_plan=models.SessionPlan(
+                participant_id=participant,
+                date=form.cleaned_data["date"],
+                horse=form.cleaned_data["horse"],
+                gender=form.cleaned_data["gender"],
+                tack=form.cleaned_data["tack"],
+                primary_diagnosis=form.cleaned_data["primary_diagnosis"],
+                secondary_diagnosis=form.cleaned_data["secondary_diagnosis"],
+                mobility=form.cleaned_data["mobility"],
+                session_month_year=form.cleaned_data["session_month_year"],
+                other_students=form.cleaned_data["other_students"],
+                num_sidewalkers_walk_spotter=(
+                    form.cleaned_data["num_sidewalkers_walk_spotter"]),
+                num_sidewalkers_walk_heel_hold=(
+                    form.cleaned_data["num_sidewalkers_walk_heel_hold"]),
+                num_sidewalkers_walk_over_thigh=(
+                    form.cleaned_data["num_sidewalkers_walk_over_thigh"]),
+                num_sidewalkers_walk_other=(
+                    form.cleaned_data["num_sidewalkers_walk_other"]),
+                num_sidewalkers_trot_spotter=(
+                    form.cleaned_data["num_sidewalkers_trot_spotter"]),
+                num_sidewalkers_trot_heel_hold=(
+                    form.cleaned_data["num_sidewalkers_trot_heel_hold"]),
+                num_sidewalkers_trot_over_thigh=(
+                    form.cleaned_data["num_sidewalkers_trot_over_thigh"]),
+                num_sidewalkers_trot_other=(
+                    form.cleaned_data["num_sidewalkers_trot_other"]),
+                mounting_notes=form.cleaned_data["mounting_notes"],
+                dismounting_notes=form.cleaned_data["dismounting_notes"],
+                physical_goals=form.cleaned_data["physical_goals"],
+                emotional_goals=form.cleaned_data["emotional_goals"],
+                cognitive_goals=form.cleaned_data["cognitive_goals"],
+                personal_goals=form.cleaned_data["personal_goals"],
+                signature=(form.cleaned_data["signature"])
+            )
+            session_plan.save()
+
+            return HttpResponseRedirect('/')
+
+        else:
+            # The form is not valid
+            loggeyMcLogging.error("The form is NOT valid")
+
+            return render(
+                request,
+                "cbar_db/forms/private/session_plan.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+    else:
+        # If request type is GET (or any other method) create a blank form and
+        # display it:
+        form=forms.SessionPlanForm()
+        return render(
+            request,
+            'cbar_db/forms/private/session_plan.html',
+            {
+                'form': form
+            }
+        )
