@@ -1269,28 +1269,41 @@ def private_form_session_plan(request):
                         'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
                     }
                 )
-            session_plan=models.SessionPlan(
-                participant_id=participant,
-                date=form.cleaned_data["date"],
-                horse=form.cleaned_data["horse"],
-                gender=form.cleaned_data["gender"],
-                tack=form.cleaned_data["tack"],
-                primary_diagnosis=form.cleaned_data["primary_diagnosis"],
-                secondary_diagnosis=form.cleaned_data["secondary_diagnosis"],
-                mobility=form.cleaned_data["mobility"],
-                session_month_year=form.cleaned_data["session_month_year"],
-                other_students=form.cleaned_data["other_students"],
-                mounting_notes=form.cleaned_data["mounting_notes"],
-                dismounting_notes=form.cleaned_data["dismounting_notes"],
-                physical_goals=form.cleaned_data["physical_goals"],
-                emotional_goals=form.cleaned_data["emotional_goals"],
-                cognitive_goals=form.cleaned_data["cognitive_goals"],
-                personal_goals=form.cleaned_data["personal_goals"],
-                signature=(form.cleaned_data["signature"])
+
+            session_plan=models.Session(
+                date=form.cleaned_data['date'],
+                tack=form.cleaned_data['tack']
             )
             session_plan.save()
 
+            session_goals=models.SessionGoals(
+                participant_id=participant,
+                session_id=form.cleaned_data['session_id'],
+                goal_type=form.cleaned_data['goal_type'],
+                goal_description=form.cleaned_data['goal_description'],
+                motiviation=form.cleaned_data['motiviation']
+            )
+            session_goals.save()
+
+            horse_info=models.Horse(
+                name=form.cleaned_data['name'],
+                description=form.cleaned_data['description']
+            )
+            horse_info.save()
+
             adaptions_needed=models.AdaptationsNeeded(
+                ambulatory_status=form.cleaned_data['ambulatory_status'],
+                ambulatory_status_other=(
+                    form.cleaned_data['ambulatory_status_other']),
+                mount_assistance_required=(
+                    form.cleaned_data['mount_assistance_required']),
+                mount_device_needed=(
+                    form.cleaned_data['mount_device_needed']),
+                mount_type=(
+                    form.cleaned_data['mount_type']),
+                dismount_assistance_required=(
+                    form.cleaned_data['dismount_assistance_required']),
+                dismount_type=form.cleaned_data['dismount_type'],
                 num_sidewalkers_walk_spotter=(
                     form.cleaned_data["num_sidewalkers_walk_spotter"]),
                 num_sidewalkers_walk_heel_hold=(
