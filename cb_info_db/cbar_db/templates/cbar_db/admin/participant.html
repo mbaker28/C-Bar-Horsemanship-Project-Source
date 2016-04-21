@@ -1,0 +1,127 @@
+{% extends "cbar_db/template.html" %}
+{% block header %}
+    <style type="text/css">
+        .floating_block_wrapper {
+            text-align: center;
+        }
+
+        .floating_block_wrapper > .floating_block {
+            padding: 1.5em;
+            display: inline-block;
+            vertical-align: top;
+            width: 12em;
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>
+        {% if participant %}
+            {{ participant.name }}
+        {% else %}
+            Participant Record
+        {% endif %}
+    </h1>
+    {% if error_text %}
+        <p style="text-align: center"><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    {% if participant %}
+        <div id="participant_general_info" class="floating_block_wrapper">
+            <h2>General Information</h2>
+            <div class="floating_block">
+                <strong>Home Phone</strong><br /> {{ participant.phone_home }}
+            </div>
+            <div class="floating_block">
+                <strong>Cell Phone</strong><br /> {{ participant.phone_cell }}
+            </div>
+            <div class="floating_block">
+                <strong>Work Phone</strong><br /> {{ participant.phone_work }}
+            </div>
+            <div class="floating_block">
+                <strong>Email</strong><br /> <a href="mailto</strong><br />{{ participant.email }}">
+                    {{ participant.email }}</a>
+            </div>
+            <div class="floating_block">
+                <strong>Guardian Name</strong><br /> {{ participant.guardian_name }}
+            </div>
+            <div class="floating_block">
+                <strong>Address</strong><br />
+                {{ participant.address_street }}<br />
+                {{ participant.address_city }}<br />
+                {{ participant.address_state }} {{ participant.address_zip }}
+            </div>
+            <div class="floating_block">
+                <strong>Minor Status</strong><br /> {{ participant.get_minor_status_display }}
+            </div>
+            <div class="floating_block">
+                <strong>Birth Date</strong><br /> {{ participant.birth_date }}
+            </div>
+            <div class="floating_block">
+                <strong>Height</strong><br /> {{ participant.height }}" <!-- Convert this to Ft'In"" -->
+            </div>
+            <div class="floating_block">
+                <strong>Weight</strong><br /> {{ participant.weight }} lb
+            </div>
+            <div class="floating_block">
+                <strong>Gender</strong><br /> {{ participant.get_gender_display }}
+            </div>
+            <div class="floating_block">
+                <strong>School/Institution</strong><br /> {{ participant.school_institution }}
+            </div>
+        </div>
+
+        <h2>Releases and Authorizations</h2>
+        <div id="releases_and_authorizations" class="floating_block_wrapper">
+            <div class="floating_block">
+                <strong>Emergency Medical Treatment Authorizations</strong><br />
+                {% for emergency_authorization in emergency_authorizations %}
+                <a href="{% url 'report-emerg-auth' participant.participant_id emergency_authorization.date.year emergency_authorization.date.month emergency_authorization.date.day %}">
+                    {{ emergency_authorization.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Medical Releases</strong><br />
+                {% for medical_release in medical_releases %}
+                    <a href="{% url 'report-med-release' participant.participant_id  medical_release.date.year medical_release.date.month medical_release.date.day%}">
+                        {{ medical_release.date }}
+                    </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Seizure Evaluations</strong><br />
+                {% for seizure_eval in seizure_evals %}
+                    <a href="{% url 'report-seizure' participant.participant_id  seizure_eval.date.year seizure_eval.date.month seizure_eval.date.day%}">
+                        {{ seizure_eval.date }}
+                    </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Liability Releases</strong><br />
+                {% for liability_release in liability_releases %}
+                    <a href="{% url 'report-liability' participant.participant_id liability_release.date.year liability_release.date.month liability_release.date.day %}">
+                        {{ liability_release.date }}
+                    </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Media Releases</strong><br />
+                {% for media_release in media_releases %}
+                    <a href="{% url 'report-media-release' participant.participant_id media_release.date.year media_release.date.month media_release.date.day %}">
+                        {{ media_release.date }}
+                    </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Background Check Authorizations</strong><br />
+                {% for background_check in background_checks %}
+                    <a href="{% url 'report-background' participant.participant_id background_check.date.year background_check.date.month background_check.date.day %}">
+                        {{ background_check.date }}
+                    </a><br />
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

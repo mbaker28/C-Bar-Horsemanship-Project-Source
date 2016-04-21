@@ -1,9 +1,97 @@
 from django import forms
 from cbar_db import models
+from localflavor.us.forms import USStateField
+
+
+ERROR_TEXT_NO_PHONE="Please enter at least one phone number."
+
+
+class ApplicationForm(forms.Form):
+    name = forms.CharField(
+        max_length=models.Participant._meta.get_field("name").max_length
+    )
+
+    birth_date = forms.DateField()
+
+    height = forms.DecimalField(
+        max_digits=models.Participant._meta.get_field("height").max_digits,
+        decimal_places=models.Participant._meta.get_field("height").decimal_places
+    )
+
+    weight = forms.DecimalField(
+        max_digits=models.Participant._meta.get_field("weight").max_digits,
+        decimal_places=models.Participant._meta.get_field("weight").decimal_places
+    )
+
+    gender = forms.ChoiceField(
+        #max_length=models.Participant._meta.get_field("gender").max_length,
+        choices=models.Participant._meta.get_field("gender").choices
+    )
+
+    minor_status = forms.ChoiceField(
+        #max_length=models.Participant._meta.get_field("minor_status").max_length,
+        choices=models.Participant._meta.get_field("minor_status").choices
+    )
+
+    school_institution = forms.CharField(
+        max_length=models.Participant._meta.get_field("school_institution").max_length
+    )
+
+    guardian_name = forms.CharField(
+        max_length=models.Participant._meta.get_field("guardian_name").max_length,
+        required=False
+    )
+
+    address_street = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_street").max_length
+    )
+
+    address_city = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_city").max_length
+    )
+
+    address_state = USStateField()
+
+    address_zip = forms.CharField(
+        max_length=models.Participant._meta.get_field("address_zip").max_length
+    )
+
+    phone_home = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_home").max_length,
+        required=False
+    )
+
+    phone_cell = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_cell").max_length,
+        required=False
+    )
+
+    phone_work = forms.CharField(
+        max_length=models.Participant._meta.get_field("phone_cell").max_length,
+        required=False
+    )
+
+    email = forms.EmailField()
+
+    def clean(self):
+        """ Automatically called when .is_valid() or .clean() is called. """
+
+        cleaned_data=super(ApplicationForm, self).clean()
+        phone_home=cleaned_data.get("phone_home")
+        phone_cell=cleaned_data.get("phone_cell")
+        phone_work=cleaned_data.get("phone_work")
+
+        # Verify that the user entered at least one phone number
+        if phone_home == "" and phone_cell == "" and phone_work == "":
+            # The user hasn't entered at least one phone number, so the form is
+            # invalid. Raise errors for each phone field:
+
+            self.add_error("phone_home", ERROR_TEXT_NO_PHONE)
+            self.add_error("phone_cell", ERROR_TEXT_NO_PHONE)
+            self.add_error("phone_work", ERROR_TEXT_NO_PHONE)
+
 
 class SeizureEvaluationForm(forms.Form):
-    #TODO: C-Bar staff signature needed in models.py? Re: Issue #26
-
     name=forms.CharField(
         max_length=(models.Participant._meta
             .get_field("name").max_length
@@ -23,19 +111,22 @@ class SeizureEvaluationForm(forms.Form):
     phone_home=forms.CharField(
         max_length=(models.Participant._meta
             .get_field("phone_home").max_length
-        )
+        ),
+        required=False
     )
 
     phone_cell=forms.CharField(
         max_length=(models.Participant._meta
             .get_field("phone_cell").max_length
-        )
+        ),
+        required=False
     )
 
     phone_work=forms.CharField(
         max_length=(models.Participant._meta
             .get_field("phone_work").max_length
-        )
+        ),
+        required=False
     )
 
     seizure_name_one=forms.CharField(
@@ -85,9 +176,9 @@ class SeizureEvaluationForm(forms.Form):
         ),
         required=False
     )
-    medication_one_duration=forms.CharField(
+    medication_one_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )
@@ -104,9 +195,9 @@ class SeizureEvaluationForm(forms.Form):
         ),
         required=False
     )
-    medication_two_duration=forms.CharField(
+    medication_two_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )
@@ -123,9 +214,9 @@ class SeizureEvaluationForm(forms.Form):
         ),
         required=False
     )
-    medication_three_duration=forms.CharField(
+    medication_three_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )
@@ -164,11 +255,7 @@ class SeizureEvaluationForm(forms.Form):
     )
 
     knows_when_will_occur=forms.BooleanField(required=False)
-
     can_communicate_when_will_occur=forms.BooleanField(required=False)
-
-    #not sure where "what are the signs?" field is on models.py
-
     action_to_take_do_nothing=forms.BooleanField(required=False)
     action_to_take_dismount=forms.BooleanField(required=False)
     action_to_take_allow_time=forms.BooleanField(required=False)
@@ -186,6 +273,22 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
+    def clean(self):
+        """ Automatically called when .is_valid() or .clean() is called. """
+
+        cleaned_data=super(SeizureEvaluationForm, self).clean()
+        phone_home=cleaned_data.get("phone_home")
+        phone_cell=cleaned_data.get("phone_cell")
+        phone_work=cleaned_data.get("phone_work")
+
+        # Verify that the user entered at least one phone number
+        if phone_home == "" and phone_cell == "" and phone_work == "":
+            # The user hasn't entered at least one phone number, so the form is
+            # invalid. Raise errors for each phone field:
+
+            self.add_error("phone_home", ERROR_TEXT_NO_PHONE)
+            self.add_error("phone_cell", ERROR_TEXT_NO_PHONE)
+            self.add_error("phone_work", ERROR_TEXT_NO_PHONE)
 
 class LiabilityReleaseForm(forms.Form):
     name = forms.CharField(
@@ -264,9 +367,9 @@ class MedicalReleaseForm(forms.Form):
         ),
         required=False
     )
-    medication_one_duration=forms.CharField(
+    medication_one_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )
@@ -281,9 +384,9 @@ class MedicalReleaseForm(forms.Form):
         ),
         required=False
     )
-    medication_two_duration=forms.CharField(
+    medication_two_reason=forms.CharField(
         max_length=(models.Medication._meta
-            .get_field("duration_taken").max_length
+            .get_field("reason_taken").max_length
         ),
         required=False
     )

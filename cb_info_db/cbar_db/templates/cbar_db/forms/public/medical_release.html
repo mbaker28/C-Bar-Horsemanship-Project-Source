@@ -120,10 +120,10 @@
             Medication: {{ form.medication_one_name }}
             <span class="error_message">
                 {{ form.medication_one_name.errors.as_text }}
-            </span> Used for:
-             {{ form.medication_one_duration }}
+            </span> Reason Taken:
+             {{ form.medication_one_reason }}
              <span class="error_message">
-                 {{ form.medication_one_duration.errors.as_text }}
+                 {{ form.medication_one_reason.errors.as_text }}
              </span>
             <br>
             How Often: {{ form.medication_one_frequency }}
@@ -134,10 +134,10 @@
             Medication: {{ form.medication_two_name }}
             <span class="error_message">
                 {{ form.medication_two_name.errors.as_text }}
-            </span> Used for:
-             {{ form.medication_two_duration }}
+            </span> Reason Taken:
+             {{ form.medication_two_reason }}
              <span class="error_message">
-                 {{ form.medication_two_duration.errors.as_text }}
+                 {{ form.medication_two_reason.errors.as_text }}
              </span>
             <br>
             How Often: {{ form.medication_two_frequency }}

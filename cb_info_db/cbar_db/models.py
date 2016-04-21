@@ -29,6 +29,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from localflavor.us.models import USStateField
 
 # Global Constants and Choices
 NAME_LENGTH=75
@@ -49,13 +50,6 @@ MINOR_STATUS_CHOICES=(
     (MINOR, "Minor"),
     (ADULT_WITH_GUARDIAN, "Adult with guardian"),
     (ADULT_WITHOUT_GUARDIAN, "Independent adult")
-)
-
-YES="Y"
-NO="N"
-YES_NO_CHOICES=(
-    (YES, "Yes"),
-    (NO, "No")
 )
 
 YES_BOOL=True
@@ -112,12 +106,12 @@ class Participant(models.Model):
     minor_status=models.CharField(max_length=1, choices=MINOR_STATUS_CHOICES)
     address_street=models.CharField(max_length=150)
     address_city=models.CharField(max_length=50)
+    address_state=USStateField()
     address_zip=models.CharField(max_length=6)
-    phone_home=models.CharField(max_length=PHONE_LENGTH)
-    phone_cell=models.CharField(max_length=PHONE_LENGTH)
-    phone_work=models.CharField(max_length=PHONE_LENGTH)
+    phone_home=models.CharField(max_length=PHONE_LENGTH, null=True)
+    phone_cell=models.CharField(max_length=PHONE_LENGTH, null=True)
+    phone_work=models.CharField(max_length=PHONE_LENGTH, null=True)
     school_institution=models.CharField(max_length=150, blank=True)
-
 
 class Caregiver(models.Model):
     caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK
@@ -187,9 +181,21 @@ class Donation(models.Model):
     )
 
     donation_id=models.AutoField(primary_key=True) # Auto generated PK
-    donor_id=models.ForeignKey(Donor, on_delete=models.CASCADE)
-    horse_id=models.ForeignKey(Horse, on_delete=models.CASCADE)
-    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    donor_id=models.ForeignKey(
+        Donor,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    horse_id=models.ForeignKey(
+        Horse,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    participant_id=models.ForeignKey(
+        Participant,
+        on_delete=models.CASCADE,
+        null=True
+    )
     amount=models.DecimalField(max_digits=10, decimal_places=2)
     # Commented out because I don"t think we"ll actually store payment info,
     # but it"s in the ERD...
@@ -287,7 +293,7 @@ class ConfidentialityPolicy(models.Model):
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
-    agreement=models.CharField(max_length=1, choices=YES_NO_CHOICES)
+    agreement=models.BooleanField(choices=YES_NO_BOOL_CHOICES)
 
 
 class AuthorizeEmergencyMedicalTreatment(models.Model):
@@ -1020,8 +1026,8 @@ class Medication(models.Model):
         max_length=SHORT_ANSWER_LENGTH,
     )
 
-    duration_taken=models.CharField(max_length=25)
-    frequency=models.CharField(max_length=25)
+    reason_taken=models.CharField(max_length=50)
+    frequency=models.CharField(max_length=50)
 
 
 class SeizureEval(models.Model):

@@ -1,0 +1,31 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Background Check Authorization Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            The participant has stated via their electronic signature that they
+             <strong>agree</strong> to the background check authorization
+             statement.
+        </p>
+
+        <hr />
+
+        <p>
+            <strong>Participant's Name:</strong> {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong>
+             {{ participant.birth_date }}
+        </p>
+        <p>
+            <strong>Driver License Number:</strong>
+             {{ background_check.driver_license_num }}
+        <p>
+            <strong>Liability Release Date:</strong> {{ background_check.date }}
+        </p>
+    {% endif %}
+{% endblock %}

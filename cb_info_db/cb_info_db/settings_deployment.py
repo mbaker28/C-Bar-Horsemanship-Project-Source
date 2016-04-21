@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'cbar_db.apps.CbarDbConfig',
+    'localflavor',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -106,7 +107,10 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+LOGIN_URL='user-login'
+SESSION_COOKIE_AGE=30 * 60 #30 minutes
+SESSION_SAVE_EVERY_REQUEST=True #Reset the expiration timer with every request
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True #Logout the user if they close their browser
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
