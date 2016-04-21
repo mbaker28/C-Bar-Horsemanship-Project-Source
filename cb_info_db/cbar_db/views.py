@@ -1280,6 +1280,17 @@ def private_form_session_plan(request):
                 mobility=form.cleaned_data["mobility"],
                 session_month_year=form.cleaned_data["session_month_year"],
                 other_students=form.cleaned_data["other_students"],
+                mounting_notes=form.cleaned_data["mounting_notes"],
+                dismounting_notes=form.cleaned_data["dismounting_notes"],
+                physical_goals=form.cleaned_data["physical_goals"],
+                emotional_goals=form.cleaned_data["emotional_goals"],
+                cognitive_goals=form.cleaned_data["cognitive_goals"],
+                personal_goals=form.cleaned_data["personal_goals"],
+                signature=(form.cleaned_data["signature"])
+            )
+            session_plan.save()
+
+            adaptions_needed=models.AdaptationsNeeded(
                 num_sidewalkers_walk_spotter=(
                     form.cleaned_data["num_sidewalkers_walk_spotter"]),
                 num_sidewalkers_walk_heel_hold=(
@@ -1295,16 +1306,9 @@ def private_form_session_plan(request):
                 num_sidewalkers_trot_over_thigh=(
                     form.cleaned_data["num_sidewalkers_trot_over_thigh"]),
                 num_sidewalkers_trot_other=(
-                    form.cleaned_data["num_sidewalkers_trot_other"]),
-                mounting_notes=form.cleaned_data["mounting_notes"],
-                dismounting_notes=form.cleaned_data["dismounting_notes"],
-                physical_goals=form.cleaned_data["physical_goals"],
-                emotional_goals=form.cleaned_data["emotional_goals"],
-                cognitive_goals=form.cleaned_data["cognitive_goals"],
-                personal_goals=form.cleaned_data["personal_goals"],
-                signature=(form.cleaned_data["signature"])
+                    form.cleaned_data["num_sidewalkers_trot_other"])
             )
-            session_plan.save()
+            adaptions_needed.save()
 
             return HttpResponseRedirect('/')
 
