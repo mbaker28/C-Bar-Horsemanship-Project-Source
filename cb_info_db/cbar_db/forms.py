@@ -593,84 +593,84 @@ class SessionPlanForm(forms.Form):
     diagnosis=forms.CharField(
         max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
     )
-    diagnosis_type=CharField(
+    diagnosis_type=forms.CharField(
         max_length=models.Diagnosis._meta.get_field("diagnosis_type").max_length
     )
 
     # Stored in AdaptationsNeeded
-    ambulatory_status=ChoiceField(
+    ambulatory_status=forms.ChoiceField(
         choices=models.AdaptationsNeeded
         ._meta.get_field("ambulatory_status").choices
     )
-    ambulatory_status_other=CharField(
+    ambulatory_status_other=forms.CharField(
         max_length=models.AdaptationsNeeded
         ._meta.get_field("ambulatory_status_other").max_length,
         required=False
     )
-    mount_assistance_required=ChoiceField(
+    mount_assistance_required=forms.ChoiceField(
         choices=models.AdaptationsNeeded
         ._meta.get_field("mount_assistance_required").choices
     )
-    mount_device_needed=ChoiceField(
+    mount_device_needed=forms.ChoiceField(
         choices=models.AdaptationsNeeded
         ._meta.get_field("mount_device_needed").choices,
         required=False
     )
-    mount_type=ChoiceField(
+    mount_type=forms.ChoiceField(
         choices=models.AdaptationsNeeded._meta.get_field("mount_type").choices,
         required=False
     )
-    dismount_assistance_required=ChoiceField(
+    dismount_assistance_required=forms.ChoiceField(
         choices=models.AdaptationsNeeded
         ._meta.get_field("dismount_assistance_required").choices
     )
-    dismount_type=ChoiceField(
+    dismount_type=forms.ChoiceField(
         choices=models.AdaptationsNeeded
         ._meta.get_field("dismount_type").choices
     )
-    num_sidewalkers_walk_spotter=DecimalField(
+    num_sidewalkers_walk_spotter=forms.DecimalField(
         max_digits=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_walk_spotter").max_digits,
         decimal_places=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_walk_spotter").decimal_places
     )
-    num_sidewalkers_walk_heel_hold=DecimalField(
+    num_sidewalkers_walk_heel_hold=forms.DecimalField(
         max_digits=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_walk_heel_hold").max_digits,
         decimal_places=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_walk_heel_hold").decimal_places
     )
-    num_sidewalkers_walk_over_thigh=DecimalField(
+    num_sidewalkers_walk_over_thigh=forms.DecimalField(
         max_digits=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_walk_over_thigh").max_digits,
         decimal_places=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_walk_over_thigh").decimal_places
     )
-    num_sidewalkers_walk_other=DecimalField(
+    num_sidewalkers_walk_other=forms.DecimalField(
         max_digits=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_walk_other").max_digits,
         decimal_places=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_walk_other").decimal_places
     )
-    num_sidewalkers_trot_spotter=DecimalField(
+    num_sidewalkers_trot_spotter=forms.DecimalField(
         max_digits=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_trot_spotter").max_digits,
         decimal_places=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_trot_spotter").decimal_places
     )
-    num_sidewalkers_trot_heel_hold=DecimalField(
+    num_sidewalkers_trot_heel_hold=forms.DecimalField(
         max_digits=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_trot_heel_hold").max_digits,
         decimal_places=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_trot_heel_hold").decimal_places
     )
-    num_sidewalkers_trot_over_thigh=DecimalField(
+    num_sidewalkers_trot_over_thigh=forms.DecimalField(
         max_digits=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_trot_over_thigh").max_digits,
         decimal_places=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_trot_over_thigh").decimal_places
     )
-    num_sidewalkers_trot_other=DecimalField(
+    num_sidewalkers_trot_other=forms.DecimalField(
         max_digits=models.AdaptationsNeeded
         ._meta.get_field("num_sidewalkers_trot_other").max_digits,
         decimal_places=models.AdaptationsNeeded
