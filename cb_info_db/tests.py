@@ -63,6 +63,30 @@ class TestPublicViews(TestCase):
         self.assertEqual(response.status_code, 200) # Loaded...
 
 
+class TestFormSavedPage(TestCase):
+    def test_form_saved_page_loads_with_correct_parameter(self):
+        """ Tests that the form_saved view tells the user the form saved, if it
+         has the parameter set saying it came from a form redirect. """
+
+        response = self.client.get(reverse("form-saved")+"?a=a")
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_form_saved_page_redirects_if_no_paramater_passed(self):
+        """ Tests that the form_saved view redirects to the home page, if it is
+         not sent the parameter set saying it came from a form redirect. """
+
+        response = self.client.get(reverse("form-saved"))
+
+        self.assertEqual(response.status_code, 302) # Redirected...
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            "/"
+        )
+
+
 class TestApplicationForm(TestCase):
     def setUp(self):
         setup_test_environment() #Initialize the test enviornment
@@ -119,12 +143,11 @@ class TestApplicationForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the updated Participant record:
         try:
@@ -557,12 +580,11 @@ class TestEmergencyAuthorizationForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the updated MedicalInfo record:
         try:
@@ -984,12 +1006,11 @@ class TestMediaReleaseForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the updated MedicalInfo record:
         try:
@@ -1583,12 +1604,11 @@ class TestMedicalReleaseForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retrieve the new Participant record:
         try:
@@ -1944,12 +1964,11 @@ class TestLiabilityReleaseForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the updated MedicalInfo record:
         try:
@@ -2387,12 +2406,11 @@ class TestSeizureEvaluationForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the Participant record:
         try:
