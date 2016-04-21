@@ -140,7 +140,7 @@ class SessionGoals(models.Model):
     session_id=models.ForeignKey(Session, on_delete=models.CASCADE)
     goal_type=models.CharField(max_length=1, choices=GOAL_CHOICES)
     goal_description=models.CharField(max_length=500)
-    motiviation=models.CharField(max_length=250)
+    motivation=models.CharField(max_length=250)
 
 
 class PhysRelease(models.Model):
