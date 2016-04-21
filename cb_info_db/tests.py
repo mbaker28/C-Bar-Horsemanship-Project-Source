@@ -2554,3 +2554,90 @@ class TestAdoptParticipant(TestCase):
                 print("FUCK MICHAEL Donor Not found.")
 
         self.assertFalse(found_donor)
+
+    def test_donor_invalid_name(self):
+
+        form_data={
+            "name":"TEST Super Aquaman",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"5",
+        }
+
+        response=self.client.post(reverse("donation-participant"),form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donor_invalid_name_length(self):
+
+        form_data={
+            "name":"TEST Super Aquaman with a stupid super long name thatiszzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+
+        response=self.client.post(reverse("donation-participant"), form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donation_adopt_participant_saves_with_valid_data(self):
+
+        form_data={
+            "name":"TEST Super Batman",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"5",
+        }
+
+        response=self.client.post(reverse("donation-participant"),form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+            try:
+                print("Retrieving Donation Record")
+                donation_in_db=models.Donation.objects.get(
+                    donor_id=donor_in_db,
+                    email=form_data["email"]
+                )
+                print(
+                "successfully Retrieved new Donation record."
+                )
+            except:
+                print(
+                "Error: Unable to retreice new Donation Record!"
+                )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        print(
+            "Checking stored Donation attributes..."
+        )
+        self.assertEqual(
+            donor_in_db.name,
+            form_data["name"]
+        )
+        self.assertEqual(
+            donor_in_db.email,
+            form_data["email"]
+        )
+        self.assertEqual(
+            donation_in_db.amount,
+            form_data["amount"]
+        )

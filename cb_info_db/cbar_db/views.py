@@ -649,13 +649,24 @@ def donation_participant(request):
         if form.is_valid():
             loggeyMcLogging.error("The form is valid")
 
-            donation=models.Donation(
-                donation_type=(forms.cleaned_data
-                    ["donation_type"]
-                ),
-                amount=(
-                    form.cleaned_data["amount"]
+            try:
+                # Stupid gay shit..
+                donor=models.objects.Donor.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
                 )
+            except:
+                # More stupid gay shit...
+                donor=models.Donor(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                donor.save()
+
+            donation=models.Donation(
+                donor_id=donor,
+                donation_type=models.Donation.DONATION_ADOPT_PARTICIPANT,
+                amount=form.cleaned_data["amount"]
             )
             donation.save()
         else:
