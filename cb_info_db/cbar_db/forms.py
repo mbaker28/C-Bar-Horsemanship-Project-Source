@@ -569,8 +569,8 @@ class SessionPlanForm(forms.Form):
     )
 
     # Stored in SessionGoals
-    goal_type=forms.CharField(
-        max_length=models.SessionGoals._meta.get_field("goal_type").max_length,
+    goal_type=forms.ChoiceField(
+        #max_length=models.SessionGoals._meta.get_field("goal_type").max_length,
         choices=models.SessionGoals._meta.get_field("goal_type").choices
     )
     goal_description=forms.CharField(
