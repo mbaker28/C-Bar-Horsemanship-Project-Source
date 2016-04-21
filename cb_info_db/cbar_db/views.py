@@ -1291,7 +1291,13 @@ def private_form_session_plan(request):
             )
             horse_info.save()
 
-            adaptions_needed=models.AdaptationsNeeded(
+            diagnosis_info=models.Diagnosis(
+                diagnosis=cleaned_data['diagnosis'],
+                diagnosis_type=cleaned_data['diagnosis_type']
+            )
+            diagnosis_info.save()
+
+            adaptations_needed=models.AdaptationsNeeded(
                 ambulatory_status=form.cleaned_data['ambulatory_status'],
                 ambulatory_status_other=(
                     form.cleaned_data['ambulatory_status_other']),
@@ -1321,7 +1327,7 @@ def private_form_session_plan(request):
                 num_sidewalkers_trot_other=(
                     form.cleaned_data["num_sidewalkers_trot_other"])
             )
-            adaptions_needed.save()
+            adaptations_needed.save()
 
             return HttpResponseRedirect('/')
 
