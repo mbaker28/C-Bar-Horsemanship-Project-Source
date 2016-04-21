@@ -2463,6 +2463,103 @@ class TestSeizureEvaluationForm(TestCase):
             )
         )
 
+class TestAdoptHorse(TestCase):
+    def setUp(self):
+        setup_test_environment()
+        client=Client()
+
+        test_adopt_horse=models.Donor(
+            name= "TEST George Bush",
+            email="George.Bush@whitehouse.com"
+        )
+        test_adopt_horse.save()
+
+
+    def test_donation_form_finds_valid_donor(self):
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"TEST George Bush",
+            "email":"George.Bush@whitehouse.com"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid.")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        else:
+            print("Form is Not Valid.")
+
+        self.assertTrue(found_donor)
+
+    def test_adopt_participant_not_valid_donor_name(self):
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"Test Not George Bush",
+            "email":"George.Bush@whitehouse.com"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid.")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        self.assertFalse(found_donor)
+
+    def test_adopt_participant_not_valid_email(self):
+
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"Test George Bush",
+            "email":"Not an email"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is Valid")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        self.assertFalse(found_donor)
+
 
 class TestAdminIndex(TestCase):
     def setUp(self):
