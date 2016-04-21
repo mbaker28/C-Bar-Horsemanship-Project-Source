@@ -1281,7 +1281,7 @@ def private_form_session_plan(request):
                 #session_id=form.cleaned_data['session_id'],
                 goal_type=form.cleaned_data['goal_type'],
                 goal_description=form.cleaned_data['goal_description'],
-                motiviation=form.cleaned_data['motiviation']
+                motivation=form.cleaned_data['motivation']
             )
             session_goals.save()
 
