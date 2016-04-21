@@ -81,9 +81,9 @@ class TestApplicationForm(TestCase):
             address_street="1234 Wayne St.",
             address_city="Gotham",
             address_state="OK",
-            address_zip= "74804",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            address_zip="74804",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
@@ -106,9 +106,9 @@ class TestApplicationForm(TestCase):
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
             "address_zip": "74801",
-            "phone_home": "400-100-200",
-            "phone_cell": "400-200-300",
-            "phone_work": "400-300-400",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
             "school_institution": "Stick's School of Kung Fu"
         }
         form=forms.ApplicationForm(form_data)
@@ -214,9 +214,9 @@ class TestApplicationForm(TestCase):
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
             "address_zip": "74801",
-            "phone_home": "400-100-200",
-            "phone_cell": "400-200-300",
-            "phone_work": "400-300-400",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
             "school_institution": "Stick's School of Kung Fu"
         }
         form=forms.ApplicationForm(form_data)
@@ -251,9 +251,9 @@ class TestApplicationForm(TestCase):
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
             "address_zip": "74801",
-            "phone_home": "400-100-200",
-            "phone_cell": "400-200-300",
-            "phone_work": "400-300-400",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
             "school_institution": "Stick's School of Kung Fu"
         }
         form=forms.ApplicationForm(form_data)
@@ -320,6 +320,7 @@ class TestApplicationForm(TestCase):
             forms.ERROR_TEXT_NO_PHONE
         )
 
+
 class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
@@ -339,8 +340,8 @@ class TestEmergencyAuthorizationForm(TestCase):
             address_city="Gotham",
             address_state="OK",
             address_zip= "74804",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
@@ -359,8 +360,8 @@ class TestEmergencyAuthorizationForm(TestCase):
             address_city="Time and space",
             address_state="OK",
             address_zip="74801",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
@@ -807,8 +808,8 @@ class TestMediaReleaseForm(TestCase):
             address_city="Gotham",
             address_state="OK",
             address_zip= "74804",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
@@ -827,8 +828,8 @@ class TestMediaReleaseForm(TestCase):
             address_city="Time and space",
             address_state="OK",
             address_zip="74801",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
@@ -1136,8 +1137,8 @@ class TestBackGroundCheck(TestCase):
             address_city="Gotham",
             address_state="OK",
             address_zip= "74804",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -1347,8 +1348,8 @@ class TestMedicalReleaseForm(TestCase):
             address_city="Gotham",
             address_state="OK",
             address_zip= "74804",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -3495,8 +3496,8 @@ class TestEmergencyAuthorizationReport(TestCase):
             address_city="Time and space",
             address_state="OK",
             address_zip="74801",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
@@ -3774,8 +3775,8 @@ class TestMedicalReleaseReport(TestCase):
             address_city="Time and space",
             address_state="OK",
             address_zip="74801",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
@@ -3988,8 +3989,8 @@ class TestLiabilityReleaseReport(TestCase):
             address_city="Time and space",
             address_state="OK",
             address_zip="74801",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
         )
         test_participant_no_liability_release.save()
@@ -4203,8 +4204,8 @@ class TestBackgroundCheckReport(TestCase):
             address_city="Time and space",
             address_state="OK",
             address_zip="74801",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
         )
         test_participant_no_background_check.save()
@@ -4440,8 +4441,8 @@ class TestSeizureEvaluationReport(TestCase):
             address_city="Time and space",
             address_state="OK",
             address_zip="74801",
-            phone_home="300-200-100",
-            phone_cell="300-500-600",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             phone_work="598-039-3008",
         )
         test_participant_no_background_check.save()
