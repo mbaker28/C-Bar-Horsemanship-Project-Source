@@ -1,0 +1,14 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Rider Intake Assessment</h1>
+    <h2>Select Participants</h2>
+    <ul>
+        {% for participant in participants %}
+            <li>
+                <a href="{% url 'participant-record' participant.participant_id %}">
+                    {{ participant.name }} ({{ participant.birth_date }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

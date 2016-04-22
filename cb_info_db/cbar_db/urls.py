@@ -87,4 +87,18 @@ urlpatterns = [
     url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/seizure/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_seizure,
         name='report-seizure'),
+
+    # Rider Intake Assessment participant selection view
+    url(
+        r'^forms/private/intake/$',
+        views.private_form_intake_assessment_select_participants,
+        name="private-form-intake-assessment-select-participants"
+    ),
+
+    # Rider Intake Assessment form view view
+    url(
+        r'^forms/private/intake/form$',
+        views.private_form_intake_assessment,
+        name="private_form_intake_assessment"
+    ),
 ]

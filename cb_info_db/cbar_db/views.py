@@ -1250,3 +1250,28 @@ def report_seizure(request, participant_id, year, month, day):
             "participant": participant
         }
     )
+
+@login_required
+def private_form_intake_assessment_select_participants(request):
+    """ First page of the intake assessment view. Handles selection of
+     participant(s) to evaluate during the assessment. """
+
+    if request.method == "POST":
+        # The user submitted their selections -> process things.
+        loggeyMcLogging.error("Request type is POST.")
+    else:
+        # Normal request type -> display things.
+        loggeyMcLogging.error("Request type is " + request.method + ".")
+
+        participants=models.Participant.objects.all()
+
+        return render(
+            request,
+            'cbar_db/forms/private/intake_assessment_participants.html',
+            {'participants':participants}
+        )
+
+@login_required
+def private_form_intake_assessment(request):
+    """ Intake form view. Handles both single and multiple participant versions
+     of the form. """
