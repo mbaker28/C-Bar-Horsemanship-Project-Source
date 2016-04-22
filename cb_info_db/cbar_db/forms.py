@@ -12,6 +12,7 @@ ERROR_TEXT_NO_PHONE="Please enter at least one phone number."
 this_year=date.today().year
 YEARS=range(this_year-125, this_year+1)
 
+
 class ApplicationForm(forms.Form):
     name = forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
@@ -271,6 +272,7 @@ class SeizureEvaluationForm(forms.Form):
             self.add_error("phone_home", ERROR_TEXT_NO_PHONE)
             self.add_error("phone_cell", ERROR_TEXT_NO_PHONE)
             self.add_error("phone_work", ERROR_TEXT_NO_PHONE)
+
 
 class LiabilityReleaseForm(forms.Form):
     name = forms.CharField(

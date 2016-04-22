@@ -95,6 +95,9 @@ CONSENT_CHOICES=(
 )
 
 class Participant(models.Model):
+    def __str__(self):
+        return self.name + " (" + str(self.birth_date) + ")"
+
     participant_id=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
     birth_date=models.DateField()

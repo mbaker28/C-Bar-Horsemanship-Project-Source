@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
+from django import forms as django_forms
 import logging
 import time
 from cbar_db import forms
@@ -1256,19 +1257,79 @@ def private_form_intake_assessment_select_participants(request):
     """ First page of the intake assessment view. Handles selection of
      participant(s) to evaluate during the assessment. """
 
+    class SelectedParticipantsForm(django_forms.Form):
+        participants_selected=django_forms.ModelMultipleChoiceField(
+            queryset=models.Participant.objects.all(),
+            widget=django_forms.CheckboxSelectMultiple,
+        )
+
     if request.method == "POST":
         # The user submitted their selections -> process things.
         loggeyMcLogging.error("Request type is POST.")
+
+        form=SelectedParticipantsForm(request.POST)
+
+        # Log things for debugging / testing purposes:
+        loggeyMcLogging.error("request.POST == " + str(request.POST))
+        loggeyMcLogging.error(
+            "request.POST.getlist(\"participants_selected\") == " +
+            str(request.POST.getlist("participants_selected"))
+        )
+
+        # Retreive the participant id numbers passed from the POST date:
+        selected_participant_id_numbers=(
+            request.POST.getlist("participants_selected")
+        )
+
+        # Retreive a Participant record for each ID number:
+        selected_participants=[]
+        loggeyMcLogging.error("Retrieving selected participants...")
+        for participant in selected_participant_id_numbers:
+            try:
+                loggeyMcLogging.error(
+                    "Retrieving participant with ID " + str(participant) + "..."
+                )
+
+                selected_participants.append(
+                    models.Participant.objects.get(
+                        participant_id=participant
+                    )
+                )
+
+                loggeyMcLogging.error(
+                    "Retrieved participant with ID " + str(participant) + "."
+                )
+            except:
+                loggeyMcLogging.error(
+                    "ERROR: Couldn't retrieve participant with ID "
+                     + str(participant) + "!"
+                )
+
+        loggeyMcLogging.error(str(selected_participants))
+
+        # Load the form template and pass the selected participants to it:
+        return render(
+            request,
+            'cbar_db/forms/private/intake_assessment_form.html',
+            {
+                "selected_participants":selected_participants,
+            }
+        )
+
     else:
         # Normal request type -> display things.
         loggeyMcLogging.error("Request type is " + request.method + ".")
 
+        form=SelectedParticipantsForm()
         participants=models.Participant.objects.all()
 
         return render(
             request,
             'cbar_db/forms/private/intake_assessment_participants.html',
-            {'participants':participants}
+            {
+                "participants":participants,
+                "form": form
+            }
         )
 
 @login_required

@@ -99,6 +99,6 @@ urlpatterns = [
     url(
         r'^forms/private/intake/form$',
         views.private_form_intake_assessment,
-        name="private_form_intake_assessment"
+        name="private-form-intake-assessment"
     ),
 ]
