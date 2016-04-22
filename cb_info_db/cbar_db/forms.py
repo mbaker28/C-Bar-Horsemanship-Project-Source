@@ -4,6 +4,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from cbar_db import models
 from localflavor.us.forms import USStateField
 from localflavor.us.forms import USPhoneNumberField
+from localflavor.us.forms import USZipCodeField
 
 
 ERROR_TEXT_NO_PHONE="Please enter at least one phone number."
@@ -59,9 +60,7 @@ class ApplicationForm(forms.Form):
 
     address_state = USStateField()
 
-    address_zip = forms.CharField(
-        max_length=models.Participant._meta.get_field("address_zip").max_length
-    )
+    address_zip = USZipCodeField()
 
     phone_home=USPhoneNumberField(required=False)
 

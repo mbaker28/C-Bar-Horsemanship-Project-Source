@@ -31,6 +31,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from localflavor.us.models import USStateField
 from localflavor.us.models import PhoneNumberField
+from localflavor.us.models import USZipCodeField
 
 # Global Constants and Choices
 NAME_LENGTH=75
@@ -110,7 +111,7 @@ class Participant(models.Model):
     address_street=models.CharField(max_length=150)
     address_city=models.CharField(max_length=50)
     address_state=USStateField()
-    address_zip=models.CharField(max_length=6)
+    address_zip=USZipCodeField()
     phone_home=PhoneNumberField()
     phone_cell=PhoneNumberField()
     phone_work=PhoneNumberField()
