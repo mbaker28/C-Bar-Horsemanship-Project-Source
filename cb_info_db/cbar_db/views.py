@@ -252,7 +252,7 @@ def public_form_med_release(request):
                 )
                 medication_two.save()
 
-            # Redirect to the home page:
+            # Redirect to the form saved page:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
@@ -394,7 +394,7 @@ def public_form_emerg_auth(request):
             )
             authorize_emerg_medical.save()
 
-            # Redirect to the home page:
+            # Redirect to the form saved page:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
@@ -591,7 +591,7 @@ def public_form_background(request):
             )
             public_form_background.save()
 
-            # Redirect to the home page:
+            # Redirect to the form saved page:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
@@ -1312,7 +1312,7 @@ def private_form_intake_assessment_select_participants(request):
             request,
             'cbar_db/forms/private/intake_assessment_form.html',
             {
-                "selected_participants":selected_participants,
+                "participants":selected_participants,
             }
         )
 
@@ -1336,3 +1336,22 @@ def private_form_intake_assessment_select_participants(request):
 def private_form_intake_assessment(request):
     """ Intake form view. Handles both single and multiple participant versions
      of the form. """
+
+    if request.method == "POST":
+        # The user submitted the form -> Process the data.
+
+        # Redirect to the form saved page:
+        return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+    else:
+        # Display a blank form.
+
+        form=forms.RiderIntakeAssessmentForm()
+
+        return render (
+            request,
+            "cbar_db/forms/private/inntake_assessment_form.html",
+            {
+                "form":form,
+            }
+        )

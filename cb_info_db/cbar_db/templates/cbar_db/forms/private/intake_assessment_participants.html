@@ -2,11 +2,14 @@
 {% block body %}
     <h1>Rider Intake Assessment</h1>
     <h2>Select Participants</h2>
+    <p>
+        Please select the participant(s) you would like to evaluate:
+    </p>
     <form action="{% url 'private-form-intake-assessment-select-participants' %}" method="post">
         {% csrf_token %}
         {% for field in form %}
             {{ field }} {{ field.errors.as_text }}<br />
         {% endfor %}
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Continue" />
     </form>
 {% endblock %}

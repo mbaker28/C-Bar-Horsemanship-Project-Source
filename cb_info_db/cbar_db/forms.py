@@ -525,3 +525,14 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("signature").max_length
         )
     )
+
+
+class RiderIntakeAssessmentForm(forms.Form):
+    num_sidewalkers_walk_spotter=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field(
+            "num_sidewalkers_walk_spotter"
+        ).max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field(
+            "num_sidewalkers_walk_spotter"
+        ).decimal_places
+    )
