@@ -1117,21 +1117,28 @@ def donation_monetary(request):
         if form.is_valid():
             loggeyMcLogging.error("The form is valid")
 
-            donation=models.Donation(
-                donation_type=(form.cleaned_data
-                    ["donation_type"]
-                ),
-                amount=(
-                    form.cleaned_data["amount"]
-                ),
-                name=(
-                    form.cleaned_data["name"]
-                ),
-                email=(
-                    form.cleaned_data["email"]
+            try:
+                donor=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
                 )
+            except ObjectDoesNotExist:
+                donor=models.Donor(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                donor.save()
+
+            donation=models.Donation(
+                donor_id=donor,
+                donation_type=models.Donation.DONATION_MONETARY,
+                amount=form.cleaned_data["amount"]
             )
             donation.save()
+
+            # Redirect to a new page
+            return HttpResponseRedirect("/")
+
         else:
             loggeyMcLogging.error("The form is NOT Valid")
             return render(

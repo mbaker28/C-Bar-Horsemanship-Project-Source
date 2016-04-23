@@ -3808,6 +3808,7 @@ class TestBackgroundCheckReport(TestCase):
 
         self.assertEqual(response.status_code, 200) # Loaded...
 
+
 class TestMonetaryDonation(TestCase):
     def setUp(self):
         setup_test_environment()
