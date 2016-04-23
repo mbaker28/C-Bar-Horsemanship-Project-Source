@@ -34,10 +34,10 @@
                 <strong>Home Phone</strong><br /> {{ participant.phone_home }}
             </div>
             <div class="floating_block">
-                <strong>Cell Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
+                <strong>Cell Phone</strong><br /> {{ participant.phone_cell }}
             </div>
             <div class="floating_block">
-                <strong>Work Phone</strong><br /> <!-- phone_cell_work needs split into two fields -->
+                <strong>Work Phone</strong><br /> {{ participant.phone_work }}
             </div>
             <div class="floating_block">
                 <strong>Email</strong><br /> <a href="mailto</strong><br />{{ participant.email }}">
@@ -50,7 +50,7 @@
                 <strong>Address</strong><br />
                 {{ participant.address_street }}<br />
                 {{ participant.address_city }}<br />
-                {{ participant.address_zip }}<br />
+                {{ participant.address_state }} {{ participant.address_zip }}
             </div>
             <div class="floating_block">
                 <strong>Minor Status</strong><br /> {{ participant.get_minor_status_display }}
@@ -83,10 +83,18 @@
                 {% endfor %}
             </div>
             <div class="floating_block">
-                <strong> Medical Releases</strong><br />
+                <strong>Medical Releases</strong><br />
                 {% for medical_release in medical_releases %}
                     <a href="{% url 'report-med-release' participant.participant_id  medical_release.date.year medical_release.date.month medical_release.date.day%}">
                         {{ medical_release.date }}
+                    </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Seizure Evaluations</strong><br />
+                {% for seizure_eval in seizure_evals %}
+                    <a href="{% url 'report-seizure' participant.participant_id  seizure_eval.date.year seizure_eval.date.month seizure_eval.date.day%}">
+                        {{ seizure_eval.date }}
                     </a><br />
                 {% endfor %}
             </div>
