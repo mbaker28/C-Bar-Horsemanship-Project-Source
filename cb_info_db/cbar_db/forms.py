@@ -564,6 +564,4 @@ class ParticipantAdoptionForm(forms.Form):
     name=forms.CharField(
         max_length=models.Donor._meta.get_field("name").max_length
     )
-    email=forms.EmailField(
-        max_length=models.Donor._meta.get_field("email").max_length
-    )
+    email=forms.EmailField()

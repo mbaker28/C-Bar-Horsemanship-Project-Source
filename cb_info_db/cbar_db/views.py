@@ -762,12 +762,17 @@ def donation_participant(request):
 
             try:
                 # Stupid gay shit..
+                loggeyMcLogging.error("Seaching for existing donor...")
                 donor=models.objects.Donor.get(
                     name=form.cleaned_data["name"],
                     email=form.cleaned_data["email"]
                 )
+                loggeyMcLogging.error("Existing donor found.")
             except:
                 # More stupid gay shit...
+                loggeyMcLogging.error(
+                    "Existing donor not found. Creating new donor..."
+                )
                 donor=models.Donor(
                     name=form.cleaned_data["name"],
                     email=form.cleaned_data["email"]
@@ -783,7 +788,7 @@ def donation_participant(request):
 
             # redirect to a new URL:
             return HttpResponseRedirect('/')
-            
+
         else:
             loggeyMcLogging.error("The form is NOT Valid")
             return render(

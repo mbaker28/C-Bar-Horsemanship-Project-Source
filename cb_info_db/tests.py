@@ -62,6 +62,16 @@ class TestPublicViews(TestCase):
         response = self.client.get(reverse('public-form-seizure'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
+    def test_donation_index_loads(self):
+        """ Tests whether the Donation index page loads. """
+        response = self.client.get(reverse('donation-index'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_donation_participant_loads(self):
+        """ Tests whether the Adopt A Participant donation form loads. """
+        response = self.client.get(reverse('donation-participant'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
 
 class TestApplicationForm(TestCase):
     def setUp(self):
@@ -319,6 +329,7 @@ class TestApplicationForm(TestCase):
             "phone_work",
             forms.ERROR_TEXT_NO_PHONE
         )
+
 
 class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
@@ -4607,22 +4618,21 @@ class TestSeizureEvaluationReport(TestCase):
 
 class TestAdoptParticipant(TestCase):
     def setUp(self):
-        setup_test_environment()
-        client=Client()
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
 
         test_participant_donor=models.Donor(
             name="TEST Super Batman",
-            email="michael.something@ftc.gov",
+            email="michael.something@ftc.gov"
         )
         test_participant_donor.save()
 
-
-    def test_form_finds_valid_donor(self):
+    def test_form_finds_existing_donor(self):
         found_donor=False
 
         form_data={
             "name":"TEST Super Batman",
-            "email":"Michael.Something@ftc.gov",
+            "email":"michael.something@ftc.gov",
             "amount":"5",
         }
         form=forms.ParticipantAdoptionForm(form_data)
@@ -4640,11 +4650,11 @@ class TestAdoptParticipant(TestCase):
                 found_donor=True
 
             except:
-                print("FUCK MICHAEL Donor Not found.")
+                print("ERROR: Donor Not found!")
 
         self.assertTrue(found_donor)
 
-    def test_form_finds_no_valid_donor(self):
+    def test_form_does_not_find_non_existent_donor_name(self):
         found_donor=False
 
         form_data={
@@ -4663,15 +4673,15 @@ class TestAdoptParticipant(TestCase):
                     name=form.cleaned_data["name"],
                     email=form.cleaned_data["email"],
                 )
-                print("Found Donor")
+                print("ERROR: Found Donor!")
                 found_donor=True
 
             except:
-                print("FUCK MICHAEL Donor Not found.")
+                print("Donor Not found.")
 
         self.assertFalse(found_donor)
 
-    def test_form_finds_no_email(self):
+    def test_form_does_not_find_non_existent_donor_email(self):
         found_donor=False
 
         form_data={
@@ -4690,15 +4700,15 @@ class TestAdoptParticipant(TestCase):
                     name=form.cleaned_data["name"],
                     email=form.cleaned_data["email"],
                 )
-                print("Found Donor")
+                print("ERROR: Found Donor!")
                 found_donor=True
 
             except:
-                print("FUCK MICHAEL Donor Not found.")
+                print("Donor Not found.")
 
         self.assertFalse(found_donor)
 
-    def test_donor_invalid_name(self):
+    def test_donor_invalid_amount(self):
 
         form_data={
             "name":"TEST Super Aquaman",
@@ -4740,10 +4750,10 @@ class TestAdoptParticipant(TestCase):
         form_data={
             "name": "TEST Super Batman",
             "email": "michael.something@ftc.gov",
-            "amount":"5",
+            "amount": "5",
         }
 
-        response=self.client.post(reverse("donation-participant"),form_data)
+        response=self.client.post(reverse("donation-participant"), form_data)
 
         self.assertEqual(response.status_code, 302)
 
@@ -4763,25 +4773,24 @@ class TestAdoptParticipant(TestCase):
                 email=form_data["email"]
             )
             print(
-            "successfully Retrieved new Donation record."
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
             )
         except:
             print(
-            "Error: Unable to retreice new Donation Record!"
+                "Error: Unable to retreive new Donation Record!"
             )
-
-        print(
-            "Checking stored Donation attributes..."
-        )
-        self.assertEqual(
-            donor_in_db.name,
-            form_data["name"]
-        )
-        self.assertEqual(
-            donor_in_db.email,
-            form_data["email"]
-        )
-        self.assertEqual(
-            donation_in_db.amount,
-            form_data["amount"]
-        )
