@@ -881,7 +881,55 @@ def donation_horse(request):
         )
 
 def donation_monetary(request):
-    return render(request, 'cbar_db/forms/donation/donation_monetary.html')
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        form=forms.MonetaryDonationForm(request.POST)
+
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+
+            try:
+                donor=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+            except ObjectDoesNotExist:
+                donor=models.Donor(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                donor.save()
+
+            donation=models.Donation(
+                donor_id=donor,
+                donation_type=models.Donation.DONATION_MONETARY,
+                amount=form.cleaned_data["amount"]
+            )
+            donation.save()
+
+            # Redirect to a new page
+            return HttpResponseRedirect("/")
+
+        else:
+            loggeyMcLogging.error("The form is NOT Valid")
+            return render(
+                request,
+                'cbar_db/forms/donation/donation_monetary.html',
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+            }
+        )
+
+    else:
+        form=forms.MonetaryDonationForm()
+        return render(
+            request,
+            'cbar_db/forms/donation/donation_monetary.html',
+            {
+                'form': form
+            }
+        )
 
 
 @login_required

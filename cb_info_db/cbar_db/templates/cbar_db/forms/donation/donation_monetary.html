@@ -8,9 +8,27 @@
     {% endif %}
     <form action="{% url 'donation-monetary' %}" method="post">
         {% csrf_token %}
-
-        <!-- FORM THINGS GO HERE -->
-
-        <input type="Submit" value="Submit">
+        <div>
+        <p>
+            Amount you are donating: ${{ form.amount }}
+            <span class="error_message">
+                {{ form.amount.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Your Name: {{ form.name }}
+            <span class="error_message">
+                {{ form.name.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            Your Email address:{{ form.email }}
+            <span class="error_message">
+                {{ form.email.errors.as_text }}
+            </span>
+        </div>
+        <div id="SubmitButton">
+            <input type="Submit" value="Submit">
+        </div>
     </form>
 {% endblock %}

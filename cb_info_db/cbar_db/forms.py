@@ -546,3 +546,15 @@ class HorseAdoptionForm(forms.Form):
         max_length=models.Donor._meta.get_field("name").max_length
     )
     email=forms.EmailField()
+
+
+
+class MonetaryDonationForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()
