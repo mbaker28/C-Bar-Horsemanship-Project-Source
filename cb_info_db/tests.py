@@ -72,6 +72,11 @@ class TestPublicViews(TestCase):
         response = self.client.get(reverse('donation-participant'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
+    def test_donation_horse_loads(self):
+        """ Tests whether the Adopt A Horse donation form loads. """
+        response = self.client.get(reverse('donation-horse'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
 
 class TestApplicationForm(TestCase):
     def setUp(self):
@@ -3296,103 +3301,6 @@ class TestSeizureEvaluationForm(TestCase):
             forms.ERROR_TEXT_NO_PHONE
         )
 
-class TestAdoptHorse(TestCase):
-    def setUp(self):
-        setup_test_environment()
-        client=Client()
-
-        test_adopt_horse=models.Donor(
-            name= "TEST George Bush",
-            email="George.Bush@whitehouse.com"
-        )
-        test_adopt_horse.save()
-
-
-    def test_donation_form_finds_valid_donor(self):
-        found_donor=False
-
-        form_data={
-            "amount":"5",
-            "name":"TEST George Bush",
-            "email":"George.Bush@whitehouse.com"
-        }
-        form=forms.HorseAdoptionForm(form_data)
-
-        if form.is_valid():
-            print("Form is valid.")
-
-            try:
-                print("Finding donor...")
-                donor_instance=models.Donor.objects.get(
-                    name=form.cleaned_data["name"],
-                    email=form.cleaned_data["email"],
-                )
-                print("Found donor.")
-                found_donor=True
-
-            except:
-                print("Donor Not Found.")
-
-        else:
-            print("Form is Not Valid.")
-
-        self.assertTrue(found_donor)
-
-    def test_adopt_participant_not_valid_donor_name(self):
-        found_donor=False
-
-        form_data={
-            "amount":"5",
-            "name":"Test Not George Bush",
-            "email":"George.Bush@whitehouse.com"
-        }
-        form=forms.HorseAdoptionForm(form_data)
-
-        if form.is_valid():
-            print("Form is valid.")
-
-            try:
-                print("Finding donor...")
-                donor_instance=models.Donor.objects.get(
-                    name=form.cleaned_data["name"],
-                    email=form.cleaned_data["email"],
-                )
-                print("Found donor.")
-                found_donor=True
-
-            except:
-                print("Donor Not Found.")
-
-        self.assertFalse(found_donor)
-
-    def test_adopt_participant_not_valid_email(self):
-
-        found_donor=False
-
-        form_data={
-            "amount":"5",
-            "name":"Test George Bush",
-            "email":"Not an email"
-        }
-        form=forms.HorseAdoptionForm(form_data)
-
-        if form.is_valid():
-            print("Form is Valid")
-
-            try:
-                print("Finding donor...")
-                donor_instance=models.Donor.objects.get(
-                    name=form.cleaned_data["name"],
-                    email=form.cleaned_data["email"],
-                )
-                print("Found donor.")
-                found_donor=True
-
-            except:
-                print("Donor Not Found.")
-
-        self.assertFalse(found_donor)
-
 
 class TestAdminIndex(TestCase):
     def setUp(self):
@@ -5127,6 +5035,238 @@ class TestAdoptParticipant(TestCase):
         }
 
         response=self.client.post(reverse("donation-participant"), form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
+            )
+        except:
+            print(
+                "Error: Unable to retreive new Donation Record!"
+            )
+
+
+class TestAdoptHorse(TestCase):
+    def setUp(self):
+        setup_test_environment()
+        client=Client()
+
+        test_adopt_horse=models.Donor(
+            name= "TEST George Bush",
+            email="George.Bush@whitehouse.com"
+        )
+        test_adopt_horse.save()
+
+    def test_adopt_horse_form_finds_existing_donor(self):
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"TEST George Bush",
+            "email":"George.Bush@whitehouse.com"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid.")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        else:
+            print("Form is Not Valid.")
+
+        self.assertTrue(found_donor)
+
+    def test_adopt_horse_form_does_not_find_non_existent_donor_name(self):
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"Test Not George Bush",
+            "email":"George.Bush@whitehouse.com"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid.")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        self.assertFalse(found_donor)
+
+    def test_adopt_horse_form_does_not_find_non_existent_donor_email(self):
+
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"Test George Bush",
+            "email":"notgeorge@bush.com"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is Valid")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        self.assertFalse(found_donor)
+
+    def test_adopt_horse_form_invalid_amount(self):
+        form_data={
+            "name":"TEST Super Aquaman",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"sadhiugiufe5",
+        }
+
+        response=self.client.post(reverse("donation-horse"),form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_adopt_horse_invalid_name_length(self):
+        form_data={
+            "name":"TEST Super Aquaman with a stupid super long name thatiszzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+
+        response=self.client.post(reverse("donation-horse"), form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donation_adopt_horse_saves_with_valid_data_donor_exists(self):
+
+        form_data={
+            "amount":"5",
+            "name":"TEST George Bush",
+            "email":"George.Bush@whitehouse.com"
+        }
+
+        response=self.client.post(reverse("donation-horse"), form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
+            )
+        except:
+            print(
+                "Error: Unable to retreive new Donation Record!"
+            )
+
+    def test_donation_adopt_horse_saves_with_valid_data_new_donor(self):
+
+        form_data={
+            "amount":"300",
+            "name":"TEST New Donor",
+            "email":"new@donor.com"
+        }
+
+        response=self.client.post(reverse("donation-horse"), form_data)
 
         self.assertEqual(response.status_code, 302)
 
