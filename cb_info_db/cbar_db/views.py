@@ -823,7 +823,62 @@ def donation_participant(request):
         )
 
 def donation_horse(request):
-    return render(request, 'cbar_db/forms/donation/donation_horse.html')
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        form=forms.HorseAdoptionForm(request.POST)
+
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+
+            try:
+                loggeyMcLogging.error("Searching for existing donor record...")
+                donor=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                loggeyMcLogging.error("Found existing donor record.")
+            except:
+                loggeyMcLogging.error(
+                    "Existing donor record not found. Creating new record..."
+                )
+                donor=models.Donor(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                donor.save()
+
+            donation=models.Donation(
+                donor_id=donor,
+                donation_type=models.Donation.DONATION_ADOPT_HORSE,
+                amount=(
+                    form.cleaned_data["amount"]
+                )
+            )
+            donation.save()
+
+            # Redirect to the home page:
+            return HttpResponseRedirect("/")
+
+        else:
+            loggeyMcLogging.error("The form is NOT Valid")
+            return render(
+                request,
+                'cbar_db/forms/donation/donation_horse.html',
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+                }
+            )
+
+    else:
+        form=forms.HorseAdoptionForm()
+        return render(
+            request,
+            'cbar_db/forms/donation/donation_horse.html',
+            {
+                'form': form
+            }
+        )
 
 def donation_monetary(request):
     return render(request, 'cbar_db/forms/donation/donation_monetary.html')
