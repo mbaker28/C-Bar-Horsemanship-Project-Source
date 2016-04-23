@@ -88,16 +88,9 @@ urlpatterns = [
         views.report_seizure,
         name='report-seizure'),
 
-    # Rider Intake Assessment participant selection view
+    # Rider Intake Assessment view
     url(
         r'^forms/private/intake/$',
-        views.private_form_intake_assessment_select_participants,
-        name="private-form-intake-assessment-select-participants"
-    ),
-
-    # Rider Intake Assessment form view view
-    url(
-        r'^forms/private/intake/form$',
         views.private_form_intake_assessment,
         name="private-form-intake-assessment"
     ),

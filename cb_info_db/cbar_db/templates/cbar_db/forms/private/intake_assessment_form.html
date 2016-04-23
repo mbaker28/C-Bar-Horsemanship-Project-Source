@@ -1,12 +1,41 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     <h1>Rider Intake Assessment</h1>
-    <h2>Select Participants</h2>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+
+    save_form: {{ save_form }}
+    show_form: {{ show_form }}
+
     <form action="{% url 'private-form-intake-assessment' %}" method="post">
         {% csrf_token %}
-        {% for participant in selected_participants %}
-            {{ participant }} <br />
-        {% endfor %}
+        {{ formset.management_form }}
+        <h2>Number of Sidewalkers Required</h2>
+        <h3>Walking</h3>
+
+        <p><strong>Heel Holds</strong></p>
+        <p>
+            {% for form, participant in formset_and_participants %}
+                {{ participant }}:
+                 {{ form.num_sidewalkers_walk_heel_hold }}
+                <br />
+            {% endfor %}
+        </p>
+
+        <p><strong>Spotters</strong></p>
+        <p>
+            {% for form, participant in formset_and_participants %}
+                {{ participant }}:
+                 {{ form.num_sidewalkers_walk_spotter }}
+                <br />
+            {% endfor %}
+        </p>
+
+        <input type="hidden" name="save_form" value="True" />
+
         <input type="submit" value="Submit" />
     </form>
 {% endblock %}

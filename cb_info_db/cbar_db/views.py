@@ -1253,9 +1253,8 @@ def report_seizure(request, participant_id, year, month, day):
     )
 
 @login_required
-def private_form_intake_assessment_select_participants(request):
-    """ First page of the intake assessment view. Handles selection of
-     participant(s) to evaluate during the assessment. """
+def private_form_intake_assessment(request):
+    """ Intake assessment view. """
 
     class SelectedParticipantsForm(django_forms.Form):
         participants_selected=django_forms.ModelMultipleChoiceField(
@@ -1264,61 +1263,154 @@ def private_form_intake_assessment_select_participants(request):
         )
 
     if request.method == "POST":
-        # The user submitted their selections -> process things.
-        loggeyMcLogging.error("Request type is POST.")
+        if request.POST.get("show_form") == "False":
+            # Let the user pick the partcipants to evaluate
+            loggeyMcLogging.error("Request type is POST.")
+            loggeyMcLogging.error(
+                "'show_form' is False. Displaying participant selection form"
+            )
 
-        form=SelectedParticipantsForm(request.POST)
+            form=SelectedParticipantsForm(request.POST)
 
-        # Log things for debugging / testing purposes:
-        loggeyMcLogging.error("request.POST == " + str(request.POST))
-        loggeyMcLogging.error(
-            "request.POST.getlist(\"participants_selected\") == " +
-            str(request.POST.getlist("participants_selected"))
-        )
+            # Log things for debugging / testing purposes:
+            loggeyMcLogging.error("request.POST == " + str(request.POST))
+            loggeyMcLogging.error(
+                "request.POST.getlist(\"participants_selected\") == " +
+                str(request.POST.getlist("participants_selected"))
+            )
 
-        # Retreive the participant id numbers passed from the POST date:
-        selected_participant_id_numbers=(
-            request.POST.getlist("participants_selected")
-        )
+            # Retreive the participant id numbers passed from the POST date:
+            selected_participant_id_numbers=(
+                request.POST.getlist("participants_selected")
+            )
 
-        # Retreive a Participant record for each ID number:
-        selected_participants=[]
-        loggeyMcLogging.error("Retrieving selected participants...")
-        for participant in selected_participant_id_numbers:
-            try:
-                loggeyMcLogging.error(
-                    "Retrieving participant with ID " + str(participant) + "..."
-                )
-
-                selected_participants.append(
-                    models.Participant.objects.get(
-                        participant_id=participant
+            # Retreive a Participant record for each ID number:
+            selected_participants=[]
+            loggeyMcLogging.error("Retrieving selected participants...")
+            for participant in selected_participant_id_numbers:
+                try:
+                    loggeyMcLogging.error(
+                        "Retrieving participant with ID " + str(participant) + "..."
                     )
-                )
 
+                    selected_participants.append(
+                        models.Participant.objects.get(
+                            participant_id=participant
+                        )
+                    )
+
+                    loggeyMcLogging.error(
+                        "Retrieved participant with ID " + str(participant) + "."
+                    )
+                except:
+                    loggeyMcLogging.error(
+                        "ERROR: Couldn't retrieve participant with ID "
+                         + str(participant) + "!"
+                    )
+
+            loggeyMcLogging.error(
+                "selected_participants == " + str(selected_participants)
+            )
+
+            # Load the form template and pass the selected participants to it:
+            return render(
+                request,
+                "cbar_db/forms/private/intake_assessment_form.html",
+                {
+                    "selected_participants": selected_participants,
+                    "show_form": "False",
+                    "save_form": "False"
+                }
+            )
+
+        else:
+            # Let the user evaluate the participants.
+            loggeyMcLogging.error("Request type is POST.")
+            loggeyMcLogging.error("show_form != False.")
+
+            RiderIntakeAssessmentFormset=django_forms.formset_factory(
+                forms.RiderIntakeAssessmentForm
+            )
+
+            if request.POST.get("save_form") == "True":
+                # The user submitted the form -> Process the data.
                 loggeyMcLogging.error(
-                    "Retrieved participant with ID " + str(participant) + "."
+                    "save_form is True. Saving the evaluation forms."
                 )
-            except:
+                loggeyMcLogging.error("request.POST == " + str(request.POST))
+
+                # create a form instance and populate it with data from the request:
+                formset=RiderIntakeAssessmentFormset(request.POST)
+                # check whether it's valid:
+                if formset.is_valid():
+                    loggeyMcLogging.error("The form is valid.")
+
+                    # Redirect to the form saved page:
+                    return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+                else:
+                    # The form is not valid.
+                    loggeyMcLogging.error("The form is not valid.")
+
+                    # Set the error message and redisplay the form:
+                    return render(
+                        request,
+                        "cbar_db/forms/private/intake_assessment_form.html",
+                        {
+                            "formset": formset,
+                            "error_text": ERROR_TEXT_FORM_INVALID,
+                            "show_form": "True",
+                            "save_form": "False"
+                        }
+                    )
+
+            else:
+                # Display the blank form(S).
                 loggeyMcLogging.error(
-                    "ERROR: Couldn't retrieve participant with ID "
-                     + str(participant) + "!"
+                    "save_form != True. Displaying blank evaluation form."
                 )
+                loggeyMcLogging.error("request.POST == " + str(request.POST))
 
-        loggeyMcLogging.error(str(selected_participants))
+                post_participants=request.POST.getlist("participants_selected")
 
-        # Load the form template and pass the selected participants to it:
-        return render(
-            request,
-            'cbar_db/forms/private/intake_assessment_form.html',
-            {
-                "participants":selected_participants,
-            }
-        )
+                management_form_date={
+                    "form-TOTAL_FORMS": len(post_participants),
+                    "form-INITIAL_FORMS": "0",
+                    "form-MAX_NUM_FORMS": "",
+                }
+
+                formset=RiderIntakeAssessmentFormset(management_form_date)
+
+                # Get the Participant records from the participant_id numbers in
+                # post_participants:
+                participants_selected=models.Participant.objects.filter(
+                    participant_id__in=post_participants
+                )
+                loggeyMcLogging.error(str(participants_selected))
+
+                return render(
+                    request,
+                    "cbar_db/forms/private/intake_assessment_form.html",
+                    {
+                        "formset":formset,
+                        "formset_and_participants": list(
+                            zip(
+                                formset, participants_selected
+                            )
+                        ),
+                        "save_form": "True",
+                        "show_form": "True",
+                        "participants_selected": participants_selected
+                    }
+                )
 
     else:
         # Normal request type -> display things.
         loggeyMcLogging.error("Request type is " + request.method + ".")
+        loggeyMcLogging.error(
+            "Loaded intake assessment with a non-POST request method."
+            " Displaying participant selection form."
+        )
 
         form=SelectedParticipantsForm()
         participants=models.Participant.objects.all()
@@ -1329,29 +1421,5 @@ def private_form_intake_assessment_select_participants(request):
             {
                 "participants":participants,
                 "form": form
-            }
-        )
-
-@login_required
-def private_form_intake_assessment(request):
-    """ Intake form view. Handles both single and multiple participant versions
-     of the form. """
-
-    if request.method == "POST":
-        # The user submitted the form -> Process the data.
-
-        # Redirect to the form saved page:
-        return HttpResponseRedirect(reverse("form-saved")+"?a=a")
-
-    else:
-        # Display a blank form.
-
-        form=forms.RiderIntakeAssessmentForm()
-
-        return render (
-            request,
-            "cbar_db/forms/private/inntake_assessment_form.html",
-            {
-                "form":form,
             }
         )

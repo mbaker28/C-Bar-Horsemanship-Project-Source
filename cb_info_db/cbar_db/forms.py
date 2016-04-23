@@ -536,3 +536,12 @@ class RiderIntakeAssessmentForm(forms.Form):
             "num_sidewalkers_walk_spotter"
         ).decimal_places
     )
+
+    num_sidewalkers_walk_heel_hold=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded._meta.get_field(
+            "num_sidewalkers_walk_heel_hold"
+        ).max_digits,
+        decimal_places=models.AdaptationsNeeded._meta.get_field(
+            "num_sidewalkers_walk_heel_hold"
+        ).decimal_places
+    )
