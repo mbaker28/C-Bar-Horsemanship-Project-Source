@@ -563,53 +563,53 @@ class RiderEvalChecklistForm(forms.Form):
         )
     )
 
-    date=models.DateField()
+    date=forms.DateField()
 
-    basic_trail_rules=models.NullBooleanField()
+    basic_trail_rules=forms.NullBooleanField()
 
-    mount=models.NullBooleanField()
+    mount=forms.NullBooleanField()
 
-    dismount=models.NullBooleanField()
+    dismount=forms.NullBooleanField()
 
-    emergency_dismount=models.NullBooleanField()
+    emergency_dismount=forms.NullBooleanField()
 
-    four_natural_aids=models.NullBooleanField()
+    four_natural_aids=forms.NullBooleanField()
 
-    basic_control=models.NullBooleanField()
+    basic_control=forms.NullBooleanField()
 
-    reverse_at_walk=models.NullBooleanField()
+    reverse_at_walk=forms.NullBooleanField()
 
-    reverse_at_trot=models.NullBooleanField()
+    reverse_at_trot=forms.NullBooleanField()
 
-    never_ridden=models.NullBooleanField()
+    never_ridden=forms.NullBooleanField()
 
-    seat_at_walk=models.NullBooleanField()
+    seat_at_walk=forms.NullBooleanField()
 
-    seat_at_trot=models.NullBooleanField()
+    seat_at_trot=forms.NullBooleanField()
 
-    seat_at_canter=models.NullBooleanField()
+    seat_at_canter=forms.NullBooleanField()
 
-    basic_seat_english=models.NullBooleanField()
+    basic_seat_english=forms.NullBooleanField()
 
-    basic_seat_western=models.NullBooleanField()
+    basic_seat_western=forms.NullBooleanField()
 
-    hand_pos_english=models.NullBooleanField()
+    hand_pos_english=forms.NullBooleanField()
 
-    hand_post_western=models.NullBooleanField()
+    hand_post_western=forms.NullBooleanField()
 
-    two_point_trot=models.NullBooleanField()
+    two_point_trot=forms.NullBooleanField()
 
-    circle_trot_no_stirrups=models.NullBooleanField()
+    circle_trot_no_stirrups=forms.NullBooleanField()
 
-    circle_at_canter=models.NullBooleanField()
+    circle_at_canter=forms.NullBooleanField()
 
-    circle_canter_no_stirrups=models.NullBooleanField()
+    circle_canter_no_stirrups=forms.NullBooleanField()
 
-    two_point_canter=models.NullBooleanField()
+    two_point_canter=forms.NullBooleanField()
 
-    circle_at_walk=models.NullBooleanField()
+    circle_at_walk=forms.NullBooleanField()
 
-    circle_at_trot=models.NullBooleanField()
+    circle_at_trot=forms.NullBooleanField()
 
     holds_handhold_walk=forms.ChoiceField(
         choices=(models.EvalRidingExercises._meta
