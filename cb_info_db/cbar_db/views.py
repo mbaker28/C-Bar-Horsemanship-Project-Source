@@ -760,6 +760,75 @@ def public_form_seizure(request):
             }
         )
 
+def donation_index(request):
+    """ Index for donations view. """
+    return render(request, 'cbar_db/forms/donation/donation_index.html')
+
+def donation_participant(request):
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        form=forms.ParticipantAdoptionForm(request.POST)
+
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+
+            try:
+                # Stupid gay shit..
+                loggeyMcLogging.error("Seaching for existing donor...")
+                donor=models.objects.Donor.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                loggeyMcLogging.error("Existing donor found.")
+            except:
+                # More stupid gay shit...
+                loggeyMcLogging.error(
+                    "Existing donor not found. Creating new donor..."
+                )
+                donor=models.Donor(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                donor.save()
+
+            donation=models.Donation(
+                donor_id=donor,
+                donation_type=models.Donation.DONATION_ADOPT_PARTICIPANT,
+                amount=form.cleaned_data["amount"]
+            )
+            donation.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/')
+
+        else:
+            loggeyMcLogging.error("The form is NOT Valid")
+            return render(
+                request,
+                'cbar_db/forms/donation/donation_participant.html',
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+            }
+        )
+
+    else:
+        form=forms.ParticipantAdoptionForm()
+        return render(
+            request,
+            'cbar_db/forms/donation/donation_participant.html',
+            {
+                'form': form
+            }
+        )
+
+def donation_horse(request):
+    return render(request, 'cbar_db/forms/donation/donation_horse.html')
+
+def donation_monetary(request):
+    return render(request, 'cbar_db/forms/donation/donation_monetary.html')
+
+
 @login_required
 def index_private_admin(request):
     """ Logged in user index view. """

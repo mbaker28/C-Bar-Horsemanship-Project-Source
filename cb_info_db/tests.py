@@ -62,6 +62,274 @@ class TestPublicViews(TestCase):
         response = self.client.get(reverse('public-form-seizure'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
+    def test_donation_index_loads(self):
+        """ Tests whether the Donation index page loads. """
+        response = self.client.get(reverse('donation-index'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_donation_participant_loads(self):
+        """ Tests whether the Adopt A Participant donation form loads. """
+        response = self.client.get(reverse('donation-participant'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+
+class TestApplicationForm(TestCase):
+    def setUp(self):
+        setup_test_environment() #Initialize the test enviornment
+        client=Client() #Make a test client (someone viewing the database)
+
+        # Create a Participant record and save it
+        test_participant=models.Participant(
+            name="TEST Bruce Wayne",
+            birth_date="1984-6-24",
+            email="bruce@wayneenterprises.com",
+            weight=185.0,
+            gender="M",
+            guardian_name="Alfred Pennyworth",
+            height=72.0,
+            minor_status="G",
+            address_street="1234 Wayne St.",
+            address_city="Gotham",
+            address_state="OK",
+            address_zip= "424278",
+            phone_home="(300) 200-100",
+            phone_cell="(300) 500-600",
+            phone_work="(598) 039-3008",
+            school_institution="Ra's Al Ghul School of Ninjutsu"
+        )
+        test_participant.save()
+
+    def test_application_form_creates_participant(self):
+        """ Tests whether the form creates a participant record once all
+            fields are entered. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "(400) 100-200",
+            "phone_cell": "(400) 200-300",
+            "phone_work": "(400) 300-400",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # DISABLED: We don't have a post form url redirect location or view yet
+        # Assert the the redirect url matches the post-form page:
+        # self.assertEqual(
+        #     resp['Location'],
+        #     'http://testserver/thank you place'
+        # )
+
+        # Attempt to retreive the updated Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Verify that all of the Participant fields were set correctly:
+        self.assertEqual(
+            participant_in_db.name,
+            form_data["name"]
+        )
+        self.assertEqual(
+            "{d.year}-{d.month}-{d.day}".format(d=participant_in_db.birth_date),
+            form_data["birth_date"]
+        )
+        self.assertEqual(
+            str(participant_in_db.height), # To string so can check against form
+            form_data["height"]
+        )
+        self.assertEqual(
+            str(participant_in_db.weight), # To string so can check against form
+            form_data["weight"]
+        )
+        self.assertEqual(
+            participant_in_db.gender,
+            form_data["gender"]
+        )
+        self.assertEqual(
+            participant_in_db.minor_status,
+            form_data["minor_status"]
+        )
+        self.assertEqual(
+            participant_in_db.school_institution,
+            form_data["school_institution"]
+        )
+        self.assertEqual(
+            participant_in_db.guardian_name,
+            form_data["guardian_name"]
+        )
+        self.assertEqual(
+            participant_in_db.address_street,
+            form_data["address_street"]
+        )
+        self.assertEqual(
+            participant_in_db.address_city,
+            form_data["address_city"]
+        )
+        self.assertEqual(
+            participant_in_db.address_zip,
+            form_data["address_zip"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_home,
+            form_data["phone_home"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_cell,
+            form_data["phone_cell"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_work,
+            form_data["phone_work"]
+        )
+        self.assertEqual(
+            participant_in_db.email,
+            form_data["email"]
+        )
+
+    def test_application_form_participant_already_exists(self):
+        """ Form throws error if the participant already exists. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "(400) 100-200",
+            "phone_cell": "(400) 200-300",
+            "phone_work": "(400) 300-400",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        print(response.context)
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS
+            )
+        )
+
+    def test_application_form_participant_does_not_exist_with_invalid_data(self):
+        """ Form throws an error if the form data is not valid. """
+
+        form_data={
+            "name": "TEST sdf83sdf",
+            "birth_date": "sdf##df",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "(400) 100-200",
+            "phone_cell": "(400) 200-300",
+            "phone_work": "(400) 300-400",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_application_form_with_no_phone_numbers_throws_error(self):
+        """ Verify that an Application form view, populated with no phone
+         numbers, displays an error message. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "",
+            "phone_cell": "",
+            "phone_work": "",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that each phone field threw the correct error:
+        self.assertFormError(
+            response,
+            "form",
+            "phone_home",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+        self.assertFormError(
+            response,
+            "form",
+            "phone_cell",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+        self.assertFormError(
+            response,
+            "form",
+            "phone_work",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+
 
 class TestFormSavedPage(TestCase):
     def test_form_saved_page_loads_with_correct_parameter(self):
@@ -4622,3 +4890,183 @@ class TestSeizureEvaluationReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+
+class TestAdoptParticipant(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_participant_donor=models.Donor(
+            name="TEST Super Batman",
+            email="michael.something@ftc.gov"
+        )
+        test_participant_donor.save()
+
+    def test_form_finds_existing_donor(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Super Batman",
+            "email":"michael.something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.ParticipantAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("ERROR: Donor Not found!")
+
+        self.assertTrue(found_donor)
+
+    def test_form_does_not_find_non_existent_donor_name(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Super Flash",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.ParticipantAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("ERROR: Found Donor!")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertFalse(found_donor)
+
+    def test_form_does_not_find_non_existent_donor_email(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Super Batman",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.ParticipantAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("ERROR: Found Donor!")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertFalse(found_donor)
+
+    def test_donor_invalid_amount(self):
+
+        form_data={
+            "name":"TEST Super Aquaman",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"sadhiugiufe5",
+        }
+
+        response=self.client.post(reverse("donation-participant"),form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donor_invalid_name_length(self):
+
+        form_data={
+            "name":"TEST Super Aquaman with a stupid super long name thatiszzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+
+        response=self.client.post(reverse("donation-participant"), form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donation_adopt_participant_saves_with_valid_data(self):
+
+        form_data={
+            "name": "TEST Super Batman",
+            "email": "michael.something@ftc.gov",
+            "amount": "5",
+        }
+
+        response=self.client.post(reverse("donation-participant"), form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
+            )
+        except:
+            print(
+                "Error: Unable to retreive new Donation Record!"
+            )

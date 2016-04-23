@@ -13,6 +13,7 @@ ERROR_TEXT_NO_PHONE="Please enter at least one phone number."
 this_year=date.today().year
 YEARS=range(this_year-125, this_year+1)
 
+
 class ApplicationForm(forms.Form):
     name = forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
@@ -523,3 +524,14 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("signature").max_length
         )
     )
+
+
+class ParticipantAdoptionForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()
