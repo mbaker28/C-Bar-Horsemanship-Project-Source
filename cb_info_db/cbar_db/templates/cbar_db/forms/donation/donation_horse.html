@@ -8,8 +8,26 @@
     {% endif %}
     <form action="{% url 'donation-horse' %}" method="post">
         {% csrf_token %}
+        <div>
+        <p>
+            Amount you are donating: ${{  form.amount }}
+            <span class="error_message">
+                {{ form.donation_type.error.as_text }}
+            </span>
+        </p>
+        <p>
+            Your Name: {{ form.name }}
+            <span class="error_message">
+                {{ form.name.error.as_text }}
+            </span>
+        </p>
+        <p>
+            Your Email address:{{ form.email }}
+            <span class="error_message">
+                {{ form.email.error.as_text }}
+            </span>
 
-        <!-- FORM THINGS GO HERE -->
+        </div>
 
         <input type="Submit" value="Submit">
     </form>
