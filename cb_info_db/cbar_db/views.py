@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 import logging
 import time
 from cbar_db import forms
@@ -48,6 +49,17 @@ def index_public(request):
 def index_public_forms(request):
     """ Public forms index view. """
     return render(request, 'cbar_db/forms/public/public.html')
+
+def form_saved(request):
+    """ Used to tell the user their form saved. """
+
+    # Check if the user just typed the url in the menu bar:
+    if request.GET.get("a") == "a":
+        # The user was redirected here from a form, display the message:
+        return render(request, "cbar_db/forms/form_saved.html")
+    else:
+        # The user just typed in the address, redirect to the home page:
+        return HttpResponseRedirect("/")
 
 def public_form_application(request):
     """ Application form view. """
@@ -103,7 +115,7 @@ def public_form_application(request):
                 form_data_application.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid.
@@ -240,7 +252,7 @@ def public_form_med_release(request):
                 medication_two.save()
 
             # Redirect to the home page:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid
@@ -382,7 +394,7 @@ def public_form_emerg_auth(request):
             authorize_emerg_medical.save()
 
             # Redirect to the home page:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid
@@ -453,7 +465,7 @@ def public_form_liability(request):
             form_data_liability.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid.
@@ -523,7 +535,7 @@ def public_form_media(request):
             form_data_media.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid.
@@ -579,7 +591,7 @@ def public_form_background(request):
             public_form_background.save()
 
             # Redirect to the home page:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             form=forms.BackgroundCheckForm()
@@ -722,7 +734,7 @@ def public_form_seizure(request):
                 medication_three.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid.

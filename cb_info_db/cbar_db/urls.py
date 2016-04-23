@@ -11,6 +11,9 @@ urlpatterns = [
     # Public forms index
     url(r'^forms/public/$', views.index_public_forms, name='index-public-forms'),
 
+    # Form saved message
+    url(r'^forms/saved/$', views.form_saved, name='form-saved'),
+
     # Application form
     url(r'^forms/public/application/$', views.public_form_application,
         name='public-form-application'),
@@ -55,7 +58,7 @@ urlpatterns = [
     url(r'^forms/public/donation/monetary$', views.donation_monetary,
         name='donation-monetary'),
 
-    
+
     ######################### User login required #########################
     # Login page
     url(r'^user/login/$', auth_views.login,
@@ -100,5 +103,4 @@ urlpatterns = [
     url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/seizure/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_seizure,
         name='report-seizure'),
-
 ]
