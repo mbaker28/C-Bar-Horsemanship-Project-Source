@@ -1238,3 +1238,27 @@ def report_seizure(request, participant_id, year, month, day):
             "participant": participant
         }
     )
+
+@login_required
+def observation_evaluation(request):
+
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+
+        return render(
+            request,
+            "cbar_db/admin/reports/observation_evaluation.html"
+            {
+                'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")

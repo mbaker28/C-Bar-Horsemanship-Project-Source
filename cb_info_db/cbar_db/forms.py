@@ -554,3 +554,74 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("signature").max_length
         )
     )
+
+class ObservationEvaluation(forms.form):
+    name = forms.CharField(
+        max_length=models.Participant._meta.get_field("name").max_length
+    )
+    date=forms.DateField
+
+    walking_through_barn = forms.ChoiceField(
+        choices=models.EvalAttitude._meta.get_field("walking_through_barn")
+        .choices
+    )
+
+    looking_at_horses=forms.ChoiceField(
+        choices=( models.EvalAttitude._meta.get_feild("looking_at_horses")
+        .choices)
+    )
+
+    petting_horse=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("petting_horse")
+        .choices)
+    )
+
+    up_down_ramp=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("up_down_ramp")
+        .choices)
+    )
+
+    mounting_before=forms.Choices(
+        choices=(models.EvalAttitude._meta.get_field("mounting_before")
+        .choices)
+    )
+
+    mounting_after=forms.Choices(
+        choices=(models.EvalAttitude._meta.get_field("mounting_after")
+        .choices)
+    )
+
+    riding_before=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("riding_before")
+        .choices)
+    )
+
+    riding_during=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("riding_during")
+        .choices)
+    )
+
+    riding_after=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("riding_after")
+        .choices)
+    )
+
+    understands_directions=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("understands_directions")
+        .choices)
+    )
+
+    participates_exercises=forms.ChoiceField(
+        choices= (models.EvalAttitude._meta.get_field("participates_exercises")
+        .choices)
+    )
+
+    participates_games=forms.(
+        choices=(models.EvalAttitude._meta.get_field("participates_games)
+        .choices)
+    )
+
+    general_attitude=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("general_attitude")
+        .choices)
+    )

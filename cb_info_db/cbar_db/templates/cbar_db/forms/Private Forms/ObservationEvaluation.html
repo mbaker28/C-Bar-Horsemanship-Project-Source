@@ -1,0 +1,14 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Application</h1>
+    {% if error_text %}
+        <p></strong>
+            {{ error_text }}
+        </p></strong>
+    {% endif %}
+    <form action="{% url 'public-form-application' %}" method="post">
+        {% csrf_token %}
+        
+        <input type="Submit" value="Submit" />
+    </form>
+{% endblock %}
