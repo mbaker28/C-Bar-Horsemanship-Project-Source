@@ -39,6 +39,10 @@ urlpatterns = [
     url(r'^forms/public/seizure/$', views.public_form_seizure,
         name='public-form-seizure'),
 
+    # Rider Eval Checklist form
+    url(r'^forms/private/rider_eval_checklist_form/$', views.private_form_rider_eval_checklist,
+        name='private_form_rider_eval_checklist'),
+
 
     ######################### User login required #########################
     # Login page
