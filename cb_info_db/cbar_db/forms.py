@@ -528,6 +528,189 @@ class EmergencyMedicalReleaseForm(forms.Form):
 
 
 class RiderIntakeAssessmentForm(forms.Form):
+    # Primary document sources:
+    #   -"Volunteer Folder/.../blank/Rider Intake Assessment (Spring 2014).pdf"
+    #   -"Volunteer Folder/.../Rider Intake Assessment (Spring 2014).pdf"
+
+    # Stored in Participant model (all should auto-fill):
+    participant_name=forms.CharField(
+        max_length=models.Participant._meta.get_field("name").max_length
+    )
+    birth_date=forms.DateField(widget=SelectDateWidget)
+    height=forms.DecimalField(
+        max_digits=models.Participant._meta.get_field("height").max_digits,
+        decimal_places=(
+            models.Participant._meta.get_field("height").decimal_places
+        )
+    )
+    weight=forms.DecimalField(
+        max_digits=models.Participant._meta.get_field("weight").max_digits,
+        decimal_places=(
+            models.Participant._meta.get_field("weight").decimal_places
+        )
+    )
+    gender=forms.ChoiceField(
+        choices=models.Participant._meta.get_field("gender").choices
+    )
+
+    # Stored in AdaptationsNeeded:
+    posture_standing=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta
+            .get_field("posture_standing").max_length
+        )
+    )
+    posture_sitting=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta
+            .get_field("posture_sitting").max_length
+        )
+    )
+    posture_mounted=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta
+            .get_field("posture_mounted").max_length
+        )
+    )
+    ambulatory_status=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta
+            .get_field("ambulatory_status").choices
+        )
+    )
+    ambulatory_status_other=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta
+            .get_field("ambulatory_status_other").max_length
+        )
+    )
+    gait_flat=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_flat").max_length
+        )
+    )
+    gait_uneven=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_uneven").max_length
+        )
+    )
+    gait_incline=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_incline").max_length
+        )
+    )
+    gait_decline=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_decline").max_length
+        )
+    )
+    gait_stairs=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_stairs").max_length
+        )
+    )
+    gait_balance=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_balance").max_length
+        )
+    )
+    gait_standing_up=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_standing_up")
+            .max_length
+        )
+    )
+    gait_standing_down=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_standing_down")
+            .max_length
+        )
+    )
+    gait_straddle_up=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_straddle_up")
+            .max_length
+        )
+    )
+    gait_straddle_down=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta.get_field("gait_straddle_down")
+            .max_length
+        )
+    )
+
+
+    # Stored in Diagnosis:
+    primary_diagnosis=forms.CharField( # Should be auto-filled if applicable
+        max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
+    )
+
+    # Stored in AuthorizedUser (?):
+    assessor_name=forms.CharField(
+        max_length=models.Participant._meta.get_field("name").max_length
+    )
+
+    # Stored in Session:
+    tack=forms.CharField(
+        max_length=models.Session._meta.get_field("tack").max_length
+    )
+    # Should this ^ be stored somehwere else? Seems to be related to the
+    # participant, not a given session.
+
+    # TODO:
+    # Calculated fields:
+    #   -Participant.age_at_assessment
+    #   -Seizures (y/n), from whether the Participant has SeizureType records?
+
+    # Not in Model (need to add?):
+    #   -C-Bar staff reviewed medical history and physician's release (yes / no)
+    #   -Precautions (long text field)
+    #   -Grand/Petite/Controlled seizure classifications (add to SeizureType?)
+    #   -Behaviour:
+    #       -Impulsive (y/n)
+    #       -Eye contact (y/n)
+    #       -attention span (good/fair/poor)
+    #       -interacts with others (y/n)-
+    #   -Communication:
+    #       -Verbal (y/n) <- What does this mean? They can communicate verbally?
+    #       -Language skills (short text)
+    #   -Visual:
+    #       -Impaired (y/n)
+    #       -Comments
+    #   -Hearing:
+    #       -Impaired (y/n)
+    #       -Comments
+    #   -Tactile
+    #       -Don't touch (y/n)
+    #       -Light touch (y/n)
+    #       -Deep pressure (y/n)
+    #       -Comments
+    #   -Motor skills
+    #       -Gross
+    #       -Fine
+    #       -Hand dominance (L/R)
+    #       -Comments
+    #   -Mounted
+    #       -Posture stuff (duplicate of attributes already there?). It's
+    #        unclear what the fields are for / what da-ta type gets put in them.
+    #   -Recommendations
+    #       -Can / can't benefit
+    #       -Frequency <-- Of sessions?
+    #   -Activity: <-- no idea what goes here...
+    #       -Riding skills
+    #       -Horsemanship
+    #   -Horse type
+    #   -Helmet size <-- should go in participant model
+    #   -Problem list
+    #   -Plans & goals
+    #   -Other comments
+    #   -Evaluator Signature
+
+    # Stored somewhere...:
+    date=forms.DateField(widget=SelectDateWidget)
+    # Mount
+    # Dismount
+
     num_sidewalkers_walk_spotter=forms.DecimalField(
         max_digits=models.AdaptationsNeeded._meta.get_field(
             "num_sidewalkers_walk_spotter"
