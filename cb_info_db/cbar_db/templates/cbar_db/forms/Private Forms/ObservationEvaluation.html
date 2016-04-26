@@ -6,9 +6,108 @@
             {{ error_text }}
         </p></strong>
     {% endif %}
-    <form action="{% url 'public-form-application' %}" method="post">
+    <form action="{% url 'private-form-application' %}" method="post">
         {% csrf_token %}
-        
+        <p> Participant Name: {{ form.participant}}
+            <span class="error_message">
+                {{ form.participant.error.as_text }}
+            </span>
+        </p>
+
+        <p>
+            Date: {{ form.date }}
+        </p>
+
+        <p>
+            Walking through barn: {{ form.walking_through_barn }}
+            <span class="error_message">
+                {{ form.walking_through_barn.error.as_text }}
+            </span>
+        </p>
+
+        <p>
+            Looking at the Horses: {{ form.looking_at_horses }}
+            <span class="error_message">
+                {{ form.looking_at_horses.error.as_text }}
+            </span>
+        </p>
+
+        <p>
+            Petting The horses: {{ form.petting_horse }}
+        <span class="error_message">
+            {{ form.petting_horse.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Up and Down Ramp: {{ form.up_down_ramp }}
+        <span class="error_message">
+            {{ form.up_down_ramp.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Mounting Before: {{ form.mounting_before }}
+        <span class="error_message">
+            {{ form.mounting_before.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Mounting after: {{ form.mounting_after }}
+        <span class="error_message">
+            {{ form.mounting_after.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Riding Before: {{ form.riding_before }}
+        <span class="error_message">
+            {{ form.riding_before.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Riding During: {{ form.riding_during }}
+        <span class="error_message">
+            {{ form.riding_during.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Riding After: {{ form.riding_after }}
+        <span class="error_message">
+            {{ form.riding_after.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Understands Directions: {{ form.understands_directions }}
+        <span class="error_text">
+            {{ form.understands_directions.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Participates in Excercises: {{ form.participates_exercises}}
+        <span class="error_message">
+            {{ form.participates_exercises.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            Participates in Games: {{ form.participates_games }}
+        <span class="error_message">
+            {{ form.participates_games.error.as_text }}
+        </span>
+        </p>
+
+        <p>
+            General Attitude: {{ form.general_attitude}}
+        <span class="error_message">
+            {{ form.general_attitude.error.as_text}}
+        </span>
+        </p>
         <input type="Submit" value="Submit" />
     </form>
 {% endblock %}

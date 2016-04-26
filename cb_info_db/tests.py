@@ -4603,3 +4603,71 @@ class TestSeizureEvaluationReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+class TestObservationEvaluation(TestCase):
+    def setup(self):
+        setup_test_environment()
+        client=Client()
+
+        test_ser=models.User(
+            username="testuser",
+            password="testpass",
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Levi Jenson",
+            walking_through_barn="Willing",
+            looking_at_horses="Willing",
+            petting_horse="Willing",
+            up_down_ramp="Willing",
+            mounting_before="Willing",
+            mounting_after="Willing",
+            riding_before="Willing",
+            riding_during="Willing",
+            riding_after="Willing",
+            understands_directions="Willing",
+            participates_exercises="Willing",
+            participates_games="Willing",
+            general_attitude="Willing",
+        )
+        test_participant.save()
+
+    def test_participant_record_loads_if_user_logged_in_no_release(self):
+
+        test_user=models.User.onjects.get(
+            username="testuser",
+        )
+        test_partiicipant_in_db=models.Participant.objects.get(
+            name=" TEST Levi Jenson"
+        )
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse('participant-record',
+                kwargs={
+                    'participant_id':test_participant_in_db.participant_id
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code 200)
+
+    def test_participant_record_redirects_if_user_not_logged_in(self):
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse('participant-record',
+                kwargs={
+                    'participant_id':test_participant_in_db.participant_id
+                }
+            )
+        )
+        self.assertEqual(response.status_code, 302)
+
+        print("response"[\"location\"]") + response["location"])
+
+        print("reverse(\"user-login\")"+ reverse("user-login"))
+
+        self.assertTrue(reverse("user-login") in response["location"])

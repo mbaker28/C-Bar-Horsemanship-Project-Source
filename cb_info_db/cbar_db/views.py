@@ -1262,3 +1262,35 @@ def observation_evaluation(request):
         loggeyMcLogging.error("Date=" + str(date))
     except:
         loggeyMcLogging.error("Couldn't parse the date")
+
+        return render(
+            request,
+            "cbar_db/admin/reports/observation_evaluation.html",
+            {
+                'error_text':ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+        try:
+            observation_evaluation=models.ObservationEvaluation.objects.get(
+                participant_id=participant,
+                date=time.strftime("%Y-%m-%d", date)
+            )
+        except ObjectDoesNotExist:
+
+            return render(
+                request,
+                "cbar_db/admin/reports/observation_evaluation.html",
+                {
+                    'error_text': ERROR_TEXT_OBSERVATION_EVALUATION_NOT_AVAILABLE
+                }
+            )
+
+        Return render(
+            request,
+            "cbar_db/admin/reports/observation_evalutation.html",
+            {
+                "observation_evalutation": observation_evaluation,
+                "participant": participant
+            }
+        )
