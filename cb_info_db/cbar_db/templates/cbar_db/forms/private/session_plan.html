@@ -1,0 +1,9 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Session Plan</h1>
+    {% if error_text %}
+    <p><strong>
+        {{ error_text }}
+    </strong></p>
+    {% endif %}
+{% endblock %}
