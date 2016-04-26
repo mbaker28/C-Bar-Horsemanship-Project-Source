@@ -748,6 +748,7 @@ def public_form_seizure(request):
             }
         )
 
+@login_required
 def private_form_rider_eval_checklist(request):
 
     # if this is a POST request we need to process the form data
