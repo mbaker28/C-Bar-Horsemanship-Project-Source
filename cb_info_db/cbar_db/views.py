@@ -1037,8 +1037,8 @@ def private_form_rider_eval_checklist(request, participant_id):
             )
             form_data_rider_eval_checklist.save()
 
-            # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            # Redirect to the 'you saved this form page':
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid
