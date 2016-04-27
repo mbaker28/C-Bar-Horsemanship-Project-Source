@@ -933,7 +933,7 @@ def donation_monetary(request):
 
 
 @login_required
-def private_form_rider_eval_checklist(request):
+def private_form_rider_eval_checklist(request, participant_id):
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -943,13 +943,9 @@ def private_form_rider_eval_checklist(request):
         if form.is_valid():
             # Create an instance of the SeizureEval model to hold form data
             try:
-                # Find the participant that matches the name and birth date from
-                # the form data:
-                participant=models.EvalRidingExercises.objects.get(
-                    name=form.cleaned_data['name'],
-                    birth_date=form.cleaned_data['birth_date']
+                participant=models.Participant.objects.get(
+                    participant_id=participant_id
                 )
-
             except ObjectDoesNotExist:
                 # The participant doesn't exist.
                 # Set the error message and redisplay the form:
@@ -957,8 +953,7 @@ def private_form_rider_eval_checklist(request):
                     request,
                     "cbar_db/forms/private/rider_eval_checklist_form.html",
                     {
-                        'form': form,
-                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
                     }
                 )
 
@@ -1061,11 +1056,27 @@ def private_form_rider_eval_checklist(request):
         # If request type is GET (or any other method) create a blank form.
         form=forms.RiderEvalChecklistForm()
 
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            # The participant doesn't exist.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/rider_eval_checklist_form.html",
+                {
+                    'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                }
+            )
+
         return render(
             request,
             'cbar_db/forms/private/rider_eval_checklist_form.html',
             {
-                'form': form
+                'form': form,
+                "participant": participant
             }
         )
 

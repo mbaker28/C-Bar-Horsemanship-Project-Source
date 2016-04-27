@@ -42,10 +42,6 @@ urlpatterns = [
     url(r'^forms/public/seizure/$', views.public_form_seizure,
         name='public-form-seizure'),
 
-    # Rider Eval Checklist form
-    url(r'^forms/private/rider_eval_checklist_form/$', views.private_form_rider_eval_checklist,
-        name='private_form_rider_eval_checklist'),
-
 	# Donation form index
     url(r'^forms/public/donation/$', views.donation_index,
         name='donation-index'),
@@ -107,4 +103,8 @@ urlpatterns = [
     url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/seizure/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_seizure,
         name='report-seizure'),
+
+    # Rider Eval Checklist form
+    url(r'^forms/private/rider_eval_checklist/(?P<participant_id>[0-9]+)$', views.private_form_rider_eval_checklist,
+        name='private_form_rider_eval_checklist'),
 ]
