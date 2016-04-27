@@ -320,6 +320,7 @@ class TestApplicationForm(TestCase):
             forms.ERROR_TEXT_NO_PHONE
         )
 
+
 class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
@@ -4604,6 +4605,7 @@ class TestSeizureEvaluationReport(TestCase):
 
         self.assertEqual(response.status_code, 200) # Loaded...
 
+
 class TestObservationEvaluation(TestCase):
     def setup(self):
         setup_test_environment()
@@ -4635,10 +4637,10 @@ class TestObservationEvaluation(TestCase):
 
     def test_participant_record_loads_if_user_logged_in_no_release(self):
 
-        test_user=models.User.onjects.get(
+        test_user=models.User.objects.get(
             username="testuser",
         )
-        test_partiicipant_in_db=models.Participant.objects.get(
+        test_participant_in_db=models.Participant.objects.get(
             name=" TEST Levi Jenson"
         )
         self.client.force_login(test_user)
@@ -4651,7 +4653,7 @@ class TestObservationEvaluation(TestCase):
             )
         )
 
-        self.assertEqual(response.status_code 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_participant_record_redirects_if_user_not_logged_in(self):
 
@@ -4660,16 +4662,57 @@ class TestObservationEvaluation(TestCase):
         response = self.client.get(
             reverse('participant-record',
                 kwargs={
-                    'participant_id':test_participant_in_db.participant_id
+                    "participant_id":test_participant_in_db.participant_id
                 }
             )
         )
         self.assertEqual(response.status_code, 302)
 
-        print("response"[\"location\"]") + response["location"])
 
         print("reverse(\"user-login\")"+ reverse("user-login"))
 
         self.assertTrue(reverse("user-login") in response["location"])
 
-    def test_
+        def test_user_inputs_not_valid_data(self):
+
+            test_participant=models.Participant(
+                name="TEST Levi Jenson",
+                walking_through_barn="",
+                looking_at_horses="",
+                petting_horse="",
+                up_down_ramp="",
+                mounting_before="",
+                mounting_after="",
+                riding_before="",
+                riding_during="",
+                riding_after="",
+                understands_directions="",
+                participates_exercises="",
+                participates_games="",
+                general_attitude="",
+            )
+            test_participant.save()
+
+            response=self.client.post(reverse("observation-evaluation"),
+                form_data)
+
+            self.assertEqual(response.status_code, 200)
+
+            self.asssertFormError(
+                response,
+                "form",
+                "walking_through_barn",
+                "looking_at_horses",
+                "petting_horse",
+                "up_down_ramp",
+                "mounting_before",
+                "mounting_after",
+                "riding_before",
+                "riding_during",
+                "riding_after",
+                "understands_directions",
+                "participates_exercises",
+                "participates_games",
+                "general_attitude",
+                forms.ERROR_TEXT_FORM_INVALID
+            )
