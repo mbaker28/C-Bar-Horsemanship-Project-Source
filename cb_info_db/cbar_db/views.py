@@ -1250,7 +1250,7 @@ def observation_evaluation(request):
 
         return render(
             request,
-            "cbar_db/admin/reports/observation_evaluation.html"
+            "cbar_db/admin/reports/observation_evaluation.html",
             {
                 'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
             }
@@ -1286,7 +1286,7 @@ def observation_evaluation(request):
                 }
             )
 
-        Return render(
+        return render(
             request,
             "cbar_db/admin/reports/observation_evalutation.html",
             {

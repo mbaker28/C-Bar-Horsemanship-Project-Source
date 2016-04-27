@@ -555,7 +555,7 @@ class EmergencyMedicalReleaseForm(forms.Form):
         )
     )
 
-class ObservationEvaluation(forms.form):
+class ObservationEvaluation(forms.Form):
     name = forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
     )
@@ -567,12 +567,12 @@ class ObservationEvaluation(forms.form):
     )
 
     looking_at_horses=forms.ChoiceField(
-        choices=( models.EvalAttitude._meta.get_feild("looking_at_horses")
+        choices=( models.EvalAttitude._meta.get_field("looking_at_horses")
         .choices)
     )
 
-    petting_horse=forms.ChoiceField(
-        choices=(models.EvalAttitude._meta.get_field("petting_horse")
+    petting_horses=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("petting_horses")
         .choices)
     )
 
@@ -581,12 +581,12 @@ class ObservationEvaluation(forms.form):
         .choices)
     )
 
-    mounting_before=forms.Choices(
+    mounting_before=forms.ChoiceField(
         choices=(models.EvalAttitude._meta.get_field("mounting_before")
         .choices)
     )
 
-    mounting_after=forms.Choices(
+    mounting_after=forms.ChoiceField(
         choices=(models.EvalAttitude._meta.get_field("mounting_after")
         .choices)
     )
@@ -616,8 +616,8 @@ class ObservationEvaluation(forms.form):
         .choices)
     )
 
-    participates_games=forms.(
-        choices=(models.EvalAttitude._meta.get_field("participates_games)
+    participates_games=forms.ChoiceField(
+        choices=(models.EvalAttitude._meta.get_field("participates_games")
         .choices)
     )
 
