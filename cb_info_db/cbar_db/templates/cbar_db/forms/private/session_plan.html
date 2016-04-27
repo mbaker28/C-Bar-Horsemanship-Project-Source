@@ -75,5 +75,60 @@
                 {{ form.dismount_type.errors.as_text }}
             </span>
         </p>
+
+        <h2>Sidewalkers</h2>
+        <p><strong>At walk:</strong>
+            <br />
+            Spotter: {{ form.num_sidewalkers_walk_spotter }}
+            <span class="error_message">
+                {{ form.num_sidewalkers_walk_spotter.errors.as_text }}
+            </span>
+            Heelhold: {{ form.num_sidewalkers_walk_heel_hold }}
+            <span class="error_message">
+                {{ form.num_sidewalkers_walk_heel_hold.errors.as_text }}
+            </span>
+            Over Thigh: {{ form.num_sidewalkers_walk_over_thigh }}
+            <span class="error_message">
+                {{ form.num_sidewalkers_walk_over_thigh.errors.as_text }}
+            </span>
+            Other: {{ form.num_sidewalkers_walk_other }}
+            <span class="error_message">
+                {{ form.num_sidewalkers_walk_other.errors.as_text }}
+            </span>
+            <br />
+            <strong>At Trot:</strong>
+            <br />
+            Spotter: {{ form.num_sidewalkers_trot_spotter }}
+            <span class="error_message">
+                {{ form.num_sidewalkers_trot_spotter.errors.as_text }}
+            </span>
+            Heelhold: {{ form.num_sidewalkers_trot_heel_hold }}
+            <span class="error_message">
+                {{ form.num_sidewalkers_trot_heel_hold.errors.as_text }}
+            </span>
+            Over Thigh: {{ form.num_sidewalkers_trot_over_thigh }}
+            <span class="error_message">
+                {{ form.num_sidewalkers_trot_over_thigh.errors.as_text }}
+            </span>
+            Other: {{ form.num_sidewalkers_trot_other }}
+            <span class="error_message">
+                {{ form.num_sidewalkers_trot_other.errors.as_text }}
+            </span>
+        </p>
+
+        <h2>Session Goals</h2>
+        <p>Goal Type: {{ form.goal_type }}
+            <span class="error_message">
+                {{ form.goal_type.errors.as_text }}
+            </span>
+            Description: {{ form.goal_description }}
+            <span class="error_message">
+                {{ form.goal_description.errors.as_text }}
+            </span>
+            Motivation: {{ form.motivation }}
+            <span class="error_message">
+                {{ form.motivation.errors.as_text }}
+            </span>
+        </p>
     </form>
 {% endblock %}
