@@ -866,7 +866,7 @@ def private_form_rider_eval_checklist(request):
             # Set the error message and redisplay the form:
             return render(
                 request,
-                "cbar_db/forms/public/rider_eval_checklist_form.html",
+                "cbar_db/forms/private/rider_eval_checklist_form.html",
                 {
                     'form': form,
                     'error_text': ERROR_TEXT_FORM_INVALID
@@ -879,7 +879,7 @@ def private_form_rider_eval_checklist(request):
 
         return render(
             request,
-            'cbar_db/forms/public/rider_eval_checklist_form.html',
+            'cbar_db/forms/private/rider_eval_checklist_form.html',
             {
                 'form': form
             }

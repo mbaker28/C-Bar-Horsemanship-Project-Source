@@ -3009,6 +3009,197 @@ class TestSeizureEvaluationForm(TestCase):
             forms.ERROR_TEXT_NO_PHONE
         )
 
+# class TestRiderEvalChecklistForm(TestCase):
+#     def setUp(self):
+#         setup_test_environment() # Initaliaze the test environment
+#         client=Client() # Make a test client (someone viewing the database)
+#         test_participant=models.EvalRidingExercises(
+#             participant_id=
+#             date=
+#             comments=
+#             basic_trail_rules=
+#             mount=
+#             dismount=
+#             emergency_dismount=
+#             four_natural_aids=
+#             basic_control=
+#             reverse_at_walk=
+#             reverse_at_trot=
+#             never_ridden=
+#             seat_at_walk=
+#             seat_at_trot=
+#             seat_at_canter=
+#             basic_seat_english=
+#             basic_seat_western=
+#             hand_pos_english=
+#             hand_post_western=
+#             two_point_trot=
+#             circle_trot_no_stirrups=
+#             circle_at_canter=
+#             circle_canter_no_stirrups=
+#             two_point_canter=
+#             circle_at_walk=
+#             circle_at_trot=
+#             holds_handhold_walk=
+#             holds_handhold_sit_trot=
+#             holds_handhold_post_trot=
+#             holds_handhold_canter=
+#             holds_reins_walk=
+#             holds_reins_sit_trot=
+#             holds_reins_post_trot=
+#             holds_reins_canter=
+#             shorten_lengthen_reins_walk=
+#             shorten_lengthen_reins_sit_trot=
+#             shorten_lengthen_reins_post_trot=
+#             shorten_lengthen_reins_canter=
+#             can_control_horse_walk=
+#             can_control_horse_sit_trot=
+#             can_control_horse_post_trot=
+#             can_control_horse_canter=
+#             can_halt_walk=
+#             can_halt_sit_trot=
+#             can_halt_post_trot=
+#             can_halt_canter=
+#             drop_pickup_stirrups_walk=
+#             drop_pickup_stirrups_sit_trot=
+#             drop_pickup_stirrups_post_trot=
+#             drop_pickup_stirrups_canter=
+#             rides_no_stirrups_walk=
+#             rides_no_stirrups_sit_trot=
+#             rides_no_stirrups_post_trot=
+#             rides_no_stirrups_canter=
+#             maintain_half_seat_walk=
+#             maintain_half_seat_sit_trot=
+#             maintain_half_seat_post_trot=
+#             maintain_half_seat_canter=
+#             can_post_walk=
+#             can_post_sit_trot=
+#             can_post_post_trot=
+#             can_post_canter=
+#             proper_diagonal_walk=
+#             proper_diagonal_sit_trot=
+#             proper_diagonal_post_trot=
+#             proper_diagonal_canter=
+#             proper_lead_canter_sees=
+#             proper_lead_canter_knows=
+#             can_steer_over_cavalletti_walk=
+#             can_steer_over_cavalletti_sit_trot=
+#             can_steer_over_cavalletti_post_trot=
+#             can_steer_over_cavalletti_canter=
+#             jump_crossbar_walk=
+#             jump_crossbar_sit_trot=
+#             jump_crossbar_post_trot=
+#             jump_crossbar_canter=
+#         )
+#         test_participant.save()
+#
+#     def test_seizure_evaluation_form_finds_valid_participant(self):
+#         """ Tests whether the form finds a valid participant record if a
+#          matching (name, date) is entered """
+#
+#         # If we are able to find the matching record, we set this to True:
+#         found_participant=False
+#
+#         form_data={
+#             participant_id=
+#             date=
+#             comments=
+#             basic_trail_rules=
+#             mount=
+#             dismount=
+#             emergency_dismount=
+#             four_natural_aids=
+#             basic_control=
+#             reverse_at_walk=
+#             reverse_at_trot=
+#             never_ridden=
+#             seat_at_walk=
+#             seat_at_trot=
+#             seat_at_canter=
+#             basic_seat_english=
+#             basic_seat_western=
+#             hand_pos_english=
+#             hand_post_western=
+#             two_point_trot=
+#             circle_trot_no_stirrups=
+#             circle_at_canter=
+#             circle_canter_no_stirrups=
+#             two_point_canter=
+#             circle_at_walk=
+#             circle_at_trot=
+#             holds_handhold_walk=
+#             holds_handhold_sit_trot=
+#             holds_handhold_post_trot=
+#             holds_handhold_canter=
+#             holds_reins_walk=
+#             holds_reins_sit_trot=
+#             holds_reins_post_trot=
+#             holds_reins_canter=
+#             shorten_lengthen_reins_walk=
+#             shorten_lengthen_reins_sit_trot=
+#             shorten_lengthen_reins_post_trot=
+#             shorten_lengthen_reins_canter=
+#             can_control_horse_walk=
+#             can_control_horse_sit_trot=
+#             can_control_horse_post_trot=
+#             can_control_horse_canter=
+#             can_halt_walk=
+#             can_halt_sit_trot=
+#             can_halt_post_trot=
+#             can_halt_canter=
+#             drop_pickup_stirrups_walk=
+#             drop_pickup_stirrups_sit_trot=
+#             drop_pickup_stirrups_post_trot=
+#             drop_pickup_stirrups_canter=
+#             rides_no_stirrups_walk=
+#             rides_no_stirrups_sit_trot=
+#             rides_no_stirrups_post_trot=
+#             rides_no_stirrups_canter=
+#             maintain_half_seat_walk=
+#             maintain_half_seat_sit_trot=
+#             maintain_half_seat_post_trot=
+#             maintain_half_seat_canter=
+#             can_post_walk=
+#             can_post_sit_trot=
+#             can_post_post_trot=
+#             can_post_canter=
+#             proper_diagonal_walk=
+#             proper_diagonal_sit_trot=
+#             proper_diagonal_post_trot=
+#             proper_diagonal_canter=
+#             proper_lead_canter_sees=
+#             proper_lead_canter_knows=
+#             can_steer_over_cavalletti_walk=
+#             can_steer_over_cavalletti_sit_trot=
+#             can_steer_over_cavalletti_post_trot=
+#             can_steer_over_cavalletti_canter=
+#             jump_crossbar_walk=
+#             jump_crossbar_sit_trot=
+#             jump_crossbar_post_trot=
+#             jump_crossbar_canter=
+#         }
+#         form=forms.RiderEvalChecklistForm(form_data)
+#
+#         if form.is_valid(): # Performs validation, needed for form.cleaned_data
+#             print("Form is valid.")
+#
+#             try:
+#                 print("Finding participant...")
+#                 participant_instance=models.EvalRidingExercises.objects.get(
+#                     name=form.cleaned_data["name"],
+#                     birth_date=form.cleaned_data["birth_date"]
+#                 )
+#                 print("Found participant.")
+#                 found_participant=True
+#
+#             except ObjectDoesNotExist:
+#                 found_participant=False
+#
+#         else:
+#             print("Form is not valid.")
+#
+#         # We should say we could find the participant:
+#         self.assertEquals(found_participant, True)
 
 class TestAdminIndex(TestCase):
     def setUp(self):
