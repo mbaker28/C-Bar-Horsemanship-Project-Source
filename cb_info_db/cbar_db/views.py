@@ -939,24 +939,26 @@ def private_form_rider_eval_checklist(request, participant_id):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form=forms.RiderEvalChecklistForm(request.POST)
+
+        # Retrieve the Participant record bassed on the participant_id passed
+        # via the URL:
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            # The participant doesn't exist.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/rider_eval_checklist_form.html",
+                {
+                    'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                }
+            )
+
         # check whether it's valid:
         if form.is_valid():
-            # Create an instance of the SeizureEval model to hold form data
-            try:
-                participant=models.Participant.objects.get(
-                    participant_id=participant_id
-                )
-            except ObjectDoesNotExist:
-                # The participant doesn't exist.
-                # Set the error message and redisplay the form:
-                return render(
-                    request,
-                    "cbar_db/forms/private/rider_eval_checklist_form.html",
-                    {
-                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
-                    }
-                )
-
             form_data_rider_eval_checklist=models.EvalRidingExercises(
                 participant_id=participant,
                 date=form.cleaned_data["date"],
@@ -1048,6 +1050,7 @@ def private_form_rider_eval_checklist(request, participant_id):
                 "cbar_db/forms/private/rider_eval_checklist_form.html",
                 {
                     'form': form,
+                    'participant': participant,
                     'error_text': ERROR_TEXT_FORM_INVALID
                 }
             )

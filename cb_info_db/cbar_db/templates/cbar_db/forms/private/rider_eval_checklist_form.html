@@ -6,464 +6,466 @@
             {{ error_text }}
         </strong></p>
     {% endif %}
-    <form action="{% url 'private_form_rider_eval_checklist' participant.participant_id %}" method="post">
-        {% csrf_token %}
-        <p>
-            Participant: {{ participant.name }} ({{ participant.birth_date }})
-            <span class="error_message">
-                {{ form.participant.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Date: {{ form.date }}
-            <span class="error_message">
-                {{ form.date.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Basic Trail Rules: {{ form.basic_trail_rules }}
-            <span class="error_message">
-                {{ form.basic_trail_rules.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Mount: {{ form.mount }}
-            <span class="error_message">
-                {{ form.mount.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Dismount: {{ form.dismount }}
-            <span class="error_message">
-                {{ form.dismount.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Emergency Dismount: {{ form.emergency_dismount }}
-            <span class="error_message">
-                {{ form.emergency_dismount.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Four Natural Aids: {{ form.four_natural_aids }}
-            <span class="error_message">
-                {{ form.four_natural_aids.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Basic Control: {{ form.basic_control }}
-            <span class="error_message">
-                {{ form.basic_control.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Reverse - At Walk: {{ form.reverse_at_walk }}
-            <span class="error_message">
-                {{ form.reverse_at_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Reverse - At Trot: {{ form.reverse_at_trot }}
-            <span class="error_message">
-                {{ form.reverse_at_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Never Ridden: {{ form.never_ridden }}
-            <span class="error_message">
-                {{ form.never_ridden.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Seat - At Walk: {{ form.seat_at_walk }}
-            <span class="error_message">
-                {{ form.seat_at_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Seat - At Trot: {{ form.seat_at_trot }}
-            <span class="error_message">
-                {{ form.seat_at_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Seat - At Canter: {{ form.seat_at_canter }}
-            <span class="error_message">
-                {{ form.seat_at_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Basic Seat - Englsh: {{ form.basic_seat_english }}
-            <span class="error_message">
-                {{ form.basic_seat_english.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Basic Seat - Western: {{ form.basic_seat_western }}
-            <span class="error_message">
-                {{ form.basic_seat_western.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Hand Post - English: {{ form.hand_pos_english }}
-            <span class="error_message">
-                {{ form.hand_pos_english.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Hand Post - Western: {{ form.hand_post_western }}
-            <span class="error_message">
-                {{ form.hand_post_western.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Two Point - Trot: {{ form.two_point_trot }}
-            <span class="error_message">
-                {{ form.two_point_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Two Point - Canter: {{ form.two_point_canter }}
-            <span class="error_message">
-                {{ form.two_point_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Circle Trot - No Stirrups: {{ form.circle_trot_no_stirrups }}
-            <span class="error_message">
-                {{ form.circle_trot_no_stirrups.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Circle - At Canter: {{ form.circle_at_canter }}
-            <span class="error_message">
-                {{ form.circle_at_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Circle Canter - No Stirrups: {{ form.circle_canter_no_stirrups }}
-            <span class="error_message">
-                {{ form.circle_canter_no_stirrups.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Circle - At Walk: {{ form.circle_at_walk }}
-            <span class="error_message">
-                {{ form.circle_at_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Circle - At Trot: {{ form.circle_at_trot }}
-            <span class="error_message">
-                {{ form.circle_at_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Handhold - Walk: {{ form.holds_handhold_walk }}
-            <span class="error_message">
-                {{ form.holds_handhold_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Handhold - Sit Trot: {{ form.holds_handhold_sit_trot }}
-            <span class="error_message">
-                {{ form.holds_handhold_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Handhold - Post Trot: {{ form.holds_handhold_post_trot }}
-            <span class="error_message">
-                {{ form.holds_handhold_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Handhold - Canter: {{ form.holds_handhold_canter }}
-            <span class="error_message">
-                {{ form.holds_handhold_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Holds Reins - Walk: {{ form.holds_reins_walk }}
-            <span class="error_message">
-                {{ form.holds_reins_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Holds Reins - Sit Trot: {{ form.holds_reins_sit_trot }}
-            <span class="error_message">
-                {{ form.holds_reins_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Holds Reins - Post Trot: {{ form.holds_reins_post_trot }}
-            <span class="error_message">
-                {{ form.holds_reins_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Holds Reins - Canter: {{ form.holds_reins_canter }}
-            <span class="error_message">
-                {{ form.holds_reins_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Shorten/Lengthen Reins - Walk: {{ form.shorten_lengthen_reins_walk }}
-            <span class="error_message">
-                {{ form.shorten_lengthen_reins_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Shorten/Lengthen Reins - Sit Trot: {{ form.shorten_lengthen_reins_sit_trot }}
-            <span class="error_message">
-                {{ form.shorten_lengthen_reins_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Shorten/Lengthen Reins - Post Trot: {{ form.shorten_lengthen_reins_post_trot }}
-            <span class="error_message">
-                {{ form.shorten_lengthen_reins_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Shorten/Lengthen Reins - Canter: {{ form.shorten_lengthen_reins_canter }}
-            <span class="error_message">
-                {{ form.shorten_lengthen_reins_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Control Horse - Walk: {{ form.can_control_horse_walk }}
-            <span class="error_message">
-                {{ form.can_control_horse_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Control Horse - Sit Trot: {{ form.can_control_horse_sit_trot }}
-            <span class="error_message">
-                {{ form.can_control_horse_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Control Horse - Post Trot: {{ form.can_control_horse_post_trot }}
-            <span class="error_message">
-                {{ form.can_control_horse_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Control Horse - Canter: {{ form.can_control_horse_canter }}
-            <span class="error_message">
-                {{ form.date.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Halt - Walk: {{ form.can_halt_walk }}
-            <span class="error_message">
-                {{ form.can_halt_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Halt - Sit Trot: {{ form.can_halt_sit_trot }}
-            <span class="error_message">
-                {{ form.can_halt_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Halt - Post Trot: {{ form.can_halt_post_trot }}
-            <span class="error_message">
-                {{ form.can_halt_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Halt - Canter: {{ form.can_halt_canter }}
-            <span class="error_message">
-                {{ form.can_halt_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Drop/Pickup Stirrups - Walk: {{ form.drop_pickup_stirrups_walk }}
-            <span class="error_message">
-                {{ form.drop_pickup_stirrups_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Drop/Pickup Stirrups - Sit Trot: {{ form.drop_pickup_stirrups_sit_trot }}
-            <span class="error_message">
-                {{ form.drop_pickup_stirrups_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Drop/Pickup Stirrups - Post Trot: {{ form.drop_pickup_stirrups_post_trot }}
-            <span class="error_message">
-                {{ form.drop_pickup_stirrups_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Drop/Pickup Stirrups - Canter: {{ form.drop_pickup_stirrups_canter }}
-            <span class="error_message">
-                {{ form.drop_pickup_stirrups_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Rides No Stirrups - Walk: {{ form.rides_no_stirrups_walk }}
-            <span class="error_message">
-                {{ form.rides_no_stirrups_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Rides No Stirrups - Sit Trot: {{ form.rides_no_stirrups_sit_trot }}
-            <span class="error_message">
-                {{ form.rides_no_stirrups_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Rides No Stirrups - Post Trot: {{ form.rides_no_stirrups_post_trot }}
-            <span class="error_message">
-                {{ form.rides_no_stirrups_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Rides No Stirrups - Canter: {{ form.rides_no_stirrups_canter }}
-            <span class="error_message">
-                {{ form.rides_no_stirrups_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Maintain Half Seat - Walk: {{ form.maintain_half_seat_walk }}
-            <span class="error_message">
-                {{ form.maintain_half_seat_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Maintain Half Seat - Sit Trot: {{ form.maintain_half_seat_sit_trot }}
-            <span class="error_message">
-                {{ form.maintain_half_seat_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Maintain Half Seat - Post Trot: {{ form.maintain_half_seat_post_trot }}
-            <span class="error_message">
-                {{ form.maintain_half_seat_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Maintain Half Seat - Canter: {{ form.maintain_half_seat_canter }}
-            <span class="error_message">
-                {{ form.maintain_half_seat_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Post - Walk: {{ form.can_post_walk }}
-            <span class="error_message">
-                {{ form.can_post_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Post - Sit Trot: {{ form.can_post_sit_trot }}
-            <span class="error_message">
-                {{ form.can_post_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Post - Post Trot: {{ form.can_post_post_trot }}
-            <span class="error_message">
-                {{ form.can_post_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Post - Canter: {{ form.can_post_canter }}
-            <span class="error_message">
-                {{ form.can_post_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Proper Diagonal - Walk: {{ form.proper_diagonal_walk }}
-            <span class="error_message">
-                {{ form.proper_diagonal_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Proper Diagonal - Sit Trot: {{ form.proper_diagonal_sit_trot }}
-            <span class="error_message">
-                {{ form.proper_diagonal_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Proper Diagonal - Post Trot: {{ form.proper_diagonal_post_trot }}
-            <span class="error_message">
-                {{ form.proper_diagonal_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Proper Diagonal - Canter: {{ form.proper_diagonal_canter }}
-            <span class="error_message">
-                {{ form.proper_diagonal_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Proper Lead Canter - Sees: {{ form.proper_lead_canter_sees }}
-            <span class="error_message">
-                {{ form.proper_lead_canter_sees.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Proper Lead Canter - Knows: {{ form.proper_lead_canter_knows }}
-            <span class="error_message">
-                {{ form.proper_lead_canter_knows.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Steer Over Cavalletti - Walk: {{ form.can_steer_over_cavalletti_walk }}
-            <span class="error_message">
-                {{ form.can_steer_over_cavalletti_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Steer Over Cavalletti - Sit Trot: {{ form.can_steer_over_cavalletti_sit_trot }}
-            <span class="error_message">
-                {{ form.can_steer_over_cavalletti_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Steer Over Cavalletti - Post Trot: {{ form.can_steer_over_cavalletti_post_trot }}
-            <span class="error_message">
-                {{ form.can_steer_over_cavalletti_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Can Steer Over Cavalletti - Canter: {{ form.can_steer_over_cavalletti_canter }}
-            <span class="error_message">
-                {{ form.can_steer_over_cavalletti_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Jump Crossbar - Walk: {{ form.jump_crossbar_walk }}
-            <span class="error_message">
-                {{ form.jump_crossbar_walk.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Jump Crossbar - Sit Trot: {{ form.jump_crossbar_sit_trot }}
-            <span class="error_message">
-                {{ form.jump_crossbar_sit_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Jump Crossbar - Post Trot: {{ form.jump_crossbar_post_trot }}
-            <span class="error_message">
-                {{ form.jump_crossbar_post_trot.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Jump Crossbar - Canter: {{ form.jump_crossbar_canter }}
-            <span class="error_message">
-                {{ form.jump_crossbar_canter.errors.as_text }}
-            </span>
-        </p>
-        <p>
-            Comments: {{ form.comments }}
-            <span class="error_message">
-                {{ form.comments.errors.as_text }}
-            </span>
-        </p>
-        <input type="Submit" value="Submit" />
-    </form>
+    {% if participant %}
+        <form action="{% url 'private_form_rider_eval_checklist' participant.participant_id %}" method="post">
+            {% csrf_token %}
+            <p>
+                Participant: {{ participant.name }} ({{ participant.birth_date }})
+                <span class="error_message">
+                    {{ form.participant.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Date: {{ form.date }}
+                <span class="error_message">
+                    {{ form.date.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Basic Trail Rules: {{ form.basic_trail_rules }}
+                <span class="error_message">
+                    {{ form.basic_trail_rules.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Mount: {{ form.mount }}
+                <span class="error_message">
+                    {{ form.mount.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Dismount: {{ form.dismount }}
+                <span class="error_message">
+                    {{ form.dismount.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Emergency Dismount: {{ form.emergency_dismount }}
+                <span class="error_message">
+                    {{ form.emergency_dismount.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Four Natural Aids: {{ form.four_natural_aids }}
+                <span class="error_message">
+                    {{ form.four_natural_aids.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Basic Control: {{ form.basic_control }}
+                <span class="error_message">
+                    {{ form.basic_control.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Reverse - At Walk: {{ form.reverse_at_walk }}
+                <span class="error_message">
+                    {{ form.reverse_at_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Reverse - At Trot: {{ form.reverse_at_trot }}
+                <span class="error_message">
+                    {{ form.reverse_at_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Never Ridden: {{ form.never_ridden }}
+                <span class="error_message">
+                    {{ form.never_ridden.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Seat - At Walk: {{ form.seat_at_walk }}
+                <span class="error_message">
+                    {{ form.seat_at_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Seat - At Trot: {{ form.seat_at_trot }}
+                <span class="error_message">
+                    {{ form.seat_at_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Seat - At Canter: {{ form.seat_at_canter }}
+                <span class="error_message">
+                    {{ form.seat_at_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Basic Seat - Englsh: {{ form.basic_seat_english }}
+                <span class="error_message">
+                    {{ form.basic_seat_english.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Basic Seat - Western: {{ form.basic_seat_western }}
+                <span class="error_message">
+                    {{ form.basic_seat_western.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Hand Post - English: {{ form.hand_pos_english }}
+                <span class="error_message">
+                    {{ form.hand_pos_english.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Hand Post - Western: {{ form.hand_post_western }}
+                <span class="error_message">
+                    {{ form.hand_post_western.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Two Point - Trot: {{ form.two_point_trot }}
+                <span class="error_message">
+                    {{ form.two_point_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Two Point - Canter: {{ form.two_point_canter }}
+                <span class="error_message">
+                    {{ form.two_point_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Circle Trot - No Stirrups: {{ form.circle_trot_no_stirrups }}
+                <span class="error_message">
+                    {{ form.circle_trot_no_stirrups.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Circle - At Canter: {{ form.circle_at_canter }}
+                <span class="error_message">
+                    {{ form.circle_at_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Circle Canter - No Stirrups: {{ form.circle_canter_no_stirrups }}
+                <span class="error_message">
+                    {{ form.circle_canter_no_stirrups.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Circle - At Walk: {{ form.circle_at_walk }}
+                <span class="error_message">
+                    {{ form.circle_at_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Circle - At Trot: {{ form.circle_at_trot }}
+                <span class="error_message">
+                    {{ form.circle_at_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Handhold - Walk: {{ form.holds_handhold_walk }}
+                <span class="error_message">
+                    {{ form.holds_handhold_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Handhold - Sit Trot: {{ form.holds_handhold_sit_trot }}
+                <span class="error_message">
+                    {{ form.holds_handhold_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Handhold - Post Trot: {{ form.holds_handhold_post_trot }}
+                <span class="error_message">
+                    {{ form.holds_handhold_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Handhold - Canter: {{ form.holds_handhold_canter }}
+                <span class="error_message">
+                    {{ form.holds_handhold_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Holds Reins - Walk: {{ form.holds_reins_walk }}
+                <span class="error_message">
+                    {{ form.holds_reins_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Holds Reins - Sit Trot: {{ form.holds_reins_sit_trot }}
+                <span class="error_message">
+                    {{ form.holds_reins_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Holds Reins - Post Trot: {{ form.holds_reins_post_trot }}
+                <span class="error_message">
+                    {{ form.holds_reins_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Holds Reins - Canter: {{ form.holds_reins_canter }}
+                <span class="error_message">
+                    {{ form.holds_reins_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Shorten/Lengthen Reins - Walk: {{ form.shorten_lengthen_reins_walk }}
+                <span class="error_message">
+                    {{ form.shorten_lengthen_reins_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Shorten/Lengthen Reins - Sit Trot: {{ form.shorten_lengthen_reins_sit_trot }}
+                <span class="error_message">
+                    {{ form.shorten_lengthen_reins_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Shorten/Lengthen Reins - Post Trot: {{ form.shorten_lengthen_reins_post_trot }}
+                <span class="error_message">
+                    {{ form.shorten_lengthen_reins_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Shorten/Lengthen Reins - Canter: {{ form.shorten_lengthen_reins_canter }}
+                <span class="error_message">
+                    {{ form.shorten_lengthen_reins_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Control Horse - Walk: {{ form.can_control_horse_walk }}
+                <span class="error_message">
+                    {{ form.can_control_horse_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Control Horse - Sit Trot: {{ form.can_control_horse_sit_trot }}
+                <span class="error_message">
+                    {{ form.can_control_horse_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Control Horse - Post Trot: {{ form.can_control_horse_post_trot }}
+                <span class="error_message">
+                    {{ form.can_control_horse_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Control Horse - Canter: {{ form.can_control_horse_canter }}
+                <span class="error_message">
+                    {{ form.date.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Halt - Walk: {{ form.can_halt_walk }}
+                <span class="error_message">
+                    {{ form.can_halt_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Halt - Sit Trot: {{ form.can_halt_sit_trot }}
+                <span class="error_message">
+                    {{ form.can_halt_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Halt - Post Trot: {{ form.can_halt_post_trot }}
+                <span class="error_message">
+                    {{ form.can_halt_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Halt - Canter: {{ form.can_halt_canter }}
+                <span class="error_message">
+                    {{ form.can_halt_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Drop/Pickup Stirrups - Walk: {{ form.drop_pickup_stirrups_walk }}
+                <span class="error_message">
+                    {{ form.drop_pickup_stirrups_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Drop/Pickup Stirrups - Sit Trot: {{ form.drop_pickup_stirrups_sit_trot }}
+                <span class="error_message">
+                    {{ form.drop_pickup_stirrups_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Drop/Pickup Stirrups - Post Trot: {{ form.drop_pickup_stirrups_post_trot }}
+                <span class="error_message">
+                    {{ form.drop_pickup_stirrups_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Drop/Pickup Stirrups - Canter: {{ form.drop_pickup_stirrups_canter }}
+                <span class="error_message">
+                    {{ form.drop_pickup_stirrups_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Rides No Stirrups - Walk: {{ form.rides_no_stirrups_walk }}
+                <span class="error_message">
+                    {{ form.rides_no_stirrups_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Rides No Stirrups - Sit Trot: {{ form.rides_no_stirrups_sit_trot }}
+                <span class="error_message">
+                    {{ form.rides_no_stirrups_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Rides No Stirrups - Post Trot: {{ form.rides_no_stirrups_post_trot }}
+                <span class="error_message">
+                    {{ form.rides_no_stirrups_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Rides No Stirrups - Canter: {{ form.rides_no_stirrups_canter }}
+                <span class="error_message">
+                    {{ form.rides_no_stirrups_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Maintain Half Seat - Walk: {{ form.maintain_half_seat_walk }}
+                <span class="error_message">
+                    {{ form.maintain_half_seat_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Maintain Half Seat - Sit Trot: {{ form.maintain_half_seat_sit_trot }}
+                <span class="error_message">
+                    {{ form.maintain_half_seat_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Maintain Half Seat - Post Trot: {{ form.maintain_half_seat_post_trot }}
+                <span class="error_message">
+                    {{ form.maintain_half_seat_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Maintain Half Seat - Canter: {{ form.maintain_half_seat_canter }}
+                <span class="error_message">
+                    {{ form.maintain_half_seat_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Post - Walk: {{ form.can_post_walk }}
+                <span class="error_message">
+                    {{ form.can_post_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Post - Sit Trot: {{ form.can_post_sit_trot }}
+                <span class="error_message">
+                    {{ form.can_post_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Post - Post Trot: {{ form.can_post_post_trot }}
+                <span class="error_message">
+                    {{ form.can_post_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Post - Canter: {{ form.can_post_canter }}
+                <span class="error_message">
+                    {{ form.can_post_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Proper Diagonal - Walk: {{ form.proper_diagonal_walk }}
+                <span class="error_message">
+                    {{ form.proper_diagonal_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Proper Diagonal - Sit Trot: {{ form.proper_diagonal_sit_trot }}
+                <span class="error_message">
+                    {{ form.proper_diagonal_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Proper Diagonal - Post Trot: {{ form.proper_diagonal_post_trot }}
+                <span class="error_message">
+                    {{ form.proper_diagonal_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Proper Diagonal - Canter: {{ form.proper_diagonal_canter }}
+                <span class="error_message">
+                    {{ form.proper_diagonal_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Proper Lead Canter - Sees: {{ form.proper_lead_canter_sees }}
+                <span class="error_message">
+                    {{ form.proper_lead_canter_sees.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Proper Lead Canter - Knows: {{ form.proper_lead_canter_knows }}
+                <span class="error_message">
+                    {{ form.proper_lead_canter_knows.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Steer Over Cavalletti - Walk: {{ form.can_steer_over_cavalletti_walk }}
+                <span class="error_message">
+                    {{ form.can_steer_over_cavalletti_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Steer Over Cavalletti - Sit Trot: {{ form.can_steer_over_cavalletti_sit_trot }}
+                <span class="error_message">
+                    {{ form.can_steer_over_cavalletti_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Steer Over Cavalletti - Post Trot: {{ form.can_steer_over_cavalletti_post_trot }}
+                <span class="error_message">
+                    {{ form.can_steer_over_cavalletti_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Can Steer Over Cavalletti - Canter: {{ form.can_steer_over_cavalletti_canter }}
+                <span class="error_message">
+                    {{ form.can_steer_over_cavalletti_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Jump Crossbar - Walk: {{ form.jump_crossbar_walk }}
+                <span class="error_message">
+                    {{ form.jump_crossbar_walk.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Jump Crossbar - Sit Trot: {{ form.jump_crossbar_sit_trot }}
+                <span class="error_message">
+                    {{ form.jump_crossbar_sit_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Jump Crossbar - Post Trot: {{ form.jump_crossbar_post_trot }}
+                <span class="error_message">
+                    {{ form.jump_crossbar_post_trot.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Jump Crossbar - Canter: {{ form.jump_crossbar_canter }}
+                <span class="error_message">
+                    {{ form.jump_crossbar_canter.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                Comments: {{ form.comments }}
+                <span class="error_message">
+                    {{ form.comments.errors.as_text }}
+                </span>
+            </p>
+            <input type="Submit" value="Submit" />
+        </form>
+    {% endif %}
 {% endblock %}
