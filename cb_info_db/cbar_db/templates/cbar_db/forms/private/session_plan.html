@@ -6,7 +6,7 @@
         {{ error_text }}
     </strong></p>
     {% endif %}
-    <form action="{% url 'private-form-session-plan'}" method="post">
+    <form action="{% url 'private-form-session-plan' %}" method="post">
         {% csrf_token %}
         <p>Participant: {{ form.name }}
             <span class="error_message">
