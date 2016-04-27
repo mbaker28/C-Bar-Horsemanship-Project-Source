@@ -1,9 +1,17 @@
+from datetime import date
 from django import forms
+from django.forms.extras.widgets import SelectDateWidget
 from cbar_db import models
 from localflavor.us.forms import USStateField
+from localflavor.us.forms import USPhoneNumberField
+from localflavor.us.forms import USZipCodeField
 
 
 ERROR_TEXT_NO_PHONE="Please enter at least one phone number."
+
+# Set the years available for date dropdowns to the last 125 years:
+this_year=date.today().year
+YEARS=range(this_year-125, this_year+1)
 
 
 class ApplicationForm(forms.Form):
@@ -11,7 +19,7 @@ class ApplicationForm(forms.Form):
         max_length=models.Participant._meta.get_field("name").max_length
     )
 
-    birth_date = forms.DateField()
+    birth_date = forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     height = forms.DecimalField(
         max_digits=models.Participant._meta.get_field("height").max_digits,
@@ -52,24 +60,13 @@ class ApplicationForm(forms.Form):
 
     address_state = USStateField()
 
-    address_zip = forms.CharField(
-        max_length=models.Participant._meta.get_field("address_zip").max_length
-    )
+    address_zip = USZipCodeField()
 
-    phone_home = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_home").max_length,
-        required=False
-    )
+    phone_home=USPhoneNumberField(required=False)
 
-    phone_cell = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_cell").max_length,
-        required=False
-    )
+    phone_cell=USPhoneNumberField(required=False)
 
-    phone_work = forms.CharField(
-        max_length=models.Participant._meta.get_field("phone_cell").max_length,
-        required=False
-    )
+    phone_work=USPhoneNumberField(required=False)
 
     email = forms.EmailField()
 
@@ -98,9 +95,9 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-    birth_date=forms.DateField()
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
-    date=forms.DateField()
+    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     guardian_name=forms.CharField(
         max_length=(models.Participant._meta
@@ -108,26 +105,11 @@ class SeizureEvaluationForm(forms.Form):
         )
     )
 
-    phone_home=forms.CharField(
-        max_length=(models.Participant._meta
-            .get_field("phone_home").max_length
-        ),
-        required=False
-    )
+    phone_home=USPhoneNumberField(required=False)
 
-    phone_cell=forms.CharField(
-        max_length=(models.Participant._meta
-            .get_field("phone_cell").max_length
-        ),
-        required=False
-    )
+    phone_cell=USPhoneNumberField(required=False)
 
-    phone_work=forms.CharField(
-        max_length=(models.Participant._meta
-            .get_field("phone_work").max_length
-        ),
-        required=False
-    )
+    phone_work=USPhoneNumberField(required=False)
 
     seizure_name_one=forms.CharField(
         max_length=models.SeizureType._meta.get_field("name").max_length
@@ -141,7 +123,7 @@ class SeizureEvaluationForm(forms.Form):
         required=False
     )
 
-    date_of_last_seizure=forms.DateField()
+    date_of_last_seizure=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     seizure_frequency=forms.CharField(max_length=(models.SeizureEval
             ._meta.get_field("seizure_frequency").max_length
@@ -295,12 +277,12 @@ class LiabilityReleaseForm(forms.Form):
         max_length=models.Participant._meta.get_field("name").max_length
     )
 
-    birth_date = forms.DateField()
+    birth_date = forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     signature=forms.CharField(
         max_length=models.LiabilityRelease._meta.get_field("signature").max_length
     )
-    date = forms.DateField()
+    date = forms.DateField(widget=SelectDateWidget(years=YEARS))
 
 
 class MedicalReleaseForm(forms.Form):
@@ -310,13 +292,9 @@ class MedicalReleaseForm(forms.Form):
         )
     )
 
-    primary_physician_phone=forms.CharField(
-        max_length=(models.MedicalInfo._meta
-            .get_field("primary_physician_phone").max_length
-        )
-    )
+    primary_physician_phone=USPhoneNumberField()
 
-    last_seen_by_physician_date=forms.DateField()
+    last_seen_by_physician_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     last_seen_by_physician_reason=forms.CharField(
         max_length=(models.MedicalInfo._meta
@@ -452,13 +430,13 @@ class MedicalReleaseForm(forms.Form):
         required=False
     )
 
-    birth_date=forms.DateField()
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     signature=forms.CharField(
         max_length=models.MedicalInfo._meta.get_field("signature").max_length
     )
 
-    date=forms.DateField()
+    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
 
 class BackgroundCheckForm(forms.Form):
@@ -470,8 +448,8 @@ class BackgroundCheckForm(forms.Form):
             .get_field("signature").max_length
         )
     )
-    date=forms.DateField()
-    birth_date=forms.DateField()
+    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
     driver_license_num=forms.CharField(
         max_length=(models.BackgroundCheck._meta
             .get_field("driver_license_num").max_length
@@ -483,14 +461,14 @@ class MediaReleaseForm(forms.Form):
     name=forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
     )
-    birth_date=forms.DateField()
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
     consent=forms.ChoiceField(
         choices=models.MediaRelease._meta.get_field("consent").choices
     )
     signature=forms.CharField(
         max_length=models.MediaRelease._meta.get_field("signature").max_length
     )
-    date=forms.DateField()
+    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
 
 class EmergencyMedicalReleaseForm(forms.Form):
@@ -498,7 +476,7 @@ class EmergencyMedicalReleaseForm(forms.Form):
     name=forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
     )
-    birth_date=forms.DateField()
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     # Stored in MedicalInfo
     primary_physician_name=forms.CharField(
@@ -506,11 +484,7 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("primary_physician_name").max_length
         )
     )
-    primary_physician_phone=forms.CharField(
-        max_length=(models.MedicalInfo._meta
-            .get_field("primary_physician_phone").max_length
-        )
-    )
+    primary_physician_phone=USPhoneNumberField()
 
     # Stored in AuthorizeEmergencyMedicalTreatment
     pref_medical_facility=forms.CharField(
@@ -533,11 +507,7 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("emerg_contact_name").max_length
         )
     )
-    emerg_contact_phone=forms.CharField(
-        max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
-            .get_field("emerg_contact_phone").max_length
-        )
-    )
+    emerg_contact_phone=USPhoneNumberField()
     emerg_contact_relation=forms.CharField(
         max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
             .get_field("emerg_contact_relation").max_length
@@ -548,12 +518,13 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("consents_emerg_med_treatment").choices
         )
     )
-    date=forms.DateField()
+    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
     signature=forms.CharField(
         max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
             .get_field("signature").max_length
         )
     )
+
 
 
 class RiderEvalChecklistForm(forms.Form):
@@ -916,3 +887,37 @@ class RiderEvalChecklistForm(forms.Form):
             .get_field("jump_crossbar_canter").choices
         )
     )
+
+
+class ParticipantAdoptionForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()
+
+
+class HorseAdoptionForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()
+
+
+
+class MonetaryDonationForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()

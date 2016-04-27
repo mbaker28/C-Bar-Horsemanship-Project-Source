@@ -62,6 +62,26 @@ class TestPublicViews(TestCase):
         response = self.client.get(reverse('public-form-seizure'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
+    def test_donation_index_loads(self):
+        """ Tests whether the Donation index page loads. """
+        response = self.client.get(reverse('donation-index'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_donation_participant_loads(self):
+        """ Tests whether the Adopt A Participant donation form loads. """
+        response = self.client.get(reverse('donation-participant'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_donation_horse_loads(self):
+        """ Tests whether the Adopt A Horse donation form loads. """
+        response = self.client.get(reverse('donation-horse'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_donation_monetary_loads(self):
+        """ Tests whether the Monetary Donation form loads. """
+        response = self.client.get(reverse('donation-monetary'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
 
 class TestApplicationForm(TestCase):
     def setUp(self):
@@ -320,6 +340,288 @@ class TestApplicationForm(TestCase):
             forms.ERROR_TEXT_NO_PHONE
         )
 
+
+class TestFormSavedPage(TestCase):
+    def test_form_saved_page_loads_with_correct_parameter(self):
+        """ Tests that the form_saved view tells the user the form saved, if it
+         has the parameter set saying it came from a form redirect. """
+
+        response = self.client.get(reverse("form-saved")+"?a=a")
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_form_saved_page_redirects_if_no_paramater_passed(self):
+        """ Tests that the form_saved view redirects to the home page, if it is
+         not sent the parameter set saying it came from a form redirect. """
+
+        response = self.client.get(reverse("form-saved"))
+
+        self.assertEqual(response.status_code, 302) # Redirected...
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            "/"
+        )
+
+
+class TestApplicationForm(TestCase):
+    def setUp(self):
+        setup_test_environment() #Initialize the test enviornment
+        client=Client() #Make a test client (someone viewing the database)
+
+        # Create a Participant record and save it
+        test_participant=models.Participant(
+            name="TEST Bruce Wayne",
+            birth_date="1984-6-24",
+            email="bruce@wayneenterprises.com",
+            weight=185.0,
+            gender="M",
+            guardian_name="Alfred Pennyworth",
+            height=72.0,
+            minor_status="G",
+            address_street="1234 Wayne St.",
+            address_city="Gotham",
+            address_state="OK",
+            address_zip="74804",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
+            school_institution="Ra's Al Ghul School of Ninjutsu"
+        )
+        test_participant.save()
+
+    def test_application_form_creates_participant(self):
+        """ Tests whether the form creates a participant record once all
+            fields are entered. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "74801",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        # Attempt to retreive the updated Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Verify that all of the Participant fields were set correctly:
+        self.assertEqual(
+            participant_in_db.name,
+            form_data["name"]
+        )
+        self.assertEqual(
+            "{d.year}-{d.month}-{d.day}".format(d=participant_in_db.birth_date),
+            form_data["birth_date"]
+        )
+        self.assertEqual(
+            str(participant_in_db.height), # To string so can check against form
+            form_data["height"]
+        )
+        self.assertEqual(
+            str(participant_in_db.weight), # To string so can check against form
+            form_data["weight"]
+        )
+        self.assertEqual(
+            participant_in_db.gender,
+            form_data["gender"]
+        )
+        self.assertEqual(
+            participant_in_db.minor_status,
+            form_data["minor_status"]
+        )
+        self.assertEqual(
+            participant_in_db.school_institution,
+            form_data["school_institution"]
+        )
+        self.assertEqual(
+            participant_in_db.guardian_name,
+            form_data["guardian_name"]
+        )
+        self.assertEqual(
+            participant_in_db.address_street,
+            form_data["address_street"]
+        )
+        self.assertEqual(
+            participant_in_db.address_city,
+            form_data["address_city"]
+        )
+        self.assertEqual(
+            participant_in_db.address_zip,
+            form_data["address_zip"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_home,
+            form_data["phone_home"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_cell,
+            form_data["phone_cell"]
+        )
+        self.assertEqual(
+            participant_in_db.phone_work,
+            form_data["phone_work"]
+        )
+        self.assertEqual(
+            participant_in_db.email,
+            form_data["email"]
+        )
+
+    def test_application_form_participant_already_exists(self):
+        """ Form throws error if the participant already exists. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "74801",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        print(response.context)
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS
+            )
+        )
+
+    def test_application_form_participant_does_not_exist_with_invalid_data(self):
+        """ Form throws an error if the form data is not valid. """
+
+        form_data={
+            "name": "TEST sdf83sdf",
+            "birth_date": "sdf##df",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "74801",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+        form=forms.ApplicationForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_application_form_with_no_phone_numbers_throws_error(self):
+        """ Verify that an Application form view, populated with no phone
+         numbers, displays an error message. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height": "69.0",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "74801",
+            "phone_home": "",
+            "phone_cell": "",
+            "phone_work": "",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that each phone field threw the correct error:
+        self.assertFormError(
+            response,
+            "form",
+            "phone_home",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+        self.assertFormError(
+            response,
+            "form",
+            "phone_cell",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+        self.assertFormError(
+            response,
+            "form",
+            "phone_work",
+            forms.ERROR_TEXT_NO_PHONE
+        )
+
+
 class TestEmergencyAuthorizationForm(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
@@ -338,10 +640,10 @@ class TestEmergencyAuthorizationForm(TestCase):
             address_street="1234 Wayne St.",
             address_city="Gotham",
             address_state="OK",
-            address_zip= "424278",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip= "74804",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -358,10 +660,10 @@ class TestEmergencyAuthorizationForm(TestCase):
             address_street="The TARDIS",
             address_city="Time and space",
             address_state="OK",
-            address_zip= "889922",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
 
@@ -369,7 +671,7 @@ class TestEmergencyAuthorizationForm(TestCase):
             participant_id=test_participant,
             date="2015-1-1",
             primary_physician_name="Dr. Default",
-            primary_physician_phone="(111) 111-1111",
+            primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
             allergies_conditions_that_exclude=False,
@@ -406,12 +708,12 @@ class TestEmergencyAuthorizationForm(TestCase):
             "name": "TEST Bruce Wayne",
             "birth_date": "1984-6-24",
             "primary_physician_name": "Dr. Buffalo Wings",
-            "primary_physician_phone": "(111) 222-3333",
+            "primary_physician_phone": "111-222-3333",
             "pref_medical_facility": "Super Awesome Medical Facility",
             "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
             "insurance_policy_num": "666FTC",
             "emerg_contact_name": "Lost Person",
-            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_phone": "404-333-9999",
             "emerg_contact_relation": "Family Friend",
             "consents_emerg_med_treatment": "Y",
             "date": "2015-1-1",
@@ -451,12 +753,12 @@ class TestEmergencyAuthorizationForm(TestCase):
             "name": "TEST Not A Person",
             "birth_date": "1984-6-24",
             "primary_physician_name": "Dr. Buffalo Wings",
-            "primary_physician_phone": "(111) 222-3333",
+            "primary_physician_phone": "111-222-3333",
             "pref_medical_facility": "Super Awesome Medical Facility",
             "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
             "insurance_policy_num": "666FTC",
             "emerg_contact_name": "Lost Person",
-            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_phone": "404-333-9999",
             "emerg_contact_relation": "Family Friend",
             "consents_emerg_med_treatment": "Y",
             "date": "2015-1-1",
@@ -496,12 +798,12 @@ class TestEmergencyAuthorizationForm(TestCase):
             "name": "TEST Bruce Wayne",
             "birth_date": "1000-1-1",
             "primary_physician_name": "Dr. Buffalo Wings",
-            "primary_physician_phone": "(111) 222-3333",
+            "primary_physician_phone": "111-222-3333",
             "pref_medical_facility": "Super Awesome Medical Facility",
             "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
             "insurance_policy_num": "666FTC",
             "emerg_contact_name": "Lost Person",
-            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_phone": "404-333-9999",
             "emerg_contact_relation": "Family Friend",
             "consents_emerg_med_treatment": "Y",
             "date": "2015-1-1",
@@ -538,12 +840,12 @@ class TestEmergencyAuthorizationForm(TestCase):
             "name": "TEST Bruce Wayne",
             "birth_date": "1984-6-24",
             "primary_physician_name": "Dr. Buffalo Wings",
-            "primary_physician_phone": "(111) 222-3333",
+            "primary_physician_phone": "111-222-3333",
             "pref_medical_facility": "Super Awesome Medical Facility",
             "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
             "insurance_policy_num": "666FTC",
             "emerg_contact_name": "Lost Person",
-            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_phone": "404-333-9999",
             "emerg_contact_relation": "Family Friend",
             "consents_emerg_med_treatment": "Y",
             "date": "2016-1-1",
@@ -556,12 +858,11 @@ class TestEmergencyAuthorizationForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the updated MedicalInfo record:
         try:
@@ -662,12 +963,12 @@ class TestEmergencyAuthorizationForm(TestCase):
             "name": "TEST Not A Person",
             "birth_date": "1984-6-24",
             "primary_physician_name": "Dr. Buffalo Wings",
-            "primary_physician_phone": "(111) 222-3333",
+            "primary_physician_phone": "111-222-3333",
             "pref_medical_facility": "Super Awesome Medical Facility",
             "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
             "insurance_policy_num": "666FTC",
             "emerg_contact_name": "Lost Person",
-            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_phone": "404-333-9999",
             "emerg_contact_relation": "Family Friend",
             "consents_emerg_med_treatment": "Y",
             "date": "2016-1-1",
@@ -695,12 +996,12 @@ class TestEmergencyAuthorizationForm(TestCase):
             "name": "TEST Bruce Wayne",
             "birth_date": "1900-1-1",
             "primary_physician_name": "Dr. Buffalo Wings",
-            "primary_physician_phone": "(111) 222-3333",
+            "primary_physician_phone": "111-222-3333",
             "pref_medical_facility": "Super Awesome Medical Facility",
             "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
             "insurance_policy_num": "666FTC",
             "emerg_contact_name": "Lost Person",
-            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_phone": "404-333-9999",
             "emerg_contact_relation": "Family Friend",
             "consents_emerg_med_treatment": "Y",
             "date": "2016-1-1",
@@ -728,12 +1029,12 @@ class TestEmergencyAuthorizationForm(TestCase):
             "name": "TEST Bruce Wayne",
             "birth_date": "1984-6-24",
             "primary_physician_name": "Dr. Buffalo Wings",
-            "primary_physician_phone": "(111) 222-3333",
+            "primary_physician_phone": "111-222-3333",
             "pref_medical_facility": "Super Awesome Medical Facility",
             "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
             "insurance_policy_num": "666FTC",
             "emerg_contact_name": "Lost Person",
-            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_phone": "404-333-9999",
             "emerg_contact_relation": "Family Friend",
             "consents_emerg_med_treatment": "Y",
             "date": "blahblahnotdate",
@@ -762,12 +1063,12 @@ class TestEmergencyAuthorizationForm(TestCase):
             "name": "TEST The Doctor",
             "birth_date": "1235-8-14",
             "primary_physician_name": "Dr. Buffalo Wings",
-            "primary_physician_phone": "(111) 222-3333",
+            "primary_physician_phone": "111-222-3333",
             "pref_medical_facility": "Super Awesome Medical Facility",
             "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
             "insurance_policy_num": "666FTC",
             "emerg_contact_name": "Lost Person",
-            "emerg_contact_phone": "(404) 333-9999",
+            "emerg_contact_phone": "404-333-9999",
             "emerg_contact_relation": "Family Friend",
             "consents_emerg_med_treatment": "Y",
             "date": "2016-1-1",
@@ -806,10 +1107,10 @@ class TestMediaReleaseForm(TestCase):
             address_street="1234 Wayne St.",
             address_city="Gotham",
             address_state="OK",
-            address_zip= "424278",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip= "74804",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -826,10 +1127,10 @@ class TestMediaReleaseForm(TestCase):
             address_street="The TARDIS",
             address_city="Time and space",
             address_state="OK",
-            address_zip= "889922",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
 
@@ -837,7 +1138,7 @@ class TestMediaReleaseForm(TestCase):
             participant_id=test_participant,
             date="2016-1-1",
             primary_physician_name="Dr. Default",
-            primary_physician_phone="(111) 111-1111",
+            primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
             allergies_conditions_that_exclude=False,
@@ -983,12 +1284,11 @@ class TestMediaReleaseForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the updated MedicalInfo record:
         try:
@@ -1135,9 +1435,9 @@ class TestBackGroundCheck(TestCase):
             address_street="1234 Wayne St.",
             address_city="Gotham",
             address_state="OK",
-            address_zip= "424278",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
+            address_zip= "74804",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -1346,9 +1646,9 @@ class TestMedicalReleaseForm(TestCase):
             address_street="1234 Wayne St.",
             address_city="Gotham",
             address_state="OK",
-            address_zip= "424278",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
+            address_zip= "74804",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -1582,12 +1882,11 @@ class TestMedicalReleaseForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retrieve the new Participant record:
         try:
@@ -1882,10 +2181,10 @@ class TestLiabilityReleaseForm(TestCase):
             address_street="123 Apartment Street",
             address_city="New York",
             address_state="OK",
-            address_zip= "10018",
-            phone_home="(123) 456-7890",
-            phone_cell="(444) 393-0098",
-            phone_work="(598) 039-3008",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
             school_institution="SHIELD"
         )
         test_participant.save()
@@ -1943,12 +2242,11 @@ class TestLiabilityReleaseForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the updated MedicalInfo record:
         try:
@@ -2124,10 +2422,10 @@ class TestSeizureEvaluationForm(TestCase):
             address_street="123 Apartment Street",
             address_city="New York",
             address_state="OK",
-            address_zip= "10018",
-            phone_home="(123) 456-7890",
-            phone_cell="(444) 393-0098",
-            phone_work="(598) 039-3008",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
             school_institution="SHIELD"
         )
         test_participant.save()
@@ -2144,9 +2442,9 @@ class TestSeizureEvaluationForm(TestCase):
             "birth_date": "1985-4-02",
             "date": "2016-3-31",
             "guardian_name": "Bob Burger",
-            "phone_home": "(123) 123-4567",
-            "phone_cell": "(321) 765-4321",
-            "phone_work": "(987) 654-3210",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
             "seizure_name_one": "Sudden and violent",
             "seizure_name_two": "",
             "seizure_name_three": "",
@@ -2210,9 +2508,9 @@ class TestSeizureEvaluationForm(TestCase):
             "birth_date": "1985-4-02",
             "date": "2016-3-31",
             "guardian_name": "Bob Burger",
-            "phone_home": "(123) 123-4567",
-            "phone_cell": "(321) 765-4321",
-            "phone_work": "(987) 654-3210",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
             "seizure_name_one": "Sudden and violent",
             "seizure_name_two": "",
             "seizure_name_three": "",
@@ -2276,9 +2574,9 @@ class TestSeizureEvaluationForm(TestCase):
             "birth_date": "1000-1-1",
             "date": "2016-3-31",
             "guardian_name": "Bob Burger",
-            "phone_home": "(123) 123-4567",
-            "phone_cell": "(321) 765-4321",
-            "phone_work": "(987) 654-3210",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
             "seizure_name_one": "Sudden and violent",
             "seizure_name_two": "",
             "seizure_name_three": "",
@@ -2339,9 +2637,9 @@ class TestSeizureEvaluationForm(TestCase):
             "birth_date": "1985-4-02",
             "date": "2016-3-31",
             "guardian_name": "Bob Burger",
-            "phone_home": "(123) 123-4567",
-            "phone_cell": "(321) 765-4321",
-            "phone_work": "(987) 654-3210",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headachey stuff",
             "medication_one_frequency": "A couple of times a week",
@@ -2386,12 +2684,11 @@ class TestSeizureEvaluationForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the Participant record:
         try:
@@ -2672,9 +2969,9 @@ class TestSeizureEvaluationForm(TestCase):
             "birth_date": "1985-4-02",
             "date": "2016-3-31",
             "guardian_name": "Bob Burger",
-            "phone_home": "(123) 123-4567",
-            "phone_cell": "(321) 765-4321",
-            "phone_work": "(987) 654-3210",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headachey stuff",
             "medication_one_frequency": "A couple of times a week",
@@ -2791,9 +3088,9 @@ class TestSeizureEvaluationForm(TestCase):
             "birth_date": "1985-4-02",
             "date": "2016-3-31",
             "guardian_name": "Bob Burger",
-            "phone_home": "(123) 123-4567",
-            "phone_cell": "(321) 765-4321",
-            "phone_work": "(987) 654-3210",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
             "seizure_name_one": "Sudden and violent",
             "seizure_name_two": "",
             "seizure_name_three": "",
@@ -2845,9 +3142,9 @@ class TestSeizureEvaluationForm(TestCase):
             "birth_date": "2000-1-2",
             "date": "2016-3-31",
             "guardian_name": "Bob Burger",
-            "phone_home": "(123) 123-4567",
-            "phone_cell": "(321) 765-4321",
-            "phone_work": "(987) 654-3210",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
             "seizure_name_one": "Sudden and violent",
             "seizure_name_two": "",
             "seizure_name_three": "",
@@ -2897,9 +3194,9 @@ class TestSeizureEvaluationForm(TestCase):
             "birth_date": "this isn't a date",
             "date": "2016-3-31",
             "guardian_name": "Bob Burger",
-            "phone_home": "(123) 123-4567",
-            "phone_cell": "(321) 765-4321",
-            "phone_work": "(987) 654-3210",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
             "seizure_name_one": "Sudden and violent",
             "seizure_name_two": "",
             "seizure_name_three": "",
@@ -3224,10 +3521,10 @@ class TestAdminIndex(TestCase):
             address_street="123 Apartment Street",
             address_city="New York",
             address_state="OK",
-            address_zip= "10018",
-            phone_home="(123) 456-7890",
-            phone_cell="(444) 393-0098",
-            phone_work="(598) 039-3008",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
             school_institution="SHIELD"
         )
         test_participant.save()
@@ -3286,10 +3583,10 @@ class TestParticipantRecord(TestCase):
             address_street="4568 Rich Person Rd.",
             address_city="Example City",
             address_state="OK",
-            address_zip= "486878",
-            phone_home="(789) 132-0024",
-            phone_cell="(789) 456-8800",
-            phone_work="(789) 039-3008",
+            address_zip="74801",
+            phone_home="789-132-0024",
+            phone_cell="789-456-8800",
+            phone_work="789-039-3008",
             school_institution="Team Arrow"
         )
         test_participant.save()
@@ -3394,10 +3691,10 @@ class TestMediaReleaseReport(TestCase):
             address_street="4568 Rich Person Rd.",
             address_city="Example City",
             address_state="OK",
-            address_zip= "486878",
-            phone_home="(789) 132-0024",
-            phone_cell="(789) 456-8800",
-            phone_work="(789) 039-3008",
+            address_zip="74801",
+            phone_home="789-132-0024",
+            phone_cell="789-456-8800",
+            phone_work="789-039-3008",
             school_institution="Team Arrow"
         )
         test_participant.save()
@@ -3422,10 +3719,10 @@ class TestMediaReleaseReport(TestCase):
             address_street="123 Apartment Street",
             address_city="New York",
             address_state="OK",
-            address_zip= "10018",
-            phone_home="(123) 456-7890",
-            phone_cell="(444) 393-0098",
-            phone_work="(598) 039-3008",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
             school_institution="SHIELD"
         )
         test_participant_no_media_release.save()
@@ -3610,10 +3907,10 @@ class TestEmergencyAuthorizationReport(TestCase):
             address_street="4568 Rich Person Rd.",
             address_city="Example City",
             address_state="OK",
-            address_zip= "486878",
-            phone_home="(789) 132-0024",
-            phone_cell="(789) 456-8800",
-            phone_work="(789) 039-3008",
+            address_zip="74801",
+            phone_home="789-132-0024",
+            phone_cell="789-456-8800",
+            phone_work="789-039-3008",
             school_institution="Team Arrow"
         )
         test_participant.save()
@@ -3637,7 +3934,7 @@ class TestEmergencyAuthorizationReport(TestCase):
             participant_id=test_participant,
             date="2014-3-5",
             primary_physician_name="Dr. Default",
-            primary_physician_phone="(111) 111-1111",
+            primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
             allergies_conditions_that_exclude=False,
@@ -3666,10 +3963,10 @@ class TestEmergencyAuthorizationReport(TestCase):
             address_street="123 Apartment Street",
             address_city="New York",
             address_state="OK",
-            address_zip= "10018",
-            phone_home="(123) 456-7890",
-            phone_cell="(444) 393-0098",
-            phone_work="(598) 039-3008",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
             school_institution="SHIELD"
         )
         test_participant_no_emerg_auth.save()
@@ -3685,10 +3982,10 @@ class TestEmergencyAuthorizationReport(TestCase):
             address_street="The TARDIS",
             address_city="Time and space",
             address_state="OK",
-            address_zip= "889922",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
 
@@ -3924,10 +4221,10 @@ class TestMedicalReleaseReport(TestCase):
             address_street="4568 Rich Person Rd.",
             address_city="Example City",
             address_state="OK",
-            address_zip= "486878",
-            phone_home="(789) 132-0024",
-            phone_cell="(789) 456-8800",
-            phone_work="(789) 039-3008",
+            address_zip="74801",
+            phone_home="789-132-0024",
+            phone_cell="789-456-8800",
+            phone_work="789-039-3008",
             school_institution="Team Arrow"
         )
         test_participant.save()
@@ -3936,7 +4233,7 @@ class TestMedicalReleaseReport(TestCase):
             participant_id=test_participant,
             date="2014-3-5",
             primary_physician_name="Dr. Default",
-            primary_physician_phone="(111) 111-1111",
+            primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
             allergies_conditions_that_exclude=False,
@@ -3964,10 +4261,10 @@ class TestMedicalReleaseReport(TestCase):
             address_street="The TARDIS",
             address_city="Time and space",
             address_state="OK",
-            address_zip= "889922",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
 
@@ -4152,10 +4449,10 @@ class TestLiabilityReleaseReport(TestCase):
             address_street="4568 Rich Person Rd.",
             address_city="Example City",
             address_state="OK",
-            address_zip= "486878",
-            phone_home="(789) 132-0024",
-            phone_cell="(789) 456-8800",
-            phone_work="(789) 039-3008",
+            address_zip="74801",
+            phone_home="789-132-0024",
+            phone_cell="789-456-8800",
+            phone_work="789-039-3008",
             school_institution="Team Arrow"
         )
         test_participant.save()
@@ -4178,10 +4475,10 @@ class TestLiabilityReleaseReport(TestCase):
             address_street="The TARDIS",
             address_city="Time and space",
             address_state="OK",
-            address_zip= "889922",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
         )
         test_participant_no_liability_release.save()
 
@@ -4366,10 +4663,10 @@ class TestBackgroundCheckReport(TestCase):
             address_street="4568 Rich Person Rd.",
             address_city="Example City",
             address_state="OK",
-            address_zip= "486878",
-            phone_home="(789) 132-0024",
-            phone_cell="(789) 456-8800",
-            phone_work="(789) 039-3008",
+            address_zip="74801",
+            phone_home="789-132-0024",
+            phone_cell="789-456-8800",
+            phone_work="789-039-3008",
             school_institution="Team Arrow"
         )
         test_participant.save()
@@ -4393,10 +4690,10 @@ class TestBackgroundCheckReport(TestCase):
             address_street="The TARDIS",
             address_city="Time and space",
             address_state="OK",
-            address_zip= "889922",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
         )
         test_participant_no_background_check.save()
 
@@ -4581,10 +4878,10 @@ class TestSeizureEvaluationReport(TestCase):
             address_street="4568 Rich Person Rd.",
             address_city="Example City",
             address_state="OK",
-            address_zip= "486878",
-            phone_home="(789) 132-0024",
-            phone_cell="(789) 456-8800",
-            phone_work="(789) 039-3008",
+            address_zip="74801",
+            phone_home="789-132-0024",
+            phone_cell="789-456-8800",
+            phone_work="789-039-3008",
             school_institution="Team Arrow"
         )
         test_participant.save()
@@ -4630,10 +4927,10 @@ class TestSeizureEvaluationReport(TestCase):
             address_street="The TARDIS",
             address_city="Time and space",
             address_state="OK",
-            address_zip= "889922",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
         )
         test_participant_no_background_check.save()
 
@@ -4794,3 +5091,643 @@ class TestSeizureEvaluationReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+
+class TestAdoptParticipant(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_participant_donor=models.Donor(
+            name="TEST Super Batman",
+            email="michael.something@ftc.gov"
+        )
+        test_participant_donor.save()
+
+    def test_form_finds_existing_donor(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Super Batman",
+            "email":"michael.something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.ParticipantAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("ERROR: Donor Not found!")
+
+        self.assertTrue(found_donor)
+
+    def test_form_does_not_find_non_existent_donor_name(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Super Flash",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.ParticipantAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("ERROR: Found Donor!")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertFalse(found_donor)
+
+    def test_form_does_not_find_non_existent_donor_email(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Super Batman",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.ParticipantAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("ERROR: Found Donor!")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertFalse(found_donor)
+
+    def test_donor_invalid_amount(self):
+
+        form_data={
+            "name":"TEST Super Aquaman",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"sadhiugiufe5",
+        }
+
+        response=self.client.post(reverse("donation-participant"),form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donor_invalid_name_length(self):
+
+        form_data={
+            "name":"TEST Super Aquaman with a stupid super long name thatiszzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+
+        response=self.client.post(reverse("donation-participant"), form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donation_adopt_participant_saves_with_valid_data(self):
+
+        form_data={
+            "name": "TEST Super Batman",
+            "email": "michael.something@ftc.gov",
+            "amount": "5",
+        }
+
+        response=self.client.post(reverse("donation-participant"), form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
+            )
+        except:
+            print(
+                "Error: Unable to retreive new Donation Record!"
+            )
+
+
+class TestAdoptHorse(TestCase):
+    def setUp(self):
+        setup_test_environment()
+        client=Client()
+
+        test_adopt_horse=models.Donor(
+            name= "TEST George Bush",
+            email="George.Bush@whitehouse.com"
+        )
+        test_adopt_horse.save()
+
+    def test_adopt_horse_form_finds_existing_donor(self):
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"TEST George Bush",
+            "email":"George.Bush@whitehouse.com"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid.")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        else:
+            print("Form is Not Valid.")
+
+        self.assertTrue(found_donor)
+
+    def test_adopt_horse_form_does_not_find_non_existent_donor_name(self):
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"Test Not George Bush",
+            "email":"George.Bush@whitehouse.com"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid.")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        self.assertFalse(found_donor)
+
+    def test_adopt_horse_form_does_not_find_non_existent_donor_email(self):
+
+        found_donor=False
+
+        form_data={
+            "amount":"5",
+            "name":"Test George Bush",
+            "email":"notgeorge@bush.com"
+        }
+        form=forms.HorseAdoptionForm(form_data)
+
+        if form.is_valid():
+            print("Form is Valid")
+
+            try:
+                print("Finding donor...")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found donor.")
+                found_donor=True
+
+            except:
+                print("Donor Not Found.")
+
+        self.assertFalse(found_donor)
+
+    def test_adopt_horse_form_invalid_amount(self):
+        form_data={
+            "name":"TEST Super Aquaman",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"sadhiugiufe5",
+        }
+
+        response=self.client.post(reverse("donation-horse"),form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_adopt_horse_invalid_name_length(self):
+        form_data={
+            "name":"TEST Super Aquaman with a stupid super long name thatiszzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+
+        response=self.client.post(reverse("donation-horse"), form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donation_adopt_horse_saves_with_valid_data_donor_exists(self):
+
+        form_data={
+            "amount":"5",
+            "name":"TEST George Bush",
+            "email":"George.Bush@whitehouse.com"
+        }
+
+        response=self.client.post(reverse("donation-horse"), form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
+            )
+        except:
+            print(
+                "Error: Unable to retreive new Donation Record!"
+            )
+
+    def test_donation_adopt_horse_saves_with_valid_data_new_donor(self):
+
+        form_data={
+            "amount":"300",
+            "name":"TEST New Donor",
+            "email":"new@donor.com"
+        }
+
+        response=self.client.post(reverse("donation-horse"), form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
+            )
+        except:
+            print(
+                "Error: Unable to retreive new Donation Record!"
+            )
+
+
+class TestMonetaryDonation(TestCase):
+    def setUp(self):
+        setup_test_environment()
+        client=Client()
+
+        test_participant_donor=models.Donor(
+            name="TEST Batt Maker",
+            email="Matt.Something@ftc.gov",
+        )
+        test_participant_donor.save()
+
+    def test_monetary_donation_form_finds_existing_donor(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Batt Maker",
+            "email":"Matt.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.MonetaryDonationForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertTrue(found_donor)
+
+    def test_monetary_donation_form_finds_non_existing_donor_name(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Matthias",
+            "email":"Matt.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.MonetaryDonationForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertFalse(found_donor)
+
+    def test_monetary_donation_form_finds_non_existing_donor_email(self):
+        found_donor=False
+
+        form_data={
+            "name":"TEST Matthew",
+            "email":"Matt.Something@ftc.gov",
+            "amount":"5",
+        }
+        form=forms.MonetaryDonationForm(form_data)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            try:
+                print ("Finding Exsisting Donor")
+                donor_instance=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"],
+                )
+                print("Found Donor")
+                found_donor=True
+
+            except:
+                print("Donor Not found.")
+
+        self.assertFalse(found_donor)
+
+    def test_monetary_donation_form_invalid_amount(self):
+        form_data={
+            "name":"TEST Super Aquaman",
+            "email":"Michael.Something@ftc.gov",
+            "amount":"sadhiugiufe5",
+        }
+
+        response=self.client.post(reverse("donation-monetary"),form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_monetary_donation_form_invalid_name_length(self):
+        form_data={
+            "name":"TEST Super Aquaman with a stupid super long name thatiszzzz"
+                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
+            "email":"Miguel.Something@ftc.gov",
+            "amount":"5",
+        }
+
+        response=self.client.post(reverse("donation-monetary"), form_data)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_donation_adopt_horse_saves_with_valid_data_donor_exists(self):
+
+        form_data={
+            "amount":"5",
+            "name":"TEST Batt Maker",
+            "email":"Matt.Something@ftc.gov"
+        }
+
+        response=self.client.post(reverse("donation-monetary"), form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
+            )
+        except:
+            print(
+                "Error: Unable to retreive new Donation Record!"
+            )
+
+    def test_donation_adopt_horse_saves_with_valid_data_new_donor(self):
+
+        form_data={
+            "amount":"300",
+            "name":"TEST New Donor",
+            "email":"new@donor.com"
+        }
+
+        response=self.client.post(reverse("donation-monetary"), form_data)
+
+        self.assertEqual(response.status_code, 302)
+
+        try:
+            print("Retrieving Donor Record...")
+            donor_in_db=models.Donor.objects.get(
+                name=form_data["name"],
+                email=form_data["email"]
+            )
+        except:
+            print("Error: Unable to retrieve donor record!")
+
+        try:
+            print("Retrieving Donation Record")
+            donation_in_db=models.Donation.objects.get(
+                donor_id=donor_in_db,
+                email=form_data["email"]
+            )
+            print(
+                "successfully Retrieved new Donation record."
+            )
+            print(
+                "Checking stored Donation attributes..."
+            )
+            self.assertEqual(
+                donor_in_db.name,
+                form_data["name"]
+            )
+            self.assertEqual(
+                donor_in_db.email,
+                form_data["email"]
+            )
+            self.assertEqual(
+                donation_in_db.amount,
+                form_data["amount"]
+            )
+        except:
+            print(
+                "Error: Unable to retreive new Donation Record!"
+            )

@@ -11,6 +11,9 @@ urlpatterns = [
     # Public forms index
     url(r'^forms/public/$', views.index_public_forms, name='index-public-forms'),
 
+    # Form saved message
+    url(r'^forms/saved/$', views.form_saved, name='form-saved'),
+
     # Application form
     url(r'^forms/public/application/$', views.public_form_application,
         name='public-form-application'),
@@ -42,6 +45,22 @@ urlpatterns = [
     # Rider Eval Checklist form
     url(r'^forms/private/rider_eval_checklist_form/$', views.private_form_rider_eval_checklist,
         name='private_form_rider_eval_checklist'),
+
+	# Donation form index
+    url(r'^forms/public/donation/$', views.donation_index,
+        name='donation-index'),
+
+    # Adopt a Participant donation form
+    url(r'^forms/public/donation/participant$', views.donation_participant,
+        name='donation-participant'),
+
+    # Adopt a Horse donation form
+    url(r'^forms/public/donation/horse$', views.donation_horse,
+        name='donation-horse'),
+
+    # Monetary donation form
+    url(r'^forms/public/donation/monetary$', views.donation_monetary,
+        name='donation-monetary'),
 
 
     ######################### User login required #########################
