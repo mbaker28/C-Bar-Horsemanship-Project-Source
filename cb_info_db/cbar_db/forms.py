@@ -534,7 +534,7 @@ class RiderEvalChecklistForm(forms.Form):
         )
     )
 
-    date=forms.DateField()
+    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     basic_trail_rules=forms.NullBooleanField()
 
