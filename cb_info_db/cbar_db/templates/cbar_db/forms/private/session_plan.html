@@ -6,4 +6,74 @@
         {{ error_text }}
     </strong></p>
     {% endif %}
+    <form action="{% url 'private-form-session-plan'}" method="post">
+        {% csrf_token %}
+        <p>Participant: {{ form.name }}
+            <span class="error_message">
+                {{ form.name.errors.as_text }}
+            </span>
+            Birth Date: {{ form.birth_date }}
+            <span class="error_message">
+                {{ form.birth_date.errors.as_text }}
+            </span>
+            <br />
+            Horse: {{ form.horse_name }}
+            <span class="error_message">
+                {{ form.name.errors.as_text }}
+            </span>
+            Horse Description: {{ form.description }}
+            <span class="error_message">
+                {{ form.description.errors.as_text }}
+            </span>
+            <br />
+            Tack: {{ form.tack }}
+            <span class="error_message">
+                {{ form.tack.errors.as_text }}
+            </span>
+            <br />
+            Diagnosis: {{ form.diagnosis }}
+            <span class="error_message">
+                {{ form.diagnosis.errors.as_text }}
+            </span>
+            Type: {{ form.diagnosis_type }}
+            <span class="error_message">
+                {{ form.diagnosis_type.errors.as_text }}
+            </span>
+            <br />
+            Mobility: {{ form.ambulatory_status }}
+            <span class="error_message">
+                {{ form.ambulatory_status.errors.as_text }}
+            </span>
+            Mobility (other): {{ form.ambulatory_status_other }}
+            <span class="error_message">
+                {{ form.ambulatory_status_other.errors.as_text }}
+            </span>
+        </p>
+
+        <h2>Mounting Notes</h2>
+        <p>Assistance: {{ form.mount_assistance_required }}
+            <span class="error_message">
+                {{ form.mount_assistance_required.errors.as_text }}
+            </span>
+            Mount Device Needed: {{ form.mount_device_needed }}
+            <span class="error_message">
+                {{ form.mount_device_needed.errors.as_text }}
+            </span>
+            Mount Type: {{ form.mount_type }}
+            <span class="error_message">
+                {{ form.mount_type.errors.as_text }}
+            </span>
+        </p>
+
+        <h2>Dismounting Notes</h2>
+        <p>Assistance: {{ form.dismount_assistance_required }}
+            <span class="error_message">
+                {{ form.dismount_assistance_required.errors.as_text }}
+            </span>
+            Dismount Type: {{ form.dismount_type }}
+            <span class="error_message">
+                {{ form.dismount_type.errors.as_text }}
+            </span>
+        </p>
+    </form>
 {% endblock %}
