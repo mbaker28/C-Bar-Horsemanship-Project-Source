@@ -1255,7 +1255,7 @@ def private_form_session_plan(request):
             # Find the participant's record based on their (name, birth_date):
             try:
                 participant=models.Participant.objects.get(
-                    name=form.cleaned_data['signature'],
+                    name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date']
                 )
             except ObjectDoesNotExist:
