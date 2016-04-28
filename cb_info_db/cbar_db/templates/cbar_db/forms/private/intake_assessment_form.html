@@ -12,11 +12,14 @@
         </strong></p>
     {% endif %}
 
-    <form>
-        <select name="section" id="section">
-            <option value="general_information">General Information</option>
-            <option value="premounted">Premounted</option>
-            <option value="sidewalkers_required">Sidewalkers Required</option>
+    <form style="text-align: center">
+        <select name="section" id="section" style="text-align: center">
+            <option value="general_information">--- General Information ---</option>
+            <option value="premounted">--- Premounted ---</option>
+            <option value="premounted_posture">Posture</option>
+            <option value="premounted_ambulatory">Ambulatory Status</option>
+            <option value="premounted_gait">Gait</option>
+            <option value="sidewalkers_required">--- Sidewalkers Required ---</option>
         </select>
     </form>
 
@@ -121,109 +124,107 @@
                 </div>
             </div>
             <div id="ambulatory">
-                <div id="ambulatory_status">
-                    <p><strong>Ambulatory Status</strong></p>
+                <h3>Ambulatory Status</h3>
+                <p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.ambulatory_status }}
+                         {{ form.ambulatory_status.errors.as_text }}
+                         {{ form.ambulatory_status_other }}
+                         {{ form.ambulatory_status_other.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </p>
+            </div>
+            <div id="gait">
+                <h3>Gait</h3>
+                <div id="gait_flat">
+                    <p><strong>Flat</strong></p>
                     <p>
                         {% for form, participant in formset_and_participants %}
                             {{ participant }}:
-                             {{ form.ambulatory_status }}
-                             {{ form.ambulatory_status.errors.as_text }}
-                             {{ form.ambulatory_status_other }}
-                             {{ form.ambulatory_status_other.errors.as_text }}
+                             {{ form.gait_flat }}
+                             {{ form.gait_flat.errors.as_text }}
                             <br />
                         {% endfor %}
                     </p>
                 </div>
-                <div id="gait">
-                    <h2>Gait</h2>
-                    <div id="gait_flat">
-                        <p><strong>Flat</strong></p>
-                        <p>
-                            {% for form, participant in formset_and_participants %}
-                                {{ participant }}:
-                                 {{ form.gait_flat }}
-                                 {{ form.gait_flat.errors.as_text }}
-                                <br />
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div id="gait_uneven">
-                        <p><strong>Uneven</strong></p>
-                        <p>
-                            {% for form, participant in formset_and_participants %}
-                                {{ participant }}:
-                                 {{ form.gait_uneven }}
-                                 {{ form.gait_uneven.errors.as_text }}
-                                <br />
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div id="gait_incline">
-                        <p><strong>Incline</strong></p>
-                        <p>
-                            {% for form, participant in formset_and_participants %}
-                                {{ participant }}:
-                                 {{ form.gait_incline }}
-                                 {{ form.gait_incline.errors.as_text }}
-                                <br />
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div id="gait_decline">
-                        <p><strong>Decline</strong></p>
-                        <p>
-                            {% for form, participant in formset_and_participants %}
-                                {{ participant }}:
-                                 {{ form.gait_decline }}
-                                 {{ form.gait_decline.errors.as_text }}
-                                <br />
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div id="gait_stairs">
-                        <p><strong>Stairs</strong></p>
-                        <p>
-                            {% for form, participant in formset_and_participants %}
-                                {{ participant }}:
-                                 {{ form.gait_stairs }}
-                                 {{ form.gait_stairs.errors.as_text }}
-                                <br />
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div id="gait_balance">
-                        <p><strong>Balance</strong></p>
-                        <p>
-                            {% for form, participant in formset_and_participants %}
-                                {{ participant }}:
-                                 {{ form.gait_balance }}
-                                 {{ form.gait_balance.errors.as_text }}
-                                <br />
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div id="gait_standing_up">
-                        <p><strong>Standing Up</strong></p>
-                        <p>
-                            {% for form, participant in formset_and_participants %}
-                                {{ participant }}:
-                                 {{ form.gait_standing_up }}
-                                 {{ form.gait_standing_up.errors.as_text }}
-                                <br />
-                            {% endfor %}
-                        </p>
-                    </div>
-                    <div id="gait_standing_down">
-                        <p><strong>Standing Down <span style="color:red">NAMING IS A THING</span></strong></p> <!-- Um... lah? -->
-                        <p>
-                            {% for form, participant in formset_and_participants %}
-                                {{ participant }}:
-                                 {{ form.gait_standing_down }}
-                                 {{ form.gait_standing_down.errors.as_text }}
-                                <br />
-                            {% endfor %}
-                        </p>
-                    </div>
+                <div id="gait_uneven">
+                    <p><strong>Uneven</strong></p>
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_uneven }}
+                             {{ form.gait_uneven.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
+                </div>
+                <div id="gait_incline">
+                    <p><strong>Incline</strong></p>
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_incline }}
+                             {{ form.gait_incline.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
+                </div>
+                <div id="gait_decline">
+                    <p><strong>Decline</strong></p>
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_decline }}
+                             {{ form.gait_decline.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
+                </div>
+                <div id="gait_stairs">
+                    <p><strong>Stairs</strong></p>
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_stairs }}
+                             {{ form.gait_stairs.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
+                </div>
+                <div id="gait_balance">
+                    <p><strong>Balance</strong></p>
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_balance }}
+                             {{ form.gait_balance.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
+                </div>
+                <div id="gait_standing_up">
+                    <p><strong>Standing Up</strong></p>
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_standing_up }}
+                             {{ form.gait_standing_up.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
+                </div>
+                <div id="gait_standing_down">
+                    <p><strong>Standing Down <span style="color:red">NAMING IS A THING</span></strong></p> <!-- Um... lah? -->
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_standing_down }}
+                             {{ form.gait_standing_down.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
                 </div>
             </div>
         </div>
