@@ -104,6 +104,7 @@ urlpatterns = [
         views.report_seizure,
         name='report-seizure'),
 
-    url(r'^forms/private/session_plan/$', views.private_form_session_plan,
+    # Session Plan
+    url(r'^forms/private/session_plan/(?P<participant_id>[0-9]+)$', views.private_form_session_plan,
         name='private-form-session-plan'),
 ]

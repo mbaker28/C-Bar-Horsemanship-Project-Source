@@ -1424,7 +1424,7 @@ def report_seizure(request, participant_id, year, month, day):
     )
 
 @login_required
-def private_form_session_plan(request):
+def private_form_session_plan(request, participant_id):
     """Data for session plan form."""
 
     # if this is a POST request we need to process the form data
@@ -1439,8 +1439,7 @@ def private_form_session_plan(request):
             # Find the participant's record based on their (name, birth_date):
             try:
                 participant=models.Participant.objects.get(
-                    name=form.cleaned_data['name'],
-                    birth_date=form.cleaned_data['birth_date']
+                    participant_id=participant_id
                 )
             except ObjectDoesNotExist:
                 # The participant doesn't exist.
@@ -1450,7 +1449,8 @@ def private_form_session_plan(request):
                     "cbar_db/forms/private/session_plan.html",
                     {
                         'form': form,
-                        'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                        'participant': participant,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
                     }
                 )
 
@@ -1462,7 +1462,7 @@ def private_form_session_plan(request):
 
             session_goals=models.SessionGoals(
                 participant_id=participant,
-                #session_id=form.cleaned_data['session_id'],
+                session_id=session_plan,
                 goal_type=form.cleaned_data['goal_type'],
                 goal_description=form.cleaned_data['goal_description'],
                 motivation=form.cleaned_data['motivation']
@@ -1471,17 +1471,19 @@ def private_form_session_plan(request):
 
             horse_info=models.Horse(
                 name=form.cleaned_data['horse_name'],
-                description=form.cleaned_data['description']
             )
             horse_info.save()
 
             diagnosis_info=models.Diagnosis(
-                diagnosis=cleaned_data['diagnosis'],
-                diagnosis_type=cleaned_data['diagnosis_type']
+                participant_id=participant,
+                diagnosis=form.cleaned_data['diagnosis'],
+                diagnosis_type=form.cleaned_data['diagnosis_type']
             )
             diagnosis_info.save()
 
             adaptations_needed=models.AdaptationsNeeded(
+                participant_id=participant,
+                date=form.cleaned_data["date"],
                 ambulatory_status=form.cleaned_data['ambulatory_status'],
                 ambulatory_status_other=(
                     form.cleaned_data['ambulatory_status_other']),
@@ -1519,11 +1521,28 @@ def private_form_session_plan(request):
             # The form is not valid
             loggeyMcLogging.error("The form is NOT valid")
 
+            try:
+                participant=models.Participant.objects.get(
+                    participant_id=participant_id
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/private/session_plan.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                    }
+                )
+
             return render(
                 request,
                 "cbar_db/forms/private/session_plan.html",
                 {
                     'form': form,
+                    'participant': participant,
                     'error_text': ERROR_TEXT_FORM_INVALID,
                 }
             )
@@ -1531,10 +1550,28 @@ def private_form_session_plan(request):
         # If request type is GET (or any other method) create a blank form and
         # display it:
         form=forms.SessionPlanForm()
+
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            # The participant doesn't exist.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/session_plan.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                }
+            )
+
         return render(
             request,
             'cbar_db/forms/private/session_plan.html',
             {
-                'form': form
+                'form': form,
+                'participant': participant
             }
         )

@@ -528,13 +528,13 @@ class EmergencyMedicalReleaseForm(forms.Form):
 
 class SessionPlanForm(forms.Form):
     # Stored in Participant
-    name=forms.CharField(
-        max_length=models.Participant._meta.get_field("name").max_length
-    )
-    birth_date=forms.DateField()
+    # name=forms.CharField(
+    #     max_length=models.Participant._meta.get_field("name").max_length
+    # )
+    # birth_date=forms.DateField()
 
     # Stored in Session
-    date=forms.DateField()
+    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
     tack=forms.CharField(
         max_length=models.Session._meta.get_field("tack").max_length
     )
@@ -556,16 +556,16 @@ class SessionPlanForm(forms.Form):
     horse_name=forms.CharField(
         max_length=models.Horse._meta.get_field("name").max_length
     )
-    description=forms.CharField(
-        max_length=models.Horse._meta.get_field("description").max_length
-    )
+    # description=forms.CharField(
+    #     max_length=models.Horse._meta.get_field("description").max_length
+    # )
 
     # Stored in Diagnosis
     diagnosis=forms.CharField(
         max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
     )
-    diagnosis_type=forms.CharField(
-        max_length=models.Diagnosis._meta.get_field("diagnosis_type").max_length
+    diagnosis_type=forms.ChoiceField(
+        choices=models.Diagnosis._meta.get_field("diagnosis_type").choices
     )
 
     # Stored in AdaptationsNeeded
