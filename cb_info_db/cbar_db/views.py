@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 import logging
 import time
 from cbar_db import forms
@@ -48,6 +49,17 @@ def index_public(request):
 def index_public_forms(request):
     """ Public forms index view. """
     return render(request, 'cbar_db/forms/public/public.html')
+
+def form_saved(request):
+    """ Used to tell the user their form saved. """
+
+    # Check if the user just typed the url in the menu bar:
+    if request.GET.get("a") == "a":
+        # The user was redirected here from a form, display the message:
+        return render(request, "cbar_db/forms/form_saved.html")
+    else:
+        # The user just typed in the address, redirect to the home page:
+        return HttpResponseRedirect("/")
 
 def public_form_application(request):
     """ Application form view. """
@@ -103,7 +115,7 @@ def public_form_application(request):
                 form_data_application.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid.
@@ -240,7 +252,7 @@ def public_form_med_release(request):
                 medication_two.save()
 
             # Redirect to the home page:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid
@@ -382,7 +394,7 @@ def public_form_emerg_auth(request):
             authorize_emerg_medical.save()
 
             # Redirect to the home page:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid
@@ -453,7 +465,7 @@ def public_form_liability(request):
             form_data_liability.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid.
@@ -523,7 +535,7 @@ def public_form_media(request):
             form_data_media.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid.
@@ -579,7 +591,7 @@ def public_form_background(request):
             public_form_background.save()
 
             # Redirect to the home page:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             form=forms.BackgroundCheckForm()
@@ -722,7 +734,7 @@ def public_form_seizure(request):
                 medication_three.save()
 
             # redirect to a new URL:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
             # The form is not valid.
@@ -747,6 +759,178 @@ def public_form_seizure(request):
                 'form': form
             }
         )
+
+def donation_index(request):
+    """ Index for donations view. """
+    return render(request, 'cbar_db/forms/donation/donation_index.html')
+
+def donation_participant(request):
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        form=forms.ParticipantAdoptionForm(request.POST)
+
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+
+            try:
+                # Stupid gay shit..
+                loggeyMcLogging.error("Seaching for existing donor...")
+                donor=models.objects.Donor.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                loggeyMcLogging.error("Existing donor found.")
+            except:
+                # More stupid gay shit...
+                loggeyMcLogging.error(
+                    "Existing donor not found. Creating new donor..."
+                )
+                donor=models.Donor(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                donor.save()
+
+            donation=models.Donation(
+                donor_id=donor,
+                donation_type=models.Donation.DONATION_ADOPT_PARTICIPANT,
+                amount=form.cleaned_data["amount"]
+            )
+            donation.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/')
+
+        else:
+            loggeyMcLogging.error("The form is NOT Valid")
+            return render(
+                request,
+                'cbar_db/forms/donation/donation_participant.html',
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+            }
+        )
+
+    else:
+        form=forms.ParticipantAdoptionForm()
+        return render(
+            request,
+            'cbar_db/forms/donation/donation_participant.html',
+            {
+                'form': form
+            }
+        )
+
+def donation_horse(request):
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        form=forms.HorseAdoptionForm(request.POST)
+
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+
+            try:
+                loggeyMcLogging.error("Searching for existing donor record...")
+                donor=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                loggeyMcLogging.error("Found existing donor record.")
+            except:
+                loggeyMcLogging.error(
+                    "Existing donor record not found. Creating new record..."
+                )
+                donor=models.Donor(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                donor.save()
+
+            donation=models.Donation(
+                donor_id=donor,
+                donation_type=models.Donation.DONATION_ADOPT_HORSE,
+                amount=(
+                    form.cleaned_data["amount"]
+                )
+            )
+            donation.save()
+
+            # Redirect to the home page:
+            return HttpResponseRedirect("/")
+
+        else:
+            loggeyMcLogging.error("The form is NOT Valid")
+            return render(
+                request,
+                'cbar_db/forms/donation/donation_horse.html',
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+                }
+            )
+
+    else:
+        form=forms.HorseAdoptionForm()
+        return render(
+            request,
+            'cbar_db/forms/donation/donation_horse.html',
+            {
+                'form': form
+            }
+        )
+
+def donation_monetary(request):
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        form=forms.MonetaryDonationForm(request.POST)
+
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+
+            try:
+                donor=models.Donor.objects.get(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+            except ObjectDoesNotExist:
+                donor=models.Donor(
+                    name=form.cleaned_data["name"],
+                    email=form.cleaned_data["email"]
+                )
+                donor.save()
+
+            donation=models.Donation(
+                donor_id=donor,
+                donation_type=models.Donation.DONATION_MONETARY,
+                amount=form.cleaned_data["amount"]
+            )
+            donation.save()
+
+            # Redirect to a new page
+            return HttpResponseRedirect("/")
+
+        else:
+            loggeyMcLogging.error("The form is NOT Valid")
+            return render(
+                request,
+                'cbar_db/forms/donation/donation_monetary.html',
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+            }
+        )
+
+    else:
+        form=forms.MonetaryDonationForm()
+        return render(
+            request,
+            'cbar_db/forms/donation/donation_monetary.html',
+            {
+                'form': form
+            }
+        )
+
 
 @login_required
 def index_private_admin(request):
