@@ -88,11 +88,17 @@ def public_form_application(request):
                 )
 
             except ObjectDoesNotExist:
+                # Calculate the height in inches
+                height_in_inches=(
+                    (form.cleaned_data["height_feet"]*12)
+                    + form.cleaned_data["height_inches"]
+                )
+
                 # Create a new ApplicationForm for the participant and save it:
                 form_data_application=models.Participant(
                     name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date'],
-                    height=form.cleaned_data['height'],
+                    height=height_in_inches,
                     weight=form.cleaned_data['weight'],
                     gender=form.cleaned_data['gender'],
                     minor_status=form.cleaned_data['minor_status'],

@@ -120,7 +120,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -228,7 +229,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -265,7 +267,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -302,7 +305,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -402,7 +406,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -447,8 +452,9 @@ class TestApplicationForm(TestCase):
             form_data["birth_date"]
         )
         self.assertEqual(
-            str(participant_in_db.height), # To string so can check against form
-            form_data["height"]
+            participant_in_db.height,
+            # Convert feet and inches to inches for comparision
+            float(form_data["height_feet"])*12+float(form_data["height_inches"])
         )
         self.assertEqual(
             str(participant_in_db.weight), # To string so can check against form
@@ -509,7 +515,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -546,7 +553,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -583,7 +591,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
