@@ -102,9 +102,9 @@ class TestApplicationForm(TestCase):
             address_city="Gotham",
             address_state="OK",
             address_zip= "424278",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="590-039-3000",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -120,18 +120,18 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
-            "address_zip": "654321",
-            "phone_home": "(400) 100-200",
-            "phone_cell": "(400) 200-300",
-            "phone_work": "(400) 300-400",
+            "address_zip": "74801",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
             "school_institution": "Stick's School of Kung Fu"
         }
-        form=forms.ApplicationForm(form_data)
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("public-form-application"), form_data)
@@ -166,8 +166,9 @@ class TestApplicationForm(TestCase):
             form_data["birth_date"]
         )
         self.assertEqual(
-            str(participant_in_db.height), # To string so can check against form
-            form_data["height"]
+            participant_in_db.height,
+            # Convert ft'in" to inches
+            float(form_data["height_feet"])*12 + float(form_data["height_inches"])
         )
         self.assertEqual(
             str(participant_in_db.weight), # To string so can check against form
@@ -228,18 +229,18 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
-            "address_zip": "654321",
-            "phone_home": "(400) 100-200",
-            "phone_cell": "(400) 200-300",
-            "phone_work": "(400) 300-400",
+            "address_zip": "74801",
+            "phone_home": "555 666 7777",
+            "phone_cell": "",
+            "phone_work": "",
             "school_institution": "Stick's School of Kung Fu"
         }
-        form=forms.ApplicationForm(form_data)
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("public-form-application"), form_data)
@@ -265,15 +266,16 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
             "address_zip": "654321",
-            "phone_home": "(400) 100-200",
-            "phone_cell": "(400) 200-300",
-            "phone_work": "(400) 300-400",
+            "phone_home": "400 100 2000",
+            "phone_cell": "400 200 3000",
+            "phone_work": "400 300 4000",
             "school_institution": "Stick's School of Kung Fu"
         }
         form=forms.ApplicationForm(form_data)
@@ -302,7 +304,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -338,6 +341,82 @@ class TestApplicationForm(TestCase):
             "form",
             "phone_work",
             forms.ERROR_TEXT_NO_PHONE
+        )
+
+    def test_application_form_with_invalid_height_feet_throws_error(self):
+        """ Verify that an Application form view, populated with an invalid,
+         number for the height_feet field displays an error message. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height_feet": "9",
+            "height_inches": "8.5",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "100 300 4000",
+            "phone_cell": "",
+            "phone_work": "",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that each phone field threw the correct error:
+        self.assertFormError(
+            response,
+            "form",
+            "height_feet",
+            forms.ApplicationForm.ERROR_TEXT_INVALID_HEIGHT_FT
+        )
+
+    def test_application_form_with_invalid_height_inches_throws_error(self):
+        """ Verify that an Application form view, populated with an invalid,
+         number for the height_inches field displays an error message. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height_feet": "5",
+            "height_inches": "99.9",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "100 300 4000",
+            "phone_cell": "",
+            "phone_work": "",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that each phone field threw the correct error:
+        self.assertFormError(
+            response,
+            "form",
+            "height_inches",
+            forms.ApplicationForm.ERROR_TEXT_INVALID_HEIGHT_IN
         )
 
 
@@ -362,263 +441,6 @@ class TestFormSavedPage(TestCase):
         self.assertEqual(
             response["Location"],
             "/"
-        )
-
-
-class TestApplicationForm(TestCase):
-    def setUp(self):
-        setup_test_environment() #Initialize the test enviornment
-        client=Client() #Make a test client (someone viewing the database)
-
-        # Create a Participant record and save it
-        test_participant=models.Participant(
-            name="TEST Bruce Wayne",
-            birth_date="1984-6-24",
-            email="bruce@wayneenterprises.com",
-            weight=185.0,
-            gender="M",
-            guardian_name="Alfred Pennyworth",
-            height=72.0,
-            minor_status="G",
-            address_street="1234 Wayne St.",
-            address_city="Gotham",
-            address_state="OK",
-            address_zip="74804",
-            phone_home="300-200-1000",
-            phone_cell="300-500-6000",
-            phone_work="598-039-3008",
-            school_institution="Ra's Al Ghul School of Ninjutsu"
-        )
-        test_participant.save()
-
-    def test_application_form_creates_participant(self):
-        """ Tests whether the form creates a participant record once all
-            fields are entered. """
-
-        form_data={
-            "name": "TEST Matt Murdock",
-            "birth_date": "1989-5-20",
-            "email": "matt@nelsonandmurdock.com",
-            "weight": "180.0",
-            "gender": "M",
-            "guardian_name": "Stick",
-            "height": "69.0",
-            "minor_status": "G",
-            "address_street": "1234 Murdock Street",
-            "address_city": "Hell's Kitchen",
-            "address_state": "OK",
-            "address_zip": "74801",
-            "phone_home": "400-100-2000",
-            "phone_cell": "400-200-3000",
-            "phone_work": "400-300-4000",
-            "school_institution": "Stick's School of Kung Fu"
-        }
-        form=forms.ApplicationForm(form_data)
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
-
-        # Assert that the reponse code is a 302 (redirect):
-        self.assertEqual(response.status_code, 302)
-
-        # Assert the the redirect url matches the post-form page:
-        self.assertEqual(
-            response["Location"],
-            reverse("form-saved")+"?a=a"
-        )
-
-        # Attempt to retreive the updated Participant record:
-        try:
-            print("Retrieving participant record...")
-            participant_in_db=models.Participant.objects.get(
-                name=form_data["name"],
-                birth_date=form_data["birth_date"]
-            )
-        except:
-            print("ERROR: Unable to retreive participant record!")
-
-        # Verify that all of the Participant fields were set correctly:
-        self.assertEqual(
-            participant_in_db.name,
-            form_data["name"]
-        )
-        self.assertEqual(
-            "{d.year}-{d.month}-{d.day}".format(d=participant_in_db.birth_date),
-            form_data["birth_date"]
-        )
-        self.assertEqual(
-            str(participant_in_db.height), # To string so can check against form
-            form_data["height"]
-        )
-        self.assertEqual(
-            str(participant_in_db.weight), # To string so can check against form
-            form_data["weight"]
-        )
-        self.assertEqual(
-            participant_in_db.gender,
-            form_data["gender"]
-        )
-        self.assertEqual(
-            participant_in_db.minor_status,
-            form_data["minor_status"]
-        )
-        self.assertEqual(
-            participant_in_db.school_institution,
-            form_data["school_institution"]
-        )
-        self.assertEqual(
-            participant_in_db.guardian_name,
-            form_data["guardian_name"]
-        )
-        self.assertEqual(
-            participant_in_db.address_street,
-            form_data["address_street"]
-        )
-        self.assertEqual(
-            participant_in_db.address_city,
-            form_data["address_city"]
-        )
-        self.assertEqual(
-            participant_in_db.address_zip,
-            form_data["address_zip"]
-        )
-        self.assertEqual(
-            participant_in_db.phone_home,
-            form_data["phone_home"]
-        )
-        self.assertEqual(
-            participant_in_db.phone_cell,
-            form_data["phone_cell"]
-        )
-        self.assertEqual(
-            participant_in_db.phone_work,
-            form_data["phone_work"]
-        )
-        self.assertEqual(
-            participant_in_db.email,
-            form_data["email"]
-        )
-
-    def test_application_form_participant_already_exists(self):
-        """ Form throws error if the participant already exists. """
-
-        form_data={
-            "name": "TEST Bruce Wayne",
-            "birth_date": "1984-6-24",
-            "email": "matt@nelsonandmurdock.com",
-            "weight": "180.0",
-            "gender": "M",
-            "guardian_name": "Stick",
-            "height": "69.0",
-            "minor_status": "G",
-            "address_street": "1234 Murdock Street",
-            "address_city": "Hell's Kitchen",
-            "address_state": "OK",
-            "address_zip": "74801",
-            "phone_home": "400-100-2000",
-            "phone_cell": "400-200-3000",
-            "phone_work": "400-300-4000",
-            "school_institution": "Stick's School of Kung Fu"
-        }
-        form=forms.ApplicationForm(form_data)
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
-
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
-
-        # Assert that the context for the new view contains the correct error:
-        print(response.context)
-        self.assertTrue(
-            response.context["error_text"] == (
-                views.ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS
-            )
-        )
-
-    def test_application_form_participant_does_not_exist_with_invalid_data(self):
-        """ Form throws an error if the form data is not valid. """
-
-        form_data={
-            "name": "TEST sdf83sdf",
-            "birth_date": "sdf##df",
-            "email": "matt@nelsonandmurdock.com",
-            "weight": "180.0",
-            "gender": "M",
-            "guardian_name": "Stick",
-            "height": "69.0",
-            "minor_status": "G",
-            "address_street": "1234 Murdock Street",
-            "address_city": "Hell's Kitchen",
-            "address_state": "OK",
-            "address_zip": "74801",
-            "phone_home": "400-100-2000",
-            "phone_cell": "400-200-3000",
-            "phone_work": "400-300-4000",
-            "school_institution": "Stick's School of Kung Fu"
-        }
-        form=forms.ApplicationForm(form_data)
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
-
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
-
-        # Assert that the context for the new view contains the correct error:
-        self.assertTrue(
-            response.context["error_text"] == (
-                views.ERROR_TEXT_FORM_INVALID
-            )
-        )
-
-    def test_application_form_with_no_phone_numbers_throws_error(self):
-        """ Verify that an Application form view, populated with no phone
-         numbers, displays an error message. """
-
-        form_data={
-            "name": "TEST Matt Murdock",
-            "birth_date": "1989-5-20",
-            "email": "matt@nelsonandmurdock.com",
-            "weight": "180.0",
-            "gender": "M",
-            "guardian_name": "Stick",
-            "height": "69.0",
-            "minor_status": "G",
-            "address_street": "1234 Murdock Street",
-            "address_city": "Hell's Kitchen",
-            "address_state": "OK",
-            "address_zip": "74801",
-            "phone_home": "",
-            "phone_cell": "",
-            "phone_work": "",
-            "school_institution": "Stick's School of Kung Fu"
-        }
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
-
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
-
-        # Assert that each phone field threw the correct error:
-        self.assertFormError(
-            response,
-            "form",
-            "phone_home",
-            forms.ERROR_TEXT_NO_PHONE
-        )
-        self.assertFormError(
-            response,
-            "form",
-            "phone_cell",
-            forms.ERROR_TEXT_NO_PHONE
-        )
-        self.assertFormError(
-            response,
-            "form",
-            "phone_work",
-            forms.ERROR_TEXT_NO_PHONE
         )
 
 
