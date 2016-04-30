@@ -1,8 +1,9 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
+from django.db import IntegrityError
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 import logging
 import time
 from cbar_db import forms
@@ -38,6 +39,15 @@ ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE=(
 )
 ERROR_TEXT_SEIZURE_EVAL_NOT_AVAILABLE=(
     "The Seizure Evaluation requested is not available."
+)
+ERROR_TEXT_DB_INTEGRITY=(
+    "An internal database error has occured and the form could not be saved."
+    " Please verify that you have not already filled out a form for this"
+    " participant and date."
+)
+ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK=(
+    "This participant has already has a {form} filed for this date."
+    " You cannot have more than one {form} filed for the same date."
 )
 
 loggeyMcLogging=logging.getLogger(__name__)
@@ -112,11 +122,6 @@ def public_form_application(request):
                     phone_cell=form.cleaned_data['phone_cell'],
                     phone_work=form.cleaned_data['phone_work'],
                     email=form.cleaned_data['email'],
-
-                    # TODO: These two fields don't exist in the Participant
-                    #       class. Do we even need them?
-                    #           signature=form.cleaned_data['signature'],
-                    #           date=form.cleaned_data['date']
                 )
                 form_data_application.save()
 
@@ -376,28 +381,81 @@ def public_form_emerg_auth(request):
                         ),
                     }
                 )
+            # Catch duplicate composite primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/public/emergency_authorization.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form=(
+                                    "emergency medical treatment authorization")
+                                )
+                            ),
+                        }
+                    )
+                else:
+                    return render(
+                        request,
+                        "cbar_db/forms/public/emergency_authorization.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
 
             # Create a new AuthorizeEmergencyMedicalTreatment instance for the
             # participant and save it:
-            authorize_emerg_medical=models.AuthorizeEmergencyMedicalTreatment(
-                participant_id=participant,
-                pref_medical_facility=(
-                    form.cleaned_data['pref_medical_facility']
-                ),
-                insurance_provider=form.cleaned_data['insurance_provider'],
-                insurance_policy_num=form.cleaned_data['insurance_policy_num'],
-                emerg_contact_name=form.cleaned_data['emerg_contact_name'],
-                emerg_contact_phone=form.cleaned_data['emerg_contact_phone'],
-                emerg_contact_relation=(
-                    form.cleaned_data['emerg_contact_relation']
-                ),
-                consents_emerg_med_treatment=(
-                    form.cleaned_data['consents_emerg_med_treatment']
-                ),
-                date=form.cleaned_data['date'],
-                signature=form.cleaned_data['signature']
-            )
-            authorize_emerg_medical.save()
+            try:
+                authorize_emerg_medical=models.AuthorizeEmergencyMedicalTreatment(
+                    participant_id=participant,
+                    pref_medical_facility=(
+                        form.cleaned_data['pref_medical_facility']
+                    ),
+                    insurance_provider=form.cleaned_data['insurance_provider'],
+                    insurance_policy_num=form.cleaned_data['insurance_policy_num'],
+                    emerg_contact_name=form.cleaned_data['emerg_contact_name'],
+                    emerg_contact_phone=form.cleaned_data['emerg_contact_phone'],
+                    emerg_contact_relation=(
+                        form.cleaned_data['emerg_contact_relation']
+                    ),
+                    consents_emerg_med_treatment=(
+                        form.cleaned_data['consents_emerg_med_treatment']
+                    ),
+                    date=form.cleaned_data['date'],
+                    signature=form.cleaned_data['signature']
+                )
+                authorize_emerg_medical.save()
+            # Catch duplicate composite primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/public/emergency_authorization.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form=(
+                                    "emergency medical treatment authorization")
+                                )
+                            ),
+                        }
+                    )
+                else:
+                    return render(
+                        request,
+                        "cbar_db/forms/public/emergency_authorization.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
 
             # Redirect to the home page:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
@@ -463,12 +521,37 @@ def public_form_liability(request):
                 )
 
             # Create a new LiabilityRelease for the participant and save it:
-            form_data_liability=models.LiabilityRelease(
-                participant_id=participant,
-                signature=form.cleaned_data['signature'],
-                date=form.cleaned_data['date']
-            )
-            form_data_liability.save()
+            try:
+                form_data_liability=models.LiabilityRelease(
+                    participant_id=participant,
+                    signature=form.cleaned_data['signature'],
+                    date=form.cleaned_data['date']
+                )
+                form_data_liability.save()
+            # Catch duplicate composite primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/public/liability.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="liability release")
+                            ),
+                        }
+                    )
+                else:
+                    return render(
+                        request,
+                        "cbar_db/forms/public/liability.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
@@ -503,9 +586,10 @@ def public_form_media(request):
     Else:
         Give an error
     """
+
     ERROR_TEXT_DUPLICATE_MEDIA_RELEASE=(
-        "This participant has already submitted a media release today. You"
-        " cannot submit more than one media release on the same day."
+        "This participant has already has a media release filed for this date."
+        " You cannot have more than one media release filed for the same date."
     )
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -521,7 +605,6 @@ def public_form_media(request):
                     name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date']
                 )
-
             except ObjectDoesNotExist:
                 # The participant doesn't exist.
                 # Set the error message and redisplay the form:
@@ -544,16 +627,30 @@ def public_form_media(request):
                     date=form.cleaned_data['date']
                 )
                 form_data_media.save()
-            except IntegrityError:
+            # Catch duplicate composite primary keys:
+            except IntegrityError as error:
                 # Set the error message and redisplay the form:
-                return render(
-                    request,
-                    "cbar_db/forms/public/media.html",
-                    {
-                        'form': form,
-                        'error_text': ERROR_TEXT_DUPLICATE_MEDIA_RELEASE,
-                    }
-                )
+                if "Duplicate entry" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/public/media.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="media release")
+                            ),
+                        }
+                    )
+                else:
+                    return render(
+                        request,
+                        "cbar_db/forms/public/media.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
@@ -603,13 +700,38 @@ def public_form_background(request):
                     }
                 )
 
-            public_form_background=models.BackgroundCheck(
-                participant_id=participant,
-                date=form.cleaned_data['date'],
-                signature=form.cleaned_data['signature'],
-                driver_license_num=form.cleaned_data['driver_license_num']
-            )
-            public_form_background.save()
+            try:
+                public_form_background=models.BackgroundCheck(
+                    participant_id=participant,
+                    date=form.cleaned_data['date'],
+                    signature=form.cleaned_data['signature'],
+                    driver_license_num=form.cleaned_data['driver_license_num']
+                )
+                public_form_background.save()
+            # Catch duplicate composite primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/public/background.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="background check authorization")
+                            ),
+                        }
+                    )
+                else:
+                    return render(
+                        request,
+                        "cbar_db/forms/public/background.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
 
             # Redirect to the home page:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
