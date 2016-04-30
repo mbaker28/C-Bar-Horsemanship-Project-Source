@@ -3306,197 +3306,568 @@ class TestSeizureEvaluationForm(TestCase):
             forms.ERROR_TEXT_NO_PHONE
         )
 
-# class TestRiderEvalChecklistForm(TestCase):
-#     def setUp(self):
-#         setup_test_environment() # Initaliaze the test environment
-#         client=Client() # Make a test client (someone viewing the database)
-#         test_participant=models.EvalRidingExercises(
-#             participant_id=
-#             date=
-#             comments=
-#             basic_trail_rules=
-#             mount=
-#             dismount=
-#             emergency_dismount=
-#             four_natural_aids=
-#             basic_control=
-#             reverse_at_walk=
-#             reverse_at_trot=
-#             never_ridden=
-#             seat_at_walk=
-#             seat_at_trot=
-#             seat_at_canter=
-#             basic_seat_english=
-#             basic_seat_western=
-#             hand_pos_english=
-#             hand_post_western=
-#             two_point_trot=
-#             circle_trot_no_stirrups=
-#             circle_at_canter=
-#             circle_canter_no_stirrups=
-#             two_point_canter=
-#             circle_at_walk=
-#             circle_at_trot=
-#             holds_handhold_walk=
-#             holds_handhold_sit_trot=
-#             holds_handhold_post_trot=
-#             holds_handhold_canter=
-#             holds_reins_walk=
-#             holds_reins_sit_trot=
-#             holds_reins_post_trot=
-#             holds_reins_canter=
-#             shorten_lengthen_reins_walk=
-#             shorten_lengthen_reins_sit_trot=
-#             shorten_lengthen_reins_post_trot=
-#             shorten_lengthen_reins_canter=
-#             can_control_horse_walk=
-#             can_control_horse_sit_trot=
-#             can_control_horse_post_trot=
-#             can_control_horse_canter=
-#             can_halt_walk=
-#             can_halt_sit_trot=
-#             can_halt_post_trot=
-#             can_halt_canter=
-#             drop_pickup_stirrups_walk=
-#             drop_pickup_stirrups_sit_trot=
-#             drop_pickup_stirrups_post_trot=
-#             drop_pickup_stirrups_canter=
-#             rides_no_stirrups_walk=
-#             rides_no_stirrups_sit_trot=
-#             rides_no_stirrups_post_trot=
-#             rides_no_stirrups_canter=
-#             maintain_half_seat_walk=
-#             maintain_half_seat_sit_trot=
-#             maintain_half_seat_post_trot=
-#             maintain_half_seat_canter=
-#             can_post_walk=
-#             can_post_sit_trot=
-#             can_post_post_trot=
-#             can_post_canter=
-#             proper_diagonal_walk=
-#             proper_diagonal_sit_trot=
-#             proper_diagonal_post_trot=
-#             proper_diagonal_canter=
-#             proper_lead_canter_sees=
-#             proper_lead_canter_knows=
-#             can_steer_over_cavalletti_walk=
-#             can_steer_over_cavalletti_sit_trot=
-#             can_steer_over_cavalletti_post_trot=
-#             can_steer_over_cavalletti_canter=
-#             jump_crossbar_walk=
-#             jump_crossbar_sit_trot=
-#             jump_crossbar_post_trot=
-#             jump_crossbar_canter=
-#         )
-#         test_participant.save()
-#
-#     def test_seizure_evaluation_form_finds_valid_participant(self):
-#         """ Tests whether the form finds a valid participant record if a
-#          matching (name, date) is entered """
-#
-#         # If we are able to find the matching record, we set this to True:
-#         found_participant=False
-#
-#         form_data={
-#             participant_id=
-#             date=
-#             comments=
-#             basic_trail_rules=
-#             mount=
-#             dismount=
-#             emergency_dismount=
-#             four_natural_aids=
-#             basic_control=
-#             reverse_at_walk=
-#             reverse_at_trot=
-#             never_ridden=
-#             seat_at_walk=
-#             seat_at_trot=
-#             seat_at_canter=
-#             basic_seat_english=
-#             basic_seat_western=
-#             hand_pos_english=
-#             hand_post_western=
-#             two_point_trot=
-#             circle_trot_no_stirrups=
-#             circle_at_canter=
-#             circle_canter_no_stirrups=
-#             two_point_canter=
-#             circle_at_walk=
-#             circle_at_trot=
-#             holds_handhold_walk=
-#             holds_handhold_sit_trot=
-#             holds_handhold_post_trot=
-#             holds_handhold_canter=
-#             holds_reins_walk=
-#             holds_reins_sit_trot=
-#             holds_reins_post_trot=
-#             holds_reins_canter=
-#             shorten_lengthen_reins_walk=
-#             shorten_lengthen_reins_sit_trot=
-#             shorten_lengthen_reins_post_trot=
-#             shorten_lengthen_reins_canter=
-#             can_control_horse_walk=
-#             can_control_horse_sit_trot=
-#             can_control_horse_post_trot=
-#             can_control_horse_canter=
-#             can_halt_walk=
-#             can_halt_sit_trot=
-#             can_halt_post_trot=
-#             can_halt_canter=
-#             drop_pickup_stirrups_walk=
-#             drop_pickup_stirrups_sit_trot=
-#             drop_pickup_stirrups_post_trot=
-#             drop_pickup_stirrups_canter=
-#             rides_no_stirrups_walk=
-#             rides_no_stirrups_sit_trot=
-#             rides_no_stirrups_post_trot=
-#             rides_no_stirrups_canter=
-#             maintain_half_seat_walk=
-#             maintain_half_seat_sit_trot=
-#             maintain_half_seat_post_trot=
-#             maintain_half_seat_canter=
-#             can_post_walk=
-#             can_post_sit_trot=
-#             can_post_post_trot=
-#             can_post_canter=
-#             proper_diagonal_walk=
-#             proper_diagonal_sit_trot=
-#             proper_diagonal_post_trot=
-#             proper_diagonal_canter=
-#             proper_lead_canter_sees=
-#             proper_lead_canter_knows=
-#             can_steer_over_cavalletti_walk=
-#             can_steer_over_cavalletti_sit_trot=
-#             can_steer_over_cavalletti_post_trot=
-#             can_steer_over_cavalletti_canter=
-#             jump_crossbar_walk=
-#             jump_crossbar_sit_trot=
-#             jump_crossbar_post_trot=
-#             jump_crossbar_canter=
-#         }
-#         form=forms.RiderEvalChecklistForm(form_data)
-#
-#         if form.is_valid(): # Performs validation, needed for form.cleaned_data
-#             print("Form is valid.")
-#
-#             try:
-#                 print("Finding participant...")
-#                 participant_instance=models.EvalRidingExercises.objects.get(
-#                     name=form.cleaned_data["name"],
-#                     birth_date=form.cleaned_data["birth_date"]
-#                 )
-#                 print("Found participant.")
-#                 found_participant=True
-#
-#             except ObjectDoesNotExist:
-#                 found_participant=False
-#
-#         else:
-#             print("Form is not valid.")
-#
-#         # We should say we could find the participant:
-#         self.assertEquals(found_participant, True)
+class TestRiderEvalChecklistForm(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+        test_participant=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_state="OK",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant.save()
+
+    def test_rider_eval_checklist_form_finds_valid_participant(self):
+        """ Tests whether the form finds a valid participant record if a
+         matching (name, date) is entered """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "date":"2016-03-13",
+            "comments":"I have nothing to say",
+            "basic_trail_rules": True,
+            "mount": False,
+            "dismount": False,
+            "emergency_dismount": "",
+            "four_natural_aids": False,
+            "basic_control": False ,
+            "reverse_at_walk": True,
+            "reverse_at_trot": True,
+            "never_ridden": False,
+            "seat_at_walk": False,
+            "seat_at_trot": True,
+            "seat_at_canter": True,
+            "basic_seat_english": "",
+            "basic_seat_western": True,
+            "hand_pos_english": False,
+            "hand_post_western": False,
+            "two_point_trot": True,
+            "circle_trot_no_stirrups": "",
+            "circle_at_canter": False,
+            "circle_canter_no_stirrups": False,
+            "two_point_canter":True,
+            "circle_at_walk":"",
+            "circle_at_trot": True,
+            "holds_handhold_walk": "U",
+            "holds_handhold_sit_trot": "P",
+            "holds_handhold_post_trot": "F",
+            "holds_handhold_canter": "G",
+            "holds_reins_walk": "E",
+            "holds_reins_sit_trot": "N",
+            "holds_reins_post_trot": "A",
+            "holds_reins_canter": "P",
+            "shorten_lengthen_reins_walk": "U",
+            "shorten_lengthen_reins_sit_trot": "P",
+            "shorten_lengthen_reins_post_trot": "F",
+            "shorten_lengthen_reins_canter": "G",
+            "can_control_horse_walk": "E",
+            "can_control_horse_sit_trot": "N",
+            "can_control_horse_post_trot": "A",
+            "can_control_horse_canter": "P",
+            "can_halt_walk": "U",
+            "can_halt_sit_trot": "P",
+            "can_halt_post_trot": "F",
+            "can_halt_canter": "G",
+            "drop_pickup_stirrups_walk": "E",
+            "drop_pickup_stirrups_sit_trot": "N",
+            "drop_pickup_stirrups_post_trot": "A",
+            "drop_pickup_stirrups_canter": "P",
+            "rides_no_stirrups_walk": "U",
+            "rides_no_stirrups_sit_trot": "P",
+            "rides_no_stirrups_post_trot": "F",
+            "rides_no_stirrups_canter": "G",
+            "maintain_half_seat_walk": "E",
+            "maintain_half_seat_sit_trot": "N",
+            "maintain_half_seat_post_trot": "A",
+            "maintain_half_seat_canter": "P",
+            "can_post_walk": "U",
+            "can_post_sit_trot": "P",
+            "can_post_post_trot": "F",
+            "can_post_canter": "G",
+            "proper_diagonal_walk": "E",
+            "proper_diagonal_sit_trot": "N",
+            "proper_diagonal_post_trot": "A",
+            "proper_diagonal_canter": "P",
+            "proper_lead_canter_sees": "U",
+            "proper_lead_canter_knows": "P",
+            "can_steer_over_cavalletti_walk": "F",
+            "can_steer_over_cavalletti_sit_trot": "G",
+            "can_steer_over_cavalletti_post_trot": "E",
+            "can_steer_over_cavalletti_canter": "N",
+            "jump_crossbar_walk": "A",
+            "jump_crossbar_sit_trot": "P",
+            "jump_crossbar_post_trot": "U",
+            "jump_crossbar_canter": "P",
+        }
+        form=forms.RiderEvalChecklistForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name="TEST Peter Parker",
+                    birth_date="1985-4-02",
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertEquals(found_participant, True)
+
+    def test_rider_eval_checklist_form_saves_with_valid_data(self):
+        """ Verify that a Rider Evaluation Checklist form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        form_data={
+            "date":"2016-03-13",
+            "comments":"I have nothing to say",
+            "basic_trail_rules": True,
+            "mount": False,
+            "dismount": False,
+            "emergency_dismount": "",
+            "four_natural_aids": False,
+            "basic_control": False ,
+            "reverse_at_walk": True,
+            "reverse_at_trot": True,
+            "never_ridden": False,
+            "seat_at_walk": False,
+            "seat_at_trot": True,
+            "seat_at_canter": True,
+            "basic_seat_english": "",
+            "basic_seat_western": True,
+            "hand_pos_english": False,
+            "hand_post_western": False,
+            "two_point_trot": True,
+            "circle_trot_no_stirrups": "",
+            "circle_at_canter": False,
+            "circle_canter_no_stirrups": False,
+            "two_point_canter":True,
+            "circle_at_walk":"",
+            "circle_at_trot": True,
+            "holds_handhold_walk": "U",
+            "holds_handhold_sit_trot": "P",
+            "holds_handhold_post_trot": "F",
+            "holds_handhold_canter": "G",
+            "holds_reins_walk": "E",
+            "holds_reins_sit_trot": "N",
+            "holds_reins_post_trot": "A",
+            "holds_reins_canter": "P",
+            "shorten_lengthen_reins_walk": "U",
+            "shorten_lengthen_reins_sit_trot": "P",
+            "shorten_lengthen_reins_post_trot": "F",
+            "shorten_lengthen_reins_canter": "G",
+            "can_control_horse_walk": "E",
+            "can_control_horse_sit_trot": "N",
+            "can_control_horse_post_trot": "A",
+            "can_control_horse_canter": "P",
+            "can_halt_walk": "U",
+            "can_halt_sit_trot": "P",
+            "can_halt_post_trot": "F",
+            "can_halt_canter": "G",
+            "drop_pickup_stirrups_walk": "E",
+            "drop_pickup_stirrups_sit_trot": "N",
+            "drop_pickup_stirrups_post_trot": "A",
+            "drop_pickup_stirrups_canter": "P",
+            "rides_no_stirrups_walk": "U",
+            "rides_no_stirrups_sit_trot": "P",
+            "rides_no_stirrups_post_trot": "F",
+            "rides_no_stirrups_canter": "G",
+            "maintain_half_seat_walk": "E",
+            "maintain_half_seat_sit_trot": "N",
+            "maintain_half_seat_post_trot": "A",
+            "maintain_half_seat_canter": "P",
+            "can_post_walk": "U",
+            "can_post_sit_trot": "P",
+            "can_post_post_trot": "F",
+            "can_post_canter": "G",
+            "proper_diagonal_walk": "E",
+            "proper_diagonal_sit_trot": "N",
+            "proper_diagonal_post_trot": "A",
+            "proper_diagonal_canter": "P",
+            "proper_lead_canter_sees": "U",
+            "proper_lead_canter_knows": "P",
+            "can_steer_over_cavalletti_walk": "F",
+            "can_steer_over_cavalletti_sit_trot": "G",
+            "can_steer_over_cavalletti_post_trot": "E",
+            "can_steer_over_cavalletti_canter": "N",
+            "jump_crossbar_walk": "A",
+            "jump_crossbar_sit_trot": "P",
+            "jump_crossbar_post_trot": "U",
+            "jump_crossbar_canter": "P",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("private_form_rider_eval_checklist",
+        kwargs={'participant_id':test_participant_in_db.participant_id}), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        # Attempt to retreive the Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name="TEST Peter Parker",
+                birth_date="1985-4-02",
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retreive the new RiderEval record:
+        try:
+            print("Retrieving new RiderEval record...")
+            rider_eval_in_db=(models.EvalRidingExercises
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print(
+                "Successfully retrieved new RiderEval record."
+            )
+        except:
+            print(
+                "ERROR: Unable to retreive new RiderEval record!"
+            )
+
+        # Check that the attributes in the RiderEval were set correctly:
+        print(
+            "Checking stored RiderEval attributes..."
+        )
+        self.assertEqual(
+            test_participant_in_db.participant_id,
+            form_data["participant_id"]
+        )
+        self.assertEqual(
+            # Format the retrieved date so it matches the input format:
+            "{d.year}-{d.month}-{d.day}".format(d=rider_eval_in_db.date),
+            form_data["date"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.comments,
+            form_data["comments"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_trail_rules,
+            form_data["basic_trail_rules"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.mount,
+            form_data["mount"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.dismount,
+            form_data["dismount"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.emergency_dismount,
+            form_data["emergency_dismount"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.four_natural_aids,
+            form_data["four_natural_aids"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_control,
+            form_data["basic_control"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.reverse_at_walk,
+            form_data["reverse_at_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.reverse_at_trot,
+            form_data["reverse_at_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.never_ridden,
+            form_data["never_ridden"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_walk,
+            form_data["seat_at_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_trot,
+            form_data["seat_at_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_canter,
+            form_data["seat_at_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_seat_english,
+            form_data["basic_seat_english"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_seat_western,
+            form_data["basic_seat_western"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.hand_pos_english,
+            form_data["hand_pos_english"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.hand_post_western,
+            form_data["hand_post_western"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.two_point_trot,
+            form_data["two_point_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_trot_no_stirrups,
+            form_data["circle_trot_no_stirrups"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_canter,
+            form_data["circle_at_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_canter_no_stirrups,
+            form_data["circle_canter_no_stirrups"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.two_point_canter,
+            form_data["two_point_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_walk,
+            form_data["circle_at_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_trot,
+            form_data["circle_at_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_walk,
+            form_data["holds_handhold_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_sit_trot,
+            form_data["holds_handhold_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_post_trot,
+            form_data["holds_handhold_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_canter,
+            form_data["holds_handhold_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_walk,
+            form_data["holds_reins_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_sit_trot,
+            form_data["holds_reins_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_post_trot,
+            form_data["holds_reins_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_canter,
+            form_data["holds_reins_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_walk,
+            form_data["shorten_lengthen_reins_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_sit_trot,
+            form_data["shorten_lengthen_reins_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_post_trot,
+            form_data["shorten_lengthen_reins_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_canter,
+            form_data["shorten_lengthen_reins_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_walk,
+            form_data["can_control_horse_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_sit_trot,
+            form_data["can_control_horse_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_post_trot,
+            form_data["can_control_horse_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_canter,
+            form_data["can_control_horse_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_walk,
+            form_data["can_halt_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_sit_trot,
+            form_data["can_halt_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_post_trot,
+            form_data["can_halt_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_canter,
+            form_data["can_halt_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_walk,
+            form_data["drop_pickup_stirrups_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_sit_trot,
+            form_data["drop_pickup_stirrups_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_post_trot,
+            form_data["drop_pickup_stirrups_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_canter,
+            form_data["drop_pickup_stirrups_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_walk,
+            form_data["rides_no_stirrups_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_sit_trot,
+            form_data["rides_no_stirrups_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_post_trot,
+            form_data["rides_no_stirrups_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_canter,
+            form_data["rides_no_stirrups_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_walk,
+            form_data["maintain_half_seat_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_sit_trot,
+            form_data["maintain_half_seat_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_post_trot,
+            form_data["maintain_half_seat_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_canter,
+            form_data["maintain_half_seat_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_walk,
+            form_data["can_post_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_sit_trot,
+            form_data["can_post_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_post_trot,
+            form_data["can_post_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_canter,
+            form_data["can_post_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_walk,
+            form_data["proper_diagonal_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_sit_trot,
+            form_data["proper_diagonal_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_post_trot,
+            form_data["proper_diagonal_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_canter,
+            form_data["proper_diagonal_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_lead_canter_sees,
+            form_data["proper_lead_canter_sees"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_lead_canter_knows,
+            form_data["proper_lead_canter_knows"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_walk,
+            form_data["can_steer_over_cavalletti_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_sit_trot,
+            form_data["can_steer_over_cavalletti_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_post_trot,
+            form_data["can_steer_over_cavalletti_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_canter,
+            form_data["can_steer_over_cavalletti_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_walk,
+            form_data["jump_crossbar_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_sit_trot,
+            form_data["jump_crossbar_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_post_trot,
+            form_data["jump_crossbar_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_canter,
+            form_data["jump_crossbar_canter"]
+        )
 
 class TestAdminIndex(TestCase):
     def setUp(self):
