@@ -246,7 +246,7 @@ def public_form_med_release(request):
             # Catch duplicate composite primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
-                if "Duplicate entry" in str(error.__cause__):
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
                     return render(
                         request,
                         "cbar_db/forms/public/medical_release.html",
@@ -258,7 +258,9 @@ def public_form_med_release(request):
                             ),
                         }
                     )
-                else:
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
                     loggeyMcLogging.error(
                         "Caught generic database exception:\n" + str(error)
                     )
@@ -412,7 +414,7 @@ def public_form_emerg_auth(request):
             # Catch duplicate composite primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
-                if "Duplicate entry" in str(error.__cause__):
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
                     return render(
                         request,
                         "cbar_db/forms/public/emergency_authorization.html",
@@ -426,7 +428,9 @@ def public_form_emerg_auth(request):
                             ),
                         }
                     )
-                else:
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
                     loggeyMcLogging.error(
                         "Caught generic database exception:\n" + str(error)
                     )
@@ -464,7 +468,7 @@ def public_form_emerg_auth(request):
             # Catch duplicate composite primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
-                if "Duplicate entry" in str(error.__cause__):
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
                     return render(
                         request,
                         "cbar_db/forms/public/emergency_authorization.html",
@@ -478,7 +482,9 @@ def public_form_emerg_auth(request):
                             ),
                         }
                     )
-                else:
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
                     loggeyMcLogging.error(
                         "Caught generic database exception:\n" + str(error)
                     )
@@ -565,7 +571,7 @@ def public_form_liability(request):
             # Catch duplicate composite primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
-                if "Duplicate entry" in str(error.__cause__):
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
                     return render(
                         request,
                         "cbar_db/forms/public/liability.html",
@@ -577,7 +583,9 @@ def public_form_liability(request):
                             ),
                         }
                     )
-                else:
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
                     loggeyMcLogging.error(
                         "Caught generic database exception:\n" + str(error)
                     )
@@ -667,7 +675,7 @@ def public_form_media(request):
             # Catch duplicate composite primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
-                if "Duplicate entry" in str(error.__cause__):
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
                     return render(
                         request,
                         "cbar_db/forms/public/media.html",
@@ -679,7 +687,9 @@ def public_form_media(request):
                             ),
                         }
                     )
-                else:
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
                     loggeyMcLogging.error(
                         "Caught generic database exception:\n" + str(error)
                     )
@@ -751,7 +761,7 @@ def public_form_background(request):
             # Catch duplicate composite primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
-                if "Duplicate entry" in str(error.__cause__):
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
                     return render(
                         request,
                         "cbar_db/forms/public/background.html",
@@ -763,7 +773,9 @@ def public_form_background(request):
                             ),
                         }
                     )
-                else:
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
                     loggeyMcLogging.error(
                         "Caught generic database exception:\n" + str(error)
                     )
@@ -871,7 +883,7 @@ def public_form_seizure(request):
             # Catch duplicate composite primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
-                if "Duplicate entry" in str(error.__cause__):
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
                     return render(
                         request,
                         "cbar_db/forms/public/seizure.html",
@@ -883,7 +895,9 @@ def public_form_seizure(request):
                             ),
                         }
                     )
-                else:
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
                     loggeyMcLogging.error(
                         "Caught generic database exception:\n" + str(error)
                     )
