@@ -498,11 +498,15 @@ def public_form_liability(request):
 def public_form_media(request):
     """ Media Release form view.
 
-    If Participant exists:
+    If Participant exists and duplicate form not found:
         Create new instance of MediaReleaseForm and save it to the DB
     Else:
         Give an error
     """
+    ERROR_TEXT_DUPLICATE_MEDIA_RELEASE=(
+        "This participant has already submitted a media release today. You"
+        " cannot submit more than one media release on the same day."
+    )
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -531,14 +535,25 @@ def public_form_media(request):
                     }
                 )
 
-            # Create a new MediaRelease for the participant and save it:
-            form_data_media=models.MediaRelease(
-                participant_id=participant,
-                consent=form.cleaned_data['consent'],
-                signature=form.cleaned_data['signature'],
-                date=form.cleaned_data['date']
-            )
-            form_data_media.save()
+            try:
+                # Create a new MediaRelease for the participant and save it:
+                form_data_media=models.MediaRelease(
+                    participant_id=participant,
+                    consent=form.cleaned_data['consent'],
+                    signature=form.cleaned_data['signature'],
+                    date=form.cleaned_data['date']
+                )
+                form_data_media.save()
+            except IntegrityError:
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/public/media.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_DUPLICATE_MEDIA_RELEASE,
+                    }
+                )
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
