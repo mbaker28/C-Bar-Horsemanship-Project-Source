@@ -46,7 +46,7 @@ ERROR_TEXT_DB_INTEGRITY=(
     " participant and date."
 )
 ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK=(
-    "This participant has already has a {form} filed for this date."
+    "This participant already has a(n) {form} filed for this date."
     " You cannot have more than one {form} filed for the same date."
 )
 
@@ -180,68 +180,96 @@ def public_form_med_release(request):
                     }
                 )
 
-            medical_info=models.MedicalInfo(
-                participant_id=participant,
-                date=form.cleaned_data["date"],
-                primary_physician_name=(
-                    form.cleaned_data["primary_physician_name"]
-                ),
-                primary_physician_phone=(
-                    form.cleaned_data["primary_physician_phone"]
-                ),
-                last_seen_by_physician_date=(
-                    form.cleaned_data["last_seen_by_physician_date"]
-                ),
-                last_seen_by_physician_reason=(
-                    form.cleaned_data["last_seen_by_physician_reason"]
-                ),
-                allergies_conditions_that_exclude=(
-                    form.cleaned_data["allergies_conditions_that_exclude"]
-                ),
-                allergies_conditions_that_exclude_description=(
-                    form.cleaned_data["allergies_conditions_that_exclude"
-                        "_description"]
-                ),
-                heat_exhaustion_stroke=(
-                    form.cleaned_data["heat_exhaustion_stroke"]
-                ),
-                tetanus_shot_last_ten_years=(
-                    form.cleaned_data["tetanus_shot_last_ten_years"]
-                ),
-                seizures_last_six_monthes=(
-                    form.cleaned_data["seizures_last_six_monthes"]
-                ),
-                currently_taking_any_medication=(
-                    form.cleaned_data["currently_taking_any_medication"]
-                ),
-                doctor_concered_re_horse_activites=(
-                    form.cleaned_data["doctor_concered_re_horse_activites"]
-                ),
-                physical_or_mental_issues_affecting_riding=(
-                    form.cleaned_data["physical_or_mental_issues_affecting"
-                        "_riding"]
-                ),
-                physical_or_mental_issues_affecting_riding_description=(
-                    form.cleaned_data["physical_or_mental_issues_affecting"
-                        "_riding_description"]
-                ),
-                restriction_for_horse_activity_last_five_years=(
-                    form.cleaned_data["restriction_for_horse_activity_last"
-                        "_five_years"]
-                ),
-                restriction_for_horse_activity_last_five_years_description=(
-                    form.cleaned_data["restriction_for_horse_activity_last_five"
-                        "_years_description"]
-                ),
-                present_restrictions_for_horse_activity=(
-                    form.cleaned_data["present_restrictions_for_horse_activity"]
-                ),
-                limiting_surgeries_last_six_monthes=(
-                    form.cleaned_data["limiting_surgeries_last_six_monthes"]
-                ),
-                signature=(form.cleaned_data["signature"])
-            )
-            medical_info.save()
+            try:
+                medical_info=models.MedicalInfo(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    primary_physician_name=(
+                        form.cleaned_data["primary_physician_name"]
+                    ),
+                    primary_physician_phone=(
+                        form.cleaned_data["primary_physician_phone"]
+                    ),
+                    last_seen_by_physician_date=(
+                        form.cleaned_data["last_seen_by_physician_date"]
+                    ),
+                    last_seen_by_physician_reason=(
+                        form.cleaned_data["last_seen_by_physician_reason"]
+                    ),
+                    allergies_conditions_that_exclude=(
+                        form.cleaned_data["allergies_conditions_that_exclude"]
+                    ),
+                    allergies_conditions_that_exclude_description=(
+                        form.cleaned_data["allergies_conditions_that_exclude"
+                            "_description"]
+                    ),
+                    heat_exhaustion_stroke=(
+                        form.cleaned_data["heat_exhaustion_stroke"]
+                    ),
+                    tetanus_shot_last_ten_years=(
+                        form.cleaned_data["tetanus_shot_last_ten_years"]
+                    ),
+                    seizures_last_six_monthes=(
+                        form.cleaned_data["seizures_last_six_monthes"]
+                    ),
+                    currently_taking_any_medication=(
+                        form.cleaned_data["currently_taking_any_medication"]
+                    ),
+                    doctor_concered_re_horse_activites=(
+                        form.cleaned_data["doctor_concered_re_horse_activites"]
+                    ),
+                    physical_or_mental_issues_affecting_riding=(
+                        form.cleaned_data["physical_or_mental_issues_affecting"
+                            "_riding"]
+                    ),
+                    physical_or_mental_issues_affecting_riding_description=(
+                        form.cleaned_data["physical_or_mental_issues_affecting"
+                            "_riding_description"]
+                    ),
+                    restriction_for_horse_activity_last_five_years=(
+                        form.cleaned_data["restriction_for_horse_activity_last"
+                            "_five_years"]
+                    ),
+                    restriction_for_horse_activity_last_five_years_description=(
+                        form.cleaned_data["restriction_for_horse_activity_last_five"
+                            "_years_description"]
+                    ),
+                    present_restrictions_for_horse_activity=(
+                        form.cleaned_data["present_restrictions_for_horse_activity"]
+                    ),
+                    limiting_surgeries_last_six_monthes=(
+                        form.cleaned_data["limiting_surgeries_last_six_monthes"]
+                    ),
+                    signature=(form.cleaned_data["signature"])
+                )
+                medical_info.save()
+            # Catch duplicate composite primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/public/medical_release.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="health information record")
+                            ),
+                        }
+                    )
+                else:
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/public/medical_release.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
 
             if form.cleaned_data["medication_one_name"] != "":
                 medication_one=models.Medication(
@@ -399,6 +427,9 @@ def public_form_emerg_auth(request):
                         }
                     )
                 else:
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
                     return render(
                         request,
                         "cbar_db/forms/public/emergency_authorization.html",
@@ -448,6 +479,9 @@ def public_form_emerg_auth(request):
                         }
                     )
                 else:
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
                     return render(
                         request,
                         "cbar_db/forms/public/emergency_authorization.html",
@@ -544,6 +578,9 @@ def public_form_liability(request):
                         }
                     )
                 else:
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
                     return render(
                         request,
                         "cbar_db/forms/public/liability.html",
@@ -643,6 +680,9 @@ def public_form_media(request):
                         }
                     )
                 else:
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
                     return render(
                         request,
                         "cbar_db/forms/public/media.html",
@@ -724,6 +764,9 @@ def public_form_background(request):
                         }
                     )
                 else:
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
                     return render(
                         request,
                         "cbar_db/forms/public/background.html",
@@ -795,35 +838,63 @@ def public_form_seizure(request):
             participant.save()
 
             # Create a new SeizureEval for the participant and save it:
-            seizure_data=models.SeizureEval(
-                participant_id=participant,
-                date=form.cleaned_data["date"],
-                date_of_last_seizure=form.cleaned_data["date_of_last_seizure"],
-                seizure_frequency=form.cleaned_data["seizure_frequency"],
-                duration_of_last_seizure=form.cleaned_data["duration_of_last_seizure"],
-                typical_cause=form.cleaned_data["typical_cause"],
-                seizure_indicators=form.cleaned_data["seizure_indicators"],
-                after_effect=form.cleaned_data["after_effect"],
-                during_seizure_stare=form.cleaned_data["during_seizure_stare"],
-                during_seizure_stare_length=form.cleaned_data["during_seizure_stare_length"],
-                during_seizure_walks=form.cleaned_data["during_seizure_walks"],
-                during_seizure_aimless=form.cleaned_data["during_seizure_aimless"],
-                during_seizure_cry_etc=form.cleaned_data["during_seizure_cry_etc"],
-                during_seizure_bladder_bowel=form.cleaned_data["during_seizure_bladder_bowel"],
-                during_seizure_confused_etc=form.cleaned_data["during_seizure_confused_etc"],
-                during_seizure_other=form.cleaned_data["during_seizure_other"],
-                during_seizure_other_description=form.cleaned_data["during_seizure_other_description"],
-                knows_when_will_occur=form.cleaned_data["knows_when_will_occur"],
-                can_communicate_when_will_occur=form.cleaned_data["can_communicate_when_will_occur"],
-                action_to_take_dismount=form.cleaned_data["action_to_take_dismount"],
-                action_to_take_send_note=form.cleaned_data["action_to_take_send_note"],
-                action_to_take_do_nothing=form.cleaned_data["action_to_take_do_nothing"],
-                action_to_take_allow_time=form.cleaned_data["action_to_take_allow_time"],
-                action_to_take_allow_time_how_long=form.cleaned_data["action_to_take_allow_time_how_long"],
-                action_to_take_report_immediately=form.cleaned_data["action_to_take_report_immediately"],
-                signature=form.cleaned_data["signature"],
-            )
-            seizure_data.save()
+            try:
+                seizure_data=models.SeizureEval(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    date_of_last_seizure=form.cleaned_data["date_of_last_seizure"],
+                    seizure_frequency=form.cleaned_data["seizure_frequency"],
+                    duration_of_last_seizure=form.cleaned_data["duration_of_last_seizure"],
+                    typical_cause=form.cleaned_data["typical_cause"],
+                    seizure_indicators=form.cleaned_data["seizure_indicators"],
+                    after_effect=form.cleaned_data["after_effect"],
+                    during_seizure_stare=form.cleaned_data["during_seizure_stare"],
+                    during_seizure_stare_length=form.cleaned_data["during_seizure_stare_length"],
+                    during_seizure_walks=form.cleaned_data["during_seizure_walks"],
+                    during_seizure_aimless=form.cleaned_data["during_seizure_aimless"],
+                    during_seizure_cry_etc=form.cleaned_data["during_seizure_cry_etc"],
+                    during_seizure_bladder_bowel=form.cleaned_data["during_seizure_bladder_bowel"],
+                    during_seizure_confused_etc=form.cleaned_data["during_seizure_confused_etc"],
+                    during_seizure_other=form.cleaned_data["during_seizure_other"],
+                    during_seizure_other_description=form.cleaned_data["during_seizure_other_description"],
+                    knows_when_will_occur=form.cleaned_data["knows_when_will_occur"],
+                    can_communicate_when_will_occur=form.cleaned_data["can_communicate_when_will_occur"],
+                    action_to_take_dismount=form.cleaned_data["action_to_take_dismount"],
+                    action_to_take_send_note=form.cleaned_data["action_to_take_send_note"],
+                    action_to_take_do_nothing=form.cleaned_data["action_to_take_do_nothing"],
+                    action_to_take_allow_time=form.cleaned_data["action_to_take_allow_time"],
+                    action_to_take_allow_time_how_long=form.cleaned_data["action_to_take_allow_time_how_long"],
+                    action_to_take_report_immediately=form.cleaned_data["action_to_take_report_immediately"],
+                    signature=form.cleaned_data["signature"],
+                )
+                seizure_data.save()
+            # Catch duplicate composite primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/public/seizure.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="seizure evaluation")
+                            ),
+                        }
+                    )
+                else:
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/public/seizure.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
 
             if form.cleaned_data["seizure_name_one"] != "":
                 seizure_type_one=models.SeizureType(
