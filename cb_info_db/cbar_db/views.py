@@ -632,10 +632,6 @@ def public_form_media(request):
         Give an error
     """
 
-    ERROR_TEXT_DUPLICATE_MEDIA_RELEASE=(
-        "This participant has already has a media release filed for this date."
-        " You cannot have more than one media release filed for the same date."
-    )
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
