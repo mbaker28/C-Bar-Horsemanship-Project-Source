@@ -3306,6 +3306,7 @@ class TestSeizureEvaluationForm(TestCase):
             forms.ERROR_TEXT_NO_PHONE
         )
 
+
 class TestRiderEvalChecklistForm(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
@@ -3519,9 +3520,19 @@ class TestRiderEvalChecklistForm(TestCase):
             "jump_crossbar_canter": "P",
         }
 
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02"
+        )
+
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private_form_rider_eval_checklist",
-        kwargs={'participant_id':test_participant_in_db.participant_id}), form_data)
+        response=self.client.post(
+            reverse(
+                "private_form_rider_eval_checklist",
+                kwargs={'participant_id':test_participant_in_db.participant_id}
+            ),
+            form_data
+        )
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -3536,8 +3547,7 @@ class TestRiderEvalChecklistForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name="TEST Peter Parker",
-                birth_date="1985-4-02",
+                participant_id=test_participant_in_db.participant_id
             )
         except:
             print("ERROR: Unable to retreive participant record!")
@@ -3868,6 +3878,7 @@ class TestRiderEvalChecklistForm(TestCase):
             rider_eval_in_db.jump_crossbar_canter,
             form_data["jump_crossbar_canter"]
         )
+
 
 class TestAdminIndex(TestCase):
     def setUp(self):
