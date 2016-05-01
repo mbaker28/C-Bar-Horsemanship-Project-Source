@@ -1627,44 +1627,23 @@ def report_seizure(request, participant_id, year, month, day):
 
 @login_required
 def observation_evaluation(request, participant_id):
-    try:
-        participant=models.Participant.objects.get(
-            participant_id=participant_id
-        )
-    except ObjectDoesNotExist:
-        return render(
-            request,
-            "cbar_db/admin/reports/observation_evaluation.html",
-            {
-                'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
-            }
-        )
-
     if request.method == 'POST':
-
         form=forms.ObservationEvaluation(request.POST)
 
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            return render(
+                request,
+                "cbar_db/admin/reports/observation_evaluation.html",
+                {
+                    'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                }
+            )
+
         if form.is_valid():
-
-            try:
-
-                participant=models.Participant.objects.get(
-                    name=form.cleaned_data['name'],
-                    birth_date=form.cleaned_data['birth_date']
-                )
-
-            except ObjectDoesNotExist:
-
-                return render(
-                    request,
-                    "cbar_db/forms/private/observation_evaluation.html",
-                    {
-                        'form':form,
-                        'error-text':("The requested participant isnt in"
-                            "the database."),
-                    }
-                )
-
             try:
                 form_data_observation=models.ObservationEvaluation(
                     participant_id=participant,
@@ -1748,4 +1727,4 @@ def observation_evaluation(request, participant_id):
                             'error_text': ERROR_TEXT_DB_INTEGRITY,
                         }
                     )
-            return
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
