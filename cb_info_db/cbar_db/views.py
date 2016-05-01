@@ -1728,3 +1728,39 @@ def observation_evaluation(request, participant_id):
                         }
                     )
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+
+            return render(
+                request,
+                "cbar_db/forms/private/observation_evaluation.html",
+                {
+                    'form':form,
+                    'error_text':"Error validating form.",
+                    "participant_id": participant.participant_id
+                }
+            )
+    else:
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            return render(
+                request,
+                "cbar_db/admin/reports/observation_evaluation.html",
+                {
+                    'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                }
+            )
+
+        form=forms.ObservationEvaluation()
+
+        return render(
+            request,
+            'cbar_db/forms/private/observation_evaluation.html',
+            {
+                'form': form,
+                'participant_id': participant_id
+            }
+        )

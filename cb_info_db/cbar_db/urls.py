@@ -107,5 +107,5 @@ urlpatterns = [
     #Observation Evaluation
     url(r'^forms/private/observation_evaluation/(?P<participant_id>[0-9]+)/$',
         views.observation_evaluation,
-        name='observation_evaluation'),
+        name='private-form-observation-evaluation'),
 ]

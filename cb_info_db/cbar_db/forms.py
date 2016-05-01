@@ -572,10 +572,10 @@ class EmergencyMedicalReleaseForm(forms.Form):
 
 
 class ObservationEvaluation(forms.Form):
-    name = forms.CharField(
-        max_length=models.Participant._meta.get_field("name").max_length
-    )
-    date=forms.DateField
+    # name = forms.CharField(
+    #     max_length=models.Participant._meta.get_field("name").max_length
+    # )
+    date=forms.DateField(widget=SelectDateWidget, initial=date.today())
 
     walking_through_barn = forms.ChoiceField(
         choices=models.EvalAttitude._meta.get_field("walking_through_barn")

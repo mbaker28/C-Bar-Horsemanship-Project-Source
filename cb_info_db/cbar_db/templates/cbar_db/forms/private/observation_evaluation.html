@@ -1,12 +1,14 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    <h1>Application</h1>
+    <h1>Observation Evaluation</h1>
     {% if error_text %}
         <p></strong>
             {{ error_text }}
         </p></strong>
+        {{ form.non_field_errors }}
+        {{ form.errors }}
     {% endif %}
-    <form action="{% url 'private-form-application' %}" method="post">
+    <form action="{% url 'private-form-observation-evaluation' participant_id %}" method="post">
         {% csrf_token %}
         <p> Participant Name: {{ form.participant}}
             <span class="error_message">
@@ -33,7 +35,7 @@
         </p>
 
         <p>
-            Petting The horses: {{ form.petting_horse }}
+            Petting The horses: {{ form.petting_horses }}
         <span class="error_message">
             {{ form.petting_horse.error.as_text }}
         </span>
