@@ -52,18 +52,11 @@
         </p>
         <p>
             Type of Seizure (if more than one, please list all types):
-             {{ form.seizure_name_one }}
+             {{ form.type_of_seizure }}
             <span class="error_message">
-                {{ form.seizure_name_one.errors.as_text }}
+                {{ form.type_of_seizure.errors.as_text }}
             </span>
-            {{ form.seizure_name_two }}
-           <span class="error_message">
-               {{ form.seizure_name_two.errors.as_text }}
-           </span>
-           {{ form.seizure_name_three }}
-          <span class="error_message">
-              {{ form.seizure_name_three.errors.as_text }}
-          </span>
+            <span style="color: red">SHOULD WE BE ABLE TO SELECT MORE THAN ONE TYPE HERE? CHECK CHOICES ARE CORRECT.</span>
         </p>
         <p>
             Date of Last Seizure: {{ form.date_of_last_seizure }}

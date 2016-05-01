@@ -27,6 +27,7 @@
 #       -Add table
 
 
+from math import floor
 from django.db import models
 from django.contrib.auth.models import User
 from localflavor.us.models import USStateField
@@ -120,6 +121,15 @@ class Participant(models.Model):
     phone_cell=PhoneNumberField()
     phone_work=PhoneNumberField()
     school_institution=models.CharField(max_length=150, blank=True)
+
+    @property
+    def height_in_feet_and_inches(self):
+        """ Converts the value stored in the model's height field to a ft'in"
+         styled string. """
+
+        feet=floor(self.height / 12)
+        inches=self.height % 12
+        return str(feet) + "' " + str(inches) + "\""
 
 class Caregiver(models.Model):
     caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK
@@ -1039,12 +1049,27 @@ class Medication(models.Model):
 
 
 class SeizureEval(models.Model):
+    SEIZURE_GRAND="G"
+    SEIZURE_PETITE="P"
+    SEIZURE_CONTROLLED="C"
+    SEIZURE_NONE="N"
+    SEIZURE_TYPES=(
+        (SEIZURE_GRAND, "Grand"),
+        (SEIZURE_PETITE, "Petite"),
+        (SEIZURE_CONTROLLED, "Controlled"),
+        (SEIZURE_NONE, "None")
+    )
+
 
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
+    type_of_seizure=models.CharField(
+        max_length=1,
+        choices=SEIZURE_TYPES
+    )
     date_of_last_seizure=models.DateField()
     duration_of_last_seizure=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     typical_cause=models.CharField(max_length=SHORT_ANSWER_LENGTH)
@@ -1076,13 +1101,14 @@ class SeizureEval(models.Model):
     seizure_frequency=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     signature=models.CharField(max_length=NAME_LENGTH)
 
-
-class SeizureType(models.Model):
-    class Meta: # Sets up PK as (seizure_eval, name)
-        unique_together=(("seizure_eval","name"))
-
-    seizure_eval=models.ForeignKey(SeizureEval, on_delete=models.CASCADE)
-    name=models.CharField(max_length=50)
+# DISABLED: We are no longer storing seizuretype records.
+# DO NOT REMOVE Until after 5/2/16 demonstration, if given go ahead.
+# class SeizureType(models.Model):
+#     class Meta: # Sets up PK as (seizure_eval, name)
+#         unique_together=(("seizure_eval","name"))
+#
+#     seizure_eval=models.ForeignKey(SeizureEval, on_delete=models.CASCADE)
+#     name=models.CharField(max_length=50)
 
 
 class AdaptationsNeeded(models.Model):
