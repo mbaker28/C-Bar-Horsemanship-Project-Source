@@ -714,8 +714,6 @@ class RiderIntakeAssessmentForm(forms.Form):
     #   -Seizures (y/n), from whether the Participant has SeizureType records?
 
     # Not in Model (need to add?):
-    #   -C-Bar staff reviewed medical history and physician's release (yes / no)
-    #   -Precautions (long text field)
     #   -Grand/Petite/Controlled seizure classifications (add to SeizureType?)
     #   -Behaviour:
     #       -Impulsive (y/n)

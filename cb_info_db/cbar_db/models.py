@@ -122,10 +122,11 @@ class Participant(models.Model):
     def height_in_feet_and_inches(self):
         """ Converts the value stored in the model's height field to a ft'in"
          styled string. """
-         
+
         feet=floor(self.height / 12)
         inches=self.height % 12
         return str(feet) + "' " + str(inches) + "\""
+
 
 class Caregiver(models.Model):
     caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK
@@ -1278,3 +1279,15 @@ class AuthorizedUser(models.Model):
 
     participant_id=models.ForeignKey(Participant)
     authorized_user_id = models.OneToOneField(User)
+
+
+class IntakeAssessment(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+
+    staff_reviewed_medical_info=models.BooleanField()
+    staff_reviewed_medical_info_date=models.DateField()
+    precautions=models.CharField(max_length=500)
