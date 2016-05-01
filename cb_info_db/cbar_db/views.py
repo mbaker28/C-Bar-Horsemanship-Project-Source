@@ -878,6 +878,7 @@ def public_form_seizure(request):
                     action_to_take_allow_time_how_long=form.cleaned_data["action_to_take_allow_time_how_long"],
                     action_to_take_report_immediately=form.cleaned_data["action_to_take_report_immediately"],
                     signature=form.cleaned_data["signature"],
+                    type_of_seizure=form.cleaned_data["type_of_seizure"],
                 )
                 seizure_data.save()
             # Catch duplicate composite primary keys:
@@ -909,27 +910,6 @@ def public_form_seizure(request):
                             'error_text': ERROR_TEXT_DB_INTEGRITY,
                         }
                     )
-
-            if form.cleaned_data["seizure_name_one"] != "":
-                seizure_type_one=models.SeizureType(
-                    seizure_eval=seizure_data,
-                    name=form.cleaned_data['seizure_name_one']
-                )
-                seizure_type_one.save()
-
-            if form.cleaned_data["seizure_name_two"] != "":
-                seizure_type_two=models.SeizureType(
-                    seizure_eval=seizure_data,
-                    name=form.cleaned_data['seizure_name_two']
-                )
-                seizure_type_two.save()
-
-            if form.cleaned_data["seizure_name_three"] != "":
-                seizure_type_three=models.SeizureType(
-                    seizure_eval=seizure_data,
-                    name=form.cleaned_data['seizure_name_three']
-                )
-                seizure_type_three.save()
 
             if form.cleaned_data["medication_one_name"] != "":
                 medication_one=models.Medication(
@@ -1631,10 +1611,6 @@ def report_seizure(request, participant_id, year, month, day):
             }
         )
 
-    seizure_types=models.SeizureType.objects.filter(
-        seizure_eval=seizure_eval
-    )
-
     medications=models.Medication.objects.filter(
         participant_id=participant,
         date=time.strftime("%Y-%m-%d", date)
@@ -1645,7 +1621,6 @@ def report_seizure(request, participant_id, year, month, day):
         "cbar_db/admin/reports/report_seizure.html",
         {
             "seizure_eval": seizure_eval,
-            "seizure_types": seizure_types,
             "medications": medications,
             "participant": participant
         }

@@ -147,16 +147,9 @@ class SeizureEvaluationForm(forms.Form):
 
     phone_work=USPhoneNumberField(required=False)
 
-    seizure_name_one=forms.CharField(
-        max_length=models.SeizureType._meta.get_field("name").max_length
-    )
-    seizure_name_two=forms.CharField(
-        max_length=models.SeizureType._meta.get_field("name").max_length,
-        required=False
-    )
-    seizure_name_three=forms.CharField(
-        max_length=models.SeizureType._meta.get_field("name").max_length,
-        required=False
+    type_of_seizure=forms.ChoiceField(
+        choices=models.SeizureEval._meta.get_field("type_of_seizure").choices,
+        initial="N"
     )
 
     date_of_last_seizure=forms.DateField(widget=SelectDateWidget(years=YEARS))
