@@ -30,57 +30,57 @@ class ApplicationForm(forms.Form):
         "Must be between " + str(INCH_MIN) + " and " + str(INCH_MAX) + "."
     )
 
-    name = forms.CharField(
+    name=forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
     )
 
-    birth_date = forms.DateField(widget=SelectDateWidget(years=YEARS))
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
-    height_feet = forms.DecimalField(
+    height_feet=forms.DecimalField(
         max_digits=1,
         decimal_places=0
     )
 
-    height_inches = forms.DecimalField(
+    height_inches=forms.DecimalField(
         max_digits=3,
         decimal_places=1
     )
 
-    weight = forms.DecimalField(
+    weight=forms.DecimalField(
         max_digits=models.Participant._meta.get_field("weight").max_digits,
         decimal_places=models.Participant._meta.get_field("weight").decimal_places
     )
 
-    gender = forms.ChoiceField(
+    gender=forms.ChoiceField(
         #max_length=models.Participant._meta.get_field("gender").max_length,
         choices=models.Participant._meta.get_field("gender").choices
     )
 
-    minor_status = forms.ChoiceField(
+    minor_status=forms.ChoiceField(
         #max_length=models.Participant._meta.get_field("minor_status").max_length,
         choices=models.Participant._meta.get_field("minor_status").choices
     )
 
-    school_institution = forms.CharField(
+    school_institution=forms.CharField(
         max_length=models.Participant._meta.get_field("school_institution").max_length
     )
 
-    guardian_name = forms.CharField(
+    guardian_name=forms.CharField(
         max_length=models.Participant._meta.get_field("guardian_name").max_length,
         required=False
     )
 
-    address_street = forms.CharField(
+    address_street=forms.CharField(
         max_length=models.Participant._meta.get_field("address_street").max_length
     )
 
-    address_city = forms.CharField(
+    address_city=forms.CharField(
         max_length=models.Participant._meta.get_field("address_city").max_length
     )
 
-    address_state = USStateField()
+    address_state=USStateField()
 
-    address_zip = USZipCodeField()
+    address_zip=USZipCodeField()
 
     phone_home=USPhoneNumberField(required=False)
 
@@ -88,7 +88,7 @@ class ApplicationForm(forms.Form):
 
     phone_work=USPhoneNumberField(required=False)
 
-    email = forms.EmailField()
+    email=forms.EmailField()
 
     def clean(self):
         """ Automatically called when .is_valid() or .clean() is called. """
@@ -120,6 +120,7 @@ class ApplicationForm(forms.Form):
         if height_inches > self.INCH_MAX or height_inches < self.INCH_MIN:
             self.add_error("height_inches", self.ERROR_TEXT_INVALID_HEIGHT_IN)
 
+
 class SeizureEvaluationForm(forms.Form):
     name=forms.CharField(
         max_length=(models.Participant._meta
@@ -129,7 +130,10 @@ class SeizureEvaluationForm(forms.Form):
 
     birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
     guardian_name=forms.CharField(
         max_length=(models.Participant._meta
@@ -304,17 +308,21 @@ class SeizureEvaluationForm(forms.Form):
             self.add_error("phone_cell", ERROR_TEXT_NO_PHONE)
             self.add_error("phone_work", ERROR_TEXT_NO_PHONE)
 
+
 class LiabilityReleaseForm(forms.Form):
-    name = forms.CharField(
+    name=forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
     )
 
-    birth_date = forms.DateField(widget=SelectDateWidget(years=YEARS))
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     signature=forms.CharField(
         max_length=models.LiabilityRelease._meta.get_field("signature").max_length
     )
-    date = forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
 
 class MedicalReleaseForm(forms.Form):
@@ -468,7 +476,10 @@ class MedicalReleaseForm(forms.Form):
         max_length=models.MedicalInfo._meta.get_field("signature").max_length
     )
 
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
 
 class BackgroundCheckForm(forms.Form):
@@ -480,7 +491,10 @@ class BackgroundCheckForm(forms.Form):
             .get_field("signature").max_length
         )
     )
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
     birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
     driver_license_num=forms.CharField(
         max_length=(models.BackgroundCheck._meta
@@ -500,7 +514,10 @@ class MediaReleaseForm(forms.Form):
     signature=forms.CharField(
         max_length=models.MediaRelease._meta.get_field("signature").max_length
     )
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
 
 class EmergencyMedicalReleaseForm(forms.Form):
@@ -550,7 +567,10 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("consents_emerg_med_treatment").choices
         )
     )
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
     signature=forms.CharField(
         max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
             .get_field("signature").max_length
