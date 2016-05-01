@@ -88,6 +88,11 @@ LIKERT_LIKE_CHOICES_NO_PC=(
     (NOT_PERFORMED_DISABILITY, "Rider not able to perform due to disability"),
     (ATTEMPTS, "Attempts")
 )
+LIKERT_LIKE_CHOICES_MINIMAL=(
+    (POOR, "Poor"),
+    (FAIR, "Fair"),
+    (GOOD, "Good")
+)
 
 CONSENT="Y"
 NO_CONSENT="N"
@@ -97,6 +102,15 @@ CONSENT_CHOICES=(
 )
 
 class Participant(models.Model):
+    LEFT="L"
+    RIGHT="R"
+    AMBIDEXTROUS="A"
+    HAND_CHOICES=(
+        (LEFT, "Left"),
+        (RIGHT, "Right"),
+        (AMBIDEXTROUS, "Ambidextrous")
+    )
+
     def __str__(self):
         return self.name + " (" + str(self.birth_date) + ")"
 
@@ -117,6 +131,10 @@ class Participant(models.Model):
     phone_cell=PhoneNumberField()
     phone_work=PhoneNumberField()
     school_institution=models.CharField(max_length=150, blank=True)
+    handedness=models.CharField(
+        max_length=1,
+        choices=HAND_CHOICES
+    )
 
     @property
     def height_in_feet_and_inches(self):
@@ -1098,6 +1116,7 @@ class SeizureEval(models.Model):
     seizure_frequency=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     signature=models.CharField(max_length=NAME_LENGTH)
 
+
 # DISABLED: We are no longer storing seizuretype records.
 # DO NOT REMOVE Until after 5/2/16 demonstration, if given go ahead.
 # class SeizureType(models.Model):
@@ -1307,3 +1326,25 @@ class IntakeAssessment(models.Model):
     staff_reviewed_medical_info=models.BooleanField()
     staff_reviewed_medical_info_date=models.DateField()
     precautions=models.CharField(max_length=500)
+    impulsive=models.BooleanField()
+    eye_contact=models.BooleanField()
+    attention_span=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES_MINIMAL,
+    )
+    interacts_with_others=models.BooleanField()
+    communication_verbal=models.BooleanField()
+    language_skills=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    visual_impaired=model.BooleanField()
+    visual_comments=model.CharField(max_length=SHORT_ANSWER_LENGTH)
+    hearing_impaired=models.BooleanField()
+    hearing_comments=model.CharField(max_length=SHORT_ANSWER_LENGTH)
+    tactile_no_touch=models.BooleanField()
+    tactile_light_touch=models.BooleanField()
+    tactile_deep_pressure=models.BooleanField()
+    tactile_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    motor_skills_gross=model.CharField(max_length=SHORT_ANSWER_LENGTH)
+    motor_skills_fine=model.CharField(max_length=SHORT_ANSWER_LENGTH)
+    motor_skills_comments=model.CharField(max_length=SHORT_ANSWER_LENGTH)
+    # motor skills: hand dominance is in Participant model.
+    

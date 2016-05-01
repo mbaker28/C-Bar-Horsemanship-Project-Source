@@ -683,6 +683,10 @@ class RiderIntakeAssessmentForm(forms.Form):
         )
     )
 
+    # Stored in SeizureEval (should auto-fill)
+    type_of_seizure=forms.ChoiceField(
+        choices=models.SeizureEval._meta.get_field("type_of_seizure").choices
+    )
 
     # Stored in Diagnosis:
     primary_diagnosis=forms.CharField( # Should be auto-filled if applicable
@@ -707,34 +711,9 @@ class RiderIntakeAssessmentForm(forms.Form):
     #   -Seizures (y/n), from whether the Participant has SeizureType records?
 
     # Not in Model (need to add?):
-    #   -Grand/Petite/Controlled seizure classifications (add to SeizureType?)
-    #   -Behaviour:
-    #       -Impulsive (y/n)
-    #       -Eye contact (y/n)
-    #       -attention span (good/fair/poor)
-    #       -interacts with others (y/n)-
-    #   -Communication:
-    #       -Verbal (y/n) <- What does this mean? They can communicate verbally?
-    #       -Language skills (short text)
-    #   -Visual:
-    #       -Impaired (y/n)
-    #       -Comments
-    #   -Hearing:
-    #       -Impaired (y/n)
-    #       -Comments
-    #   -Tactile
-    #       -Don't touch (y/n)
-    #       -Light touch (y/n)
-    #       -Deep pressure (y/n)
-    #       -Comments
-    #   -Motor skills
-    #       -Gross
-    #       -Fine
-    #       -Hand dominance (L/R)
-    #       -Comments
     #   -Mounted
     #       -Posture stuff (duplicate of attributes already there?). It's
-    #        unclear what the fields are for / what da-ta type gets put in them.
+    #        unclear what the fields are for / what data type gets put in them.
     #   -Recommendations
     #       -Can / can't benefit
     #       -Frequency <-- Of sessions?
