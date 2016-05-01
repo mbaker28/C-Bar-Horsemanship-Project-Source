@@ -1240,14 +1240,12 @@ def report_seizure(request, participant_id, year, month, day):
     )
 
 @login_required
-def observation_evaluation(request):
-
+def observation_evaluation(request, participant_id):
     try:
         participant=models.Participant.objects.get(
             participant_id=participant_id
         )
     except ObjectDoesNotExist:
-
         return render(
             request,
             "cbar_db/admin/reports/observation_evaluation.html",
@@ -1256,41 +1254,113 @@ def observation_evaluation(request):
             }
         )
 
-    try:
-        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
-        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
-        loggeyMcLogging.error("Date=" + str(date))
-    except:
-        loggeyMcLogging.error("Couldn't parse the date")
+    if request.method == 'POST':
 
-        return render(
-            request,
-            "cbar_db/admin/reports/observation_evaluation.html",
-            {
-                'error_text':ERROR_TEXT_INVALID_DATE,
-            }
-        )
+        form=forms.ObservationEvaluation(request.POST)
 
-        try:
-            observation_evaluation=models.ObservationEvaluation.objects.get(
-                participant_id=participant,
-                date=time.strftime("%Y-%m-%d", date)
-            )
-        except ObjectDoesNotExist:
+        if form.is_valid():
 
-            return render(
-                request,
-                "cbar_db/admin/reports/observation_evaluation.html",
-                {
-                    'error_text': ERROR_TEXT_OBSERVATION_EVALUATION_NOT_AVAILABLE
-                }
-            )
+            try:
 
-        return render(
-            request,
-            "cbar_db/admin/reports/observation_evalutation.html",
-            {
-                "observation_evalutation": observation_evaluation,
-                "participant": participant
-            }
-        )
+                participant=models.Participant.objects.get(
+                    name=form.cleaned_data['name'],
+                    birth_date=form.cleaned_data['birth_date']
+                )
+
+            except ObjectDoesNotExist:
+
+                return render(
+                    request,
+                    "cbar_db/forms/private/observation_evaluation.html",
+                    {
+                        'form':form,
+                        'error-text':("The requested participant isnt in"
+                        "the database.),
+                    }
+                )
+
+            try:
+                form_data_observation=models.ObservationEvaluation(
+                    participant_id=participant,
+                    date=form.cleaned_data['date'],
+                )
+                form_data_observation.save()
+
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/private/observation_evaluation.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="observation evaluation")
+                            ),
+                        }
+                    )
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/private/observation_evaluation.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
+            try:
+
+                `form_data_attitude=models.EvalAttitude(
+                    participant_id=participant,
+                    date=form.cleaned_data['date'],
+                    walking_through_barn=form.cleaned_data['walking_through_barn'],
+                    looking_at_horses=form.cleaned_data['looking_at_horses'],
+                    petting_horses=form.cleaned_data['petting_horses'],
+                    up_down_ramp=form.cleaned_data['up_down_ramp'],
+                    mounting_before=form.cleaned_data['mounting_before'],
+                    mounting_after=form.cleaned_data['mounting_after'],
+                    riding_before=form.cleaned_data['riding_before'],
+                    riding_during=form.cleaned_data['riding_during'],
+                    riding_after=form.cleaned_data['riding_after'],
+                    understands_directions=form.cleaned_data['understands_directions'],
+                    participates_exercises=form.cleaned_data['participates_exercises'],
+                    participates_games=form.cleaned_data['participates_games'],
+                    general_attitude=form.cleaned_data['general_attitude'],
+                )
+                form_data_attitude.save()
+
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/private/observation_evaluation.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="observation evaluation")
+                            ),
+                        }
+                    )
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/private/observation_evaluation.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
+            return

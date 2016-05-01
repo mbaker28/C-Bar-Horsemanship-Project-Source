@@ -11,6 +11,9 @@ urlpatterns = [
     # Public forms index
     url(r'^forms/public/$', views.index_public_forms, name='index-public-forms'),
 
+    # Form saved message
+    url(r'^forms/saved/$', views.form_saved, name='form-saved'),
+
     # Application form
     url(r'^forms/public/application/$', views.public_form_application,
         name='public-form-application'),
@@ -38,6 +41,22 @@ urlpatterns = [
     # Seizure Evaluation form
     url(r'^forms/public/seizure/$', views.public_form_seizure,
         name='public-form-seizure'),
+
+	# Donation form index
+    url(r'^forms/public/donation/$', views.donation_index,
+        name='donation-index'),
+
+    # Adopt a Participant donation form
+    url(r'^forms/public/donation/participant$', views.donation_participant,
+        name='donation-participant'),
+
+    # Adopt a Horse donation form
+    url(r'^forms/public/donation/horse$', views.donation_horse,
+        name='donation-horse'),
+
+    # Monetary donation form
+    url(r'^forms/public/donation/monetary$', views.donation_monetary,
+        name='donation-monetary'),
 
 
     ######################### User login required #########################
@@ -84,4 +103,9 @@ urlpatterns = [
     url(r'^admin/participant/(?P<participant_id>[0-9]+)/report/seizure/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_seizure,
         name='report-seizure'),
+
+    #Observation Evaluation
+    url(r'^forms/private/observation_evaluation/(?P<participant_id>[0-9]+)/$',
+        views.observation_evaluation,
+        name='observation_evaluation'),
 ]
