@@ -102,9 +102,9 @@ class TestApplicationForm(TestCase):
             address_city="Gotham",
             address_state="OK",
             address_zip= "424278",
-            phone_home="(300) 200-100",
-            phone_cell="(300) 500-600",
-            phone_work="(598) 039-3008",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="590-039-3000",
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
@@ -120,18 +120,18 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
-            "address_zip": "654321",
-            "phone_home": "(400) 100-200",
-            "phone_cell": "(400) 200-300",
-            "phone_work": "(400) 300-400",
+            "address_zip": "74801",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
             "school_institution": "Stick's School of Kung Fu"
         }
-        form=forms.ApplicationForm(form_data)
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("public-form-application"), form_data)
@@ -166,8 +166,9 @@ class TestApplicationForm(TestCase):
             form_data["birth_date"]
         )
         self.assertEqual(
-            str(participant_in_db.height), # To string so can check against form
-            form_data["height"]
+            participant_in_db.height,
+            # Convert ft'in" to inches
+            float(form_data["height_feet"])*12 + float(form_data["height_inches"])
         )
         self.assertEqual(
             str(participant_in_db.weight), # To string so can check against form
@@ -228,18 +229,18 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
-            "address_zip": "654321",
-            "phone_home": "(400) 100-200",
-            "phone_cell": "(400) 200-300",
-            "phone_work": "(400) 300-400",
+            "address_zip": "74801",
+            "phone_home": "555 666 7777",
+            "phone_cell": "",
+            "phone_work": "",
             "school_institution": "Stick's School of Kung Fu"
         }
-        form=forms.ApplicationForm(form_data)
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("public-form-application"), form_data)
@@ -265,15 +266,16 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
             "address_state": "OK",
             "address_zip": "654321",
-            "phone_home": "(400) 100-200",
-            "phone_cell": "(400) 200-300",
-            "phone_work": "(400) 300-400",
+            "phone_home": "400 100 2000",
+            "phone_cell": "400 200 3000",
+            "phone_work": "400 300 4000",
             "school_institution": "Stick's School of Kung Fu"
         }
         form=forms.ApplicationForm(form_data)
@@ -302,7 +304,8 @@ class TestApplicationForm(TestCase):
             "weight": "180.0",
             "gender": "M",
             "guardian_name": "Stick",
-            "height": "69.0",
+            "height_feet": "5",
+            "height_inches": "8.5",
             "minor_status": "G",
             "address_street": "1234 Murdock Street",
             "address_city": "Hell's Kitchen",
@@ -338,6 +341,82 @@ class TestApplicationForm(TestCase):
             "form",
             "phone_work",
             forms.ERROR_TEXT_NO_PHONE
+        )
+
+    def test_application_form_with_invalid_height_feet_throws_error(self):
+        """ Verify that an Application form view, populated with an invalid,
+         number for the height_feet field displays an error message. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height_feet": "9",
+            "height_inches": "8.5",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "100 300 4000",
+            "phone_cell": "",
+            "phone_work": "",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that each phone field threw the correct error:
+        self.assertFormError(
+            response,
+            "form",
+            "height_feet",
+            forms.ApplicationForm.ERROR_TEXT_INVALID_HEIGHT_FT
+        )
+
+    def test_application_form_with_invalid_height_inches_throws_error(self):
+        """ Verify that an Application form view, populated with an invalid,
+         number for the height_inches field displays an error message. """
+
+        form_data={
+            "name": "TEST Matt Murdock",
+            "birth_date": "1989-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height_feet": "5",
+            "height_inches": "99.9",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "654321",
+            "phone_home": "100 300 4000",
+            "phone_cell": "",
+            "phone_work": "",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that each phone field threw the correct error:
+        self.assertFormError(
+            response,
+            "form",
+            "height_inches",
+            forms.ApplicationForm.ERROR_TEXT_INVALID_HEIGHT_IN
         )
 
 
@@ -362,263 +441,6 @@ class TestFormSavedPage(TestCase):
         self.assertEqual(
             response["Location"],
             "/"
-        )
-
-
-class TestApplicationForm(TestCase):
-    def setUp(self):
-        setup_test_environment() #Initialize the test enviornment
-        client=Client() #Make a test client (someone viewing the database)
-
-        # Create a Participant record and save it
-        test_participant=models.Participant(
-            name="TEST Bruce Wayne",
-            birth_date="1984-6-24",
-            email="bruce@wayneenterprises.com",
-            weight=185.0,
-            gender="M",
-            guardian_name="Alfred Pennyworth",
-            height=72.0,
-            minor_status="G",
-            address_street="1234 Wayne St.",
-            address_city="Gotham",
-            address_state="OK",
-            address_zip="74804",
-            phone_home="300-200-1000",
-            phone_cell="300-500-6000",
-            phone_work="598-039-3008",
-            school_institution="Ra's Al Ghul School of Ninjutsu"
-        )
-        test_participant.save()
-
-    def test_application_form_creates_participant(self):
-        """ Tests whether the form creates a participant record once all
-            fields are entered. """
-
-        form_data={
-            "name": "TEST Matt Murdock",
-            "birth_date": "1989-5-20",
-            "email": "matt@nelsonandmurdock.com",
-            "weight": "180.0",
-            "gender": "M",
-            "guardian_name": "Stick",
-            "height": "69.0",
-            "minor_status": "G",
-            "address_street": "1234 Murdock Street",
-            "address_city": "Hell's Kitchen",
-            "address_state": "OK",
-            "address_zip": "74801",
-            "phone_home": "400-100-2000",
-            "phone_cell": "400-200-3000",
-            "phone_work": "400-300-4000",
-            "school_institution": "Stick's School of Kung Fu"
-        }
-        form=forms.ApplicationForm(form_data)
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
-
-        # Assert that the reponse code is a 302 (redirect):
-        self.assertEqual(response.status_code, 302)
-
-        # Assert the the redirect url matches the post-form page:
-        self.assertEqual(
-            response["Location"],
-            reverse("form-saved")+"?a=a"
-        )
-
-        # Attempt to retreive the updated Participant record:
-        try:
-            print("Retrieving participant record...")
-            participant_in_db=models.Participant.objects.get(
-                name=form_data["name"],
-                birth_date=form_data["birth_date"]
-            )
-        except:
-            print("ERROR: Unable to retreive participant record!")
-
-        # Verify that all of the Participant fields were set correctly:
-        self.assertEqual(
-            participant_in_db.name,
-            form_data["name"]
-        )
-        self.assertEqual(
-            "{d.year}-{d.month}-{d.day}".format(d=participant_in_db.birth_date),
-            form_data["birth_date"]
-        )
-        self.assertEqual(
-            str(participant_in_db.height), # To string so can check against form
-            form_data["height"]
-        )
-        self.assertEqual(
-            str(participant_in_db.weight), # To string so can check against form
-            form_data["weight"]
-        )
-        self.assertEqual(
-            participant_in_db.gender,
-            form_data["gender"]
-        )
-        self.assertEqual(
-            participant_in_db.minor_status,
-            form_data["minor_status"]
-        )
-        self.assertEqual(
-            participant_in_db.school_institution,
-            form_data["school_institution"]
-        )
-        self.assertEqual(
-            participant_in_db.guardian_name,
-            form_data["guardian_name"]
-        )
-        self.assertEqual(
-            participant_in_db.address_street,
-            form_data["address_street"]
-        )
-        self.assertEqual(
-            participant_in_db.address_city,
-            form_data["address_city"]
-        )
-        self.assertEqual(
-            participant_in_db.address_zip,
-            form_data["address_zip"]
-        )
-        self.assertEqual(
-            participant_in_db.phone_home,
-            form_data["phone_home"]
-        )
-        self.assertEqual(
-            participant_in_db.phone_cell,
-            form_data["phone_cell"]
-        )
-        self.assertEqual(
-            participant_in_db.phone_work,
-            form_data["phone_work"]
-        )
-        self.assertEqual(
-            participant_in_db.email,
-            form_data["email"]
-        )
-
-    def test_application_form_participant_already_exists(self):
-        """ Form throws error if the participant already exists. """
-
-        form_data={
-            "name": "TEST Bruce Wayne",
-            "birth_date": "1984-6-24",
-            "email": "matt@nelsonandmurdock.com",
-            "weight": "180.0",
-            "gender": "M",
-            "guardian_name": "Stick",
-            "height": "69.0",
-            "minor_status": "G",
-            "address_street": "1234 Murdock Street",
-            "address_city": "Hell's Kitchen",
-            "address_state": "OK",
-            "address_zip": "74801",
-            "phone_home": "400-100-2000",
-            "phone_cell": "400-200-3000",
-            "phone_work": "400-300-4000",
-            "school_institution": "Stick's School of Kung Fu"
-        }
-        form=forms.ApplicationForm(form_data)
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
-
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
-
-        # Assert that the context for the new view contains the correct error:
-        print(response.context)
-        self.assertTrue(
-            response.context["error_text"] == (
-                views.ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS
-            )
-        )
-
-    def test_application_form_participant_does_not_exist_with_invalid_data(self):
-        """ Form throws an error if the form data is not valid. """
-
-        form_data={
-            "name": "TEST sdf83sdf",
-            "birth_date": "sdf##df",
-            "email": "matt@nelsonandmurdock.com",
-            "weight": "180.0",
-            "gender": "M",
-            "guardian_name": "Stick",
-            "height": "69.0",
-            "minor_status": "G",
-            "address_street": "1234 Murdock Street",
-            "address_city": "Hell's Kitchen",
-            "address_state": "OK",
-            "address_zip": "74801",
-            "phone_home": "400-100-2000",
-            "phone_cell": "400-200-3000",
-            "phone_work": "400-300-4000",
-            "school_institution": "Stick's School of Kung Fu"
-        }
-        form=forms.ApplicationForm(form_data)
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
-
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
-
-        # Assert that the context for the new view contains the correct error:
-        self.assertTrue(
-            response.context["error_text"] == (
-                views.ERROR_TEXT_FORM_INVALID
-            )
-        )
-
-    def test_application_form_with_no_phone_numbers_throws_error(self):
-        """ Verify that an Application form view, populated with no phone
-         numbers, displays an error message. """
-
-        form_data={
-            "name": "TEST Matt Murdock",
-            "birth_date": "1989-5-20",
-            "email": "matt@nelsonandmurdock.com",
-            "weight": "180.0",
-            "gender": "M",
-            "guardian_name": "Stick",
-            "height": "69.0",
-            "minor_status": "G",
-            "address_street": "1234 Murdock Street",
-            "address_city": "Hell's Kitchen",
-            "address_state": "OK",
-            "address_zip": "74801",
-            "phone_home": "",
-            "phone_cell": "",
-            "phone_work": "",
-            "school_institution": "Stick's School of Kung Fu"
-        }
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
-
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
-
-        # Assert that each phone field threw the correct error:
-        self.assertFormError(
-            response,
-            "form",
-            "phone_home",
-            forms.ERROR_TEXT_NO_PHONE
-        )
-        self.assertFormError(
-            response,
-            "form",
-            "phone_cell",
-            forms.ERROR_TEXT_NO_PHONE
-        )
-        self.assertFormError(
-            response,
-            "form",
-            "phone_work",
-            forms.ERROR_TEXT_NO_PHONE
         )
 
 
@@ -696,6 +518,21 @@ class TestEmergencyAuthorizationForm(TestCase):
             frequency="Every 2-3 hours when in pain"
         )
         test_medication.save()
+
+        emergency_authorization=models.AuthorizeEmergencyMedicalTreatment(
+            participant_id=test_participant,
+            date="2016-4-30",
+            pref_medical_facility="Shawnee Medical Center",
+            insurance_provider="Blue Cross Blue Shield of Oklahoma",
+            insurance_policy_num="EI238901AAK7",
+            emerg_contact_name="John Jacobs",
+            emerg_contact_phone="(406) 892-7012",
+            emerg_contact_relation="Brother In-Law",
+            alt_emerg_procedure="",
+            consents_emerg_med_treatment="Y",
+            signature="TEST Bruce Wayne"
+        )
+        emergency_authorization.save()
 
     def test_emergency_authorization_form_finds_valid_participant(self):
         """ Tests whether the form finds a valid participant record if a
@@ -1088,6 +925,41 @@ class TestEmergencyAuthorizationForm(TestCase):
             )
         )
 
+    def test_emergency_authorization_form_with_duplicate_pk(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         particpant already has a MedicalInfo record with the same
+         (participant_id, date) as its primary key. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "primary_physician_name": "Dr. Buffalo Wings",
+            "primary_physician_phone": "111-222-3333",
+            "pref_medical_facility": "Super Awesome Medical Facility",
+            "insurance_provider": "Kinda Sketchy Insurance, Ltd.",
+            "insurance_policy_num": "666FTC",
+            "emerg_contact_name": "Lost Person",
+            "emerg_contact_phone": "404-333-9999",
+            "emerg_contact_relation": "Family Friend",
+            "consents_emerg_med_treatment": "Y",
+            "date": "2016-4-30",
+            "signature": "TEST Bruce Wayne"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertEqual(
+            views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                form="emergency medical treatment authorization"
+            ),
+            response.context["error_text"]
+        )
+
 
 class TestMediaReleaseForm(TestCase):
     def setUp(self):
@@ -1133,6 +1005,14 @@ class TestMediaReleaseForm(TestCase):
             phone_work="598-039-3008",
         )
         test_participant_no_med_record.save()
+
+        media_release=models.MediaRelease(
+            participant_id=test_participant,
+            date="2014-3-5",
+            consent="Y",
+            signature="TEST Oliver Queen"
+        )
+        media_release.save()
 
         test_medical_info=models.MedicalInfo(
             participant_id=test_participant,
@@ -1408,6 +1288,33 @@ class TestMediaReleaseForm(TestCase):
             )
         )
 
+    def test_media_release_form_with_duplicate_pk(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         particpant already has a MedicalInfo record with the same
+         (participant_id, date) as its primary key. """
+
+        form_data={
+            "name": "TEST Bruce Wayne",
+            "birth_date": "1984-6-24",
+            "consent": "Y",
+            "signature": "TEST Bruce Wayne",
+            "date": "2014-3-5"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-media"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertEqual(
+            views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                form="media release"
+            ),
+            response.context["error_text"]
+        )
+
 
 class TestBackGroundCheck(TestCase):
     def setUp(self):
@@ -1441,6 +1348,14 @@ class TestBackGroundCheck(TestCase):
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
+
+        background_check=models.BackgroundCheck(
+            participant_id=test_participant,
+            date="2014-3-5",
+            signature="TEST Oliver Queen",
+            driver_license_num="79801234AB"
+        )
+        background_check.save()
 
     def test_background_check_form_finds_valid_participant(self):
         found_participant=False
@@ -1627,6 +1542,33 @@ class TestBackGroundCheck(TestCase):
             )
         )
 
+    def test_background_check_form_with_duplicate_pk(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         particpant already has a MedicalInfo record with the same
+         (participant_id, date) as its primary key. """
+
+        form_data={
+            "name":"TEST Barry Allen",
+            "birth_date":"1994-6-25",
+            "signature":"TEST Barry Allen",
+            "date":"2014-3-5",
+            "driver_license_num":"kgjenekkidik123"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-background"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertEqual(
+            views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                form="background check authorization"
+            ),
+            response.context["error_text"]
+        )
+
 
 class TestMedicalReleaseForm(TestCase):
     def setUp(self):
@@ -1652,6 +1594,27 @@ class TestMedicalReleaseForm(TestCase):
             school_institution="Ra's Al Ghul School of Ninjutsu"
         )
         test_participant.save()
+
+        test_medical_info=models.MedicalInfo(
+            participant_id=test_participant,
+            date="2016-1-1",
+            primary_physician_name="Dr. Default",
+            primary_physician_phone="111-111-1111",
+            last_seen_by_physician_date="2016-1-1",
+            last_seen_by_physician_reason="Normal check up visit.",
+            allergies_conditions_that_exclude=False,
+            heat_exhaustion_stroke=False,
+            tetanus_shot_last_ten_years=True,
+            seizures_last_six_monthes=False,
+            doctor_concered_re_horse_activites=False,
+            physical_or_mental_issues_affecting_riding=False,
+            restriction_for_horse_activity_last_five_years=False,
+            present_restrictions_for_horse_activity=False,
+            limiting_surgeries_last_six_monthes=False,
+            signature="TEST Oliver Queen",
+            currently_taking_any_medication=False
+        )
+        test_medical_info.save()
 
     def test_medical_release_form_finds_valid_participant(self):
         """ Tests whether the form finds a valid participant record if a
@@ -2164,6 +2127,57 @@ class TestMedicalReleaseForm(TestCase):
             found_medication_two=False
         self.assertFalse(found_medication_two)
 
+    def test_medical_release_form_with_duplicate_pk(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         particpant already has a MedicalInfo record with the same
+         (participant_id, date) as its primary key. """
+
+        form_data={
+            "primary_physician_name": "Dr. Physician Man",
+            "primary_physician_phone": "1112223333",
+            "last_seen_by_physician_date": "2016-1-1",
+            "last_seen_by_physician_reason": "Shoulder injury",
+            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude_description": "Asthma and other"
+                "things and stuff.",
+            "heat_exhaustion_stroke": False,
+            "tetanus_shot_last_ten_years": True,
+            "seizures_last_six_monthes": False,
+            "currently_taking_any_medication": True,
+            "medication_one_name": "Excedrin",
+            "medication_one_reason": "Headaches",
+            "medication_one_frequency": "Every 6 hours",
+            "medication_two_name": "Asprin",
+            "medication_two_reason": "Toothaches",
+            "medication_two_frequency": "3-4 hours (as needed)",
+            "doctor_concered_re_horse_activites": True,
+            "physical_or_mental_issues_affecting_riding": True,
+            "physical_or_mental_issues_affecting_riding_description":
+                "Shoulder injury requires medication for pain.",
+            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years_description": "",
+            "present_restrictions_for_horse_activity": True,
+            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes_description": "",
+            "birth_date": "1984-6-24",
+            "signature": "TEST Bruce Wayne",
+            "date": "2016-1-1"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-med-release"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertEqual(
+            views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                form="health information record"
+            ),
+            response.context["error_text"]
+        )
+
 
 class TestLiabilityReleaseForm(TestCase):
     def setUp(self):
@@ -2188,6 +2202,13 @@ class TestLiabilityReleaseForm(TestCase):
             school_institution="SHIELD"
         )
         test_participant.save()
+
+        liability_release=models.LiabilityRelease(
+            participant_id=test_participant,
+            date="2014-3-5",
+            signature="TEST Oliver Queen"
+        )
+        liability_release.save()
 
     def test_liability_release_form_finds_valid_participant(self):
         """ Tests whether the form finds a valid participant record if a
@@ -2405,6 +2426,32 @@ class TestLiabilityReleaseForm(TestCase):
             )
         )
 
+    def test_liability_release_form_with_duplicate_pk(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         particpant already has a MedicalInfo record with the same
+         (participant_id, date) as its primary key. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "signature": "TEST Peter Parker",
+            "date": "2014-3-5"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-liability"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertEqual(
+            views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                form="liability release"
+            ),
+            response.context["error_text"]
+        )
+
 
 class TestSeizureEvaluationForm(TestCase):
     def setUp(self):
@@ -2429,6 +2476,36 @@ class TestSeizureEvaluationForm(TestCase):
             school_institution="SHIELD"
         )
         test_participant.save()
+
+        seizure_eval=models.SeizureEval(
+            participant_id=test_participant,
+            date="2014-3-5",
+            date_of_last_seizure="2013-3-4",
+            duration_of_last_seizure="A couple of seconds",
+            typical_cause="Eggplants",
+            seizure_indicators="Blank stare",
+            after_effect="Fatigued, disoriented",
+            during_seizure_stare="",
+            during_seizure_stare_length="",
+            during_seizure_walks="",
+            during_seizure_aimless="",
+            during_seizure_cry_etc="",
+            during_seizure_bladder_bowel="",
+            during_seizure_confused_etc="",
+            during_seizure_other="",
+            during_seizure_other_description="",
+            knows_when_will_occur="",
+            can_communicate_when_will_occur="",
+            action_to_take_do_nothing="",
+            action_to_take_dismount="",
+            action_to_take_allow_time="",
+            action_to_take_allow_time_how_long=15,
+            action_to_take_report_immediately="",
+            action_to_take_send_note="",
+            seizure_frequency="Every couple of months",
+            signature="Alfred Pennyworth",
+        )
+        seizure_eval.save()
 
     def test_seizure_evaluation_form_finds_valid_participant(self):
         """ Tests whether the form finds a valid participant record if a
@@ -2960,7 +3037,7 @@ class TestSeizureEvaluationForm(TestCase):
             form_data["medication_three_frequency"]
         )
 
-    def test_seizure_evaluation_form_does_saves_seizure_records(self):
+    def test_seizure_evaluation_form_saves_seizuretype_records(self):
         """ Verify that a Seizure Evaluation form view, populated with
          valid data, correctly saves the form to the database. """
 
@@ -3304,6 +3381,71 @@ class TestSeizureEvaluationForm(TestCase):
             "form",
             "phone_work",
             forms.ERROR_TEXT_NO_PHONE
+        )
+
+    def test_seizure_evaluation_form_with_duplicate_pk(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         particpant already has a MedicalInfo record with the same
+         (participant_id, date) as its primary key. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "date": "2014-3-5",
+            "guardian_name": "Bob Burger",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
+            "medication_one_name": "Excedrin",
+            "medication_one_reason": "Headachey stuff",
+            "medication_one_frequency": "A couple of times a week",
+            "medication_two_name": "Blah Test Medicine",
+            "medication_two_reason": "",
+            "medication_two_frequency": "",
+            "medication_three_name": "Sciency Medicine Name",
+            "medication_three_reason": "Things that hurt",
+            "medication_three_frequency": "Every 2 hours, as needed",
+            "seizure_name_one": "Sudden and violent",
+            "seizure_name_two": "Super sciency name",
+            "seizure_name_three": "",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": 15,
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-seizure"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertEqual(
+            views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                form="seizure evaluation"
+            ),
+            response.context["error_text"]
         )
 
 
