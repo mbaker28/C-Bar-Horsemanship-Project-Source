@@ -5716,7 +5716,7 @@ class TestSessionPlanForm(TestCase):
         session_plan.save()
 
         session_goals=models.SessionGoals(
-            participant_id=participant,
+            participant_id=test_participant,
             session_id=session_plan,
             goal_type="S",
             goal_description="Some text",
@@ -5730,7 +5730,6 @@ class TestSessionPlanForm(TestCase):
         horse_info.save()
 
         diagnosis_info=models.Diagnosis(
-            participant_id=test_participant,
             diagnosis="Herpes",
             diagnosis_type="P"
         )
@@ -5755,7 +5754,7 @@ class TestSessionPlanForm(TestCase):
         )
         adaptations_needed.save()
 
-    def test_media_release_form_finds_valid_participant(self):
+    def test_session_plan_form_finds_valid_participant(self):
         """ Tests whether the form finds a valid participant record if a
          matching (name, date) is entered """
 
@@ -5763,13 +5762,33 @@ class TestSessionPlanForm(TestCase):
         found_participant=False
 
         form_data={
-            "name": "TEST Bruce Wayne",
-            "birth_date": "1984-6-24",
-            "consent": "Y",
-            "signature": "TEST Bruce Wayne",
-            "date": "2016-1-1"
+            "name": "TEST Bobby Bobbers",
+            "birth_date": "1986-7-21",
+            "date": "2016-5-1",
+            "horse_name": "Charlie",
+            "tack": "Some words.",
+            "diagnosis": "Herpes",
+            "diagnosis_type": "P",
+            "ambulatory_status": "I",
+            "ambulatory_status_other": "Some shit.",
+            "mount_assistance_required": "M",
+            "mount_device_needed": "S",
+            "mount_type": "T",
+            "dismount_assistance_required": "M",
+            "dismount_type": "A",
+            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_heel_hold": "2",
+            "num_sidewalkers_walk_over_thigh": "2",
+            "num_sidewalkers_walk_other": "3",
+            "num_sidewalkers_trot_spotter": "2",
+            "num_sidewalkers_trot_heel_hold": "2",
+            "num_sidewalkers_trot_over_thigh": "1",
+            "num_sidewalkers_trot_other": "3",
+            "goal_type": "S",
+            "goal_description": "Try not to break your neck.",
+            "motivation": "Don't die."
         }
-        form=forms.MediaReleaseForm(form_data)
+        form=forms.SessionPlanForm(form_data)
 
         if form.is_valid(): # Performs validation, needed for form.cleaned_data
             print("Form is valid.")
@@ -5792,7 +5811,7 @@ class TestSessionPlanForm(TestCase):
         # We should say we could find the participant:
         self.assertTrue(found_participant)
 
-    def test_media_release_form_not_valid_participant_name(self):
+    def test_session_plan_form_not_valid_participant_name(self):
         """ Verify that a Media Release form view, populated with an invalid
          participant name, displays an error message. """
 
@@ -5800,13 +5819,33 @@ class TestSessionPlanForm(TestCase):
         found_participant=False
 
         form_data={
-            "name": "TEST I'm Not Bruce Wayne",
-            "birth_date": "1984-6-24",
-            "consent": "Y",
-            "signature": "TEST Bruce Wayne",
-            "date": "2016-1-1"
+            "name": "TEST I'm Not Bobby Bobbers",
+            "birth_date": "1986-7-21",
+            "date": "2016-5-1",
+            "horse_name": "Charlie",
+            "tack": "Some words.",
+            "diagnosis": "Herpes",
+            "diagnosis_type": "P",
+            "ambulatory_status": "I",
+            "ambulatory_status_other": "Some shit.",
+            "mount_assistance_required": "M",
+            "mount_device_needed": "S",
+            "mount_type": "T",
+            "dismount_assistance_required": "M",
+            "dismount_type": "A",
+            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_heel_hold": "2",
+            "num_sidewalkers_walk_over_thigh": "2",
+            "num_sidewalkers_walk_other": "3",
+            "num_sidewalkers_trot_spotter": "2",
+            "num_sidewalkers_trot_heel_hold": "2",
+            "num_sidewalkers_trot_over_thigh": "1",
+            "num_sidewalkers_trot_other": "3",
+            "goal_type": "S",
+            "goal_description": "Try not to break your neck.",
+            "motivation": "Don't die."
         }
-        form=forms.MediaReleaseForm(form_data)
+        form=forms.SessionPlanForm(form_data)
 
         if form.is_valid(): # Performs validation, needed for form.cleaned_data
             print("Form is valid.")
@@ -5829,7 +5868,7 @@ class TestSessionPlanForm(TestCase):
         # We should say we could not find the participant:
         self.assertFalse(found_participant)
 
-    def test_media_release_form_not_valid_birth_date(self):
+    def test_session_plan_form_not_valid_birth_date(self):
         """ Verify that a Media Release form view, populated with an invalid
          participant birth date, displays an error message. """
 
@@ -5837,13 +5876,33 @@ class TestSessionPlanForm(TestCase):
         found_participant=False
 
         form_data={
-            "name": "TEST Bruce Wayne",
-            "birth_date": "1000-2-3",
-            "consent": "Y",
-            "signature": "TEST Bruce Wayne",
-            "date": "2016-1-1"
+            "name": "TEST Bobby Bobbers",
+            "birth_date": "1900-0-01",
+            "date": "2016-5-1",
+            "horse_name": "Charlie",
+            "tack": "Some words.",
+            "diagnosis": "Herpes",
+            "diagnosis_type": "P",
+            "ambulatory_status": "I",
+            "ambulatory_status_other": "Some shit.",
+            "mount_assistance_required": "M",
+            "mount_device_needed": "S",
+            "mount_type": "T",
+            "dismount_assistance_required": "M",
+            "dismount_type": "A",
+            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_heel_hold": "2",
+            "num_sidewalkers_walk_over_thigh": "2",
+            "num_sidewalkers_walk_other": "3",
+            "num_sidewalkers_trot_spotter": "2",
+            "num_sidewalkers_trot_heel_hold": "2",
+            "num_sidewalkers_trot_over_thigh": "1",
+            "num_sidewalkers_trot_other": "3",
+            "goal_type": "S",
+            "goal_description": "Try not to break your neck.",
+            "motivation": "Don't die."
         }
-        form=forms.MediaReleaseForm(form_data)
+        form=forms.SessionPlanForm(form_data)
 
         if form.is_valid(): # Performs validation, needed for form.cleaned_data
             print("Form is valid.")
@@ -5866,20 +5925,40 @@ class TestSessionPlanForm(TestCase):
         # We should say we could not find the participant:
         self.assertFalse(found_participant)
 
-    def test_media_release_form_saves_with_valid_data(self):
+    def test_session_plan_form_saves_with_valid_data(self):
         """ Verify that a Media Release form view, populated with
          valid data, correctly saves the form to the database. """
 
         form_data={
-            "name": "TEST Bruce Wayne",
-            "birth_date": "1984-6-24",
-            "consent": "Y",
-            "signature": "TEST Bruce Wayne",
-            "date": "2016-1-1"
+            "name": "TEST Bobby Bobbers",
+            "birth_date": "1986-7-21",
+            "date": "2016-5-1",
+            "horse_name": "Charlie",
+            "tack": "Some words.",
+            "diagnosis": "Herpes",
+            "diagnosis_type": "P",
+            "ambulatory_status": "I",
+            "ambulatory_status_other": "Some shit.",
+            "mount_assistance_required": "M",
+            "mount_device_needed": "S",
+            "mount_type": "T",
+            "dismount_assistance_required": "M",
+            "dismount_type": "A",
+            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_heel_hold": "2",
+            "num_sidewalkers_walk_over_thigh": "2",
+            "num_sidewalkers_walk_other": "3",
+            "num_sidewalkers_trot_spotter": "2",
+            "num_sidewalkers_trot_heel_hold": "2",
+            "num_sidewalkers_trot_over_thigh": "1",
+            "num_sidewalkers_trot_other": "3",
+            "goal_type": "S",
+            "goal_description": "Try not to break your neck.",
+            "motivation": "Don't die."
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("private-form-session-plan"), form_data)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -5902,53 +5981,65 @@ class TestSessionPlanForm(TestCase):
 
         # Attempt to retreive the new MediaRelease record:
         try:
-            print("Retrieving new MediaRelease record...")
-            media_release_in_db=(models.MediaRelease
+            print("Retrieving new SessionPlan record...")
+            session_plan_in_db=(models.Session
                 .objects.get(
                     participant_id=participant_in_db,
                     date=form_data["date"]
                 )
             )
             print(
-                "Successfully retrieved new MediaRelease record."
+                "Successfully retrieved new SessionPlan record."
             )
         except:
             print(
-                "ERROR: Unable to retreive new MediaRelease record!"
+                "ERROR: Unable to retreive new SessionPlan record!"
             )
 
         # Check that the attributes in the MediaRelease were set correctly:
         print(
-            "Checking stored MediaRelease attributes..."
-        )
-        self.assertEqual(
-            media_release_in_db.consent,
-            form_data["consent"]
-        )
-        self.assertEqual(
-            media_release_in_db.signature,
-            form_data["signature"]
+            "Checking stored SessionPlan attributes..."
         )
         self.assertEqual(
             # Format the retrieved date so it matches the input format:
-            "{d.year}-{d.month}-{d.day}".format(d=media_release_in_db.date),
+            "{d.year}-{d.month}-{d.day}".format(d=session_plan_in_db.date),
             form_data["date"]
         )
 
-    def test_media_release_form_with_invalid_participant_name(self):
+    def test_session_plan_form_with_invalid_participant_name(self):
         """ Verify that a Media Release form view, populated with
          an invalid participant name, displays an error message. """
 
         form_data={
-            "name": "TEST I'm Not Bruce Wayne",
-            "birth_date": "1984-6-24",
-            "consent": "Y",
-            "signature": "TEST Bruce Wayne",
-            "date": "2016-1-1"
+            "name": "TEST I'm Not Bobby Bobbers",
+            "birth_date": "1986-7-21",
+            "date": "2016-5-1",
+            "horse_name": "Charlie",
+            "tack": "Some words.",
+            "diagnosis": "Herpes",
+            "diagnosis_type": "P",
+            "ambulatory_status": "I",
+            "ambulatory_status_other": "Some shit.",
+            "mount_assistance_required": "M",
+            "mount_device_needed": "S",
+            "mount_type": "T",
+            "dismount_assistance_required": "M",
+            "dismount_type": "A",
+            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_heel_hold": "2",
+            "num_sidewalkers_walk_over_thigh": "2",
+            "num_sidewalkers_walk_other": "3",
+            "num_sidewalkers_trot_spotter": "2",
+            "num_sidewalkers_trot_heel_hold": "2",
+            "num_sidewalkers_trot_over_thigh": "1",
+            "num_sidewalkers_trot_other": "3",
+            "goal_type": "S",
+            "goal_description": "Try not to break your neck.",
+            "motivation": "Don't die."
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("private-form-session-plan"), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -5965,15 +6056,35 @@ class TestSessionPlanForm(TestCase):
          an invalid participant date, displays an error message. """
 
         form_data={
-            "name": "TEST Bruce Wayne",
-            "birth_date": "2000-1-2",
-            "consent": "Y",
-            "signature": "TEST Bruce Wayne",
-            "date": "2016-1-1"
+            "name": "TEST Bobby Bobbers",
+            "birth_date": "1900-1-02",
+            "date": "2016-5-1",
+            "horse_name": "Charlie",
+            "tack": "Some words.",
+            "diagnosis": "Herpes",
+            "diagnosis_type": "P",
+            "ambulatory_status": "I",
+            "ambulatory_status_other": "Some shit.",
+            "mount_assistance_required": "M",
+            "mount_device_needed": "S",
+            "mount_type": "T",
+            "dismount_assistance_required": "M",
+            "dismount_type": "A",
+            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_heel_hold": "2",
+            "num_sidewalkers_walk_over_thigh": "2",
+            "num_sidewalkers_walk_other": "3",
+            "num_sidewalkers_trot_spotter": "2",
+            "num_sidewalkers_trot_heel_hold": "2",
+            "num_sidewalkers_trot_over_thigh": "1",
+            "num_sidewalkers_trot_other": "3",
+            "goal_type": "S",
+            "goal_description": "Try not to break your neck.",
+            "motivation": "Don't die."
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("private-form-session-plan"), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -5986,17 +6097,35 @@ class TestSessionPlanForm(TestCase):
         )
 
         form_data={
-            "name": "TEST Bruce Wayne with a super long name zzzzzzzzzzzzzzzzzz"
-                "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
-                "zzzzzzzz",
-            "birth_date": "this isn't a date",
-            "consent": "Y",
-            "signature": "TEST Bruce Wayne",
-            "date": "2016-1-1"
+            "name": "TEST Bobby Bobbers sdfsdfslkfjslkjslgkjsdiogjsgiosjgsjgoijsgio",
+            "birth_date": "Not A Date",
+            "date": "2016-5-1",
+            "horse_name": "Charlie",
+            "tack": "Some words.",
+            "diagnosis": "Herpes",
+            "diagnosis_type": "P",
+            "ambulatory_status": "I",
+            "ambulatory_status_other": "Some shit.",
+            "mount_assistance_required": "M",
+            "mount_device_needed": "S",
+            "mount_type": "T",
+            "dismount_assistance_required": "M",
+            "dismount_type": "A",
+            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_heel_hold": "2",
+            "num_sidewalkers_walk_over_thigh": "2",
+            "num_sidewalkers_walk_other": "3",
+            "num_sidewalkers_trot_spotter": "2",
+            "num_sidewalkers_trot_heel_hold": "2",
+            "num_sidewalkers_trot_over_thigh": "1",
+            "num_sidewalkers_trot_other": "3",
+            "goal_type": "S",
+            "goal_description": "Try not to break your neck.",
+            "motivation": "Don't die."
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("private-form-session-plan"), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -6008,21 +6137,41 @@ class TestSessionPlanForm(TestCase):
             )
         )
 
-    def test_media_release_form_with_duplicate_pk(self):
+    def test_session_plan_form_with_duplicate_pk(self):
         """ Regresison test for Issue #47. The form should throw an error if the
          particpant already has a MedicalInfo record with the same
          (participant_id, date) as its primary key. """
 
         form_data={
-            "name": "TEST Bruce Wayne",
-            "birth_date": "1984-6-24",
-            "consent": "Y",
-            "signature": "TEST Bruce Wayne",
-            "date": "2014-3-5"
+            "name": "TEST Bobby Bobbers",
+            "birth_date": "1986-7-21",
+            "date": "2016-5-1",
+            "horse_name": "Charlie",
+            "tack": "Some words.",
+            "diagnosis": "Herpes",
+            "diagnosis_type": "P",
+            "ambulatory_status": "I",
+            "ambulatory_status_other": "Some shit.",
+            "mount_assistance_required": "M",
+            "mount_device_needed": "S",
+            "mount_type": "T",
+            "dismount_assistance_required": "M",
+            "dismount_type": "A",
+            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_heel_hold": "2",
+            "num_sidewalkers_walk_over_thigh": "2",
+            "num_sidewalkers_walk_other": "3",
+            "num_sidewalkers_trot_spotter": "2",
+            "num_sidewalkers_trot_heel_hold": "2",
+            "num_sidewalkers_trot_over_thigh": "1",
+            "num_sidewalkers_trot_other": "3",
+            "goal_type": "S",
+            "goal_description": "Try not to break your neck.",
+            "motivation": "Don't die."
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("private-form-session-plan"), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -6030,7 +6179,7 @@ class TestSessionPlanForm(TestCase):
         # Assert that the context for the new view contains the correct error:
         self.assertEqual(
             views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
-                form="media release"
+                form="session plan"
             ),
             response.context["error_text"]
         )
