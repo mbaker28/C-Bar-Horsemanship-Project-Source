@@ -5730,12 +5730,15 @@ class TestSessionPlanForm(TestCase):
         horse_info.save()
 
         diagnosis_info=models.Diagnosis(
+            participant_id=test_participant,
             diagnosis="Herpes",
             diagnosis_type="P"
         )
         diagnosis_info.save()
 
         adaptations_needed=models.AdaptationsNeeded(
+            participant_id=test_participant,
+            date="2014-3-5",
             ambulatory_status="I",
             ambulatory_status_other="Some shit.",
             mount_assistance_required="M",
@@ -5812,7 +5815,7 @@ class TestSessionPlanForm(TestCase):
         self.assertTrue(found_participant)
 
     def test_session_plan_form_not_valid_participant_name(self):
-        """ Verify that a Media Release form view, populated with an invalid
+        """ Verify that a Session Plan form view, populated with an invalid
          participant name, displays an error message. """
 
         # If we are able to find the matching record, we set this to True:
@@ -5869,7 +5872,7 @@ class TestSessionPlanForm(TestCase):
         self.assertFalse(found_participant)
 
     def test_session_plan_form_not_valid_birth_date(self):
-        """ Verify that a Media Release form view, populated with an invalid
+        """ Verify that a Session Plan form view, populated with an invalid
          participant birth date, displays an error message. """
 
         # If we are able to find the matching record, we set this to True:
@@ -5926,7 +5929,7 @@ class TestSessionPlanForm(TestCase):
         self.assertFalse(found_participant)
 
     def test_session_plan_form_saves_with_valid_data(self):
-        """ Verify that a Media Release form view, populated with
+        """ Verify that a Session Plan form view, populated with
          valid data, correctly saves the form to the database. """
 
         form_data={
@@ -5958,7 +5961,9 @@ class TestSessionPlanForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-session-plan"), form_data)
+        response=self.client.post(reverse("private-form-session-plan",
+        kwargs={"participant_id",
+        test_participant.participant_id}), form_data)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -6007,7 +6012,7 @@ class TestSessionPlanForm(TestCase):
         )
 
     def test_session_plan_form_with_invalid_participant_name(self):
-        """ Verify that a Media Release form view, populated with
+        """ Verify that a Session Plan form view, populated with
          an invalid participant name, displays an error message. """
 
         form_data={
@@ -6039,7 +6044,9 @@ class TestSessionPlanForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-session-plan"), form_data)
+        response=self.client.post(reverse("private-form-session-plan",
+        kwargs={"participant_id",
+        test_participant.participant_id}), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -6052,7 +6059,7 @@ class TestSessionPlanForm(TestCase):
         )
 
     def test_media_release_form_with_invalid_participant_date(self):
-        """ Verify that a Media Release form view, populated with
+        """ Verify that a Session Plan form view, populated with
          an invalid participant date, displays an error message. """
 
         form_data={
@@ -6084,7 +6091,9 @@ class TestSessionPlanForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-session-plan"), form_data)
+        response=self.client.post(reverse("private-form-session-plan",
+        kwargs={"participant_id",
+        test_participant.participant_id}), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -6125,7 +6134,9 @@ class TestSessionPlanForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-session-plan"), form_data)
+        response=self.client.post(reverse("private-form-session-plan",
+        kwargs={"participant_id",
+        test_participant.participant_id}), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -6139,7 +6150,7 @@ class TestSessionPlanForm(TestCase):
 
     def test_session_plan_form_with_duplicate_pk(self):
         """ Regresison test for Issue #47. The form should throw an error if the
-         particpant already has a MedicalInfo record with the same
+         particpant already has a SessionPlan record with the same
          (participant_id, date) as its primary key. """
 
         form_data={
@@ -6171,7 +6182,9 @@ class TestSessionPlanForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-session-plan"), form_data)
+        response=self.client.post(reverse("private-form-session-plan",
+        kwargs={"participant_id",
+        test_participant.participant_id}), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
