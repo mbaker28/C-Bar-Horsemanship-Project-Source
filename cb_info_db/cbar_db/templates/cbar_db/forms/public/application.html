@@ -18,11 +18,15 @@
                 {{ form.birth_date.errors.as_text }}
             </span>
             <br />
-            Height: {{ form.height }}
+            Height: {{ form.height_feet }}
             <span class="error_message">
-                {{ form.height.errors.as_text }}
+                {{ form.height_feet.errors.as_text }}
             </span>
-            Weight: {{ form.weight }}
+            {{ form.height_inches }}
+            <span class="error_message">
+                {{ form.height_inches.errors.as_text }}
+            </span>
+            Weight: {{ form.weight }} lbs
             <span class="error_message">
                 {{ form.weight.errors.as_text }}
             </span>

@@ -27,6 +27,7 @@
 #       -Add table
 
 
+from math import floor
 from django.db import models
 from django.contrib.auth.models import User
 from localflavor.us.models import USStateField
@@ -116,6 +117,15 @@ class Participant(models.Model):
     phone_cell=PhoneNumberField()
     phone_work=PhoneNumberField()
     school_institution=models.CharField(max_length=150, blank=True)
+
+    @property
+    def height_in_feet_and_inches(self):
+        """ Converts the value stored in the model's height field to a ft'in"
+         styled string. """
+         
+        feet=floor(self.height / 12)
+        inches=self.height % 12
+        return str(feet) + "' " + str(inches) + "\""
 
 class Caregiver(models.Model):
     caregiver_ID=models.AutoField(primary_key=True) # Auto generated PK

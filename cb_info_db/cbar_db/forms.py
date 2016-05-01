@@ -2,6 +2,7 @@ from datetime import date
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 from cbar_db import models
+import logging
 from localflavor.us.forms import USStateField
 from localflavor.us.forms import USPhoneNumberField
 from localflavor.us.forms import USZipCodeField
@@ -14,53 +15,72 @@ this_year=date.today().year
 YEARS=range(this_year-125, this_year+1)
 
 
+loggeyMcLogging=logging.getLogger(__name__)
+
+
 class ApplicationForm(forms.Form):
-    name = forms.CharField(
+    FEET_MIN=2
+    FEET_MAX=6
+    INCH_MIN=0
+    INCH_MAX=11.9
+    ERROR_TEXT_INVALID_HEIGHT_FT=(
+        "Must be between " + str(FEET_MIN) + " and " + str(FEET_MAX) + "."
+    )
+    ERROR_TEXT_INVALID_HEIGHT_IN=(
+        "Must be between " + str(INCH_MIN) + " and " + str(INCH_MAX) + "."
+    )
+
+    name=forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
     )
 
-    birth_date = forms.DateField(widget=SelectDateWidget(years=YEARS))
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
-    height = forms.DecimalField(
-        max_digits=models.Participant._meta.get_field("height").max_digits,
-        decimal_places=models.Participant._meta.get_field("height").decimal_places
+    height_feet=forms.DecimalField(
+        max_digits=1,
+        decimal_places=0
     )
 
-    weight = forms.DecimalField(
+    height_inches=forms.DecimalField(
+        max_digits=3,
+        decimal_places=1
+    )
+
+    weight=forms.DecimalField(
         max_digits=models.Participant._meta.get_field("weight").max_digits,
         decimal_places=models.Participant._meta.get_field("weight").decimal_places
     )
 
-    gender = forms.ChoiceField(
+    gender=forms.ChoiceField(
         #max_length=models.Participant._meta.get_field("gender").max_length,
         choices=models.Participant._meta.get_field("gender").choices
     )
 
-    minor_status = forms.ChoiceField(
+    minor_status=forms.ChoiceField(
         #max_length=models.Participant._meta.get_field("minor_status").max_length,
         choices=models.Participant._meta.get_field("minor_status").choices
     )
 
-    school_institution = forms.CharField(
+    school_institution=forms.CharField(
         max_length=models.Participant._meta.get_field("school_institution").max_length
     )
 
-    guardian_name = forms.CharField(
+    guardian_name=forms.CharField(
         max_length=models.Participant._meta.get_field("guardian_name").max_length,
         required=False
     )
 
-    address_street = forms.CharField(
+    address_street=forms.CharField(
         max_length=models.Participant._meta.get_field("address_street").max_length
     )
 
-    address_city = forms.CharField(
+    address_city=forms.CharField(
         max_length=models.Participant._meta.get_field("address_city").max_length
     )
 
-    address_state = USStateField()
+    address_state=USStateField()
 
-    address_zip = USZipCodeField()
+    address_zip=USZipCodeField()
 
     phone_home=USPhoneNumberField(required=False)
 
@@ -68,7 +88,7 @@ class ApplicationForm(forms.Form):
 
     phone_work=USPhoneNumberField(required=False)
 
-    email = forms.EmailField()
+    email=forms.EmailField()
 
     def clean(self):
         """ Automatically called when .is_valid() or .clean() is called. """
@@ -77,15 +97,28 @@ class ApplicationForm(forms.Form):
         phone_home=cleaned_data.get("phone_home")
         phone_cell=cleaned_data.get("phone_cell")
         phone_work=cleaned_data.get("phone_work")
+        height_feet=cleaned_data.get("height_feet")
+        height_inches=cleaned_data.get("height_inches")
 
-        # Verify that the user entered at least one phone number
+        # Verify that the user entered at least one phone number:
         if phone_home == "" and phone_cell == "" and phone_work == "":
             # The user hasn't entered at least one phone number, so the form is
             # invalid. Raise errors for each phone field:
-
             self.add_error("phone_home", ERROR_TEXT_NO_PHONE)
             self.add_error("phone_cell", ERROR_TEXT_NO_PHONE)
             self.add_error("phone_work", ERROR_TEXT_NO_PHONE)
+
+        # DEBUGGING:
+        loggeyMcLogging.error("height_feet == " + str(height_feet))
+        loggeyMcLogging.error("height_inches == " + str(height_inches))
+
+        # Verify that the user entered a valid height in the feet field:
+        if height_feet > self.FEET_MAX or height_feet < self.FEET_MIN:
+            self.add_error("height_feet", self.ERROR_TEXT_INVALID_HEIGHT_FT)
+
+        # Verify that the user entered a valid height in the inches field:
+        if height_inches > self.INCH_MAX or height_inches < self.INCH_MIN:
+            self.add_error("height_inches", self.ERROR_TEXT_INVALID_HEIGHT_IN)
 
 
 class SeizureEvaluationForm(forms.Form):
@@ -97,7 +130,10 @@ class SeizureEvaluationForm(forms.Form):
 
     birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
     guardian_name=forms.CharField(
         max_length=(models.Participant._meta
@@ -274,16 +310,19 @@ class SeizureEvaluationForm(forms.Form):
 
 
 class LiabilityReleaseForm(forms.Form):
-    name = forms.CharField(
+    name=forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length
     )
 
-    birth_date = forms.DateField(widget=SelectDateWidget(years=YEARS))
+    birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     signature=forms.CharField(
         max_length=models.LiabilityRelease._meta.get_field("signature").max_length
     )
-    date = forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
 
 class MedicalReleaseForm(forms.Form):
@@ -437,7 +476,10 @@ class MedicalReleaseForm(forms.Form):
         max_length=models.MedicalInfo._meta.get_field("signature").max_length
     )
 
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
 
 class BackgroundCheckForm(forms.Form):
@@ -449,7 +491,10 @@ class BackgroundCheckForm(forms.Form):
             .get_field("signature").max_length
         )
     )
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
     birth_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
     driver_license_num=forms.CharField(
         max_length=(models.BackgroundCheck._meta
@@ -469,7 +514,10 @@ class MediaReleaseForm(forms.Form):
     signature=forms.CharField(
         max_length=models.MediaRelease._meta.get_field("signature").max_length
     )
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
 
 class EmergencyMedicalReleaseForm(forms.Form):
@@ -519,7 +567,10 @@ class EmergencyMedicalReleaseForm(forms.Form):
             .get_field("consents_emerg_med_treatment").choices
         )
     )
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
     signature=forms.CharField(
         max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
             .get_field("signature").max_length
@@ -728,3 +779,36 @@ class RiderIntakeAssessmentForm(forms.Form):
             "num_sidewalkers_walk_heel_hold"
         ).decimal_places
     )
+
+
+class ParticipantAdoptionForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()
+
+
+class HorseAdoptionForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()
+
+
+class MonetaryDonationForm(forms.Form):
+    amount=forms.DecimalField(
+        max_digits=models.Donation._meta.get_field("amount").max_digits,
+        decimal_places=models.Donation._meta.get_field("amount").decimal_places
+    )
+    name=forms.CharField(
+        max_length=models.Donor._meta.get_field("name").max_length
+    )
+    email=forms.EmailField()
