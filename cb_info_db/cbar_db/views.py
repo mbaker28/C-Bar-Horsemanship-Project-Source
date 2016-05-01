@@ -1732,12 +1732,14 @@ def private_form_session_plan(request, participant_id):
             horse_info.save()
 
             diagnosis_info=models.Diagnosis(
+                participant_id=participant,
                 diagnosis=form.cleaned_data['diagnosis'],
                 diagnosis_type=form.cleaned_data['diagnosis_type']
             )
             diagnosis_info.save()
 
             adaptations_needed=models.AdaptationsNeeded(
+                participant_id=participant,
                 ambulatory_status=form.cleaned_data['ambulatory_status'],
                 ambulatory_status_other=(
                     form.cleaned_data['ambulatory_status_other']),
