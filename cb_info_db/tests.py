@@ -5856,7 +5856,6 @@ class TestSessionPlanForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -5931,6 +5930,11 @@ class TestSessionPlanForm(TestCase):
     def test_session_plan_form_saves_with_valid_data(self):
         """ Verify that a Session Plan form view, populated with
          valid data, correctly saves the form to the database. """
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Bobby Bobbers",
+            birth_date="1986-7-21"
+        )
 
         form_data={
             "name": "TEST Bobby Bobbers",
@@ -6015,6 +6019,11 @@ class TestSessionPlanForm(TestCase):
         """ Verify that a Session Plan form view, populated with
          an invalid participant name, displays an error message. """
 
+        test_participant=models.Participant.objects.get(
+            name="TEST Bobby Bobbers",
+            birth_date="1986-7-21"
+        )
+
         form_data={
             "name": "TEST I'm Not Bobby Bobbers",
             "birth_date": "1986-7-21",
@@ -6061,6 +6070,11 @@ class TestSessionPlanForm(TestCase):
     def test_media_release_form_with_invalid_participant_date(self):
         """ Verify that a Session Plan form view, populated with
          an invalid participant date, displays an error message. """
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Bobby Bobbers",
+            birth_date="1986-7-21"
+        )
 
         form_data={
             "name": "TEST Bobby Bobbers",
@@ -6152,6 +6166,11 @@ class TestSessionPlanForm(TestCase):
         """ Regresison test for Issue #47. The form should throw an error if the
          particpant already has a SessionPlan record with the same
          (participant_id, date) as its primary key. """
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Bobby Bobbers",
+            birth_date="1986-7-21"
+        )
 
         form_data={
             "name": "TEST Bobby Bobbers",
