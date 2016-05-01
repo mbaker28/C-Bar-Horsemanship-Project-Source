@@ -1668,6 +1668,35 @@ def private_form_session_plan(request, participant_id):
                 participant=models.Participant.objects.get(
                     participant_id=participant_id
                 )
+                # Catch duplicate composite primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/private/session_plan.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="session plan")
+                            ),
+                        }
+                    )
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/private/session_plan.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
             except ObjectDoesNotExist:
                 # The participant doesn't exist.
                 # Set the error message and redisplay the form:
