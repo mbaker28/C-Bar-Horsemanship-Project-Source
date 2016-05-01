@@ -1738,8 +1738,6 @@ def private_form_session_plan(request, participant_id):
             diagnosis_info.save()
 
             adaptations_needed=models.AdaptationsNeeded(
-                participant_id=participant,
-                date=form.cleaned_data["date"],
                 ambulatory_status=form.cleaned_data['ambulatory_status'],
                 ambulatory_status_other=(
                     form.cleaned_data['ambulatory_status_other']),
