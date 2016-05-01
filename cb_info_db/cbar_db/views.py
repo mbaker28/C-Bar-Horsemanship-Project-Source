@@ -1666,7 +1666,8 @@ def private_form_session_plan(request, participant_id):
             # Find the participant's record based on their (name, birth_date):
             try:
                 participant=models.Participant.objects.get(
-                    participant_id=participant_id
+                    participant_id=participant_id,
+                    birth_date=form.cleaned_data['birth_date']
                 )
                 # Catch duplicate composite primary keys:
             except IntegrityError as error:
@@ -1731,7 +1732,6 @@ def private_form_session_plan(request, participant_id):
             horse_info.save()
 
             diagnosis_info=models.Diagnosis(
-                participant_id=participant,
                 diagnosis=form.cleaned_data['diagnosis'],
                 diagnosis_type=form.cleaned_data['diagnosis_type']
             )
