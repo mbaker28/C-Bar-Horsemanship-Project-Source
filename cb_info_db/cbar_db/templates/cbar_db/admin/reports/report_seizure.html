@@ -25,10 +25,10 @@
             <strong>Home Phone:</strong> {{ participant.phone_home }}
         </p>
         <p>
-            <strong>Home Cell:</strong> {{ participant.phone_cell }}
+            <strong>Cell Phone:</strong> {{ participant.phone_cell }}
         </p>
         <p>
-            <strong>Home Work:</strong> {{ participant.phone_work }}
+            <strong>Work Phone:</strong> {{ participant.phone_work }}
         </p>
         <p>
             <strong>Parent/Guardian Name:</strong> {{ participant.guardian_name }}
@@ -36,14 +36,8 @@
 
         <h2>Seizures Information</h2>
         <p>
-            <strong>Seizure Types:</strong>
-            {% for seizure_type in seizure_types %}
-                {% if forloop.last %}
-                 {{ seizure_type.name }}.
-                {% else %}
-                 {{ seizure_type.name }},
-                {% endif %}
-            {% endfor %}
+            <strong>Seizures Type:</strong>
+             {{ seizure_eval.get_type_of_seizure_display }}
         </p>
         <p>
             <strong>Date of Last Seizure:</strong>
@@ -157,7 +151,8 @@
                 {% endif %}
                 {% if seizure_eval.action_to_take_allow_time %}
                     <li>
-                        Allow {{ form.action_to_take_allow_time_how_long }}
+                        Allow
+                         {{ seizure_eval.action_to_take_allow_time_how_long }}
                          minutes to rest and re-orient
                     </li>
                 {% endif %}
