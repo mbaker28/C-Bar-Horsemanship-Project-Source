@@ -61,6 +61,15 @@ YES_NO_BOOL_CHOICES=(
     (NO_BOOL, "No")
 )
 
+NULL_GAY=2 # anything that's not 1 or 0
+TRUE_GAY=1
+FALSE_GAY=0
+YES_NO_NULL_BOOL_CHOICES=(
+    (TRUE_GAY, "Yes"),
+    (FALSE_GAY, "No"),
+    (NULL_GAY, "Unknown")
+)
+
 UNSATISFACTORY="U"
 POOR="P"
 FAIR="F"
@@ -68,7 +77,7 @@ GOOD="G"
 EXCELLENT="E"
 NOT_PERFORMED_DISABILITY="N"
 ATTEMPTS="A"
-PARTIALLY_COMPLETES="P"
+PARTIALLY_COMPLETES="C"
 LIKERT_LIKE_CHOICES=(
     (UNSATISFACTORY, "Unsatisfactory"),
     (POOR, "Poor"),
@@ -119,7 +128,7 @@ class Participant(models.Model):
     def height_in_feet_and_inches(self):
         """ Converts the value stored in the model's height field to a ft'in"
          styled string. """
-         
+
         feet=floor(self.height / 12)
         inches=self.height % 12
         return str(feet) + "' " + str(inches) + "\""
@@ -478,29 +487,29 @@ class EvalRidingExercises(models.Model):
     comments=models.CharField(max_length=500, null=True)
 
     # Yes/No/Null choices:
-    basic_trail_rules=models.NullBooleanField()
-    mount=models.NullBooleanField()
-    dismount=models.NullBooleanField()
-    emergency_dismount=models.NullBooleanField()
-    four_natural_aids=models.NullBooleanField()
-    basic_control=models.NullBooleanField()
-    reverse_at_walk=models.NullBooleanField()
-    reverse_at_trot=models.NullBooleanField()
-    never_ridden=models.NullBooleanField()
-    seat_at_walk=models.NullBooleanField()
-    seat_at_trot=models.NullBooleanField()
-    seat_at_canter=models.NullBooleanField()
-    basic_seat_english=models.NullBooleanField()
-    basic_seat_western=models.NullBooleanField()
-    hand_pos_english=models.NullBooleanField()
-    hand_post_western=models.NullBooleanField()
-    two_point_trot=models.NullBooleanField()
-    circle_trot_no_stirrups=models.NullBooleanField()
-    circle_at_canter=models.NullBooleanField()
-    circle_canter_no_stirrups=models.NullBooleanField()
-    two_point_canter=models.NullBooleanField()
-    circle_at_walk=models.NullBooleanField()
-    circle_at_trot=models.NullBooleanField()
+    basic_trail_rules=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    mount=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    dismount=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    emergency_dismount=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    four_natural_aids=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    basic_control=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    reverse_at_walk=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    reverse_at_trot=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    never_ridden=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    seat_at_walk=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    seat_at_trot=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    seat_at_canter=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    basic_seat_english=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    basic_seat_western=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    hand_pos_english=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    hand_post_western=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    two_point_trot=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_trot_no_stirrups=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_at_canter=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_canter_no_stirrups=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    two_point_canter=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_at_walk=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_at_trot=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
 
     # Likert like choices:
     holds_handhold_walk=models.CharField(
@@ -1042,12 +1051,27 @@ class Medication(models.Model):
 
 
 class SeizureEval(models.Model):
+    SEIZURE_GRAND="G"
+    SEIZURE_PETITE="P"
+    SEIZURE_CONTROLLED="C"
+    SEIZURE_NONE="N"
+    SEIZURE_TYPES=(
+        (SEIZURE_GRAND, "Grand"),
+        (SEIZURE_PETITE, "Petite"),
+        (SEIZURE_CONTROLLED, "Controlled"),
+        (SEIZURE_NONE, "None")
+    )
+
 
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
+    type_of_seizure=models.CharField(
+        max_length=1,
+        choices=SEIZURE_TYPES
+    )
     date_of_last_seizure=models.DateField()
     duration_of_last_seizure=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     typical_cause=models.CharField(max_length=SHORT_ANSWER_LENGTH)
@@ -1079,13 +1103,14 @@ class SeizureEval(models.Model):
     seizure_frequency=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     signature=models.CharField(max_length=NAME_LENGTH)
 
-
-class SeizureType(models.Model):
-    class Meta: # Sets up PK as (seizure_eval, name)
-        unique_together=(("seizure_eval","name"))
-
-    seizure_eval=models.ForeignKey(SeizureEval, on_delete=models.CASCADE)
-    name=models.CharField(max_length=50)
+# DISABLED: We are no longer storing seizuretype records.
+# DO NOT REMOVE Until after 5/2/16 demonstration, if given go ahead.
+# class SeizureType(models.Model):
+#     class Meta: # Sets up PK as (seizure_eval, name)
+#         unique_together=(("seizure_eval","name"))
+#
+#     seizure_eval=models.ForeignKey(SeizureEval, on_delete=models.CASCADE)
+#     name=models.CharField(max_length=50)
 
 
 class AdaptationsNeeded(models.Model):

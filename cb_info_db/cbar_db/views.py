@@ -877,6 +877,7 @@ def public_form_seizure(request):
                     action_to_take_allow_time_how_long=form.cleaned_data["action_to_take_allow_time_how_long"],
                     action_to_take_report_immediately=form.cleaned_data["action_to_take_report_immediately"],
                     signature=form.cleaned_data["signature"],
+                    type_of_seizure=form.cleaned_data["type_of_seizure"],
                 )
                 seizure_data.save()
             # Catch duplicate composite primary keys:
@@ -908,27 +909,6 @@ def public_form_seizure(request):
                             'error_text': ERROR_TEXT_DB_INTEGRITY,
                         }
                     )
-
-            if form.cleaned_data["seizure_name_one"] != "":
-                seizure_type_one=models.SeizureType(
-                    seizure_eval=seizure_data,
-                    name=form.cleaned_data['seizure_name_one']
-                )
-                seizure_type_one.save()
-
-            if form.cleaned_data["seizure_name_two"] != "":
-                seizure_type_two=models.SeizureType(
-                    seizure_eval=seizure_data,
-                    name=form.cleaned_data['seizure_name_two']
-                )
-                seizure_type_two.save()
-
-            if form.cleaned_data["seizure_name_three"] != "":
-                seizure_type_three=models.SeizureType(
-                    seizure_eval=seizure_data,
-                    name=form.cleaned_data['seizure_name_three']
-                )
-                seizure_type_three.save()
 
             if form.cleaned_data["medication_one_name"] != "":
                 medication_one=models.Medication(
@@ -1158,6 +1138,191 @@ def donation_monetary(request):
             }
         )
 
+
+@login_required
+def private_form_rider_eval_checklist(request, participant_id):
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.RiderEvalChecklistForm(request.POST)
+
+        # Retrieve the Participant record bassed on the participant_id passed
+        # via the URL:
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            # The participant doesn't exist.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/rider_eval_checklist_form.html",
+                {
+                    'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                }
+            )
+
+        # check whether it's valid:
+        if form.is_valid():
+            loggeyMcLogging.error("form_data == " + str(form.cleaned_data))
+
+            try:
+                form_data_rider_eval_checklist=models.EvalRidingExercises(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    comments=form.cleaned_data["comments"],
+                    basic_trail_rules=form.cleaned_data["basic_trail_rules"],
+                    mount=form.cleaned_data["mount"],
+                    dismount=form.cleaned_data["dismount"],
+                    emergency_dismount=form.cleaned_data["emergency_dismount"],
+                    four_natural_aids=form.cleaned_data["four_natural_aids"],
+                    basic_control=form.cleaned_data["basic_control"],
+                    reverse_at_walk=form.cleaned_data["reverse_at_walk"],
+                    reverse_at_trot=form.cleaned_data["reverse_at_trot"],
+                    never_ridden=form.cleaned_data["never_ridden"],
+                    seat_at_walk=form.cleaned_data["seat_at_walk"],
+                    seat_at_trot=form.cleaned_data["seat_at_trot"],
+                    seat_at_canter=form.cleaned_data["seat_at_canter"],
+                    basic_seat_english=form.cleaned_data["basic_seat_english"],
+                    basic_seat_western=form.cleaned_data["basic_seat_western"],
+                    hand_pos_english=form.cleaned_data["hand_pos_english"],
+                    hand_post_western=form.cleaned_data["hand_post_western"],
+                    two_point_trot=form.cleaned_data["two_point_trot"],
+                    circle_trot_no_stirrups=form.cleaned_data["circle_trot_no_stirrups"],
+                    circle_at_canter=form.cleaned_data["circle_at_canter"],
+                    circle_canter_no_stirrups=form.cleaned_data["circle_canter_no_stirrups"],
+                    two_point_canter=form.cleaned_data["two_point_canter"],
+                    circle_at_walk=form.cleaned_data["circle_at_walk"],
+                    circle_at_trot=form.cleaned_data["circle_at_trot"],
+                    holds_handhold_walk=form.cleaned_data["holds_handhold_walk"],
+                    holds_handhold_sit_trot=form.cleaned_data["holds_handhold_sit_trot"],
+                    holds_handhold_post_trot=form.cleaned_data["holds_handhold_post_trot"],
+                    holds_handhold_canter=form.cleaned_data["holds_handhold_canter"],
+                    holds_reins_walk=form.cleaned_data["holds_reins_walk"],
+                    holds_reins_sit_trot=form.cleaned_data["holds_reins_sit_trot"],
+                    holds_reins_post_trot=form.cleaned_data["holds_reins_post_trot"],
+                    holds_reins_canter=form.cleaned_data["holds_reins_canter"],
+                    shorten_lengthen_reins_walk=form.cleaned_data["shorten_lengthen_reins_walk"],
+                    shorten_lengthen_reins_sit_trot=form.cleaned_data["shorten_lengthen_reins_sit_trot"],
+                    shorten_lengthen_reins_post_trot=form.cleaned_data["shorten_lengthen_reins_post_trot"],
+                    shorten_lengthen_reins_canter=form.cleaned_data["shorten_lengthen_reins_canter"],
+                    can_control_horse_walk=form.cleaned_data["can_control_horse_walk"],
+                    can_control_horse_sit_trot=form.cleaned_data["can_control_horse_sit_trot"],
+                    can_control_horse_post_trot=form.cleaned_data["can_control_horse_post_trot"],
+                    can_control_horse_canter=form.cleaned_data["can_control_horse_canter"],
+                    can_halt_walk=form.cleaned_data["can_halt_walk"],
+                    can_halt_sit_trot=form.cleaned_data["can_halt_sit_trot"],
+                    can_halt_post_trot=form.cleaned_data["can_halt_post_trot"],
+                    can_halt_canter=form.cleaned_data["can_halt_canter"],
+                    drop_pickup_stirrups_walk=form.cleaned_data["drop_pickup_stirrups_walk"],
+                    drop_pickup_stirrups_sit_trot=form.cleaned_data["drop_pickup_stirrups_sit_trot"],
+                    drop_pickup_stirrups_post_trot=form.cleaned_data["drop_pickup_stirrups_post_trot"],
+                    drop_pickup_stirrups_canter=form.cleaned_data["drop_pickup_stirrups_canter"],
+                    rides_no_stirrups_walk=form.cleaned_data["rides_no_stirrups_walk"],
+                    rides_no_stirrups_sit_trot=form.cleaned_data["rides_no_stirrups_sit_trot"],
+                    rides_no_stirrups_post_trot=form.cleaned_data["rides_no_stirrups_post_trot"],
+                    rides_no_stirrups_canter=form.cleaned_data["rides_no_stirrups_canter"],
+                    maintain_half_seat_walk=form.cleaned_data["maintain_half_seat_walk"],
+                    maintain_half_seat_sit_trot=form.cleaned_data["maintain_half_seat_sit_trot"],
+                    maintain_half_seat_post_trot=form.cleaned_data["maintain_half_seat_post_trot"],
+                    maintain_half_seat_canter=form.cleaned_data["maintain_half_seat_canter"],
+                    can_post_walk=form.cleaned_data["can_post_walk"],
+                    can_post_sit_trot=form.cleaned_data["can_post_sit_trot"],
+                    can_post_post_trot=form.cleaned_data["can_post_post_trot"],
+                    can_post_canter=form.cleaned_data["can_post_canter"],
+                    proper_diagonal_walk=form.cleaned_data["proper_diagonal_walk"],
+                    proper_diagonal_sit_trot=form.cleaned_data["proper_diagonal_sit_trot"],
+                    proper_diagonal_post_trot=form.cleaned_data["proper_diagonal_post_trot"],
+                    proper_diagonal_canter=form.cleaned_data["proper_diagonal_canter"],
+                    proper_lead_canter_sees=form.cleaned_data["proper_lead_canter_sees"],
+                    proper_lead_canter_knows=form.cleaned_data["proper_lead_canter_knows"],
+                    can_steer_over_cavalletti_walk=form.cleaned_data["can_steer_over_cavalletti_walk"],
+                    can_steer_over_cavalletti_sit_trot=form.cleaned_data["can_steer_over_cavalletti_sit_trot"],
+                    can_steer_over_cavalletti_post_trot=form.cleaned_data["can_steer_over_cavalletti_post_trot"],
+                    can_steer_over_cavalletti_canter=form.cleaned_data["can_steer_over_cavalletti_canter"],
+                    jump_crossbar_walk=form.cleaned_data["jump_crossbar_walk"],
+                    jump_crossbar_sit_trot=form.cleaned_data["jump_crossbar_sit_trot"],
+                    jump_crossbar_post_trot=form.cleaned_data["jump_crossbar_post_trot"],
+                    jump_crossbar_canter=form.cleaned_data["jump_crossbar_canter"],
+                )
+                form_data_rider_eval_checklist.save()
+
+
+            # Catch duplicate composite primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/private/rider_eval_checklist_form.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="Rider Eval Checklist Form")
+                            ),
+                        }
+                    )
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/private/rider_eval_checklist_form.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
+
+            # Redirect to the 'you saved this form page':
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/rider_eval_checklist_form.html",
+                {
+                    'form': form,
+                    'participant': participant,
+                    'error_text': ERROR_TEXT_FORM_INVALID
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.RiderEvalChecklistForm()
+
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            # The participant doesn't exist.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/rider_eval_checklist_form.html",
+                {
+                    'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                }
+            )
+
+        return render(
+            request,
+            'cbar_db/forms/private/rider_eval_checklist_form.html',
+            {
+                'form': form,
+                "participant": participant
+            }
+        )
 
 @login_required
 def index_private_admin(request):
@@ -1630,10 +1795,6 @@ def report_seizure(request, participant_id, year, month, day):
             }
         )
 
-    seizure_types=models.SeizureType.objects.filter(
-        seizure_eval=seizure_eval
-    )
-
     medications=models.Medication.objects.filter(
         participant_id=participant,
         date=time.strftime("%Y-%m-%d", date)
@@ -1644,7 +1805,6 @@ def report_seizure(request, participant_id, year, month, day):
         "cbar_db/admin/reports/report_seizure.html",
         {
             "seizure_eval": seizure_eval,
-            "seizure_types": seizure_types,
             "medications": medications,
             "participant": participant
         }

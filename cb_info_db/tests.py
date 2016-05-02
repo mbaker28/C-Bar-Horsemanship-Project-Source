@@ -2523,9 +2523,7 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_home": "123-123-4567",
             "phone_cell": "321-765-4321",
             "phone_work": "987-654-3210",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -2589,9 +2587,7 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_home": "123-123-4567",
             "phone_cell": "321-765-4321",
             "phone_work": "987-654-3210",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -2655,9 +2651,7 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_home": "123-123-4567",
             "phone_cell": "321-765-4321",
             "phone_work": "987-654-3210",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -2727,9 +2721,7 @@ class TestSeizureEvaluationForm(TestCase):
             "medication_three_name": "Sciency Medicine Name",
             "medication_three_reason": "Things that hurt",
             "medication_three_frequency": "Every 2 hours, as needed",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "Super sciency name",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -2918,47 +2910,10 @@ class TestSeizureEvaluationForm(TestCase):
             seizure_eval_in_db.signature,
             form_data["signature"]
         )
-
-        # Retrieve the SeizureType record matching seizure_name_one:
-        found_seizure_one=False
-        try:
-            print("Retrieving seizure name/type one...")
-            seizure_type_one_in_db=models.SeizureType.objects.get(
-                seizure_eval=seizure_eval_in_db,
-                name=form_data["seizure_name_one"]
-            )
-            found_seizure_one=True
-        except:
-            print("ERROR: Could't retrieve seizure name/type one!")
-        self.assertTrue(found_seizure_one)
-
-        # Retrieve the SeizureType record matching seizure_name_two:
-        found_seizure_two=False
-        try:
-            print("Retrieving seizure name/type two...")
-            seizure_type_two_in_db=models.SeizureType.objects.get(
-                seizure_eval=seizure_eval_in_db,
-                name=form_data["seizure_name_two"]
-            )
-            found_seizure_two=True
-        except:
-            print("ERROR: Could't retrieve seizure name/type two!")
-        self.assertTrue(found_seizure_two)
-
-        # Retrieve the SeizureType record matching seizure_name_three:
-        found_seizure_three=False
-        try:
-            print("Retrieving seizure name/type three...")
-            seizure_type_three_in_db=models.SeizureType.objects.get(
-                seizure_eval=seizure_eval_in_db,
-                name=form_data["seizure_name_three"]
-            )
-            found_seizure_three=True
-            print("ERROR: Retrieved seizure name/type three!")
-        except:
-            print("Could't retrieve seizure name/type three. This is the"
-                " expected result")
-        self.assertFalse(found_seizure_three)
+        self.assertEqual(
+            seizure_eval_in_db.type_of_seizure,
+            form_data["type_of_seizure"]
+        )
 
         # Attempt to retreive the new Medication record for medication_one_name:
         found_medication_one=False
@@ -3038,124 +2993,126 @@ class TestSeizureEvaluationForm(TestCase):
             form_data["medication_three_frequency"]
         )
 
-    def test_seizure_evaluation_form_saves_seizuretype_records(self):
-        """ Verify that a Seizure Evaluation form view, populated with
-         valid data, correctly saves the form to the database. """
-
-        form_data={
-            "name": "TEST Peter Parker",
-            "birth_date": "1985-4-02",
-            "date": "2016-3-31",
-            "guardian_name": "Bob Burger",
-            "phone_home": "123-123-4567",
-            "phone_cell": "321-765-4321",
-            "phone_work": "987-654-3210",
-            "medication_one_name": "Excedrin",
-            "medication_one_reason": "Headachey stuff",
-            "medication_one_frequency": "A couple of times a week",
-            "medication_two_name": "Blah Test Medicine",
-            "medication_two_reason": "",
-            "medication_two_frequency": "",
-            "medication_three_name": "Sciency Medicine Name",
-            "medication_three_reason": "Things that hurt",
-            "medication_three_frequency": "Every 2 hours, as needed",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "Super sciency name",
-            "seizure_name_three": "Puppymonkeybaby",
-            "date_of_last_seizure": "1984-5-12",
-            "seizure_frequency": "Everyday",
-            "duration_of_last_seizure": "45 seconds",
-            "typical_cause": "long activity",
-            "seizure_indicators": "blank stare",
-            "after_effect": "headaches",
-            "during_seizure_stare": True,
-            "during_seizure_stare_length": "15 seconds",
-            "during_seizure_walks": True,
-            "during_seizure_aimless": True,
-            "during_seizure_cry_etc": True,
-            "during_seizure_bladder_bowel": True,
-            "during_seizure_confused_etc": True,
-            "during_seizure_other": True,
-            "during_seizure_other_description": "abcdefghij",
-            "knows_when_will_occur": False,
-            "can_communicate_when_will_occur": False,
-            "action_to_take_do_nothing": True,
-            "action_to_take_dismount": True,
-            "action_to_take_allow_time": True,
-            "action_to_take_allow_time_how_long": 15,
-            "action_to_take_report_immediately": True,
-            "action_to_take_send_note": True,
-            "signature": "TEST Peter Parker",
-        }
-
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-seizure"), form_data)
-
-        # Attempt to retreive the Participant record:
-        try:
-            print("Retrieving participant record...")
-            participant_in_db=models.Participant.objects.get(
-                name=form_data["name"],
-                birth_date=form_data["birth_date"]
-            )
-        except:
-            print("ERROR: Unable to retreive participant record!")
-
-        # Attempt to retreive the new SeizureEval record:
-        try:
-            print("Retrieving new SeizureEval record...")
-            seizure_eval_in_db=(models.SeizureEval
-                .objects.get(
-                    participant_id=participant_in_db,
-                    date=form_data["date"]
-                )
-            )
-            print(
-                "Successfully retrieved new SeizureEval record."
-            )
-        except:
-            print(
-                "ERROR: Unable to retreive new SeizureEval record!"
-            )
-
-        # Retrieve the SeizureType record matching seizure_name_one:
-        found_seizure_one=False
-        try:
-            print("Retrieving seizure name/type one...")
-            seizure_type_one_in_db=models.SeizureType.objects.get(
-                seizure_eval=seizure_eval_in_db,
-                name=form_data["seizure_name_one"]
-            )
-            found_seizure_one=True
-        except:
-            print("ERROR: Could't retrieve seizure name/type one!")
-        self.assertTrue(found_seizure_one)
-
-        # Retrieve the SeizureType record matching seizure_name_two:
-        found_seizure_two=False
-        try:
-            print("Retrieving seizure name/type two...")
-            seizure_type_two_in_db=models.SeizureType.objects.get(
-                seizure_eval=seizure_eval_in_db,
-                name=form_data["seizure_name_two"]
-            )
-            found_seizure_two=True
-        except:
-            print("ERROR: Could't retrieve seizure name/type two!")
-        self.assertTrue(found_seizure_two)
-
-        # Retrieve the SeizureType record matching seizure_name_three:
-        found_seizure_three=False
-        try:
-            print("Retrieving seizure name/type one...")
-            seizure_type_three_in_db=models.SeizureType.objects.get(
-                seizure_eval=seizure_eval_in_db,
-                name=form_data["seizure_name_three"]
-            )
-            found_seizure_three=True
-        except:
-            print("ERROR: Could't retrieve seizure name/type three!")
-        self.assertTrue(found_seizure_three)
+    # DISABLED: We are no longer storing seizuretype records.
+    # DO NOT REMOVE Until after 5/2/16 demonstration, if given go ahead.
+    # def test_seizure_evaluation_form_saves_seizuretype_records(self):
+    #     """ Verify that a Seizure Evaluation form view, populated with
+    #      valid data, correctly saves the form to the database. """
+    #
+    #     form_data={
+    #         "name": "TEST Peter Parker",
+    #         "birth_date": "1985-4-02",
+    #         "date": "2016-3-31",
+    #         "guardian_name": "Bob Burger",
+    #         "phone_home": "123-123-4567",
+    #         "phone_cell": "321-765-4321",
+    #         "phone_work": "987-654-3210",
+    #         "medication_one_name": "Excedrin",
+    #         "medication_one_reason": "Headachey stuff",
+    #         "medication_one_frequency": "A couple of times a week",
+    #         "medication_two_name": "Blah Test Medicine",
+    #         "medication_two_reason": "",
+    #         "medication_two_frequency": "",
+    #         "medication_three_name": "Sciency Medicine Name",
+    #         "medication_three_reason": "Things that hurt",
+    #         "medication_three_frequency": "Every 2 hours, as needed",
+    #         "seizure_name_one": "Sudden and violent",
+    #         "seizure_name_two": "Super sciency name",
+    #         "seizure_name_three": "Puppymonkeybaby",
+    #         "date_of_last_seizure": "1984-5-12",
+    #         "seizure_frequency": "Everyday",
+    #         "duration_of_last_seizure": "45 seconds",
+    #         "typical_cause": "long activity",
+    #         "seizure_indicators": "blank stare",
+    #         "after_effect": "headaches",
+    #         "during_seizure_stare": True,
+    #         "during_seizure_stare_length": "15 seconds",
+    #         "during_seizure_walks": True,
+    #         "during_seizure_aimless": True,
+    #         "during_seizure_cry_etc": True,
+    #         "during_seizure_bladder_bowel": True,
+    #         "during_seizure_confused_etc": True,
+    #         "during_seizure_other": True,
+    #         "during_seizure_other_description": "abcdefghij",
+    #         "knows_when_will_occur": False,
+    #         "can_communicate_when_will_occur": False,
+    #         "action_to_take_do_nothing": True,
+    #         "action_to_take_dismount": True,
+    #         "action_to_take_allow_time": True,
+    #         "action_to_take_allow_time_how_long": 15,
+    #         "action_to_take_report_immediately": True,
+    #         "action_to_take_send_note": True,
+    #         "signature": "TEST Peter Parker",
+    #     }
+    #
+    #     # Send a post request to the form view with the form_data defined above:
+    #     response=self.client.post(reverse("public-form-seizure"), form_data)
+    #
+    #     # Attempt to retreive the Participant record:
+    #     try:
+    #         print("Retrieving participant record...")
+    #         participant_in_db=models.Participant.objects.get(
+    #             name=form_data["name"],
+    #             birth_date=form_data["birth_date"]
+    #         )
+    #     except:
+    #         print("ERROR: Unable to retreive participant record!")
+    #
+    #     # Attempt to retreive the new SeizureEval record:
+    #     try:
+    #         print("Retrieving new SeizureEval record...")
+    #         seizure_eval_in_db=(models.SeizureEval
+    #             .objects.get(
+    #                 participant_id=participant_in_db,
+    #                 date=form_data["date"]
+    #             )
+    #         )
+    #         print(
+    #             "Successfully retrieved new SeizureEval record."
+    #         )
+    #     except:
+    #         print(
+    #             "ERROR: Unable to retreive new SeizureEval record!"
+    #         )
+    #
+    #     # Retrieve the SeizureType record matching seizure_name_one:
+    #     found_seizure_one=False
+    #     try:
+    #         print("Retrieving seizure name/type one...")
+    #         seizure_type_one_in_db=models.SeizureType.objects.get(
+    #             seizure_eval=seizure_eval_in_db,
+    #             name=form_data["seizure_name_one"]
+    #         )
+    #         found_seizure_one=True
+    #     except:
+    #         print("ERROR: Could't retrieve seizure name/type one!")
+    #     self.assertTrue(found_seizure_one)
+    #
+    #     # Retrieve the SeizureType record matching seizure_name_two:
+    #     found_seizure_two=False
+    #     try:
+    #         print("Retrieving seizure name/type two...")
+    #         seizure_type_two_in_db=models.SeizureType.objects.get(
+    #             seizure_eval=seizure_eval_in_db,
+    #             name=form_data["seizure_name_two"]
+    #         )
+    #         found_seizure_two=True
+    #     except:
+    #         print("ERROR: Could't retrieve seizure name/type two!")
+    #     self.assertTrue(found_seizure_two)
+    #
+    #     # Retrieve the SeizureType record matching seizure_name_three:
+    #     found_seizure_three=False
+    #     try:
+    #         print("Retrieving seizure name/type one...")
+    #         seizure_type_three_in_db=models.SeizureType.objects.get(
+    #             seizure_eval=seizure_eval_in_db,
+    #             name=form_data["seizure_name_three"]
+    #         )
+    #         found_seizure_three=True
+    #     except:
+    #         print("ERROR: Could't retrieve seizure name/type three!")
+    #     self.assertTrue(found_seizure_three)
 
     def test_seizure_evaluation_form_with_invalid_participant_name(self):
         """ Verify that a Seizure Evaluation form view, populated with
@@ -3169,9 +3126,7 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_home": "123-123-4567",
             "phone_cell": "321-765-4321",
             "phone_work": "987-654-3210",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -3223,9 +3178,7 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_home": "123-123-4567",
             "phone_cell": "321-765-4321",
             "phone_work": "987-654-3210",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -3275,9 +3228,7 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_home": "123-123-4567",
             "phone_cell": "321-765-4321",
             "phone_work": "987-654-3210",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -3329,9 +3280,7 @@ class TestSeizureEvaluationForm(TestCase):
             "phone_home": "",
             "phone_cell": "",
             "phone_work": "",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -3406,9 +3355,7 @@ class TestSeizureEvaluationForm(TestCase):
             "medication_three_name": "Sciency Medicine Name",
             "medication_three_reason": "Things that hurt",
             "medication_three_frequency": "Every 2 hours, as needed",
-            "seizure_name_one": "Sudden and violent",
-            "seizure_name_two": "Super sciency name",
-            "seizure_name_three": "",
+            "type_of_seizure": "P",
             "date_of_last_seizure": "1984-5-12",
             "seizure_frequency": "Everyday",
             "duration_of_last_seizure": "45 seconds",
@@ -3449,6 +3396,1084 @@ class TestSeizureEvaluationForm(TestCase):
             response.context["error_text"]
         )
 
+
+class TestRiderEvalChecklistForm(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_state="OK",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant.save()
+
+        rider_eval_checklist=models.EvalRidingExercises(
+            participant_id=test_participant,
+            date="1999-9-20",
+            comments="I dont wanna",
+            basic_trail_rules=1,
+            mount=0,
+            dismount=None,
+            emergency_dismount=None,
+            four_natural_aids=0,
+            basic_control=1,
+            reverse_at_walk=1,
+            reverse_at_trot=None,
+            never_ridden=0,
+            seat_at_walk=1,
+            seat_at_trot=1,
+            seat_at_canter=None,
+            basic_seat_english=1,
+            basic_seat_western=0,
+            hand_pos_english=1,
+            hand_post_western=None,
+            two_point_trot=1,
+            circle_trot_no_stirrups=None,
+            circle_at_canter=0,
+            circle_canter_no_stirrups=1,
+            two_point_canter=None,
+            circle_at_walk=1,
+            circle_at_trot=None,
+            holds_handhold_walk="U",
+            holds_handhold_sit_trot="P",
+            holds_handhold_post_trot="F",
+            holds_handhold_canter="G",
+            holds_reins_walk="E",
+            holds_reins_sit_trot="N",
+            holds_reins_post_trot="A",
+            holds_reins_canter="P",
+            shorten_lengthen_reins_walk="U",
+            shorten_lengthen_reins_sit_trot="P",
+            shorten_lengthen_reins_post_trot="A",
+            shorten_lengthen_reins_canter="G",
+            can_control_horse_walk="E",
+            can_control_horse_sit_trot="N",
+            can_control_horse_post_trot="A",
+            can_control_horse_canter="P",
+            can_halt_walk="U",
+            can_halt_sit_trot="P",
+            can_halt_post_trot="F",
+            can_halt_canter="G",
+            drop_pickup_stirrups_walk="E",
+            drop_pickup_stirrups_sit_trot="N",
+            drop_pickup_stirrups_post_trot="A",
+            drop_pickup_stirrups_canter="P",
+            rides_no_stirrups_walk="U",
+            rides_no_stirrups_sit_trot="P",
+            rides_no_stirrups_post_trot="F",
+            rides_no_stirrups_canter="G",
+            maintain_half_seat_walk="E",
+            maintain_half_seat_sit_trot="E",
+            maintain_half_seat_post_trot="N",
+            maintain_half_seat_canter="A",
+            can_post_walk="P",
+            can_post_sit_trot="U",
+            can_post_post_trot="P",
+            can_post_canter="F",
+            proper_diagonal_walk="G",
+            proper_diagonal_sit_trot="E",
+            proper_diagonal_post_trot="N",
+            proper_diagonal_canter="A",
+            proper_lead_canter_sees="P",
+            proper_lead_canter_knows="U",
+            can_steer_over_cavalletti_walk="P",
+            can_steer_over_cavalletti_sit_trot="F",
+            can_steer_over_cavalletti_post_trot="G",
+            can_steer_over_cavalletti_canter="E",
+            jump_crossbar_walk="N",
+            jump_crossbar_sit_trot="A",
+            jump_crossbar_post_trot="P",
+            jump_crossbar_canter="U"
+        )
+        rider_eval_checklist.save()
+
+    def test_rider_eval_checklist_form_duplicate_pk(self):
+        """ Verify that a Rider Evaluation Checklist form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+        try:
+            with transaction.atomic():
+                form_data={
+                    "date":"1999-9-20",
+                    "comments":"I have nothing to say",
+                    "basic_trail_rules": 1,
+                    "mount": 0,
+                    "dismount": None,
+                    "emergency_dismount": None,
+                    "four_natural_aids": 1,
+                    "basic_control": 1,
+                    "reverse_at_walk": 0,
+                    "reverse_at_trot": 1,
+                    "never_ridden": 0,
+                    "seat_at_walk": None,
+                    "seat_at_trot": 1,
+                    "seat_at_canter": None,
+                    "basic_seat_english": 1,
+                    "basic_seat_western": None,
+                    "hand_pos_english": 1,
+                    "hand_post_western": 1,
+                    "two_point_trot": 0,
+                    "circle_trot_no_stirrups": None,
+                    "circle_at_canter": 0,
+                    "circle_canter_no_stirrups": 1,
+                    "two_point_canter": 1,
+                    "circle_at_walk": 0,
+                    "circle_at_trot": 0,
+                    "holds_handhold_walk": "U",
+                    "holds_handhold_sit_trot": "P",
+                    "holds_handhold_post_trot": "F",
+                    "holds_handhold_canter": "G",
+                    "holds_reins_walk": "E",
+                    "holds_reins_sit_trot": "N",
+                    "holds_reins_post_trot": "A",
+                    "holds_reins_canter": "P",
+                    "shorten_lengthen_reins_walk": "U",
+                    "shorten_lengthen_reins_sit_trot": "P",
+                    "shorten_lengthen_reins_post_trot": "F",
+                    "shorten_lengthen_reins_canter": "G",
+                    "can_control_horse_walk": "E",
+                    "can_control_horse_sit_trot": "N",
+                    "can_control_horse_post_trot": "A",
+                    "can_control_horse_canter": "P",
+                    "can_halt_walk": "U",
+                    "can_halt_sit_trot": "P",
+                    "can_halt_post_trot": "F",
+                    "can_halt_canter": "G",
+                    "drop_pickup_stirrups_walk": "E",
+                    "drop_pickup_stirrups_sit_trot": "N",
+                    "drop_pickup_stirrups_post_trot": "A",
+                    "drop_pickup_stirrups_canter": "P",
+                    "rides_no_stirrups_walk": "U",
+                    "rides_no_stirrups_sit_trot": "P",
+                    "rides_no_stirrups_post_trot": "F",
+                    "rides_no_stirrups_canter": "G",
+                    "maintain_half_seat_walk": "E",
+                    "maintain_half_seat_sit_trot": "N",
+                    "maintain_half_seat_post_trot": "A",
+                    "maintain_half_seat_canter": "P",
+                    "can_post_walk": "U",
+                    "can_post_sit_trot": "P",
+                    "can_post_post_trot": "F",
+                    "can_post_canter": "G",
+                    "proper_diagonal_walk": "E",
+                    "proper_diagonal_sit_trot": "N",
+                    "proper_diagonal_post_trot": "A",
+                    "proper_diagonal_canter": "P",
+                    "proper_lead_canter_sees": "U",
+                    "proper_lead_canter_knows": "P",
+                    "can_steer_over_cavalletti_walk": "F",
+                    "can_steer_over_cavalletti_sit_trot": "G",
+                    "can_steer_over_cavalletti_post_trot": "E",
+                    "can_steer_over_cavalletti_canter": "N",
+                    "jump_crossbar_walk": "A",
+                    "jump_crossbar_sit_trot": "P",
+                    "jump_crossbar_post_trot": "U",
+                    "jump_crossbar_canter": "P",
+                }
+
+                test_participant_in_db=models.Participant.objects.get(
+                    name="TEST Peter Parker",
+                    birth_date="1985-4-02"
+                )
+
+                # Send a post request to the form view with the form_data defined above:
+                response=self.client.post(
+                    reverse(
+                        "private_form_rider_eval_checklist",
+                        kwargs={'participant_id':test_participant_in_db.participant_id}
+                    ),
+                    form_data
+                )
+
+                # Assert that the reponse code is a 302 (redirect):
+                self.assertEqual(response.status_code, 302)
+
+                # Assert that the context for the new view contains the correct error:
+                self.assertEqual(
+                    views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                        form="Rider Eval Checklist Form"
+                    ),
+                    response.context["error_text"]
+                )
+        except:
+            pass
+
+    def test_rider_eval_checklist_form_finds_valid_participant(self):
+        """ Tests whether the form finds a valid participant record if a
+         matching (name, date) is entered """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "date":"2016-3-13",
+            "comments":"I have nothing to say",
+            "basic_trail_rules": 1,
+            "mount": 0,
+            "dismount": None,
+            "emergency_dismount": None,
+            "four_natural_aids": 1,
+            "basic_control": 1,
+            "reverse_at_walk": 0,
+            "reverse_at_trot": 1,
+            "never_ridden": 0,
+            "seat_at_walk": None,
+            "seat_at_trot": 1,
+            "seat_at_canter": None,
+            "basic_seat_english": 1,
+            "basic_seat_western": None,
+            "hand_pos_english": 1,
+            "hand_post_western": 1,
+            "two_point_trot": 0,
+            "circle_trot_no_stirrups": None,
+            "circle_at_canter": 0,
+            "circle_canter_no_stirrups": 1,
+            "two_point_canter": 1,
+            "circle_at_walk": 0,
+            "circle_at_trot": 0,
+            "holds_handhold_walk": "U",
+            "holds_handhold_sit_trot": "P",
+            "holds_handhold_post_trot": "F",
+            "holds_handhold_canter": "G",
+            "holds_reins_walk": "E",
+            "holds_reins_sit_trot": "N",
+            "holds_reins_post_trot": "A",
+            "holds_reins_canter": "P",
+            "shorten_lengthen_reins_walk": "U",
+            "shorten_lengthen_reins_sit_trot": "P",
+            "shorten_lengthen_reins_post_trot": "F",
+            "shorten_lengthen_reins_canter": "G",
+            "can_control_horse_walk": "E",
+            "can_control_horse_sit_trot": "N",
+            "can_control_horse_post_trot": "A",
+            "can_control_horse_canter": "P",
+            "can_halt_walk": "U",
+            "can_halt_sit_trot": "P",
+            "can_halt_post_trot": "F",
+            "can_halt_canter": "G",
+            "drop_pickup_stirrups_walk": "E",
+            "drop_pickup_stirrups_sit_trot": "N",
+            "drop_pickup_stirrups_post_trot": "A",
+            "drop_pickup_stirrups_canter": "P",
+            "rides_no_stirrups_walk": "U",
+            "rides_no_stirrups_sit_trot": "P",
+            "rides_no_stirrups_post_trot": "F",
+            "rides_no_stirrups_canter": "G",
+            "maintain_half_seat_walk": "E",
+            "maintain_half_seat_sit_trot": "N",
+            "maintain_half_seat_post_trot": "A",
+            "maintain_half_seat_canter": "P",
+            "can_post_walk": "U",
+            "can_post_sit_trot": "P",
+            "can_post_post_trot": "F",
+            "can_post_canter": "G",
+            "proper_diagonal_walk": "E",
+            "proper_diagonal_sit_trot": "N",
+            "proper_diagonal_post_trot": "A",
+            "proper_diagonal_canter": "P",
+            "proper_lead_canter_sees": "U",
+            "proper_lead_canter_knows": "P",
+            "can_steer_over_cavalletti_walk": "F",
+            "can_steer_over_cavalletti_sit_trot": "G",
+            "can_steer_over_cavalletti_post_trot": "E",
+            "can_steer_over_cavalletti_canter": "N",
+            "jump_crossbar_walk": "A",
+            "jump_crossbar_sit_trot": "P",
+            "jump_crossbar_post_trot": "U",
+            "jump_crossbar_canter": "P",
+        }
+        form=forms.RiderEvalChecklistForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name="TEST Peter Parker",
+                    birth_date="1985-4-02",
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertEquals(found_participant, True)
+
+    def test_rider_eval_checklist_form_saves_with_valid_data(self):
+        """ Verify that a Rider Evaluation Checklist form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        form_data={
+            "date":"2016-3-13",
+            "comments":"I have nothing to say",
+            "basic_trail_rules": 1,
+            "mount": 0,
+            "dismount": None,
+            "emergency_dismount": None,
+            "four_natural_aids": 1,
+            "basic_control": 1,
+            "reverse_at_walk": 0,
+            "reverse_at_trot": 1,
+            "never_ridden": 0,
+            "seat_at_walk": None,
+            "seat_at_trot": 1,
+            "seat_at_canter": None,
+            "basic_seat_english": 1,
+            "basic_seat_western": None,
+            "hand_pos_english": 1,
+            "hand_post_western": 1,
+            "two_point_trot": 0,
+            "circle_trot_no_stirrups": None,
+            "circle_at_canter": 0,
+            "circle_canter_no_stirrups": 1,
+            "two_point_canter": 1,
+            "circle_at_walk": 0,
+            "circle_at_trot": 0,
+            "holds_handhold_walk": "U",
+            "holds_handhold_sit_trot": "P",
+            "holds_handhold_post_trot": "F",
+            "holds_handhold_canter": "G",
+            "holds_reins_walk": "E",
+            "holds_reins_sit_trot": "N",
+            "holds_reins_post_trot": "A",
+            "holds_reins_canter": "P",
+            "shorten_lengthen_reins_walk": "U",
+            "shorten_lengthen_reins_sit_trot": "P",
+            "shorten_lengthen_reins_post_trot": "F",
+            "shorten_lengthen_reins_canter": "G",
+            "can_control_horse_walk": "E",
+            "can_control_horse_sit_trot": "N",
+            "can_control_horse_post_trot": "A",
+            "can_control_horse_canter": "P",
+            "can_halt_walk": "U",
+            "can_halt_sit_trot": "P",
+            "can_halt_post_trot": "F",
+            "can_halt_canter": "G",
+            "drop_pickup_stirrups_walk": "E",
+            "drop_pickup_stirrups_sit_trot": "N",
+            "drop_pickup_stirrups_post_trot": "A",
+            "drop_pickup_stirrups_canter": "P",
+            "rides_no_stirrups_walk": "U",
+            "rides_no_stirrups_sit_trot": "P",
+            "rides_no_stirrups_post_trot": "F",
+            "rides_no_stirrups_canter": "G",
+            "maintain_half_seat_walk": "E",
+            "maintain_half_seat_sit_trot": "N",
+            "maintain_half_seat_post_trot": "A",
+            "maintain_half_seat_canter": "P",
+            "can_post_walk": "U",
+            "can_post_sit_trot": "P",
+            "can_post_post_trot": "F",
+            "can_post_canter": "G",
+            "proper_diagonal_walk": "E",
+            "proper_diagonal_sit_trot": "N",
+            "proper_diagonal_post_trot": "A",
+            "proper_diagonal_canter": "P",
+            "proper_lead_canter_sees": "U",
+            "proper_lead_canter_knows": "P",
+            "can_steer_over_cavalletti_walk": "F",
+            "can_steer_over_cavalletti_sit_trot": "G",
+            "can_steer_over_cavalletti_post_trot": "E",
+            "can_steer_over_cavalletti_canter": "N",
+            "jump_crossbar_walk": "A",
+            "jump_crossbar_sit_trot": "P",
+            "jump_crossbar_post_trot": "U",
+            "jump_crossbar_canter": "P",
+        }
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02"
+        )
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(
+            reverse(
+                "private_form_rider_eval_checklist",
+                kwargs={'participant_id':test_participant_in_db.participant_id}
+            ),
+            form_data
+        )
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        # Attempt to retreive the Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                participant_id=test_participant_in_db.participant_id
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retreive the new RiderEval record:
+        try:
+            print("Retrieving new RiderEval record...")
+            rider_eval_in_db=(models.EvalRidingExercises
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print(
+                "Successfully retrieved new RiderEval record."
+            )
+        except:
+            print(
+                "ERROR: Unable to retreive new RiderEval record!"
+            )
+
+        # Check that the attributes in the RiderEval were set correctly:
+        print(
+            "Checking stored RiderEval attributes..."
+        )
+
+        self.assertEqual(
+            # Format the retrieved date so it matches the input format:
+            "{d.year}-{d.month}-{d.day}".format(d=rider_eval_in_db.date),
+            form_data["date"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.comments,
+            form_data["comments"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_trail_rules,
+            bool(form_data["basic_trail_rules"])
+        )
+        self.assertEqual(
+            rider_eval_in_db.mount,
+            bool(form_data["mount"])
+        )
+        self.assertEqual(
+            rider_eval_in_db.dismount,
+            form_data["dismount"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.emergency_dismount,
+            form_data["emergency_dismount"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.four_natural_aids,
+            form_data["four_natural_aids"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_control,
+            form_data["basic_control"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.reverse_at_walk,
+            form_data["reverse_at_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.reverse_at_trot,
+            form_data["reverse_at_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.never_ridden,
+            form_data["never_ridden"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_walk,
+            form_data["seat_at_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_trot,
+            form_data["seat_at_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_canter,
+            form_data["seat_at_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_seat_english,
+            form_data["basic_seat_english"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_seat_western,
+            form_data["basic_seat_western"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.hand_pos_english,
+            form_data["hand_pos_english"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.hand_post_western,
+            form_data["hand_post_western"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.two_point_trot,
+            form_data["two_point_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_trot_no_stirrups,
+            form_data["circle_trot_no_stirrups"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_canter,
+            form_data["circle_at_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_canter_no_stirrups,
+            form_data["circle_canter_no_stirrups"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.two_point_canter,
+            form_data["two_point_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_walk,
+            form_data["circle_at_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_trot,
+            form_data["circle_at_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_walk,
+            form_data["holds_handhold_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_sit_trot,
+            form_data["holds_handhold_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_post_trot,
+            form_data["holds_handhold_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_canter,
+            form_data["holds_handhold_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_walk,
+            form_data["holds_reins_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_sit_trot,
+            form_data["holds_reins_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_post_trot,
+            form_data["holds_reins_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_canter,
+            form_data["holds_reins_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_walk,
+            form_data["shorten_lengthen_reins_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_sit_trot,
+            form_data["shorten_lengthen_reins_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_post_trot,
+            form_data["shorten_lengthen_reins_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_canter,
+            form_data["shorten_lengthen_reins_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_walk,
+            form_data["can_control_horse_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_sit_trot,
+            form_data["can_control_horse_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_post_trot,
+            form_data["can_control_horse_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_canter,
+            form_data["can_control_horse_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_walk,
+            form_data["can_halt_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_sit_trot,
+            form_data["can_halt_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_post_trot,
+            form_data["can_halt_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_canter,
+            form_data["can_halt_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_walk,
+            form_data["drop_pickup_stirrups_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_sit_trot,
+            form_data["drop_pickup_stirrups_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_post_trot,
+            form_data["drop_pickup_stirrups_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_canter,
+            form_data["drop_pickup_stirrups_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_walk,
+            form_data["rides_no_stirrups_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_sit_trot,
+            form_data["rides_no_stirrups_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_post_trot,
+            form_data["rides_no_stirrups_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_canter,
+            form_data["rides_no_stirrups_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_walk,
+            form_data["maintain_half_seat_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_sit_trot,
+            form_data["maintain_half_seat_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_post_trot,
+            form_data["maintain_half_seat_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_canter,
+            form_data["maintain_half_seat_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_walk,
+            form_data["can_post_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_sit_trot,
+            form_data["can_post_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_post_trot,
+            form_data["can_post_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_canter,
+            form_data["can_post_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_walk,
+            form_data["proper_diagonal_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_sit_trot,
+            form_data["proper_diagonal_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_post_trot,
+            form_data["proper_diagonal_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_canter,
+            form_data["proper_diagonal_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_lead_canter_sees,
+            form_data["proper_lead_canter_sees"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_lead_canter_knows,
+            form_data["proper_lead_canter_knows"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_walk,
+            form_data["can_steer_over_cavalletti_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_sit_trot,
+            form_data["can_steer_over_cavalletti_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_post_trot,
+            form_data["can_steer_over_cavalletti_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_canter,
+            form_data["can_steer_over_cavalletti_canter"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_walk,
+            form_data["jump_crossbar_walk"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_sit_trot,
+            form_data["jump_crossbar_sit_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_post_trot,
+            form_data["jump_crossbar_post_trot"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_canter,
+            form_data["jump_crossbar_canter"]
+        )
+
+    def test_rider_eval_checklist_form_error_with_invalid_data(self):
+        """ Verify that a Rider Evaluation Checklist form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        form_data={
+            "date":"2016-3-13",
+            "comments":"I have nothing to say",
+            "basic_trail_rules": 1,
+            "mount": 0,
+            "dismount": None,
+            "emergency_dismount": None,
+            "four_natural_aids": 1,
+            "basic_control": 1,
+            "reverse_at_walk": 0,
+            "reverse_at_trot": 1,
+            "never_ridden": 0,
+            "seat_at_walk": None,
+            "seat_at_trot": 1,
+            "seat_at_canter": None,
+            "basic_seat_english": 1,
+            "basic_seat_western": None,
+            "hand_pos_english": 1,
+            "hand_post_western": 1,
+            "two_point_trot": 0,
+            "circle_trot_no_stirrups": None,
+            "circle_at_canter": 0,
+            "circle_canter_no_stirrups": 1,
+            "two_point_canter": 1,
+            "circle_at_walk": 0,
+            "circle_at_trot": 0,
+            "holds_handhold_walk": "knfghsfghsdsgbsdgbdsfbadfbadfbgsdfbgh",
+            "holds_handhold_sit_trot": "P",
+            "holds_handhold_post_trot": "F",
+            "holds_handhold_canter": "G",
+            "holds_reins_walk": "E",
+            "holds_reins_sit_trot": "N",
+            "holds_reins_post_trot": "A",
+            "holds_reins_canter": "P",
+            "shorten_lengthen_reins_walk": "U",
+            "shorten_lengthen_reins_sit_trot": "P",
+            "shorten_lengthen_reins_post_trot": "F",
+            "shorten_lengthen_reins_canter": "G",
+            "can_control_horse_walk": "E",
+            "can_control_horse_sit_trot": "N",
+            "can_control_horse_post_trot": "A",
+            "can_control_horse_canter": "P",
+            "can_halt_walk": "U",
+            "can_halt_sit_trot": "P",
+            "can_halt_post_trot": "F",
+            "can_halt_canter": "G",
+            "drop_pickup_stirrups_walk": "E",
+            "drop_pickup_stirrups_sit_trot": "N",
+            "drop_pickup_stirrups_post_trot": "A",
+            "drop_pickup_stirrups_canter": "P",
+            "rides_no_stirrups_walk": "U",
+            "rides_no_stirrups_sit_trot": "P",
+            "rides_no_stirrups_post_trot": "F",
+            "rides_no_stirrups_canter": "G",
+            "maintain_half_seat_walk": "E",
+            "maintain_half_seat_sit_trot": "N",
+            "maintain_half_seat_post_trot": "A",
+            "maintain_half_seat_canter": "P",
+            "can_post_walk": "U",
+            "can_post_sit_trot": "P",
+            "can_post_post_trot": "F",
+            "can_post_canter": "G",
+            "proper_diagonal_walk": "E",
+            "proper_diagonal_sit_trot": "N",
+            "proper_diagonal_post_trot": "A",
+            "proper_diagonal_canter": "P",
+            "proper_lead_canter_sees": "U",
+            "proper_lead_canter_knows": "P",
+            "can_steer_over_cavalletti_walk": "F",
+            "can_steer_over_cavalletti_sit_trot": "G",
+            "can_steer_over_cavalletti_post_trot": "E",
+            "can_steer_over_cavalletti_canter": "N",
+            "jump_crossbar_walk": "A",
+            "jump_crossbar_sit_trot": "P",
+            "jump_crossbar_post_trot": "U",
+            "jump_crossbar_canter": "P",
+        }
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02"
+        )
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(
+            reverse(
+                "private_form_rider_eval_checklist",
+                kwargs={'participant_id':test_participant_in_db.participant_id}
+            ),
+            form_data
+        )
+
+        # Assert that the reponse code is a 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_rider_eval_checklist_form_loads_if_user_logged_in(self):
+        """ Tests whether the Rider Eval Checklist Form loads if the
+         user is logged in and valid URL parameters are passed (participant_id,
+         year, month, day). """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("private_form_rider_eval_checklist",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_rider_eval_checklist_form_loads_if_user_not_logged_in(self):
+        """ Tests whether the Rider Eval Checklist Form redirects to
+         the login page if the user is not logged in. """
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse("private_form_rider_eval_checklist",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_rider_eval_checklist_form_error_if_invalid_participant_get(self):
+        """ Tests whether the Rider Eval Checklist Form loads if the
+         user is logged in and valid URL parameters are passed (participant_id,
+         year, month, day). """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("private_form_rider_eval_checklist",
+                kwargs={
+                    "participant_id":987,
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_rider_eval_checklist_form_error_if_invalid_participant_post(self):
+        """ Tests whether the Rider Eval Checklist Form loads if the
+         user is logged in and valid URL parameters are passed (participant_id,
+         year, month, day). """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02"
+        )
+
+        self.client.force_login(test_user)
+
+        form_data={
+            "date":"2016-3-13",
+            "comments":"I have nothing to say",
+            "basic_trail_rules": 1,
+            "mount": 0,
+            "dismount": None,
+            "emergency_dismount": None,
+            "four_natural_aids": 1,
+            "basic_control": 1,
+            "reverse_at_walk": 0,
+            "reverse_at_trot": 1,
+            "never_ridden": 0,
+            "seat_at_walk": None,
+            "seat_at_trot": 1,
+            "seat_at_canter": None,
+            "basic_seat_english": 1,
+            "basic_seat_western": None,
+            "hand_pos_english": 1,
+            "hand_post_western": 1,
+            "two_point_trot": 0,
+            "circle_trot_no_stirrups": None,
+            "circle_at_canter": 0,
+            "circle_canter_no_stirrups": 1,
+            "two_point_canter": 1,
+            "circle_at_walk": 0,
+            "circle_at_trot": 0,
+            "holds_handhold_walk": "U",
+            "holds_handhold_sit_trot": "P",
+            "holds_handhold_post_trot": "F",
+            "holds_handhold_canter": "G",
+            "holds_reins_walk": "E",
+            "holds_reins_sit_trot": "N",
+            "holds_reins_post_trot": "A",
+            "holds_reins_canter": "P",
+            "shorten_lengthen_reins_walk": "U",
+            "shorten_lengthen_reins_sit_trot": "P",
+            "shorten_lengthen_reins_post_trot": "F",
+            "shorten_lengthen_reins_canter": "G",
+            "can_control_horse_walk": "E",
+            "can_control_horse_sit_trot": "N",
+            "can_control_horse_post_trot": "A",
+            "can_control_horse_canter": "P",
+            "can_halt_walk": "U",
+            "can_halt_sit_trot": "P",
+            "can_halt_post_trot": "F",
+            "can_halt_canter": "G",
+            "drop_pickup_stirrups_walk": "E",
+            "drop_pickup_stirrups_sit_trot": "N",
+            "drop_pickup_stirrups_post_trot": "A",
+            "drop_pickup_stirrups_canter": "P",
+            "rides_no_stirrups_walk": "U",
+            "rides_no_stirrups_sit_trot": "P",
+            "rides_no_stirrups_post_trot": "F",
+            "rides_no_stirrups_canter": "G",
+            "maintain_half_seat_walk": "E",
+            "maintain_half_seat_sit_trot": "N",
+            "maintain_half_seat_post_trot": "A",
+            "maintain_half_seat_canter": "P",
+            "can_post_walk": "U",
+            "can_post_sit_trot": "P",
+            "can_post_post_trot": "F",
+            "can_post_canter": "G",
+            "proper_diagonal_walk": "E",
+            "proper_diagonal_sit_trot": "N",
+            "proper_diagonal_post_trot": "A",
+            "proper_diagonal_canter": "P",
+            "proper_lead_canter_sees": "U",
+            "proper_lead_canter_knows": "P",
+            "can_steer_over_cavalletti_walk": "F",
+            "can_steer_over_cavalletti_sit_trot": "G",
+            "can_steer_over_cavalletti_post_trot": "E",
+            "can_steer_over_cavalletti_canter": "N",
+            "jump_crossbar_walk": "A",
+            "jump_crossbar_sit_trot": "P",
+            "jump_crossbar_post_trot": "U",
+            "jump_crossbar_canter": "P",
+        }
+
+        response = self.client.post(
+            reverse("private_form_rider_eval_checklist",
+                kwargs={
+                    "participant_id": 99999999999999999,
+                }
+            ),
+            form_data
+        )
+
+        self.assertEqual(response.status_code, 200) # Redirected...
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
 
 class TestAdminIndex(TestCase):
     def setUp(self):

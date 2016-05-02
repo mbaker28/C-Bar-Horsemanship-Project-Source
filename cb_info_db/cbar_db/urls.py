@@ -107,4 +107,8 @@ urlpatterns = [
     # Session Plan
     url(r'^forms/private/session_plan/(?P<participant_id>[0-9]+)$', views.private_form_session_plan,
         name='private-form-session-plan'),
+
+    # Rider Eval Checklist form
+    url(r'^forms/private/rider_eval_checklist/(?P<participant_id>[0-9]+)$', views.private_form_rider_eval_checklist,
+        name='private_form_rider_eval_checklist'),
 ]
