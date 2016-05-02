@@ -1809,3 +1809,184 @@ def report_seizure(request, participant_id, year, month, day):
             "participant": participant
         }
     )
+
+@login_required
+def private_form_session_plan(request, participant_id):
+    """Data for session plan form."""
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        # Create a form instance and populate it with data from the request:
+        form=forms.SessionPlanForm(request.POST)
+
+        # Check whether the form data entered is valid:
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+            # Find the participant's record based on their (name, birth_date):
+            try:
+                participant=models.Participant.objects.get(
+                    participant_id=participant_id
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/private/session_plan.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                    }
+                )
+
+            session_plan=models.Session(
+                date=form.cleaned_data['date'],
+                tack=form.cleaned_data['tack']
+            )
+            session_plan.save()
+
+            session_goals=models.SessionGoals(
+                participant_id=participant,
+                session_id=session_plan,
+                goal_type=form.cleaned_data['goal_type'],
+                goal_description=form.cleaned_data['goal_description'],
+                motivation=form.cleaned_data['motivation']
+            )
+            session_goals.save()
+
+            horse_info=models.Horse(
+                name=form.cleaned_data['horse_name'],
+            )
+            horse_info.save()
+
+            try:
+                adaptations_needed=models.AdaptationsNeeded(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    ambulatory_status=form.cleaned_data['ambulatory_status'],
+                    ambulatory_status_other=(
+                        form.cleaned_data['ambulatory_status_other']),
+                    mount_assistance_required=(
+                        form.cleaned_data['mount_assistance_required']),
+                    mount_device_needed=(
+                        form.cleaned_data['mount_device_needed']),
+                    mount_type=(
+                        form.cleaned_data['mount_type']),
+                    dismount_assistance_required=(
+                        form.cleaned_data['dismount_assistance_required']),
+                    dismount_type=form.cleaned_data['dismount_type'],
+                    num_sidewalkers_walk_spotter=(
+                        form.cleaned_data["num_sidewalkers_walk_spotter"]),
+                    num_sidewalkers_walk_heel_hold=(
+                        form.cleaned_data["num_sidewalkers_walk_heel_hold"]),
+                    num_sidewalkers_walk_over_thigh=(
+                        form.cleaned_data["num_sidewalkers_walk_over_thigh"]),
+                    num_sidewalkers_walk_other=(
+                        form.cleaned_data["num_sidewalkers_walk_other"]),
+                    num_sidewalkers_trot_spotter=(
+                        form.cleaned_data["num_sidewalkers_trot_spotter"]),
+                    num_sidewalkers_trot_heel_hold=(
+                        form.cleaned_data["num_sidewalkers_trot_heel_hold"]),
+                    num_sidewalkers_trot_over_thigh=(
+                        form.cleaned_data["num_sidewalkers_trot_over_thigh"]),
+                    num_sidewalkers_trot_other=(
+                        form.cleaned_data["num_sidewalkers_trot_other"])
+                )
+                adaptations_needed.save()
+            # Catch duplicate primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/private/session_plan.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="session plan")
+                            ),
+                        }
+                    )
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/private/session_plan.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
+
+            # redirect to a "you saved a form" page:
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid
+            loggeyMcLogging.error("The form is NOT valid")
+
+            try:
+                participant=models.Participant.objects.get(
+                    participant_id=participant_id
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/private/session_plan.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                    }
+                )
+
+            return render(
+                request,
+                "cbar_db/forms/private/session_plan.html",
+                {
+                    'form': form,
+                    'participant': participant,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+    else:
+        # If request type is GET (or any other method) create a blank form and
+        # display it:
+        form=forms.SessionPlanForm()
+
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            # The participant doesn't exist.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/session_plan.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                }
+            )
+
+        diagnosis_types=models.Diagnosis.objects.filter(
+            participant_id=participant,
+        )
+
+        return render(
+            request,
+            'cbar_db/forms/private/session_plan.html',
+            {
+                'form': form,
+                'participant': participant,
+                'diagnosis_types': diagnosis_types
+            }
+        )

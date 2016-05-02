@@ -572,6 +572,127 @@ class EmergencyMedicalReleaseForm(forms.Form):
     )
 
 
+class SessionPlanForm(forms.Form):
+    # Stored in Participant
+    # name=forms.CharField(
+    #     max_length=models.Participant._meta.get_field("name").max_length
+    # )
+    # birth_date=forms.DateField()
+
+    # Stored in Session
+    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    tack=forms.CharField(
+        max_length=models.Session._meta.get_field("tack").max_length
+    )
+
+    # Stored in SessionGoals
+    goal_type=forms.ChoiceField(
+        #max_length=models.SessionGoals._meta.get_field("goal_type").max_length,
+        choices=models.SessionGoals._meta.get_field("goal_type").choices
+    )
+    goal_description=forms.CharField(
+        max_length=models.SessionGoals
+        ._meta.get_field("goal_description").max_length
+    )
+    motivation=forms.CharField(
+        max_length=models.SessionGoals._meta.get_field("motivation").max_length
+    )
+
+    # Stored in Horse
+    horse_name=forms.CharField(
+        max_length=models.Horse._meta.get_field("name").max_length
+    )
+    # description=forms.CharField(
+    #     max_length=models.Horse._meta.get_field("description").max_length
+    # )
+
+    # Stored in Diagnosis
+    # diagnosis=forms.CharField(
+    #     max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
+    # )
+    # diagnosis_type=forms.ChoiceField(
+    #     choices=models.Diagnosis._meta.get_field("diagnosis_type").choices
+    # )
+
+    # Stored in AdaptationsNeeded
+    ambulatory_status=forms.ChoiceField(
+        choices=models.AdaptationsNeeded
+        ._meta.get_field("ambulatory_status").choices
+    )
+    ambulatory_status_other=forms.CharField(
+        max_length=models.AdaptationsNeeded
+        ._meta.get_field("ambulatory_status_other").max_length,
+        required=False
+    )
+    mount_assistance_required=forms.ChoiceField(
+        choices=models.AdaptationsNeeded
+        ._meta.get_field("mount_assistance_required").choices
+    )
+    mount_device_needed=forms.ChoiceField(
+        choices=models.AdaptationsNeeded
+        ._meta.get_field("mount_device_needed").choices,
+        required=False
+    )
+    mount_type=forms.ChoiceField(
+        choices=models.AdaptationsNeeded._meta.get_field("mount_type").choices,
+        required=False
+    )
+    dismount_assistance_required=forms.ChoiceField(
+        choices=models.AdaptationsNeeded
+        ._meta.get_field("dismount_assistance_required").choices
+    )
+    dismount_type=forms.ChoiceField(
+        choices=models.AdaptationsNeeded
+        ._meta.get_field("dismount_type").choices
+    )
+    num_sidewalkers_walk_spotter=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_walk_spotter").max_digits,
+        decimal_places=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_walk_spotter").decimal_places
+    )
+    num_sidewalkers_walk_heel_hold=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_walk_heel_hold").max_digits,
+        decimal_places=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_walk_heel_hold").decimal_places
+    )
+    num_sidewalkers_walk_over_thigh=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_walk_over_thigh").max_digits,
+        decimal_places=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_walk_over_thigh").decimal_places
+    )
+    num_sidewalkers_walk_other=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_walk_other").max_digits,
+        decimal_places=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_walk_other").decimal_places
+    )
+    num_sidewalkers_trot_spotter=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_trot_spotter").max_digits,
+        decimal_places=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_trot_spotter").decimal_places
+    )
+    num_sidewalkers_trot_heel_hold=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_trot_heel_hold").max_digits,
+        decimal_places=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_trot_heel_hold").decimal_places
+    )
+    num_sidewalkers_trot_over_thigh=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_trot_over_thigh").max_digits,
+        decimal_places=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_trot_over_thigh").decimal_places
+    )
+    num_sidewalkers_trot_other=forms.DecimalField(
+        max_digits=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_trot_other").max_digits,
+        decimal_places=models.AdaptationsNeeded
+        ._meta.get_field("num_sidewalkers_trot_other").decimal_places
+    )
 
 class RiderEvalChecklistForm(forms.Form):
     comments=forms.CharField(
@@ -1024,7 +1145,6 @@ class HorseAdoptionForm(forms.Form):
         max_length=models.Donor._meta.get_field("name").max_length
     )
     email=forms.EmailField()
-
 
 
 class MonetaryDonationForm(forms.Form):
