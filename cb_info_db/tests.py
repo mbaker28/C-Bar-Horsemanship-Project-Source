@@ -5044,10 +5044,12 @@ class TestObservationEvaluation(TestCase):
         test_user=models.User.objects.get(
             username="testuser",
         )
-        test_participant_in_db=models.Participant.objects.get(
-            name="TEST Levi Jenson"
-        )
         self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18"
+        )
 
         response = self.client.get(
             reverse('participant-record',
