@@ -3396,7 +3396,7 @@ class TestSeizureEvaluationForm(TestCase):
             response.context["error_text"]
         )
 
-    def test_seizure_evaluation_form_saves_with_valid_data(self):
+    def test_seizure_evaluation_form_saves_with_valid_data_regression_37(self):
         """ Regression Test for Issue #37. You should be able to save a Seizure
          Evaluation form without a value in the
          'action_to_take_allow_time_how_long'. """
@@ -3488,6 +3488,7 @@ class TestSeizureEvaluationForm(TestCase):
             )
 
         self.assertTrue(retrieved_seizure_eval)
+
 
 class TestRiderEvalChecklistForm(TestCase):
     def setUp(self):
