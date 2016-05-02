@@ -1166,6 +1166,8 @@ def private_form_rider_eval_checklist(request, participant_id):
 
         # check whether it's valid:
         if form.is_valid():
+            loggeyMcLogging.error("form_data == " + str(form.cleaned_data))
+
             try:
                 form_data_rider_eval_checklist=models.EvalRidingExercises(
                     participant_id=participant,
@@ -1254,12 +1256,12 @@ def private_form_rider_eval_checklist(request, participant_id):
                 if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
                     return render(
                         request,
-                        "cbar_db/forms/private_form_rider_eval_checklist",
+                        "cbar_db/forms/private/rider_eval_checklist_form.html",
                         {
                             'form': form,
                             'error_text': (
                                 ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
-                                .format(form="rider_eval_checklist_form")
+                                .format(form="Rider Eval Checklist Form")
                             ),
                         }
                     )
@@ -1271,7 +1273,7 @@ def private_form_rider_eval_checklist(request, participant_id):
                     )
                     return render(
                         request,
-                        "cbar_db/forms/private_form_rider_eval_checklist",
+                        "cbar_db/forms/private/rider_eval_checklist_form.html",
                         {
                             'form': form,
                             'error_text': ERROR_TEXT_DB_INTEGRITY,

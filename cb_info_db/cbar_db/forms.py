@@ -582,97 +582,120 @@ class RiderEvalChecklistForm(forms.Form):
 
     date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
-    basic_trail_rules=forms.ChoiceField(widget=RadioSelect,
-        choices=models.EvalRidingExercises._meta
-            .get_field("basic_trail_rules").choices)
+    basic_trail_rules=forms.NullBooleanField(widget=RadioSelect(
+            choices=models.EvalRidingExercises._meta
+            .get_field("basic_trail_rules").choices),
+            required=False)
 
-    mount=forms.ChoiceField(widget=RadioSelect,
+    mount=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("mount").choices)
+            .get_field("mount").choices),
+            required=False)
 
-    dismount=forms.ChoiceField(widget=RadioSelect,
+    dismount=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("dismount").choices)
+            .get_field("dismount").choices),
+            required=False)
 
-    emergency_dismount=forms.ChoiceField(widget=RadioSelect,
+    emergency_dismount=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("emergency_dismount").choices)
+            .get_field("emergency_dismount").choices),
+            required=False)
 
-    four_natural_aids=forms.ChoiceField(widget=RadioSelect,
+    four_natural_aids=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("four_natural_aids").choices)
+            .get_field("four_natural_aids").choices),
+            required=False)
 
-    basic_control=forms.ChoiceField(widget=RadioSelect,
+    basic_control=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("basic_control").choices)
+            .get_field("basic_control").choices),
+            required=False)
 
-    reverse_at_walk=forms.ChoiceField(widget=RadioSelect,
+    reverse_at_walk=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("reverse_at_walk").choices)
+            .get_field("reverse_at_walk").choices),
+            required=False)
 
-    reverse_at_trot=forms.ChoiceField(widget=RadioSelect,
+    reverse_at_trot=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("reverse_at_trot").choices)
+            .get_field("reverse_at_trot").choices),
+            required=False)
 
-    never_ridden=forms.ChoiceField(widget=RadioSelect,
+    never_ridden=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("never_ridden").choices)
+            .get_field("never_ridden").choices),
+            required=False)
 
-    seat_at_walk=forms.ChoiceField(widget=RadioSelect,
+    seat_at_walk=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("seat_at_walk").choices)
+            .get_field("seat_at_walk").choices),
+            required=False)
 
-    seat_at_trot=forms.ChoiceField(widget=RadioSelect,
+    seat_at_trot=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("seat_at_trot").choices)
+            .get_field("seat_at_trot").choices),
+            required=False)
 
-    seat_at_canter=forms.ChoiceField(widget=RadioSelect,
+    seat_at_canter=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("seat_at_canter").choices)
+            .get_field("seat_at_canter").choices),
+            required=False)
 
-    basic_seat_english=forms.ChoiceField(widget=RadioSelect,
+    basic_seat_english=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("basic_seat_english").choices)
+            .get_field("basic_seat_english").choices),
+            required=False)
 
-    basic_seat_western=forms.ChoiceField(widget=RadioSelect,
+    basic_seat_western=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("basic_seat_western").choices)
+            .get_field("basic_seat_western").choices),
+            required=False)
 
-    hand_pos_english=forms.ChoiceField(widget=RadioSelect,
+    hand_pos_english=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("hand_pos_english").choices)
+            .get_field("hand_pos_english").choices),
+            required=False)
 
-    hand_post_western=forms.ChoiceField(widget=RadioSelect,
+    hand_post_western=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("hand_post_western").choices)
+            .get_field("hand_post_western").choices),
+            required=False)
 
-    two_point_trot=forms.ChoiceField(widget=RadioSelect,
+    two_point_trot=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("two_point_trot").choices)
+            .get_field("two_point_trot").choices),
+            required=False)
 
-    circle_trot_no_stirrups=forms.ChoiceField(widget=RadioSelect,
+    circle_trot_no_stirrups=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("circle_trot_no_stirrups").choices)
+            .get_field("circle_trot_no_stirrups").choices),
+            required=False)
 
-    circle_at_canter=forms.ChoiceField(widget=RadioSelect,
+    circle_at_canter=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("circle_at_canter").choices)
+            .get_field("circle_at_canter").choices),
+            required=False)
 
-    circle_canter_no_stirrups=forms.ChoiceField(widget=RadioSelect,
+    circle_canter_no_stirrups=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("circle_canter_no_stirrups").choices)
+            .get_field("circle_canter_no_stirrups").choices),
+            required=False)
 
-    two_point_canter=forms.ChoiceField(widget=RadioSelect,
+    two_point_canter=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("two_point_canter").choices)
+            .get_field("two_point_canter").choices),
+            required=False)
 
-    circle_at_walk=forms.ChoiceField(widget=RadioSelect,
+    circle_at_walk=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("circle_at_walk").choices)
+            .get_field("circle_at_walk").choices),
+            required=False)
 
-    circle_at_trot=forms.ChoiceField(widget=RadioSelect,
+    circle_at_trot=forms.NullBooleanField(widget=RadioSelect(
         choices=models.EvalRidingExercises._meta
-            .get_field("circle_at_trot").choices)
+            .get_field("circle_at_trot").choices),
+            required=False)
 
     holds_handhold_walk=forms.ChoiceField(widget=RadioSelect,
         choices=(models.EvalRidingExercises._meta

@@ -61,11 +61,13 @@ YES_NO_BOOL_CHOICES=(
     (NO_BOOL, "No")
 )
 
-NULL=""
+NULL_GAY=2 # anything that's not 1 or 0
+TRUE_GAY=1
+FALSE_GAY=0
 YES_NO_NULL_BOOL_CHOICES=(
-    (YES_BOOL, "Yes"),
-    (NO_BOOL, "No"),
-    (NULL, "Unknown")
+    (TRUE_GAY, "Yes"),
+    (FALSE_GAY, "No"),
+    (NULL_GAY, "Unknown")
 )
 
 UNSATISFACTORY="U"
@@ -75,7 +77,7 @@ GOOD="G"
 EXCELLENT="E"
 NOT_PERFORMED_DISABILITY="N"
 ATTEMPTS="A"
-PARTIALLY_COMPLETES="P"
+PARTIALLY_COMPLETES="C"
 LIKERT_LIKE_CHOICES=(
     (UNSATISFACTORY, "Unsatisfactory"),
     (POOR, "Poor"),
