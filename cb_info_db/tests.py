@@ -6614,7 +6614,8 @@ class TestMonetaryDonation(TestCase):
         form_data={
             "amount":"5",
             "name":"TEST Batt Maker",
-            "email":"Matt.Something@ftc.gov"
+            "email":"Matt.Something@ftc.gov",
+            "purpose": "New saddles"
         }
 
         response=self.client.post(reverse("donation-monetary"), form_data)
@@ -6653,6 +6654,10 @@ class TestMonetaryDonation(TestCase):
             self.assertEqual(
                 donation_in_db.amount,
                 form_data["amount"]
+            )
+            self.assertEqual(
+                donation_in_db.purpose,
+                form_data["purpose"]
             )
         except:
             print(
