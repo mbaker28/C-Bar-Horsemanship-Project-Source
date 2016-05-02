@@ -1110,7 +1110,8 @@ def donation_monetary(request):
             donation=models.Donation(
                 donor_id=donor,
                 donation_type=models.Donation.DONATION_MONETARY,
-                amount=form.cleaned_data["amount"]
+                amount=form.cleaned_data["amount"],
+                purpose=form.cleaned_data["purpose"]
             )
             donation.save()
 

@@ -217,11 +217,9 @@ class Donation(models.Model):
         null=True
     )
     amount=models.DecimalField(max_digits=10, decimal_places=2)
-    # Commented out because I don"t think we"ll actually store payment info,
-    # but it"s in the ERD...
-    # payment_info=models.CharField(max_length=500)
     donation_type=models.CharField(max_length=1, choices=DONATION_CHOICES)
-
+    purpose=models.CharField(max_length=SHORT_ANSWER_LENGTH, null=True)
+    date=models.DateField(auto_now_add=True)
 
 class Grouping(models.Model):
     """ AKA Class... reserved words and such """

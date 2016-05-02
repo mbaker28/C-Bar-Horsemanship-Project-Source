@@ -1156,3 +1156,7 @@ class MonetaryDonationForm(forms.Form):
         max_length=models.Donor._meta.get_field("name").max_length
     )
     email=forms.EmailField()
+    purpose=forms.CharField(
+        max_length=models.Donation._meta.get_field("purpose").max_length,
+        required=False
+    )
