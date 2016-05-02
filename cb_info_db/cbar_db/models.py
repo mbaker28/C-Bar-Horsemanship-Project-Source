@@ -1029,6 +1029,7 @@ class MedicalInfo(models.Model):
     currently_taking_any_medication=models.BooleanField(
         choices=YES_NO_BOOL_CHOICES
     )
+    pregnant=models.BooleanField(choices=YES_NO_BOOL_CHOICES)
 
 
 class Medication(models.Model):

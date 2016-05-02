@@ -240,7 +240,8 @@ def public_form_med_release(request):
                     limiting_surgeries_last_six_monthes=(
                         form.cleaned_data["limiting_surgeries_last_six_monthes"]
                     ),
-                    signature=(form.cleaned_data["signature"])
+                    signature=(form.cleaned_data["signature"]),
+                    pregnant=form.cleaned_data["pregnant"],
                 )
                 medical_info.save()
             # Catch duplicate composite primary keys:
