@@ -1159,4 +1159,4 @@ class MonetaryDonationForm(forms.Form):
     purpose=forms.CharField(
         max_length=models.Donation._meta.get_field("purpose").max_length,
         required=False
-    )
+    ) # Git is being a butt...
