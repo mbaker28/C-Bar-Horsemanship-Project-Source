@@ -3396,6 +3396,98 @@ class TestSeizureEvaluationForm(TestCase):
             response.context["error_text"]
         )
 
+    def test_seizure_evaluation_form_saves_with_valid_data(self):
+        """ Regression Test for Issue #37. You should be able to save a Seizure
+         Evaluation form without a value in the
+         'action_to_take_allow_time_how_long'. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
+            "medication_one_name": "Excedrin",
+            "medication_one_reason": "Headachey stuff",
+            "medication_one_frequency": "A couple of times a week",
+            "medication_two_name": "Blah Test Medicine",
+            "medication_two_reason": "",
+            "medication_two_frequency": "",
+            "medication_three_name": "Sciency Medicine Name",
+            "medication_three_reason": "Things that hurt",
+            "medication_three_frequency": "Every 2 hours, as needed",
+            "type_of_seizure": "P",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": "",
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-seizure"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        retrieved_seizure_eval=False
+
+        # Attempt to retreive the Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retreive the new SeizureEval record:
+        try:
+            print("Retrieving new SeizureEval record...")
+            seizure_eval_in_db=(models.SeizureEval
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            retrieved_seizure_eval=True
+            print(
+                "Successfully retrieved new SeizureEval record."
+            )
+        except:
+            print(
+                "ERROR: Unable to retreive new SeizureEval record!"
+            )
+
+        self.assertTrue(retrieved_seizure_eval)
 
 class TestRiderEvalChecklistForm(TestCase):
     def setUp(self):
@@ -4474,6 +4566,7 @@ class TestRiderEvalChecklistForm(TestCase):
                 views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
             )
         )
+
 
 class TestAdminIndex(TestCase):
     def setUp(self):
@@ -6068,6 +6161,8 @@ class TestSeizureEvaluationReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+
 
 
 class TestAdoptParticipant(TestCase):
