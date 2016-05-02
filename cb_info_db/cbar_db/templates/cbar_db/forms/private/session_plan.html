@@ -25,14 +25,10 @@
                     {{ form.tack.errors.as_text }}
                 </span>
                 <br />
-                Diagnosis: {{ form.diagnosis }}
-                <span class="error_message">
-                    {{ form.diagnosis.errors.as_text }}
-                </span>
-                Type: {{ form.diagnosis_type }}
-                <span class="error_message">
-                    {{ form.diagnosis_type.errors.as_text }}
-                </span>
+                {% for diagnosis in diagnosis_types %}
+                    Diagnosis: {{ diagnosis.diagnosis }}
+                    Type: {{ diagnosis.get_diagnosis_type_display }}
+                {% endfor %}
                 <br />
                 Mobility: {{ form.ambulatory_status }}
                 <span class="error_message">

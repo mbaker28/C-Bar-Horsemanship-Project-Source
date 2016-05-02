@@ -613,12 +613,12 @@ class SessionPlanForm(forms.Form):
     # )
 
     # Stored in Diagnosis
-    diagnosis=forms.CharField(
-        max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
-    )
-    diagnosis_type=forms.ChoiceField(
-        choices=models.Diagnosis._meta.get_field("diagnosis_type").choices
-    )
+    # diagnosis=forms.CharField(
+    #     max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
+    # )
+    # diagnosis_type=forms.ChoiceField(
+    #     choices=models.Diagnosis._meta.get_field("diagnosis_type").choices
+    # )
 
     # Stored in AdaptationsNeeded
     ambulatory_status=forms.ChoiceField(

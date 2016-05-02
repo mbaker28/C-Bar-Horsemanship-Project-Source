@@ -6,6 +6,7 @@ from django.test.utils import setup_test_environment
 from django.test import Client
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from cbar_db import models
 from cbar_db import forms
 from cbar_db import views
@@ -5683,10 +5684,17 @@ class TestMonetaryDonation(TestCase):
                 "Error: Unable to retreive new Donation Record!"
             )
 
+
 class TestSessionPlanForm(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
         client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
 
         # Create a Participant record and save it
         test_participant=models.Participant(
@@ -5738,7 +5746,7 @@ class TestSessionPlanForm(TestCase):
 
         adaptations_needed=models.AdaptationsNeeded(
             participant_id=test_participant,
-            date="2014-3-5",
+            date="2016-5-1",
             ambulatory_status="I",
             ambulatory_status_other="Some shit.",
             mount_assistance_required="M",
@@ -5757,6 +5765,51 @@ class TestSessionPlanForm(TestCase):
         )
         adaptations_needed.save()
 
+    def test_session_plan_loads_if_user_logged_in(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Bobby Bobbers",
+            birth_date="1986-7-21"
+        )
+
+        response=self.client.get(
+            reverse(
+                "private-form-session-plan",
+                kwargs={"participant_id": test_participant.participant_id}
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_session_plan_redirects_if_user_not_logged_in(self):
+        test_participant=models.Participant.objects.get(
+            name="TEST Bobby Bobbers",
+            birth_date="1986-7-21"
+        )
+
+        response=self.client.get(
+            reverse(
+                "private-form-session-plan",
+                kwargs={"participant_id": test_participant.participant_id}
+            )
+        )
+
+        self.assertEqual(response.status_code, 302) # Redirected...
+
+         # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
     def test_session_plan_form_finds_valid_participant(self):
         """ Tests whether the form finds a valid participant record if a
          matching (name, date) is entered """
@@ -5765,8 +5818,6 @@ class TestSessionPlanForm(TestCase):
         found_participant=False
 
         form_data={
-            "name": "TEST Bobby Bobbers",
-            "birth_date": "1986-7-21",
             "date": "2016-5-1",
             "horse_name": "Charlie",
             "tack": "Some words.",
@@ -5799,8 +5850,8 @@ class TestSessionPlanForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["name"],
-                    birth_date=form.cleaned_data["birth_date"]
+                    name="TEST Bobby Bobbers",
+                    birth_date="1986-7-21",
                 )
                 print("Found participant.")
                 found_participant=True
@@ -5814,122 +5865,15 @@ class TestSessionPlanForm(TestCase):
         # We should say we could find the participant:
         self.assertTrue(found_participant)
 
-    def test_session_plan_form_not_valid_participant_name(self):
-        """ Verify that a Session Plan form view, populated with an invalid
-         participant name, displays an error message. """
-
-        # If we are able to find the matching record, we set this to True:
-        found_participant=False
-
-        form_data={
-            "name": "TEST I'm Not Bobby Bobbers",
-            "birth_date": "1986-7-21",
-            "date": "2016-5-1",
-            "horse_name": "Charlie",
-            "tack": "Some words.",
-            "diagnosis": "Herpes",
-            "diagnosis_type": "P",
-            "ambulatory_status": "I",
-            "ambulatory_status_other": "Some shit.",
-            "mount_assistance_required": "M",
-            "mount_device_needed": "S",
-            "mount_type": "T",
-            "dismount_assistance_required": "M",
-            "dismount_type": "A",
-            "num_sidewalkers_walk_spotter": "1",
-            "num_sidewalkers_walk_heel_hold": "2",
-            "num_sidewalkers_walk_over_thigh": "2",
-            "num_sidewalkers_walk_other": "3",
-            "num_sidewalkers_trot_spotter": "2",
-            "num_sidewalkers_trot_heel_hold": "2",
-            "num_sidewalkers_trot_over_thigh": "1",
-            "num_sidewalkers_trot_other": "3",
-            "goal_type": "S",
-            "goal_description": "Try not to break your neck.",
-            "motivation": "Don't die."
-        }
-        form=forms.SessionPlanForm(form_data)
-
-        if form.is_valid(): # Performs validation, needed for form.cleaned_data
-            print("Form is valid.")
-
-            try:
-                print("Finding participant...")
-                participant_instance=models.Participant.objects.get(
-                    birth_date=form.cleaned_data["birth_date"]
-                )
-                print("Found participant.")
-                found_participant=True
-
-            except ObjectDoesNotExist:
-                found_participant=False
-
-        else:
-            print("Form is not valid.")
-
-        # We should say we could not find the participant:
-        self.assertFalse(found_participant)
-
-    def test_session_plan_form_not_valid_birth_date(self):
-        """ Verify that a Session Plan form view, populated with an invalid
-         participant birth date, displays an error message. """
-
-        # If we are able to find the matching record, we set this to True:
-        found_participant=False
-
-        form_data={
-            "name": "TEST Bobby Bobbers",
-            "birth_date": "1900-0-01",
-            "date": "2016-5-1",
-            "horse_name": "Charlie",
-            "tack": "Some words.",
-            "diagnosis": "Herpes",
-            "diagnosis_type": "P",
-            "ambulatory_status": "I",
-            "ambulatory_status_other": "Some shit.",
-            "mount_assistance_required": "M",
-            "mount_device_needed": "S",
-            "mount_type": "T",
-            "dismount_assistance_required": "M",
-            "dismount_type": "A",
-            "num_sidewalkers_walk_spotter": "1",
-            "num_sidewalkers_walk_heel_hold": "2",
-            "num_sidewalkers_walk_over_thigh": "2",
-            "num_sidewalkers_walk_other": "3",
-            "num_sidewalkers_trot_spotter": "2",
-            "num_sidewalkers_trot_heel_hold": "2",
-            "num_sidewalkers_trot_over_thigh": "1",
-            "num_sidewalkers_trot_other": "3",
-            "goal_type": "S",
-            "goal_description": "Try not to break your neck.",
-            "motivation": "Don't die."
-        }
-        form=forms.SessionPlanForm(form_data)
-
-        if form.is_valid(): # Performs validation, needed for form.cleaned_data
-            print("Form is valid.")
-
-            try:
-                print("Finding participant...")
-                participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["name"],
-                    birth_date=form.cleaned_data["birth_date"]
-                )
-                print("Found participant.")
-                found_participant=True
-
-            except ObjectDoesNotExist:
-                found_participant=False
-
-        else:
-            print("Form is not valid.")
-
-        # We should say we could not find the participant:
-        self.assertFalse(found_participant)
-
     def test_session_plan_form_saves_with_valid_data(self):
         """ Verify that a Session Plan form view, populated with
          valid data, correctly saves the form to the database. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
 
         test_participant=models.Participant.objects.get(
             name="TEST Bobby Bobbers",
@@ -5937,13 +5881,9 @@ class TestSessionPlanForm(TestCase):
         )
 
         form_data={
-            "name": "TEST Bobby Bobbers",
-            "birth_date": "1986-7-21",
-            "date": "2016-5-1",
+            "date": "2016-1-1",
             "horse_name": "Charlie",
             "tack": "Some words.",
-            "diagnosis": "Herpes",
-            "diagnosis_type": "P",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
             "mount_assistance_required": "M",
@@ -5966,8 +5906,7 @@ class TestSessionPlanForm(TestCase):
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("private-form-session-plan",
-        kwargs={"participant_id",
-        test_participant.participant_id}), form_data)
+        kwargs={"participant_id": test_participant.participant_id}), form_data)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -5982,42 +5921,46 @@ class TestSessionPlanForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["name"],
-                birth_date=form_data["birth_date"]
+                participant_id=test_participant.participant_id
             )
         except:
             print("ERROR: Unable to retreive participant record!")
 
-        # Attempt to retreive the new MediaRelease record:
-        try:
-            print("Retrieving new SessionPlan record...")
-            session_plan_in_db=(models.Session
-                .objects.get(
-                    participant_id=participant_in_db,
-                    date=form_data["date"]
-                )
-            )
-            print(
-                "Successfully retrieved new SessionPlan record."
-            )
-        except:
-            print(
-                "ERROR: Unable to retreive new SessionPlan record!"
-            )
+        #TODO: Check all stored attributes, wait until changing sidewalker types
 
-        # Check that the attributes in the MediaRelease were set correctly:
-        print(
-            "Checking stored SessionPlan attributes..."
-        )
-        self.assertEqual(
-            # Format the retrieved date so it matches the input format:
-            "{d.year}-{d.month}-{d.day}".format(d=session_plan_in_db.date),
-            form_data["date"]
+    def test_session_plan_error_if_invalid_participant_get(self):
+        test_user=models.User.objects.get(
+            username="testuser"
         )
 
-    def test_session_plan_form_with_invalid_participant_name(self):
-        """ Verify that a Session Plan form view, populated with
-         an invalid participant name, displays an error message. """
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Bobby Bobbers",
+            birth_date="1986-7-21"
+        )
+
+        response=self.client.get(
+            reverse(
+                "private-form-session-plan",
+                kwargs={"participant_id": 999999999999}
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Redirected...
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_session_plan_error_if_invalid_participant_valid_form_post(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
 
         test_participant=models.Participant.objects.get(
             name="TEST Bobby Bobbers",
@@ -6025,13 +5968,9 @@ class TestSessionPlanForm(TestCase):
         )
 
         form_data={
-            "name": "TEST I'm Not Bobby Bobbers",
-            "birth_date": "1986-7-21",
-            "date": "2016-5-1",
+            "date": "2016-1-1",
             "horse_name": "Charlie",
             "tack": "Some words.",
-            "diagnosis": "Herpes",
-            "diagnosis_type": "P",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
             "mount_assistance_required": "M",
@@ -6053,23 +5992,28 @@ class TestSessionPlanForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-session-plan",
-        kwargs={"participant_id",
-        test_participant.participant_id}), form_data)
+        response=self.client.post(
+            reverse(
+                "private-form-session-plan",
+                kwargs={"participant_id": 999999999999999}
+            ),
+            form_data
+        )
 
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200) # Redirected...
 
-        # Assert that the context for the new view contains the correct error:
         self.assertTrue(
             response.context["error_text"] == (
                 views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
             )
         )
 
-    def test_media_release_form_with_invalid_participant_date(self):
-        """ Verify that a Session Plan form view, populated with
-         an invalid participant date, displays an error message. """
+    def test_session_plan_error_if_invalid_participant_invalid_form_post(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
 
         test_participant=models.Participant.objects.get(
             name="TEST Bobby Bobbers",
@@ -6077,21 +6021,17 @@ class TestSessionPlanForm(TestCase):
         )
 
         form_data={
-            "name": "TEST Bobby Bobbers",
-            "birth_date": "1900-1-02",
-            "date": "2016-5-1",
+            "date": "2016-1-1",
             "horse_name": "Charlie",
             "tack": "Some words.",
-            "diagnosis": "Herpes",
-            "diagnosis_type": "P",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
-            "mount_assistance_required": "M",
+            "mount_assistance_required": "Mafeawfewa",
             "mount_device_needed": "S",
             "mount_type": "T",
             "dismount_assistance_required": "M",
             "dismount_type": "A",
-            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_spotter": "11122233332u3094890238402",
             "num_sidewalkers_walk_heel_hold": "2",
             "num_sidewalkers_walk_over_thigh": "2",
             "num_sidewalkers_walk_other": "3",
@@ -6105,36 +6045,52 @@ class TestSessionPlanForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-session-plan",
-        kwargs={"participant_id",
-        test_participant.participant_id}), form_data)
+        response=self.client.post(
+            reverse(
+                "private-form-session-plan",
+                kwargs={"participant_id": 999999999999999}
+            ),
+            form_data
+        )
 
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200) # Redirected...
 
-        # Assert that the context for the new view contains the correct error:
         self.assertTrue(
             response.context["error_text"] == (
                 views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
             )
         )
 
+    def test_session_plan_form_with_invalid_data_shows_error(self):
+        """ Verify that a Session Plan form view, populated with
+         invalid data, displays the correct error message. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Bobby Bobbers",
+            birth_date="1986-7-21"
+        )
+
         form_data={
-            "name": "TEST Bobby Bobbers sdfsdfslkfjslkjslgkjsdiogjsgiosjgsjgoijsgio",
-            "birth_date": "Not A Date",
-            "date": "2016-5-1",
+            "date": "2016-1-1",
             "horse_name": "Charlie",
             "tack": "Some words.",
-            "diagnosis": "Herpes",
-            "diagnosis_type": "P",
             "ambulatory_status": "I",
-            "ambulatory_status_other": "Some shit.",
-            "mount_assistance_required": "M",
+            "ambulatory_status_other": "Some super long shit..................."
+                ".............................................................."
+                ".............................................................."
+                "................",
+            "mount_assistance_required": "Maefaf",
             "mount_device_needed": "S",
             "mount_type": "T",
             "dismount_assistance_required": "M",
             "dismount_type": "A",
-            "num_sidewalkers_walk_spotter": "1",
+            "num_sidewalkers_walk_spotter": "1332",
             "num_sidewalkers_walk_heel_hold": "2",
             "num_sidewalkers_walk_over_thigh": "2",
             "num_sidewalkers_walk_other": "3",
@@ -6149,69 +6105,82 @@ class TestSessionPlanForm(TestCase):
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("private-form-session-plan",
-        kwargs={"participant_id",
-        test_participant.participant_id}), form_data)
+        kwargs={"participant_id": test_participant.participant_id}), form_data)
 
-        # Assert that the reponse code is 200 (OK):
+        # Assert that the reponse code is a 200 (OK):
         self.assertEqual(response.status_code, 200)
 
-        # Assert that the context for the new view contains the correct error:
+        # Assert we displayed the correct error message:
         self.assertTrue(
             response.context["error_text"] == (
                 views.ERROR_TEXT_FORM_INVALID
             )
         )
 
-    def test_session_plan_form_with_duplicate_pk(self):
+    def test_session_plan_form_with_duplicate_adaptationsneeded_pk(self):
         """ Regresison test for Issue #47. The form should throw an error if the
          particpant already has a SessionPlan record with the same
          (participant_id, date) as its primary key. """
 
-        test_participant=models.Participant.objects.get(
-            name="TEST Bobby Bobbers",
-            birth_date="1986-7-21"
-        )
+        try:
+            with transaction.atomic():
+                test_user=models.User.objects.get(
+                    username="testuser"
+                )
 
-        form_data={
-            "name": "TEST Bobby Bobbers",
-            "birth_date": "1986-7-21",
-            "date": "2016-5-1",
-            "horse_name": "Charlie",
-            "tack": "Some words.",
-            "diagnosis": "Herpes",
-            "diagnosis_type": "P",
-            "ambulatory_status": "I",
-            "ambulatory_status_other": "Some shit.",
-            "mount_assistance_required": "M",
-            "mount_device_needed": "S",
-            "mount_type": "T",
-            "dismount_assistance_required": "M",
-            "dismount_type": "A",
-            "num_sidewalkers_walk_spotter": "1",
-            "num_sidewalkers_walk_heel_hold": "2",
-            "num_sidewalkers_walk_over_thigh": "2",
-            "num_sidewalkers_walk_other": "3",
-            "num_sidewalkers_trot_spotter": "2",
-            "num_sidewalkers_trot_heel_hold": "2",
-            "num_sidewalkers_trot_over_thigh": "1",
-            "num_sidewalkers_trot_other": "3",
-            "goal_type": "S",
-            "goal_description": "Try not to break your neck.",
-            "motivation": "Don't die."
-        }
+                self.client.force_login(test_user)
 
-        # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-session-plan",
-        kwargs={"participant_id",
-        test_participant.participant_id}), form_data)
+                test_participant=models.Participant.objects.get(
+                    name="TEST Bobby Bobbers",
+                    birth_date="1986-7-21"
+                )
 
-        # Assert that the reponse code is 200 (OK):
-        self.assertEqual(response.status_code, 200)
+                form_data={
+                    "date": "2016-5-1",
+                    "horse_name": "Charlie",
+                    "tack": "Some words.",
+                    "ambulatory_status": "I",
+                    "ambulatory_status_other": "Some shit.",
+                    "mount_assistance_required": "M",
+                    "mount_device_needed": "S",
+                    "mount_type": "T",
+                    "dismount_assistance_required": "M",
+                    "dismount_type": "A",
+                    "num_sidewalkers_walk_spotter": "1",
+                    "num_sidewalkers_walk_heel_hold": "2",
+                    "num_sidewalkers_walk_over_thigh": "2",
+                    "num_sidewalkers_walk_other": "3",
+                    "num_sidewalkers_trot_spotter": "2",
+                    "num_sidewalkers_trot_heel_hold": "2",
+                    "num_sidewalkers_trot_over_thigh": "1",
+                    "num_sidewalkers_trot_other": "3",
+                    "goal_type": "S",
+                    "goal_description": "Try not to break your neck.",
+                    "motivation": "Don't die."
+                }
 
-        # Assert that the context for the new view contains the correct error:
-        self.assertEqual(
-            views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
-                form="session plan"
-            ),
-            response.context["error_text"]
-        )
+                # Send a post request to the form view with the form_data
+                # defined above:
+                response=self.client.post(
+                    reverse(
+                        "private-form-session-plan",
+                        kwargs={
+                            "participant_id": test_participant.participant_id
+                        }
+                    ),
+                    form_data
+                )
+
+                # Assert that the reponse code is 302 (Redirect):
+                self.assertEqual(response.status_code, 302)
+
+                # Assert that the context for the new view
+                # contains the correct error:
+                self.assertEqual(
+                    views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                        form="session plan"
+                    ),
+                    response.context["error_text"]
+                )
+        except:
+            pass
