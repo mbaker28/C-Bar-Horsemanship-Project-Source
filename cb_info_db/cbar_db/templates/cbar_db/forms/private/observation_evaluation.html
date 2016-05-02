@@ -8,13 +8,9 @@
         {{ form.non_field_errors }}
         {{ form.errors }}
     {% endif %}
-    <form action="{% url 'private-form-observation-evaluation' participant_id %}" method="post">
+    <form action="{% url 'private-form-observation-evaluation' participant.participant_id %}" method="post">
         {% csrf_token %}
-        <p> Participant Name: {{ form.participant}}
-            <span class="error_message">
-                {{ form.participant.error.as_text }}
-            </span>
-        </p>
+        <p> Participant: {{ participant }}</p>
 
         <p>
             Date: {{ form.date }}

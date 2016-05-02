@@ -4992,7 +4992,7 @@ class TestSeizureEvaluationReport(TestCase):
 
 
 class TestObservationEvaluation(TestCase):
-    def setup(self):
+    def setUp(self):
         setup_test_environment()
         client=Client()
 
@@ -5003,20 +5003,39 @@ class TestObservationEvaluation(TestCase):
         test_user.save()
 
         test_participant=models.Participant(
-            name="TEST Levi Jenson",
-            walking_through_barn="Willing",
-            looking_at_horses="Willing",
-            petting_horse="Willing",
-            up_down_ramp="Willing",
-            mounting_before="Willing",
-            mounting_after="Willing",
-            riding_before="Willing",
-            riding_during="Willing",
-            riding_after="Willing",
-            understands_directions="Willing",
-            participates_exercises="Willing",
-            participates_games="Willing",
-            general_attitude="Willing",
+            name="Test Matthew Clear",
+            birth_date="1236-9-18",
+            email="thedoctor@galifre.com",
+            weight=190,
+            gender="M",
+            height=76.0,
+            minor_status="A",
+            address_street="The TARDIS",
+            address_city="Time and space",
+            address_state="OK",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
+        )
+        test_participant.save()
+
+        test_eval_attitude=models.EvalAttitude(
+            participant_id=test_participant,
+            date="1993-6-14",
+            walking_through_barn="A",
+            looking_at_horses="A",
+            petting_horses="A",
+            up_down_ramp="A",
+            mounting_before="A",
+            mounting_after="A",
+            riding_before="A",
+            riding_during="A",
+            riding_after="A",
+            understands_directions="A",
+            participates_exercises="A",
+            participates_games="A",
+            general_attitude="A",
         )
         test_participant.save()
 
@@ -5024,7 +5043,6 @@ class TestObservationEvaluation(TestCase):
 
         test_user=models.User.objects.get(
             username="testuser",
-            password="testpass"
         )
         test_participant_in_db=models.Participant.objects.get(
             name="TEST Levi Jenson"

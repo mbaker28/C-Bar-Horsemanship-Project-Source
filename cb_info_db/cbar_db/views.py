@@ -1640,6 +1640,7 @@ def observation_evaluation(request, participant_id):
                 "cbar_db/admin/reports/observation_evaluation.html",
                 {
                     'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+                    "participant": participant
                 }
             )
 
@@ -1663,6 +1664,7 @@ def observation_evaluation(request, participant_id):
                                 ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
                                 .format(form="observation evaluation")
                             ),
+                            "participant": participant
                         }
                     )
                 else: # pragma: no cover
@@ -1737,7 +1739,7 @@ def observation_evaluation(request, participant_id):
                 {
                     'form':form,
                     'error_text':"Error validating form.",
-                    "participant_id": participant.participant_id
+                    "participant": participant
                 }
             )
     else:
@@ -1761,6 +1763,6 @@ def observation_evaluation(request, participant_id):
             'cbar_db/forms/private/observation_evaluation.html',
             {
                 'form': form,
-                'participant_id': participant_id
+                'participant': participant
             }
         )
