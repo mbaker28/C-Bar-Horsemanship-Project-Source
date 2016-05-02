@@ -6500,6 +6500,7 @@ class TestMonetaryDonation(TestCase):
             "name":"TEST Batt Maker",
             "email":"Matt.Something@ftc.gov",
             "amount":"5",
+            "purpose": "",
         }
         form=forms.MonetaryDonationForm(form_data)
 
@@ -6527,6 +6528,7 @@ class TestMonetaryDonation(TestCase):
             "name":"TEST Matthias",
             "email":"Matt.Something@ftc.gov",
             "amount":"5",
+            "purpose": "",
         }
         form=forms.MonetaryDonationForm(form_data)
 
@@ -6554,6 +6556,7 @@ class TestMonetaryDonation(TestCase):
             "name":"TEST Matthew",
             "email":"Matt.Something@ftc.gov",
             "amount":"5",
+            "purpose": "",
         }
         form=forms.MonetaryDonationForm(form_data)
 
@@ -6579,6 +6582,7 @@ class TestMonetaryDonation(TestCase):
             "name":"TEST Super Aquaman",
             "email":"Michael.Something@ftc.gov",
             "amount":"sadhiugiufe5",
+            "purpose": "",
         }
 
         response=self.client.post(reverse("donation-monetary"),form_data)
@@ -6597,6 +6601,7 @@ class TestMonetaryDonation(TestCase):
                 "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz",
             "email":"Miguel.Something@ftc.gov",
             "amount":"5",
+            "purpose": "",
         }
 
         response=self.client.post(reverse("donation-monetary"), form_data)
@@ -6669,7 +6674,8 @@ class TestMonetaryDonation(TestCase):
         form_data={
             "amount":"300",
             "name":"TEST New Donor",
-            "email":"new@donor.com"
+            "email":"new@donor.com",
+            "purpose": "",
         }
 
         response=self.client.post(reverse("donation-monetary"), form_data)
