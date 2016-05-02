@@ -701,6 +701,444 @@ class RiderEvalChecklistForm(forms.Form):
         )
     )
 
+    basic_trail_rules_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("basic_trail_rules_com").max_length
+        )
+    )
+
+    mount_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("mount_com").max_length
+        )
+    )
+
+    dismount_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("dismount_com").max_length
+        )
+    )
+
+    emergency_dismount_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("emergency_dismount_com").max_length
+        )
+    )
+
+    four_natural_aids_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("four_natural_aids_com").max_length
+        )
+    )
+
+    basic_control_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("basic_control_com").max_length
+        )
+    )
+
+    reverse_at_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("reverse_at_walk_com").max_length
+        )
+    )
+
+    reverse_at_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("reverse_at_trot_com").max_length
+        )
+    )
+
+    never_ridden_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("never_ridden_com").max_length
+        )
+    )
+
+    seat_at_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("seat_at_walk_com").max_length
+        )
+    )
+
+    seat_at_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("seat_at_trot_com").max_length
+        )
+    )
+
+    seat_at_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("seat_at_canter_com").max_length
+        )
+    )
+
+    basic_seat_english_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("basic_seat_english_com").max_length
+        )
+    )
+
+    basic_seat_western_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("basic_seat_western_com").max_length
+        )
+    )
+
+    hand_pos_english_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("hand_pos_english_com").max_length
+        )
+    )
+
+    hand_post_western_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("hand_post_western_com").max_length
+        )
+    )
+
+    two_point_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("two_point_trot_com").max_length
+        )
+    )
+
+    circle_trot_no_stirrups_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("circle_trot_no_stirrups_com").max_length
+        )
+    )
+
+    circle_at_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("circle_at_canter_com").max_length
+        )
+    )
+
+    circle_canter_no_stirrups_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("circle_canter_no_stirrups_com").max_length
+        )
+    )
+
+    two_point_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("two_point_canter_com").max_length
+        )
+    )
+
+    circle_at_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("circle_at_walk_com").max_length
+        )
+    )
+
+    circle_at_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("circle_at_trot_com").max_length
+        )
+    )
+
+    holds_handhold_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("holds_handhold_walk_com").max_length
+        )
+    )
+
+    holds_handhold_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("holds_handhold_sit_trot_com").max_length
+        )
+    )
+
+    holds_handhold_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("holds_handhold_post_trot_com").max_length
+        )
+    )
+
+    holds_handhold_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("holds_handhold_canter_com").max_length
+        )
+    )
+
+    holds_reins_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("holds_reins_walk_com").max_length
+        )
+    )
+
+    holds_reins_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("holds_reins_sit_trot_com").max_length
+        )
+    )
+
+    holds_reins_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("holds_reins_post_trot_com").max_length
+        )
+    )
+
+    holds_reins_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("holds_reins_canter_com").max_length
+        )
+    )
+
+    shorten_lengthen_reins_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("shorten_lengthen_reins_walk_com").max_length
+        )
+    )
+
+    shorten_lengthen_reins_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("shorten_lengthen_reins_sit_trot_com").max_length
+        )
+    )
+
+    shorten_lengthen_reins_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("shorten_lengthen_reins_post_trot_com").max_length
+        )
+    )
+
+    shorten_lengthen_reins_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("shorten_lengthen_reins_canter_com").max_length
+        )
+    )
+
+    can_control_horse_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_control_horse_walk_com").max_length
+        )
+    )
+
+    can_control_horse_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_control_horse_sit_trot_com").max_length
+        )
+    )
+
+    can_control_horse_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_control_horse_post_trot_com").max_length
+        )
+    )
+
+    can_control_horse_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_control_horse_canter_com").max_length
+        )
+    )
+
+    can_halt_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_halt_walk_com").max_length
+        )
+    )
+
+    can_halt_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_halt_sit_trot_com").max_length
+        )
+    )
+
+    can_halt_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_halt_post_trot_com").max_length
+        )
+    )
+
+    can_halt_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_halt_canter_com").max_length
+        )
+    )
+
+    drop_pickup_stirrups_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("drop_pickup_stirrups_walk_com").max_length
+        )
+    )
+
+    drop_pickup_stirrups_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("drop_pickup_stirrups_sit_trot_com").max_length
+        )
+    )
+
+    drop_pickup_stirrups_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("drop_pickup_stirrups_post_trot_com").max_length
+        )
+    )
+
+    drop_pickup_stirrups_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("drop_pickup_stirrups_canter_com").max_length
+        )
+    )
+
+    rides_no_stirrups_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("rides_no_stirrups_walk_com").max_length
+        )
+    )
+
+    rides_no_stirrups_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("rides_no_stirrups_sit_trot_com").max_length
+        )
+    )
+
+    rides_no_stirrups_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("rides_no_stirrups_post_trot_com").max_length
+        )
+    )
+
+    rides_no_stirrups_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("rides_no_stirrups_canter_com").max_length
+        )
+    )
+
+    maintain_half_seat_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("maintain_half_seat_walk_com").max_length
+        )
+    )
+
+    maintain_half_seat_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("maintain_half_seat_sit_trot_com").max_length
+        )
+    )
+
+    maintain_half_seat_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("maintain_half_seat_post_trot_com").max_length
+        )
+    )
+
+    maintain_half_seat_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("maintain_half_seat_canter_com").max_length
+        )
+    )
+
+    can_post_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_post_walk_com").max_length
+        )
+    )
+
+    can_post_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_post_sit_trot_com").max_length
+        )
+    )
+
+    can_post_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_post_post_trot_com").max_length
+        )
+    )
+
+    can_post_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_post_canter_com").max_length
+        )
+    )
+
+    proper_diagonal_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("proper_diagonal_walk_com").max_length
+        )
+    )
+
+    proper_diagonal_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("proper_diagonal_sit_trot_com").max_length
+        )
+    )
+
+    proper_diagonal_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("proper_diagonal_post_trot_com").max_length
+        )
+    )
+
+    proper_diagonal_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("proper_diagonal_canter_com").max_length
+        )
+    )
+
+    proper_lead_canter_sees_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("proper_lead_canter_sees_com").max_length
+        )
+    )
+
+    proper_lead_canter_knows_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("proper_lead_canter_knows_com").max_length
+        )
+    )
+
+    can_steer_over_cavalletti_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_steer_over_cavalletti_walk_com").max_length
+        )
+    )
+
+    can_steer_over_cavalletti_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_steer_over_cavalletti_sit_trot_com").max_length
+        )
+    )
+
+    can_steer_over_cavalletti_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_steer_over_cavalletti_post_trot_com").max_length
+        )
+    )
+
+    can_steer_over_cavalletti_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("can_steer_over_cavalletti_canter_com").max_length
+        )
+    )
+
+    jump_crossbar_walk_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("jump_crossbar_walk_com").max_length
+        )
+    )
+
+    jump_crossbar_sit_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("jump_crossbar_sit_trot_com").max_length
+        )
+    )
+
+    jump_crossbar_post_trot_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("jump_crossbar_post_trot_com").max_length
+        )
+    )
+
+    jump_crossbar_canter_com=forms.CharField(
+        max_length=(models.EvalRidingExercises._meta
+            .get_field("jump_crossbar_canter_com").max_length
+        )
+    )
+
     date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     basic_trail_rules=forms.NullBooleanField(widget=RadioSelect(
