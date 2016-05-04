@@ -84,5 +84,11 @@
              <strong>Description:</strong>
              {{ medical_info.restriction_for_horse_activity_last_five_years_description }}
         </p>
+        <p>
+            <strong>
+                Does the participant know or suspect they are pregnant?
+            </strong>
+             {{ medical_info.get_pregnant_display }}
+        </p>
     {% endif %}
 {% endblock %}

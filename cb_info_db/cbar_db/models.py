@@ -1395,6 +1395,7 @@ class MedicalInfo(models.Model):
     currently_taking_any_medication=models.BooleanField(
         choices=YES_NO_BOOL_CHOICES
     )
+    pregnant=models.BooleanField(choices=YES_NO_BOOL_CHOICES)
 
 
 class Medication(models.Model):
@@ -1460,7 +1461,8 @@ class SeizureEval(models.Model):
     action_to_take_allow_time=models.NullBooleanField()
     action_to_take_allow_time_how_long=models.DecimalField(
         max_digits=2,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     action_to_take_report_immediately=models.NullBooleanField()
     action_to_take_send_note=models.NullBooleanField()

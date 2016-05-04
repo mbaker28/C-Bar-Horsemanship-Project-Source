@@ -474,6 +474,11 @@ class MedicalReleaseForm(forms.Form):
         widget=SelectDateWidget(years=YEARS),
         initial=date.today()
     )
+    pregnant=forms.ChoiceField(
+        choices=(models.MedicalInfo._meta
+            .get_field("pregnant").choices
+        )
+    )
 
 
 class BackgroundCheckForm(forms.Form):
