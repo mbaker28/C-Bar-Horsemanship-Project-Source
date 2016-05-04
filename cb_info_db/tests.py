@@ -5023,23 +5023,49 @@ class TestObservationEvaluation(TestCase):
         test_eval_attitude=models.EvalAttitude(
             participant_id=test_participant,
             date="1993-6-14",
-            walking_through_barn="A",
-            looking_at_horses="A",
-            petting_horses="A",
-            up_down_ramp="A",
-            mounting_before="A",
-            mounting_after="A",
-            riding_before="A",
-            riding_during="A",
-            riding_after="A",
-            understands_directions="A",
-            participates_exercises="A",
-            participates_games="A",
-            general_attitude="A",
+            walking_through_barn_willing="1",
+            walking_through_barn_motivated="1",
+            walking_through_barn_appearance="1",
+            looking_at_horses_willing="2",
+            looking_at_horses_motivated="2",
+            looking_at_horses_appearance="2",
+            petting_horses_willing="3",
+            petting_horses_motivated="3",
+            petting_horses_appearance="3",
+            up_down_ramp_willing="-",
+            up_down_ramp_motivated="-",
+            up_down_ramp_appearance="-",
+            mounting_before_willing="2",
+            mounting_before_motivated="2",
+            mounting_before_appearance="2",
+            mounting_after_willing="3",
+            mounting_after_motivated="3",
+            mounting_after_appearance="3",
+            riding_before_willing="1",
+            riding_before_motivated="1",
+            riding_before_appearance="1",
+            riding_during_willing="-",
+            riding_during_motivated="-",
+            riding_during_appearance="-",
+            riding_after_willing="3",
+            riding_after_motivated="3",
+            riding_after_appearance="3",
+            understands_directions_willing="1",
+            understands_directions_motivated="1",
+            understands_directions_appearance="1",
+            participates_exercises_willing="2",
+            participates_exercises_motivated="2",
+            participates_exercises_appearance="2",
+            participates_games_willing="3",
+            participates_games_motivated="3",
+            participates_games_appearance="3",
+            general_attitude_willing="-",
+            general_attitude_motivated="-",
+            general_attitude_appearance="-",
         )
-        test_participant.save()
+        test_eval_attitude.save()
 
-    def test_participant_record_loads_if_user_logged_in_no_release(self):
+    def test_observation_eval_loads_if_user_logged_in_no_release(self):
 
         test_user=models.User.objects.get(
             username="testuser",
@@ -5052,7 +5078,7 @@ class TestObservationEvaluation(TestCase):
         )
 
         response = self.client.get(
-            reverse('participant-record',
+            reverse('private-form-observation-evaluation',
                 kwargs={
                     'participant_id':test_participant_in_db.participant_id
                 }
@@ -5061,12 +5087,12 @@ class TestObservationEvaluation(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-    def test_participant_record_redirects_if_user_not_logged_in(self):
+    def test_observation_eval_redirects_if_user_not_logged_in(self):
 
         test_participant_in_db=models.Participant.objects.filter().first()
 
         response = self.client.get(
-            reverse('participant-record',
+            reverse('private-form-observation-evaluation',
                 kwargs={
                     "participant_id":test_participant_in_db.participant_id
                 }
@@ -5079,49 +5105,77 @@ class TestObservationEvaluation(TestCase):
 
         self.assertTrue(reverse("user-login") in response["location"])
 
-        def test_user_inputs_not_valid_data(self):
+    def test_user_inputs_not_valid_data(self):
+        test_user=models.User.objects.get(
+            username="testuser",
+        )
+        self.client.force_login(test_user)
 
-            test_participant=models.Participant(
-                name="TEST Levi Jenson",
-                walking_through_barn="",
-                looking_at_horses="",
-                petting_horse="",
-                up_down_ramp="",
-                mounting_before="",
-                mounting_after="",
-                riding_before="",
-                riding_during="",
-                riding_after="",
-                understands_directions="",
-                participates_exercises="",
-                participates_games="",
-                general_attitude="",
+        test_participant_in_db=models.Participant.objects.get(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18"
+        )
+
+        form_data={
+            "date": "2000-5-1",
+            "walking_through_barn_willing": "1waefhiowe",
+            "walking_through_barn_motivated": "1",
+            "walking_through_barn_appearance": "1",
+            "looking_at_horses_willing": "2",
+            "looking_at_horses_motivated": "?????????????????/",
+            "looking_at_horses_appearance": "2",
+            "petting_horses_willing": "3",
+            "petting_horses_motivated": "3",
+            "petting_horses_appearance": "3",
+            "up_down_ramp_willing": "-",
+            "up_down_ramp_motivated": "-",
+            "up_down_ramp_appearance": "-",
+            "mounting_before_willing": "2",
+            "mounting_before_motivated": "2",
+            "mounting_before_appearance": "2",
+            "mounting_after_willing": "3",
+            "mounting_after_motivated": "3",
+            "mounting_after_appearance": "3",
+            "riding_before_willing": "1",
+            "riding_before_motivated": "1",
+            "riding_before_appearance": "1",
+            "riding_during_willing": "-",
+            "riding_during_motivated": "-",
+            "riding_during_appearance": "-",
+            "riding_after_willing": "3",
+            "riding_after_motivated": "3",
+            "riding_after_appearance": "3",
+            "understands_directions_willing": "1",
+            "understands_directions_motivated": "1",
+            "understands_directions_appearance": "1",
+            "participates_exercises_willing": "2",
+            "participates_exercises_motivated": "2",
+            "participates_exercises_appearance": "2",
+            "participates_games_willing": "3",
+            "participates_games_motivated": "3",
+            "participates_games_appearance": "3",
+            "general_attitude_willing": "-",
+            "general_attitude_motivated": "-",
+            "general_attitude_appearance": "-",
+        }
+
+        response=self.client.post(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                }
+            ),
+            form_data
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
             )
-            test_participant.save()
-
-            response=self.client.post(reverse("observation-evaluation"),
-                form_data)
-
-            self.assertEqual(response.status_code, 200)
-
-            self.asssertFormError(
-                response,
-                "form",
-                "walking_through_barn",
-                "looking_at_horses",
-                "petting_horse",
-                "up_down_ramp",
-                "mounting_before",
-                "mounting_after",
-                "riding_before",
-                "riding_during",
-                "riding_after",
-                "understands_directions",
-                "participates_exercises",
-                "participates_games",
-                "general_attitude",
-                forms.ERROR_TEXT_FORM_INVALID
-            )
+        )
 
 
 class TestAdoptParticipant(TestCase):

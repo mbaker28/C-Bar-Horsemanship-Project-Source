@@ -1685,19 +1685,58 @@ def observation_evaluation(request, participant_id):
                 form_data_attitude=models.EvalAttitude(
                     participant_id=participant,
                     date=form.cleaned_data['date'],
-                    walking_through_barn=form.cleaned_data['walking_through_barn'],
-                    looking_at_horses=form.cleaned_data['looking_at_horses'],
-                    petting_horses=form.cleaned_data['petting_horses'],
-                    up_down_ramp=form.cleaned_data['up_down_ramp'],
-                    mounting_before=form.cleaned_data['mounting_before'],
-                    mounting_after=form.cleaned_data['mounting_after'],
-                    riding_before=form.cleaned_data['riding_before'],
-                    riding_during=form.cleaned_data['riding_during'],
-                    riding_after=form.cleaned_data['riding_after'],
-                    understands_directions=form.cleaned_data['understands_directions'],
-                    participates_exercises=form.cleaned_data['participates_exercises'],
-                    participates_games=form.cleaned_data['participates_games'],
-                    general_attitude=form.cleaned_data['general_attitude'],
+
+                    walking_through_barn_willing=form.cleaned_data['walking_through_barn_willing'],
+                    walking_through_barn_motivated=form.cleaned_data['walking_through_barn_motivated'],
+                    walking_through_barn_appearance=form.cleaned_data['walking_through_barn_appearance'],
+
+                    looking_at_horses_willing=form.cleaned_data['looking_at_horses_willing'],
+                    looking_at_horses_motivated=form.cleaned_data['looking_at_horses_motivated'],
+                    looking_at_horses_appearance=form.cleaned_data['looking_at_horses_appearance'],
+
+                    petting_horses_willing=form.cleaned_data['petting_horses_willing'],
+                    petting_horses_motivated=form.cleaned_data['petting_horses_motivated'],
+                    petting_horses_appearance=form.cleaned_data['petting_horses_appearance'],
+
+                    up_down_ramp_willing=form.cleaned_data['up_down_ramp_willing'],
+                    up_down_ramp_motivated=form.cleaned_data['up_down_ramp_motivated'],
+                    up_down_ramp_appearance=form.cleaned_data['up_down_ramp_appearance'],
+
+                    mounting_before_willing=form.cleaned_data['mounting_before_willing'],
+                    mounting_before_motivated=form.cleaned_data['mounting_before_motivated'],
+                    mounting_before_appearance=form.cleaned_data['mounting_before_appearance'],
+
+                    mounting_after_willing=form.cleaned_data['mounting_after_willing'],
+                    mounting_after_motivated=form.cleaned_data['mounting_after_motivated'],
+                    mounting_after_appearance=form.cleaned_data['mounting_after_appearance'],
+
+                    riding_before_willing=form.cleaned_data['riding_before_willing'],
+                    riding_before_motivated=form.cleaned_data['riding_before_motivated'],
+                    riding_before_appearance=form.cleaned_data['riding_before_appearance'],
+
+                    riding_during_willing=form.cleaned_data['riding_during_willing'],
+                    riding_during_motivated=form.cleaned_data['riding_during_motivated'],
+                    riding_during_appearance=form.cleaned_data['riding_during_appearance'],
+
+                    riding_after_willing=form.cleaned_data['riding_after_willing'],
+                    riding_after_motivated=form.cleaned_data['riding_after_motivated'],
+                    riding_after_appearance=form.cleaned_data['riding_after_appearance'],
+
+                    understands_directions_willing=form.cleaned_data['understands_directions_willing'],
+                    understands_directions_motivated=form.cleaned_data['understands_directions_motivated'],
+                    understands_directions_appearance=form.cleaned_data['understands_directions_appearance'],
+
+                    participates_exercises_willing=form.cleaned_data['participates_exercises_willing'],
+                    participates_exercises_motivated=form.cleaned_data['participates_exercises_motivated'],
+                    participates_exercises_appearance=form.cleaned_data['participates_exercises_appearance'],
+
+                    participates_games_willing=form.cleaned_data['participates_games_willing'],
+                    participates_games_motivated=form.cleaned_data['participates_games_motivated'],
+                    participates_games_appearance=form.cleaned_data['participates_games_appearance'],
+
+                    general_attitude_willing=form.cleaned_data['general_attitude_willing'],
+                    general_attitude_motivated=form.cleaned_data['general_attitude_motivated'],
+                    general_attitude_appearance=form.cleaned_data['general_attitude_appearance'],
                 )
                 form_data_attitude.save()
 
