@@ -61,6 +61,13 @@ YES_NO_BOOL_CHOICES=(
     (NO_BOOL, "No")
 )
 
+YES="Y"
+NO="N"
+YES_NO_CHOICES=(
+    (YES, "Yes"),
+    (NO, "No")
+)
+
 NULL_GAY=2 # anything that's not 1 or 0
 TRUE_GAY=1
 FALSE_GAY=0
@@ -1348,8 +1355,9 @@ class MedicalInfo(models.Model):
     primary_physician_phone=PhoneNumberField()
     last_seen_by_physician_date=models.DateField()
     last_seen_by_physician_reason=models.CharField(max_length=250)
-    allergies_conditions_that_exclude=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    allergies_conditions_that_exclude=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     allergies_conditions_that_exclude_description=models.CharField(
         max_length=500,
