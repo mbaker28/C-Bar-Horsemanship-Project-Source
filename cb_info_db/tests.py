@@ -507,7 +507,8 @@ class TestEmergencyAuthorizationForm(TestCase):
             present_restrictions_for_horse_activity=False,
             limiting_surgeries_last_six_monthes=False,
             signature="TEST Bruce Wayne",
-            currently_taking_any_medication=False
+            currently_taking_any_medication=False,
+            pregnant=False
         )
         test_medical_info.save()
 
@@ -1032,7 +1033,8 @@ class TestMediaReleaseForm(TestCase):
             present_restrictions_for_horse_activity=False,
             limiting_surgeries_last_six_monthes=False,
             signature="TEST Bruce Wayne",
-            currently_taking_any_medication=False
+            currently_taking_any_medication=False,
+            pregnant=False
         )
         test_medical_info.save()
 
@@ -1613,7 +1615,8 @@ class TestMedicalReleaseForm(TestCase):
             present_restrictions_for_horse_activity=False,
             limiting_surgeries_last_six_monthes=False,
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False
+            currently_taking_any_medication=False,
+            pregnant=False
         )
         test_medical_info.save()
 
@@ -1636,6 +1639,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -1698,6 +1702,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -1760,6 +1765,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -1819,6 +1825,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -1908,6 +1915,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -1958,6 +1966,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -2010,6 +2019,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -2060,6 +2070,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -2145,6 +2156,7 @@ class TestMedicalReleaseForm(TestCase):
             "tetanus_shot_last_ten_years": True,
             "seizures_last_six_monthes": False,
             "currently_taking_any_medication": True,
+            "pregnant": False,
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
@@ -5018,7 +5030,8 @@ class TestEmergencyAuthorizationReport(TestCase):
             present_restrictions_for_horse_activity=False,
             limiting_surgeries_last_six_monthes=False,
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False
+            currently_taking_any_medication=False,
+            pregnant=False
         )
         test_medical_info.save()
 
@@ -5317,7 +5330,8 @@ class TestMedicalReleaseReport(TestCase):
             present_restrictions_for_horse_activity=False,
             limiting_surgeries_last_six_monthes=False,
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False
+            currently_taking_any_medication=False,
+            pregnant=False
         )
         test_medical_info.save()
 
