@@ -587,7 +587,9 @@ class EvalRidingExercises(models.Model):
         null=True
     )
 
-    circle_trot_no_stirrups=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_trot_no_stirrups=models.NullBooleanField(
+        choices=YES_NO_NULL_BOOL_CHOICES
+    )
     circle_trot_no_stirrups_com=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,
         null=True
@@ -599,7 +601,9 @@ class EvalRidingExercises(models.Model):
         null=True
     )
 
-    circle_canter_no_stirrups=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_canter_no_stirrups=models.NullBooleanField(
+        choices=YES_NO_NULL_BOOL_CHOICES
+    )
     circle_canter_no_stirrups_com=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,
         null=True

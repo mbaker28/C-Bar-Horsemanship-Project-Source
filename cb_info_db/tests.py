@@ -4759,7 +4759,6 @@ class TestRiderEvalChecklistForm(TestCase):
             form_data["jump_crossbar_canter_com"]
         )
 
-
     def test_rider_eval_checklist_form_error_with_invalid_data(self):
         """ Verify that a Rider Evaluation Checklist form view, populated with
          valid data, correctly saves the form to the database. """
@@ -5015,7 +5014,7 @@ class TestRiderEvalChecklistForm(TestCase):
         response = self.client.get(
             reverse("private_form_rider_eval_checklist",
                 kwargs={
-                    "participant_id":987,
+                    "participant_id":99999999999,
                 }
             )
         )
@@ -5205,6 +5204,7 @@ class TestRiderEvalChecklistForm(TestCase):
                 views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
             )
         )
+
 
 class TestAdminIndex(TestCase):
     def setUp(self):

@@ -694,6 +694,7 @@ class SessionPlanForm(forms.Form):
         ._meta.get_field("num_sidewalkers_trot_other").decimal_places
     )
 
+
 class RiderEvalChecklistForm(forms.Form):
     comments=forms.CharField(
         max_length=(models.EvalRidingExercises._meta
