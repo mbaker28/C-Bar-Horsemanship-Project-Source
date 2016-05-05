@@ -63,7 +63,8 @@ class ApplicationForm(forms.Form):
     )
 
     school_institution=forms.CharField(
-        max_length=models.Participant._meta.get_field("school_institution").max_length
+        max_length=models.Participant._meta.get_field("school_institution").max_length,
+        required=False
     )
 
     guardian_name=forms.CharField(
