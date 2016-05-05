@@ -590,6 +590,12 @@ class SessionPlanForm(forms.Form):
         max_length=models.Session._meta.get_field("tack").max_length
     )
 
+    # Stored in SessionPlanInd
+    horse_leader=forms.CharField(
+        max_length=models.SessionPlanInd
+        ._meta.get_field("horse_leader").max_length
+    )
+
     # Stored in SessionGoals
     goal_type=forms.ChoiceField(
         #max_length=models.SessionGoals._meta.get_field("goal_type").max_length,

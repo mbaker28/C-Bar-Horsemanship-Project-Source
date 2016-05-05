@@ -7599,6 +7599,10 @@ class TestSessionPlanForm(TestCase):
         )
         session_plan.save()
 
+        session_ind=models.SessionPlanInd(
+            horse_leader="Fucky McFuckboy"
+        )
+
         session_goals=models.SessionGoals(
             participant_id=test_participant,
             session_id=session_plan,
@@ -7609,7 +7613,7 @@ class TestSessionPlanForm(TestCase):
         session_goals.save()
 
         horse_info=models.Horse(
-            name="Charlie",
+            name="Charlie"
         )
         horse_info.save()
 
@@ -7696,6 +7700,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-5-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "diagnosis": "Herpes",
             "diagnosis_type": "P",
@@ -7759,6 +7764,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7846,6 +7852,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7899,6 +7906,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7955,6 +7963,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some super long shit..................."
@@ -8014,6 +8023,7 @@ class TestSessionPlanForm(TestCase):
                 form_data={
                     "date": "2016-5-1",
                     "horse_name": "Charlie",
+                    "horse_leader": "Fucky McFuckboy",
                     "tack": "Some words.",
                     "ambulatory_status": "I",
                     "ambulatory_status_other": "Some shit.",
