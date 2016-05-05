@@ -7599,6 +7599,10 @@ class TestSessionPlanForm(TestCase):
         )
         session_plan.save()
 
+        session_ind=models.SessionPlanInd(
+            horse_leader="Fucky McFuckboy"
+        )
+
         session_goals=models.SessionGoals(
             participant_id=test_participant,
             session_id=session_plan,
@@ -7609,8 +7613,7 @@ class TestSessionPlanForm(TestCase):
         session_goals.save()
 
         horse_info=models.Horse(
-            name="Charlie",
-            horse_leader="Fucky McFuckboy"
+            name="Charlie"
         )
         horse_info.save()
 
