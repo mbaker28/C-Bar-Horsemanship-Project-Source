@@ -607,6 +607,9 @@ class SessionPlanForm(forms.Form):
     horse_name=forms.CharField(
         max_length=models.Horse._meta.get_field("name").max_length
     )
+    horse_leader=forms.CharField(
+        max_length=models.Horse._meta.get_field("horse_leader").max_length
+    )
     # description=forms.CharField(
     #     max_length=models.Horse._meta.get_field("description").max_length
     # )
