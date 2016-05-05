@@ -54,11 +54,20 @@ MINOR_STATUS_CHOICES=(
     (ADULT_WITHOUT_GUARDIAN, "Independent adult")
 )
 
-YES_BOOL=True
-NO_BOOL=False
-YES_NO_BOOL_CHOICES=(
-    (YES_BOOL, "Yes"),
-    (NO_BOOL, "No")
+YES="Y"
+NO="N"
+YES_NO_CHOICES=(
+    (YES, "Yes"),
+    (NO, "No")
+)
+
+NULL_GAY=2 # anything that's not 1 or 0
+TRUE_GAY=1
+FALSE_GAY=0
+YES_NO_NULL_BOOL_CHOICES=(
+    (TRUE_GAY, "Yes"),
+    (FALSE_GAY, "No"),
+    (NULL_GAY, "Unknown")
 )
 
 UNSATISFACTORY="U"
@@ -68,7 +77,7 @@ GOOD="G"
 EXCELLENT="E"
 NOT_PERFORMED_DISABILITY="N"
 ATTEMPTS="A"
-PARTIALLY_COMPLETES="P"
+PARTIALLY_COMPLETES="C"
 LIKERT_LIKE_CHOICES=(
     (UNSATISFACTORY, "Unsatisfactory"),
     (POOR, "Poor"),
@@ -173,7 +182,7 @@ class SessionGoals(models.Model):
     session_id=models.ForeignKey(Session, on_delete=models.CASCADE)
     goal_type=models.CharField(max_length=1, choices=GOAL_CHOICES)
     goal_description=models.CharField(max_length=500)
-    motiviation=models.CharField(max_length=250)
+    motivation=models.CharField(max_length=250)
 
 
 class PhysRelease(models.Model):
@@ -230,10 +239,9 @@ class Donation(models.Model):
         null=True
     )
     amount=models.DecimalField(max_digits=10, decimal_places=2)
-    # Commented out because I don"t think we"ll actually store payment info,
-    # but it"s in the ERD...
-    # payment_info=models.CharField(max_length=500)
     donation_type=models.CharField(max_length=1, choices=DONATION_CHOICES)
+    purpose=models.CharField(max_length=SHORT_ANSWER_LENGTH, null=True)
+    date=models.DateField(auto_now_add=True)
 
 
 class Grouping(models.Model):
@@ -326,7 +334,7 @@ class ConfidentialityPolicy(models.Model):
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
-    agreement=models.BooleanField(choices=YES_NO_BOOL_CHOICES)
+    agreement=models.CharField(max_length=1, choices=YES_NO_CHOICES)
 
 
 class AuthorizeEmergencyMedicalTreatment(models.Model):
@@ -500,29 +508,147 @@ class EvalRidingExercises(models.Model):
     comments=models.CharField(max_length=500, null=True)
 
     # Yes/No/Null choices:
-    basic_trail_rules=models.NullBooleanField()
-    mount=models.NullBooleanField()
-    dismount=models.NullBooleanField()
-    emergency_dismount=models.NullBooleanField()
-    four_natural_aids=models.NullBooleanField()
-    basic_control=models.NullBooleanField()
-    reverse_at_walk=models.NullBooleanField()
-    reverse_at_trot=models.NullBooleanField()
-    never_ridden=models.NullBooleanField()
-    seat_at_walk=models.NullBooleanField()
-    seat_at_trot=models.NullBooleanField()
-    seat_at_canter=models.NullBooleanField()
-    basic_seat_english=models.NullBooleanField()
-    basic_seat_western=models.NullBooleanField()
-    hand_pos_english=models.NullBooleanField()
-    hand_post_western=models.NullBooleanField()
-    two_point_trot=models.NullBooleanField()
-    circle_trot_no_stirrups=models.NullBooleanField()
-    circle_at_canter=models.NullBooleanField()
-    circle_canter_no_stirrups=models.NullBooleanField()
-    two_point_canter=models.NullBooleanField()
-    circle_at_walk=models.NullBooleanField()
-    circle_at_trot=models.NullBooleanField()
+    basic_trail_rules=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    basic_trail_rules_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    mount=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    mount_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    dismount=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    dismount_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    emergency_dismount=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    emergency_dismount_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    four_natural_aids=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    four_natural_aids_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    basic_control=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    basic_control_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    reverse_at_walk=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    reverse_at_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    reverse_at_trot=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    reverse_at_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    never_ridden=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    never_ridden_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    seat_at_walk=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    seat_at_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    seat_at_trot=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    seat_at_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    seat_at_canter=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    seat_at_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    basic_seat_english=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    basic_seat_english_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    basic_seat_western=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    basic_seat_western_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    hand_pos_english=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    hand_pos_english_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    hand_post_western=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    hand_post_western_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    two_point_trot=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    two_point_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    circle_trot_no_stirrups=models.NullBooleanField(
+        choices=YES_NO_NULL_BOOL_CHOICES
+    )
+    circle_trot_no_stirrups_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    circle_at_canter=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_at_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    circle_canter_no_stirrups=models.NullBooleanField(
+        choices=YES_NO_NULL_BOOL_CHOICES
+    )
+    circle_canter_no_stirrups_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    two_point_canter=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    two_point_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    circle_at_walk=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_at_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
+    circle_at_trot=models.NullBooleanField(choices=YES_NO_NULL_BOOL_CHOICES)
+    circle_at_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
 
     # Likert like choices:
     holds_handhold_walk=models.CharField(
@@ -530,254 +656,502 @@ class EvalRidingExercises(models.Model):
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    holds_handhold_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     holds_handhold_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    holds_handhold_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     holds_handhold_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    holds_handhold_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     holds_handhold_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    holds_handhold_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
     # MISSING FROM ERD !!!!!!!!!!!!!!
+
     holds_reins_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    holds_reins_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     holds_reins_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    holds_reins_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     holds_reins_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    holds_reins_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     holds_reins_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    holds_reins_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
     # END MISSING FROM ERD
+
     shorten_lengthen_reins_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    shorten_lengthen_reins_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     shorten_lengthen_reins_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    shorten_lengthen_reins_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     shorten_lengthen_reins_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    shorten_lengthen_reins_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     shorten_lengthen_reins_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    shorten_lengthen_reins_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_control_horse_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_control_horse_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_control_horse_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_control_horse_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_control_horse_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_control_horse_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_control_horse_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_control_horse_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_halt_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_halt_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_halt_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_halt_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_halt_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_halt_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_halt_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_halt_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     drop_pickup_stirrups_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    drop_pickup_stirrups_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     drop_pickup_stirrups_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    drop_pickup_stirrups_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     drop_pickup_stirrups_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    drop_pickup_stirrups_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     drop_pickup_stirrups_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    drop_pickup_stirrups_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     rides_no_stirrups_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    rides_no_stirrups_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     rides_no_stirrups_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    rides_no_stirrups_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     rides_no_stirrups_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    rides_no_stirrups_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     rides_no_stirrups_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    rides_no_stirrups_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     maintain_half_seat_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    maintain_half_seat_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     maintain_half_seat_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    maintain_half_seat_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     maintain_half_seat_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    maintain_half_seat_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     maintain_half_seat_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    maintain_half_seat_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_post_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_post_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_post_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_post_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_post_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_post_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_post_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_post_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     proper_diagonal_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    proper_diagonal_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     proper_diagonal_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    proper_diagonal_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     proper_diagonal_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    proper_diagonal_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     proper_diagonal_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    proper_diagonal_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     proper_lead_canter_sees=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    proper_lead_canter_sees_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     proper_lead_canter_knows=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    proper_lead_canter_knows_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_steer_over_cavalletti_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_steer_over_cavalletti_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_steer_over_cavalletti_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_steer_over_cavalletti_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_steer_over_cavalletti_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_steer_over_cavalletti_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     can_steer_over_cavalletti_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    can_steer_over_cavalletti_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     jump_crossbar_walk=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    jump_crossbar_walk_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     jump_crossbar_sit_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    jump_crossbar_sit_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     jump_crossbar_post_trot=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
+    jump_crossbar_post_trot_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+
     jump_crossbar_canter=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES,
         blank=True
     )
-
+    jump_crossbar_canter_com=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
 
 class EvalPhysical(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
@@ -997,52 +1371,66 @@ class MedicalInfo(models.Model):
     primary_physician_phone=PhoneNumberField()
     last_seen_by_physician_date=models.DateField()
     last_seen_by_physician_reason=models.CharField(max_length=250)
-    allergies_conditions_that_exclude=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    allergies_conditions_that_exclude=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     allergies_conditions_that_exclude_description=models.CharField(
         max_length=500,
         null=True
     )
-    heat_exhaustion_stroke=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    heat_exhaustion_stroke=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    tetanus_shot_last_ten_years=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    tetanus_shot_last_ten_years=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    seizures_last_six_monthes=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    seizures_last_six_monthes=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    doctor_concered_re_horse_activites=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    doctor_concered_re_horse_activites=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    physical_or_mental_issues_affecting_riding=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    physical_or_mental_issues_affecting_riding=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     physical_or_mental_issues_affecting_riding_description=models.CharField(
         max_length=500,
         null=True
     )
-    restriction_for_horse_activity_last_five_years=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    restriction_for_horse_activity_last_five_years=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     restriction_for_horse_activity_last_five_years_description=models.CharField(
         max_length=500,
         null=True
     )
-    present_restrictions_for_horse_activity=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    present_restrictions_for_horse_activity=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     ) # If yes -> PhysRelease required
-    limiting_surgeries_last_six_monthes=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    limiting_surgeries_last_six_monthes=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     limiting_surgeries_last_six_monthes_description=models.CharField(
         max_length=500,
         null=True
     )
     signature=models.CharField(max_length=NAME_LENGTH)
-    currently_taking_any_medication=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    currently_taking_any_medication=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
+    pregnant=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
 
 
@@ -1109,7 +1497,8 @@ class SeizureEval(models.Model):
     action_to_take_allow_time=models.NullBooleanField()
     action_to_take_allow_time_how_long=models.DecimalField(
         max_digits=2,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     action_to_take_report_immediately=models.NullBooleanField()
     action_to_take_send_note=models.NullBooleanField()

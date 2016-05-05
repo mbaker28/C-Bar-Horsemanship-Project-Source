@@ -1,4 +1,7 @@
 {% extends "cbar_db/template.html" %}
+{% block header %}
+    {% load staticfiles %}
+{% endblock %}
 {% block body %}
     <h1>Health Information &amp; Medical History</h1>
     {% if error_text %}
@@ -157,9 +160,10 @@
             </span>
         </p>
         <p>
-            If yes, please attach a statement from your physician
-            allowing your participation in these activities.
-            <span style="color: red">WE NEED A FIELD FOR THIS</span>
+            If yes, please print
+             <a href="{% static "cbar_db/pdf/medical.pdf" %}" target="_blank">
+             the medical evaluation form</a>, fill out the non-physician
+             portion of it, and bring it with you to your first session.
         </p>
         <p>
             Do you have any physical and/or mental health conditions,
@@ -211,10 +215,10 @@
             </span>
         </p>
         <p>
-            <span style="color: red">WE NEED A FIELD FOR THIS</span>
-            If yes, please attach a statement from your physician indicating
-            the nature of your activity restriction and the prognosis for the
-            future restriction.
+            If yes, please print
+             <a href="{% static "cbar_db/pdf/medical.pdf" %}" target="_blank">
+             the medical evaluation form</a>, fill out the non-physician
+             portion of it, and bring it with you to your first session.
         </p>
         <p>
             In the last 6 months, have you had ANY surgeries
@@ -234,6 +238,13 @@
              <span class="error_message">
                  {{ form.limiting_surgeries_last_six_monthes_description.errors.as_text }}
              </span>
+        </p>
+        <p>
+            Are you pregnant, or do you suspect you may be pregnant?
+             {{ form.pregnant }}
+            <span class="error_message">
+                {{ form.pregnant.errors.as_text }}
+            </span>
         </p>
         <p>
             I have completed the above information to the best of my
