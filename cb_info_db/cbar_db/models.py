@@ -146,6 +146,14 @@ class Session(models.Model):
     date=models.DateTimeField()
     tack=models.CharField(max_length=250)
 
+class SessionPlanInd(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+    horse_leader=models.CharField(max_length=NAME_LENGTH, null=True)
+
 
 class SessionGoals(models.Model):
     GOAL_SHORT_TERM="S"
@@ -189,7 +197,6 @@ class Horse(models.Model):
     horse_id=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
     description=models.CharField(max_length=500)
-    horse_leader=models.CharField(max_length=NAME_LENGTH, null=True)
 
 
 class Donation(models.Model):
