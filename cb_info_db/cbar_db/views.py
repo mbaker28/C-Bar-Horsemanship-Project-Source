@@ -2171,6 +2171,10 @@ def private_form_session_plan(request, participant_id):
             )
             session_plan.save()
 
+            session_ind=models.SessionPlanInd(
+                horse_leader=form.cleaned_data['horse_leader']
+            )
+
             session_goals=models.SessionGoals(
                 participant_id=participant,
                 session_id=session_plan,
@@ -2182,7 +2186,6 @@ def private_form_session_plan(request, participant_id):
 
             horse_info=models.Horse(
                 name=form.cleaned_data['horse_name'],
-                horse_leader=form.cleaned_data['horse_leader']
             )
             horse_info.save()
 
