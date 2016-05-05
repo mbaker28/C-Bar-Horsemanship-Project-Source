@@ -1,10 +1,13 @@
 {% extends "cbar_db/template.html" %}
+{% load staticfiles %}
 {% block header %}
-<style>
-  li{
-    display:inline-block;
-  }
-</style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="{% static "cbar_db/js/rider_eval_checklist.js" %}" type="text/javascript"></script>
+  <style>
+    li{
+      display:inline-block;
+    }
+  </style>
 {% endblock %}
 {% block body %}
     <h1>Rider Evaluation Checklist</h1>
@@ -13,9 +16,27 @@
             {{ error_text }}
         </strong></p>
     {% endif %}
+
+    <form style="text-align: center">
+        <select name="section" id="section" style="text-align: center">
+            <option value="section_basic_mount_aid">--- Basic/Mount/Aid ---</option>
+            <option value="section_reverse_never_ridden_seat">--- Reverse/Never-Ridden/Seat ---</option>
+            <option value="section_handpost_twopoint_circle">--- Hand-Post/Two-Point/Circle ---</option>
+            <option value="section_holds">--- Holds ---</option>
+            <option value="section_shorten_lengthen_control_halt">--- Shorten-Lengthen/Control/Halt ---</option>
+            <option value="section_stirrups_half_seat">--- Stirrups/Half-Seat ---</option>
+            <option value="section_post_proper">--- Post/Proper ---</option>
+            <option value="section_cavaletti_crossbar">--- Cavaletti/Crossbar ---</option>
+            <option value="section_overall_comments">--- Overall Comments ---</option>
+        </select>
+    </form>
+
+    <span style="color: red;">WE NEED TO LOAD JQUERY FROM STATIC FILES NOT GOOGLE CDN</span>
+
     {% if participant %}
         <form action="{% url 'private_form_rider_eval_checklist' participant.participant_id %}" method="post">
             {% csrf_token %}
+        <div id="participant_info">
           <div id="participant_name">
             <p>
                 <b><u>Participant:</u></b> {{ participant.name }} ({{ participant.birth_date }})
@@ -32,7 +53,8 @@
                 </span>
             </p>
           </div>
-        <div id="section_one">
+        </div>
+        <div id="section_basic_mount_aid">
           <div id="basic_trail_rules">
             <p>
                 <b><u>Basic Trail Rules:</u></b> {{ form.basic_trail_rules }}
@@ -130,6 +152,7 @@
             </p>
           </div>
         </div>
+        <div id="section_reverse_never_ridden_seat">
           <div id="reverse_at_walk">
             <p>
                 <b><u>Reverse - At Walk:</u></b> {{ form.reverse_at_walk }}
@@ -258,6 +281,8 @@
                 </span>
             </p>
           </div>
+        </div>
+        <div id="section_handpost_twopoint_circle">
           <div id="hand_pos_english">
             <p>
                 <b><u>Hand Post - English:</u></b> {{ form.hand_pos_english }}
@@ -402,6 +427,8 @@
                 </span>
             </p>
           </div>
+        </div>
+        <div id="section_holds">
           <div id="holds_handhold_walk">
             <p>
                 <b><u>Handhold - Walk:</u></b> {{ form.holds_handhold_walk }}
@@ -530,6 +557,8 @@
                 </span>
             </p>
           </div>
+        </div>
+        <div id="section_shorten_lengthen_control_halt">
           <div id="shorten_lengthen_reins_walk">
             <p>
                 <b><u>Shorten/Lengthen Reins - Walk:</u></b> {{ form.shorten_lengthen_reins_walk }}
@@ -722,6 +751,8 @@
                 </span>
             </p>
           </div>
+        </div>
+        <div id="section_stirrups_half_seat">
           <div id="drop_pickup_stirrups_walk">
             <p>
                 <b><u>Drop/Pickup Stirrups - Walk:</u></b> {{ form.drop_pickup_stirrups_walk }}
@@ -914,6 +945,8 @@
                 </span>
             </p>
           </div>
+        </div>
+        <div id="section_post_proper">
           <div id="can_post_walk">
             <p>
                 <b><u>Can Post - Walk:</u></b> {{ form.can_post_walk }}
@@ -1074,6 +1107,8 @@
                 </span>
             </p>
           </div>
+        </div>
+        <div id="section_cavaletti_crossbar">
           <div id="can_steer_over_cavalletti_walk">
             <p>
                 <b><u>Can Steer Over Cavalletti - Walk:</u></b> {{ form.can_steer_over_cavalletti_walk }}
@@ -1202,6 +1237,8 @@
                 </span>
             </p>
           </div>
+        </div>
+        <div id="section_overall_comments">
           <div id="comments">
             <p>
                 <b><u>Overall Comments:</u></b> {{ form.comments }}
@@ -1210,6 +1247,7 @@
                 </span>
             </p>
           </div>
+        </div>
             <input type="Submit" value="Submit" />
         </form>
     {% endif %}
