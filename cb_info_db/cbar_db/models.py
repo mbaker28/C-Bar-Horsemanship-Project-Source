@@ -113,7 +113,7 @@ ONE_TWO_THREE_CHOICES=(
     (ONE, "1"),
     (TWO, "2"),
     (THREE, "3"),
-    (UNKNOWN, "-")
+    (UNKNOWN, "N/A")
 )
 
 class Participant(models.Model):

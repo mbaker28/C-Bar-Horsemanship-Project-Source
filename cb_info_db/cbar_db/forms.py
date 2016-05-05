@@ -584,208 +584,308 @@ class ObservationEvaluation(forms.Form):
     date=forms.DateField(widget=SelectDateWidget, initial=date.today())
 
     walking_through_barn_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "walking_through_barn_willing"
         ).choices
     )
     walking_through_barn_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "walking_through_barn_motivated"
         ).choices
     )
     walking_through_barn_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "walking_through_barn_appearance"
         ).choices
     )
 
     looking_at_horses_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "looking_at_horses_willing"
         ).choices
     )
+
     looking_at_horses_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "looking_at_horses_motivated"
         ).choices
     )
     looking_at_horses_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "looking_at_horses_appearance"
         ).choices
     )
 
     petting_horses_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "petting_horses_willing"
         ).choices
     )
+
     petting_horses_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "petting_horses_motivated"
         ).choices
     )
+
     petting_horses_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "petting_horses_appearance"
         ).choices
     )
 
     up_down_ramp_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "up_down_ramp_willing"
         ).choices
     )
     up_down_ramp_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "up_down_ramp_motivated"
         ).choices
     )
+
     up_down_ramp_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "up_down_ramp_appearance"
         ).choices
     )
 
     mounting_before_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "mounting_before_willing"
         ).choices
     )
+
     mounting_before_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "mounting_before_motivated"
         ).choices
     )
+
     mounting_before_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "mounting_before_appearance"
         ).choices
     )
 
     mounting_after_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "mounting_after_willing"
         ).choices
     )
+
     mounting_after_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "mounting_after_motivated"
         ).choices
     )
+
     mounting_after_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "mounting_after_appearance"
         ).choices
     )
 
     riding_before_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_before_willing"
         ).choices
     )
+
     riding_before_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_before_motivated"
         ).choices
     )
+
     riding_before_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_before_appearance"
         ).choices
     )
 
     riding_during_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_during_willing"
         ).choices
     )
+
     riding_during_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_during_motivated"
         ).choices
     )
+
     riding_during_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_during_appearance"
         ).choices
     )
 
     riding_after_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_after_willing"
         ).choices
     )
+
     riding_after_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_after_motivated"
         ).choices
     )
+
     riding_after_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "riding_after_appearance"
         ).choices
     )
 
     understands_directions_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "understands_directions_willing"
         ).choices
     )
+
     understands_directions_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "understands_directions_motivated"
         ).choices
     )
+
     understands_directions_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "understands_directions_appearance"
         ).choices
     )
 
     participates_exercises_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "participates_exercises_willing"
         ).choices
     )
+
     participates_exercises_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "participates_exercises_motivated"
         ).choices
     )
+
     participates_exercises_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "participates_exercises_appearance"
         ).choices
     )
 
     participates_games_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "participates_games_willing"
         ).choices
     )
+
     participates_games_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "participates_games_motivated"
         ).choices
     )
+
     participates_games_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "participates_games_appearance"
         ).choices
     )
 
     general_attitude_willing=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "general_attitude_willing"
         ).choices
     )
+
     general_attitude_motivated=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "general_attitude_motivated"
         ).choices
     )
+
     general_attitude_appearance=forms.ChoiceField(
+        widget=RadioSelect,
+        initial="-",
         choices=models.EvalAttitude._meta.get_field(
             "general_attitude_appearance"
         ).choices
