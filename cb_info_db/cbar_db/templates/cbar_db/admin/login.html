@@ -15,6 +15,9 @@
     <form method="post" action="{% url 'user-login' %}">
         {% csrf_token %}
         <p>
+            Enter your login information to enter the administration area of the database.
+        </p>
+        <p>
             {{ form.username.label_tag }}
             {{ form.username }}
         </p>
