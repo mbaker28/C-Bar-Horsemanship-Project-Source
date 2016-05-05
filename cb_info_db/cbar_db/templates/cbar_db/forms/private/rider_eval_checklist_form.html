@@ -1,10 +1,13 @@
 {% extends "cbar_db/template.html" %}
+{% load staticfiles %}
 {% block header %}
-<style>
-  li{
-    display:inline-block;
-  }
-</style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="{% static "cbar_db/js/rider_eval_checklist.js" %}" type="text/javascript"></script>
+  <style>
+    li{
+      display:inline-block;
+    }
+  </style>
 {% endblock %}
 {% block body %}
     <h1>Rider Evaluation Checklist</h1>
@@ -13,897 +16,1238 @@
             {{ error_text }}
         </strong></p>
     {% endif %}
+
+    <form style="text-align: center">
+        <select name="section" id="section" style="text-align: center">
+            <option value="section_basic_mount_aid">--- Basic/Mount/Aid ---</option>
+            <option value="section_reverse_never_ridden_seat">--- Reverse/Never-Ridden/Seat ---</option>
+            <option value="section_handpost_twopoint_circle">--- Hand-Post/Two-Point/Circle ---</option>
+            <option value="section_holds">--- Holds ---</option>
+            <option value="section_shorten_lengthen_control_halt">--- Shorten-Lengthen/Control/Halt ---</option>
+            <option value="section_stirrups_half_seat">--- Stirrups/Half-Seat ---</option>
+            <option value="section_post_proper">--- Post/Proper ---</option>
+            <option value="section_cavaletti_crossbar">--- Cavaletti/Crossbar ---</option>
+            <option value="section_overall_comments">--- Overall Comments ---</option>
+        </select>
+    </form>
+
+    <span style="color: red;">WE NEED TO LOAD JQUERY FROM STATIC FILES NOT GOOGLE CDN</span>
+
     {% if participant %}
         <form action="{% url 'private_form_rider_eval_checklist' participant.participant_id %}" method="post">
             {% csrf_token %}
+        <div id="participant_info">
+          <div id="participant_name">
             <p>
                 <b><u>Participant:</u></b> {{ participant.name }} ({{ participant.birth_date }})
                 <span class="error_message">
                     {{ form.participant.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="date">
             <p>
                 <b><u>Date:</u></b> {{ form.date }}
                 <span class="error_message">
                     {{ form.date.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
+        <div id="section_basic_mount_aid">
+          <div id="basic_trail_rules">
             <p>
                 <b><u>Basic Trail Rules:</u></b> {{ form.basic_trail_rules }}
                 <span class="error_message">
                     {{ form.basic_trail_rules.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="basic_trail_rules">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.basic_trail_rules_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.basic_trail_rules_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="mount">
             <p>
                 <b><u>Mount:</u></b> {{ form.mount }}
                 <span class="error_message">
                     {{ form.mount.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="mount_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.mount_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.mount_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="dismount">
             <p>
                 <b><u>Dismount:</u></b> {{ form.dismount }}
                 <span class="error_message">
                     {{ form.dismount.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="dismount_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.dismount_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.dismount_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="emergency_dismount">
             <p>
                 <b><u>Emergency Dismount:</u></b> {{ form.emergency_dismount }}
                 <span class="error_message">
                     {{ form.emergency_dismount.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="emergency_dismount_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.emergency_dismount_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.emergency_dismount_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="four_natural_aids">
             <p>
                 <b><u>Four Natural Aids:</u></b> {{ form.four_natural_aids }}
                 <span class="error_message">
                     {{ form.four_natural_aids.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="four_natural_aids_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.four_natural_aids_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.four_natural_aids_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="basic_control">
             <p>
                 <b><u>Basic Control:</u></b> {{ form.basic_control }}
                 <span class="error_message">
                     {{ form.basic_control.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="basic_control_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.basic_control_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.basic_control_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
+        <div id="section_reverse_never_ridden_seat">
+          <div id="reverse_at_walk">
             <p>
                 <b><u>Reverse - At Walk:</u></b> {{ form.reverse_at_walk }}
                 <span class="error_message">
                     {{ form.reverse_at_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="reverse_at_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.reverse_at_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.reverse_at_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="reverse_at_trot">
             <p>
                 <b><u>Reverse - At Trot:</u></b> {{ form.reverse_at_trot }}
                 <span class="error_message">
                     {{ form.reverse_at_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="reverse_at_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.reverse_at_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.reverse_at_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="never_ridden">
             <p>
                 <b><u>Never Ridden:</u></b> {{ form.never_ridden }}
                 <span class="error_message">
                     {{ form.never_ridden.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="never_ridden_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.never_ridden_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.never_ridden_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="seat_at_walk">
             <p>
                 <b><u>Seat - At Walk:</u></b> {{ form.seat_at_walk }}
                 <span class="error_message">
                     {{ form.seat_at_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="seat_at_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.seat_at_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.seat_at_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="seat_at_trot">
             <p>
                 <b><u>Seat - At Trot:</u></b> {{ form.seat_at_trot }}
                 <span class="error_message">
                     {{ form.seat_at_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="seat_at_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.seat_at_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.seat_at_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="seat_at_canter">
             <p>
                 <b><u>Seat - At Canter:</u></b> {{ form.seat_at_canter }}
                 <span class="error_message">
                     {{ form.seat_at_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="seat_at_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.seat_at_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.seat_at_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="basic_seat_english">
             <p>
                 <b><u>Basic Seat - Englsh:</u></b> {{ form.basic_seat_english }}
                 <span class="error_message">
                     {{ form.basic_seat_english.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="basic_seat_english_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.basic_seat_english_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.basic_seat_english_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="basic_seat_western">
             <p>
                 <b><u>Basic Seat - Western:</u></b> {{ form.basic_seat_western }}
                 <span class="error_message">
                     {{ form.basic_seat_western.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="basic_seat_western_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.basic_seat_western_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.basic_seat_western_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
+        <div id="section_handpost_twopoint_circle">
+          <div id="hand_pos_english">
             <p>
                 <b><u>Hand Post - English:</u></b> {{ form.hand_pos_english }}
                 <span class="error_message">
                     {{ form.hand_pos_english.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="hand_pos_english_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.hand_pos_english_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.hand_pos_english_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="hand_post_western">
             <p>
                 <b><u>Hand Post - Western:</u></b> {{ form.hand_post_western }}
                 <span class="error_message">
                     {{ form.hand_post_western.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="hand_post_western_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.hand_post_western_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.hand_post_western_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="two_point_trot">
             <p>
                 <b><u>Two Point - Trot:</u></b> {{ form.two_point_trot }}
                 <span class="error_message">
                     {{ form.two_point_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="two_point_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.two_point_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.two_point_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="two_point_canter">
             <p>
                 <b><u>Two Point - Canter:</u></b> {{ form.two_point_canter }}
                 <span class="error_message">
                     {{ form.two_point_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="two_point_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.two_point_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.two_point_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_trot_no_stirrups">
             <p>
                 <b><u>Circle Trot - No Stirrups:</u></b> {{ form.circle_trot_no_stirrups }}
                 <span class="error_message">
                     {{ form.circle_trot_no_stirrups.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_trot_no_stirrups_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.circle_trot_no_stirrups_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.circle_trot_no_stirrups_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_at_canter">
             <p>
                 <b><u>Circle - At Canter:</u></b> {{ form.circle_at_canter }}
                 <span class="error_message">
                     {{ form.circle_at_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_at_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.circle_at_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.circle_at_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_canter_no_stirrups">
             <p>
                 <b><u>Circle Canter - No Stirrups:</u></b> {{ form.circle_canter_no_stirrups }}
                 <span class="error_message">
                     {{ form.circle_canter_no_stirrups.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_canter_no_stirrups_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.circle_canter_no_stirrups_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.circle_canter_no_stirrups_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_at_walk">
             <p>
                 <b><u>Circle - At Walk:</u></b> {{ form.circle_at_walk }}
                 <span class="error_message">
                     {{ form.circle_at_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_at_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.circle_at_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.circle_at_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_at_trot">
             <p>
                 <b><u>Circle - At Trot:</u></b> {{ form.circle_at_trot }}
                 <span class="error_message">
                     {{ form.circle_at_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="circle_at_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.circle_at_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.circle_at_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
+        <div id="section_holds">
+          <div id="holds_handhold_walk">
             <p>
                 <b><u>Handhold - Walk:</u></b> {{ form.holds_handhold_walk }}
                 <span class="error_message">
                     {{ form.holds_handhold_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_handhold_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.holds_handhold_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.holds_handhold_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_handhold_sit_trot">
             <p>
                 <b><u>Handhold - Sit Trot:</u></b> {{ form.holds_handhold_sit_trot }}
                 <span class="error_message">
                     {{ form.holds_handhold_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_handhold_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.holds_handhold_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.holds_handhold_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_handhold_post_trot">
             <p>
                 <b><u>Handhold - Post Trot:</u></b> {{ form.holds_handhold_post_trot }}
                 <span class="error_message">
                     {{ form.holds_handhold_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_handhold_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.holds_handhold_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.holds_handhold_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_handhold_canter">
             <p>
                 <b><u>Handhold - Canter:</u></b> {{ form.holds_handhold_canter }}
                 <span class="error_message">
                     {{ form.holds_handhold_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_handhold_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.holds_handhold_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.holds_handhold_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_reins_walk">
             <p>
                 <b><u>Holds Reins - Walk:</u></b> {{ form.holds_reins_walk }}
                 <span class="error_message">
                     {{ form.holds_reins_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_reins_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.holds_reins_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.holds_reins_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_reins_sit_trot">
             <p>
                 <b><u>Holds Reins - Sit Trot:</u></b> {{ form.holds_reins_sit_trot }}
                 <span class="error_message">
                     {{ form.holds_reins_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_reins_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.holds_reins_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.holds_reins_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_reins_post_trot">
             <p>
                 <b><u>Holds Reins - Post Trot:</u></b> {{ form.holds_reins_post_trot }}
                 <span class="error_message">
                     {{ form.holds_reins_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_reins_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.holds_reins_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.holds_reins_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_reins_canter">
             <p>
                 <b><u>Holds Reins - Canter:</u></b> {{ form.holds_reins_canter }}
                 <span class="error_message">
                     {{ form.holds_reins_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="holds_reins_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.holds_reins_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.holds_reins_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
+        <div id="section_shorten_lengthen_control_halt">
+          <div id="shorten_lengthen_reins_walk">
             <p>
                 <b><u>Shorten/Lengthen Reins - Walk:</u></b> {{ form.shorten_lengthen_reins_walk }}
                 <span class="error_message">
                     {{ form.shorten_lengthen_reins_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="shorten_lengthen_reins_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.shorten_lengthen_reins_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.shorten_lengthen_reins_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="shorten_lengthen_reins_sit_trot">
             <p>
                 <b><u>Shorten/Lengthen Reins - Sit Trot:</u></b> {{ form.shorten_lengthen_reins_sit_trot }}
                 <span class="error_message">
                     {{ form.shorten_lengthen_reins_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="shorten_lengthen_reins_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.shorten_lengthen_reins_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.shorten_lengthen_reins_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="shorten_lengthen_reins_post_trot">
             <p>
                 <b><u>Shorten/Lengthen Reins - Post Trot:</u></b> {{ form.shorten_lengthen_reins_post_trot }}
                 <span class="error_message">
                     {{ form.shorten_lengthen_reins_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="shorten_lengthen_reins_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.shorten_lengthen_reins_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.shorten_lengthen_reins_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="shorten_lengthen_reins_canter">
             <p>
                 <b><u>Shorten/Lengthen Reins - Canter:</u></b> {{ form.shorten_lengthen_reins_canter }}
                 <span class="error_message">
                     {{ form.shorten_lengthen_reins_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="shorten_lengthen_reins_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.shorten_lengthen_reins_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.shorten_lengthen_reins_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_control_horse_walk">
             <p>
                 <b><u>Can Control Horse - Walk:</u></b> {{ form.can_control_horse_walk }}
                 <span class="error_message">
                     {{ form.can_control_horse_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_control_horse_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_control_horse_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_control_horse_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_control_horse_sit_trot">
             <p>
                 <b><u>Can Control Horse - Sit Trot:</u></b> {{ form.can_control_horse_sit_trot }}
                 <span class="error_message">
                     {{ form.can_control_horse_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_control_horse_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_control_horse_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_control_horse_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_control_horse_post_trot">
             <p>
                 <b><u>Can Control Horse - Post Trot:</u></b> {{ form.can_control_horse_post_trot }}
                 <span class="error_message">
                     {{ form.can_control_horse_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_control_horse_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_control_horse_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_control_horse_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_control_horse_canter">
             <p>
                 <b><u>Can Control Horse - Canter:</u></b> {{ form.can_control_horse_canter }}
                 <span class="error_message">
-                    {{ form.date.errors.as_text }}
+                    {{ form.can_control_horse_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_control_horse_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_control_horse_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_control_horse_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_halt_walk">
             <p>
                 <b><u>Can Halt - Walk:</u></b> {{ form.can_halt_walk }}
                 <span class="error_message">
                     {{ form.can_halt_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_halt_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_halt_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_halt_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_halt_sit_trot">
             <p>
                 <b><u>Can Halt - Sit Trot:</u></b> {{ form.can_halt_sit_trot }}
                 <span class="error_message">
                     {{ form.can_halt_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_halt_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_halt_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_halt_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_halt_post_trot">
             <p>
                 <b><u>Can Halt - Post Trot:</u></b> {{ form.can_halt_post_trot }}
                 <span class="error_message">
                     {{ form.can_halt_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_halt_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_halt_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_halt_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_halt_canter">
             <p>
                 <b><u>Can Halt - Canter:</u></b> {{ form.can_halt_canter }}
                 <span class="error_message">
                     {{ form.can_halt_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_halt_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_halt_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_halt_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
+        <div id="section_stirrups_half_seat">
+          <div id="drop_pickup_stirrups_walk">
             <p>
                 <b><u>Drop/Pickup Stirrups - Walk:</u></b> {{ form.drop_pickup_stirrups_walk }}
                 <span class="error_message">
                     {{ form.drop_pickup_stirrups_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="drop_pickup_stirrups_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.drop_pickup_stirrups_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.drop_pickup_stirrups_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="drop_pickup_stirrups_sit_trot">
             <p>
                 <b><u>Drop/Pickup Stirrups - Sit Trot:</u></b> {{ form.drop_pickup_stirrups_sit_trot }}
                 <span class="error_message">
                     {{ form.drop_pickup_stirrups_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="drop_pickup_stirrups_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.drop_pickup_stirrups_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.drop_pickup_stirrups_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="drop_pickup_stirrups_post_trot">
             <p>
                 <b><u>Drop/Pickup Stirrups - Post Trot:</u></b> {{ form.drop_pickup_stirrups_post_trot }}
                 <span class="error_message">
                     {{ form.drop_pickup_stirrups_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="drop_pickup_stirrups_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.drop_pickup_stirrups_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.drop_pickup_stirrups_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="drop_pickup_stirrups_canter">
             <p>
                 <b><u>Drop/Pickup Stirrups - Canter:</u></b> {{ form.drop_pickup_stirrups_canter }}
                 <span class="error_message">
                     {{ form.drop_pickup_stirrups_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="drop_pickup_stirrups_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.drop_pickup_stirrups_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.drop_pickup_stirrups_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="rides_no_stirrups_walk">
             <p>
                 <b><u>Rides No Stirrups - Walk:</u></b> {{ form.rides_no_stirrups_walk }}
                 <span class="error_message">
                     {{ form.rides_no_stirrups_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="rides_no_stirrups_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.rides_no_stirrups_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.rides_no_stirrups_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="rides_no_stirrups_sit_trot">
             <p>
                 <b><u>Rides No Stirrups - Sit Trot:</u></b> {{ form.rides_no_stirrups_sit_trot }}
                 <span class="error_message">
                     {{ form.rides_no_stirrups_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="rides_no_stirrups_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.rides_no_stirrups_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.rides_no_stirrups_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="rides_no_stirrups_post_trot">
             <p>
                 <b><u>Rides No Stirrups - Post Trot:</u></b> {{ form.rides_no_stirrups_post_trot }}
                 <span class="error_message">
                     {{ form.rides_no_stirrups_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="rides_no_stirrups_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.rides_no_stirrups_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.rides_no_stirrups_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="rides_no_stirrups_canter">
             <p>
                 <b><u>Rides No Stirrups - Canter:</u></b> {{ form.rides_no_stirrups_canter }}
                 <span class="error_message">
                     {{ form.rides_no_stirrups_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="rides_no_stirrups_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.rides_no_stirrups_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.rides_no_stirrups_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="maintain_half_seat_walk">
             <p>
                 <b><u>Maintain Half Seat - Walk:</u></b> {{ form.maintain_half_seat_walk }}
                 <span class="error_message">
                     {{ form.maintain_half_seat_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="maintain_half_seat_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.maintain_half_seat_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.maintain_half_seat_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="maintain_half_seat_sit_trot">
             <p>
                 <b><u>Maintain Half Seat - Sit Trot:</u></b> {{ form.maintain_half_seat_sit_trot }}
                 <span class="error_message">
                     {{ form.maintain_half_seat_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="maintain_half_seat_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.maintain_half_seat_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.maintain_half_seat_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="maintain_half_seat_post_trot">
             <p>
                 <b><u>Maintain Half Seat - Post Trot:</u></b> {{ form.maintain_half_seat_post_trot }}
                 <span class="error_message">
                     {{ form.maintain_half_seat_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="maintain_half_seat_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.maintain_half_seat_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.maintain_half_seat_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="maintain_half_seat_canter">
             <p>
                 <b><u>Maintain Half Seat - Canter:</u></b> {{ form.maintain_half_seat_canter }}
                 <span class="error_message">
                     {{ form.maintain_half_seat_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="maintain_half_seat_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.maintain_half_seat_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.maintain_half_seat_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
+        <div id="section_post_proper">
+          <div id="can_post_walk">
             <p>
                 <b><u>Can Post - Walk:</u></b> {{ form.can_post_walk }}
                 <span class="error_message">
                     {{ form.can_post_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_post_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_post_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_post_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_post_sit_trot">
             <p>
                 <b><u>Can Post - Sit Trot:</u></b> {{ form.can_post_sit_trot }}
                 <span class="error_message">
                     {{ form.can_post_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_post_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_post_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_post_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_post_post_trot">
             <p>
                 <b><u>Can Post - Post Trot:</u></b> {{ form.can_post_post_trot }}
                 <span class="error_message">
                     {{ form.can_post_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_post_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_post_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_post_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_post_canter">
             <p>
                 <b><u>Can Post - Canter:</u></b> {{ form.can_post_canter }}
                 <span class="error_message">
                     {{ form.can_post_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_post_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_post_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_post_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_diagonal_walk">
             <p>
                 <b><u>Proper Diagonal - Walk:</u></b> {{ form.proper_diagonal_walk }}
                 <span class="error_message">
                     {{ form.proper_diagonal_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_diagonal_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.proper_diagonal_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.proper_diagonal_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_diagonal_sit_trot">
             <p>
                 <b><u>Proper Diagonal - Sit Trot:</u></b> {{ form.proper_diagonal_sit_trot }}
                 <span class="error_message">
                     {{ form.proper_diagonal_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_diagonal_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.proper_diagonal_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.proper_diagonal_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_diagonal_post_trot">
             <p>
                 <b><u>Proper Diagonal - Post Trot:</u></b> {{ form.proper_diagonal_post_trot }}
                 <span class="error_message">
                     {{ form.proper_diagonal_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_diagonal_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.proper_diagonal_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.proper_diagonal_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_diagonal_canter">
             <p>
                 <b><u>Proper Diagonal - Canter:</u></b> {{ form.proper_diagonal_canter }}
                 <span class="error_message">
                     {{ form.proper_diagonal_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_diagonal_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.proper_diagonal_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.proper_diagonal_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_lead_canter_sees">
             <p>
                 <b><u>Proper Lead Canter - Sees:</u></b> {{ form.proper_lead_canter_sees }}
                 <span class="error_message">
                     {{ form.proper_lead_canter_sees.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_lead_canter_sees_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.proper_lead_canter_sees_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.proper_lead_canter_sees_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_lead_canter_knows">
             <p>
                 <b><u>Proper Lead Canter - Knows:</u></b> {{ form.proper_lead_canter_knows }}
                 <span class="error_message">
                     {{ form.proper_lead_canter_knows.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="proper_lead_canter_knows_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.proper_lead_canter_knows_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.proper_lead_canter_knows_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
+        <div id="section_cavaletti_crossbar">
+          <div id="can_steer_over_cavalletti_walk">
             <p>
                 <b><u>Can Steer Over Cavalletti - Walk:</u></b> {{ form.can_steer_over_cavalletti_walk }}
                 <span class="error_message">
                     {{ form.can_steer_over_cavalletti_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_steer_over_cavalletti_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_steer_over_cavalletti_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_steer_over_cavalletti_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_steer_over_cavalletti_sit_trot">
             <p>
                 <b><u>Can Steer Over Cavalletti - Sit Trot:</u></b> {{ form.can_steer_over_cavalletti_sit_trot }}
                 <span class="error_message">
                     {{ form.can_steer_over_cavalletti_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_steer_over_cavalletti_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_steer_over_cavalletti_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_steer_over_cavalletti_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_steer_over_cavalletti_post_trot">
             <p>
                 <b><u>Can Steer Over Cavalletti - Post Trot:</u></b> {{ form.can_steer_over_cavalletti_post_trot }}
                 <span class="error_message">
                     {{ form.can_steer_over_cavalletti_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_steer_over_cavalletti_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_steer_over_cavalletti_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_steer_over_cavalletti_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_steer_over_cavalletti_canter">
             <p>
                 <b><u>Can Steer Over Cavalletti - Canter:</u></b> {{ form.can_steer_over_cavalletti_canter }}
                 <span class="error_message">
                     {{ form.can_steer_over_cavalletti_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="can_steer_over_cavalletti_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.can_steer_over_cavalletti_canter_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.can_steer_over_cavalletti_canter_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="jump_crossbar_walk">
             <p>
                 <b><u>Jump Crossbar - Walk:</u></b> {{ form.jump_crossbar_walk }}
                 <span class="error_message">
                     {{ form.jump_crossbar_walk.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="jump_crossbar_walk_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.jump_crossbar_walk_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.jump_crossbar_walk_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="jump_crossbar_sit_trot">
             <p>
                 <b><u>Jump Crossbar - Sit Trot:</u></b> {{ form.jump_crossbar_sit_trot }}
                 <span class="error_message">
                     {{ form.jump_crossbar_sit_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="jump_crossbar_sit_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.jump_crossbar_sit_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.jump_crossbar_sit_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="jump_crossbar_post_trot">
             <p>
                 <b><u>Jump Crossbar - Post Trot:</u></b> {{ form.jump_crossbar_post_trot }}
                 <span class="error_message">
                     {{ form.jump_crossbar_post_trot.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="jump_crossbar_post_trot_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.jump_crossbar_post_trot_com }}
                 <span class="error_message">
-                    {{ form.comments.errors.as_text }}
+                    {{ form.jump_crossbar_post_trot_com.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="jump_crossbar_canter">
             <p>
                 <b><u>Jump Crossbar - Canter:</u></b> {{ form.jump_crossbar_canter }}
                 <span class="error_message">
                     {{ form.jump_crossbar_canter.errors.as_text }}
                 </span>
             </p>
+          </div>
+          <div id="jump_crossbar_canter_com">
             <p>
-                Comments: {{ form.comments }}
+                Comments: {{ form.jump_crossbar_canter_com }}
+                <span class="error_message">
+                    {{ form.jump_crossbar_canter_com.errors.as_text }}
+                </span>
+            </p>
+          </div>
+        </div>
+        <div id="section_overall_comments">
+          <div id="comments">
+            <p>
+                <b><u>Overall Comments:</u></b> {{ form.comments }}
                 <span class="error_message">
                     {{ form.comments.errors.as_text }}
                 </span>
             </p>
+          </div>
+        </div>
             <input type="Submit" value="Submit" />
         </form>
     {% endif %}

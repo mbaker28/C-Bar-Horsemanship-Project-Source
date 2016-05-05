@@ -246,6 +246,13 @@
              </span>
         </p>
         <p>
+            Are you pregnant, or do you suspect you may be pregnant?
+             {{ form.pregnant }}
+            <span class="error_message">
+                {{ form.pregnant.errors.as_text }}
+            </span>
+        </p>
+        <p>
             I have completed the above information to the best of my
             knowledge and will assume the responsibility for my own
             health and safety during any C-Bar activity I am involved.

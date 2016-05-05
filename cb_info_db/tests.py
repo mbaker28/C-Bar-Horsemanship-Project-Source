@@ -497,17 +497,18 @@ class TestEmergencyAuthorizationForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Bruce Wayne",
-            currently_taking_any_medication=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1022,17 +1023,18 @@ class TestMediaReleaseForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Bruce Wayne",
-            currently_taking_any_medication=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1603,17 +1605,18 @@ class TestMedicalReleaseForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1629,28 +1632,29 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
             "signature": "TEST Bruce Wayne",
@@ -1691,28 +1695,29 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
             "signature": "TEST I'm Batman!",
@@ -1753,28 +1758,29 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "Y",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "Y",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "Y",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "Y",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "Y",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1000-1-1",
             "signature": "TEST Bruce Wayne",
@@ -1812,28 +1818,29 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
             "signature": "TEST Bruce Wayne",
@@ -1901,28 +1908,29 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
             "signature": "TEST Not Bruce Wayne",
@@ -1951,28 +1959,29 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1455-9-30",
             "signature": "TEST Bruce Wayne",
@@ -2003,28 +2012,29 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "11122233332u3094890238402",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
             "signature": "TEST Bruce Wayne",
@@ -2053,28 +2063,29 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "",
             "medication_two_reason": "",
             "medication_two_frequency": "",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
             "signature": "TEST Bruce Wayne",
@@ -2138,27 +2149,28 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
-            "limiting_surgeries_last_six_monthes": False,
+            "present_restrictions_for_horse_activity": "Y",
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
             "signature": "TEST Bruce Wayne",
@@ -3396,6 +3408,99 @@ class TestSeizureEvaluationForm(TestCase):
             response.context["error_text"]
         )
 
+    def test_seizure_evaluation_form_saves_with_valid_data_regression_37(self):
+        """ Regression Test for Issue #37. You should be able to save a Seizure
+         Evaluation form without a value in the
+         'action_to_take_allow_time_how_long'. """
+
+        form_data={
+            "name": "TEST Peter Parker",
+            "birth_date": "1985-4-02",
+            "date": "2016-3-31",
+            "guardian_name": "Bob Burger",
+            "phone_home": "123-123-4567",
+            "phone_cell": "321-765-4321",
+            "phone_work": "987-654-3210",
+            "medication_one_name": "Excedrin",
+            "medication_one_reason": "Headachey stuff",
+            "medication_one_frequency": "A couple of times a week",
+            "medication_two_name": "Blah Test Medicine",
+            "medication_two_reason": "",
+            "medication_two_frequency": "",
+            "medication_three_name": "Sciency Medicine Name",
+            "medication_three_reason": "Things that hurt",
+            "medication_three_frequency": "Every 2 hours, as needed",
+            "type_of_seizure": "P",
+            "date_of_last_seizure": "1984-5-12",
+            "seizure_frequency": "Everyday",
+            "duration_of_last_seizure": "45 seconds",
+            "typical_cause": "long activity",
+            "seizure_indicators": "blank stare",
+            "after_effect": "headaches",
+            "during_seizure_stare": True,
+            "during_seizure_stare_length": "15 seconds",
+            "during_seizure_walks": True,
+            "during_seizure_aimless": True,
+            "during_seizure_cry_etc": True,
+            "during_seizure_bladder_bowel": True,
+            "during_seizure_confused_etc": True,
+            "during_seizure_other": True,
+            "during_seizure_other_description": "abcdefghij",
+            "knows_when_will_occur": False,
+            "can_communicate_when_will_occur": False,
+            "action_to_take_do_nothing": True,
+            "action_to_take_dismount": True,
+            "action_to_take_allow_time": True,
+            "action_to_take_allow_time_how_long": "",
+            "action_to_take_report_immediately": True,
+            "action_to_take_send_note": True,
+            "signature": "TEST Peter Parker",
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-seizure"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        retrieved_seizure_eval=False
+
+        # Attempt to retreive the Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retreive the new SeizureEval record:
+        try:
+            print("Retrieving new SeizureEval record...")
+            seizure_eval_in_db=(models.SeizureEval
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            retrieved_seizure_eval=True
+            print(
+                "Successfully retrieved new SeizureEval record."
+            )
+        except:
+            print(
+                "ERROR: Unable to retreive new SeizureEval record!"
+            )
+
+        self.assertTrue(retrieved_seizure_eval)
+
 
 class TestRiderEvalChecklistForm(TestCase):
     def setUp(self):
@@ -3504,7 +3609,80 @@ class TestRiderEvalChecklistForm(TestCase):
             jump_crossbar_walk="N",
             jump_crossbar_sit_trot="A",
             jump_crossbar_post_trot="P",
-            jump_crossbar_canter="U"
+            jump_crossbar_canter="U",
+            basic_trail_rules_com="",
+            mount_com="aaaaaaa",
+            dismount_com="bbbbbbbbbb",
+            emergency_dismount_com="",
+            four_natural_aids_com="cccccc",
+            basic_control_com="",
+            reverse_at_walk_com="dddddddd",
+            reverse_at_trot_com="",
+            never_ridden_com="eeeeeeeeee",
+            seat_at_walk_com="fffffffff",
+            seat_at_trot_com="gggggggggg",
+            seat_at_canter_com="hhhhhhhh",
+            basic_seat_english_com="",
+            basic_seat_western_com="iiiiiiiii",
+            hand_pos_english_com="",
+            hand_post_western_com="jjjjjjj",
+            two_point_trot_com="kkkkkkkkkk",
+            circle_trot_no_stirrups_com="",
+            circle_at_canter_com="",
+            circle_canter_no_stirrups_com="lllllllll",
+            two_point_canter_com="mmmmmmmmm",
+            circle_at_walk_com="",
+            circle_at_trot_com="nnnnnnnnnn",
+            holds_handhold_walk_com="",
+            holds_handhold_sit_trot_com="",
+            holds_handhold_post_trot_com="ooooooooo",
+            holds_handhold_canter_com="",
+            holds_reins_walk_com="ppppppppppp",
+            holds_reins_sit_trot_com="",
+            holds_reins_post_trot_com="",
+            holds_reins_canter_com="qqqqqqqqqq",
+            shorten_lengthen_reins_walk_com="",
+            shorten_lengthen_reins_sit_trot_com="rrrrrrrrrrr",
+            shorten_lengthen_reins_post_trot_com="sssssssssss",
+            shorten_lengthen_reins_canter_com="",
+            can_control_horse_walk_com="",
+            can_control_horse_sit_trot_com="ttttttttt",
+            can_control_horse_post_trot_com="",
+            can_control_horse_canter_com="uuuuuuuuu",
+            can_halt_walk_com="vvvvvvvvvv",
+            can_halt_sit_trot_com="",
+            can_halt_post_trot_com="wwwwwwwwwwwwwww",
+            can_halt_canter_com="",
+            drop_pickup_stirrups_walk_com="",
+            drop_pickup_stirrups_sit_trot_com="",
+            drop_pickup_stirrups_post_trot_com="xxxxxxxxxxxxxxxx",
+            drop_pickup_stirrups_canter_com="",
+            rides_no_stirrups_walk_com="",
+            rides_no_stirrups_sit_trot_com="yyyyyyyyyyyy",
+            rides_no_stirrups_post_trot_com="",
+            rides_no_stirrups_canter_com="zzzzzzzzzzzzz",
+            maintain_half_seat_walk_com="",
+            maintain_half_seat_sit_trot_com="",
+            maintain_half_seat_post_trot_com="",
+            maintain_half_seat_canter_com="aaaaaaaaaaa",
+            can_post_walk_com="",
+            can_post_sit_trot_com="",
+            can_post_post_trot_com="bbbbbbbbbbbbb",
+            can_post_canter_com="",
+            proper_diagonal_walk_com="",
+            proper_diagonal_sit_trot_com="ccccccccccc",
+            proper_diagonal_post_trot_com="",
+            proper_diagonal_canter_com="",
+            proper_lead_canter_sees_com="dddddddddd",
+            proper_lead_canter_knows_com="",
+            can_steer_over_cavalletti_walk_com="",
+            can_steer_over_cavalletti_sit_trot_com="eeeeeeeee",
+            can_steer_over_cavalletti_post_trot_com="",
+            can_steer_over_cavalletti_canter_com="",
+            jump_crossbar_walk_com="ffffffffff",
+            jump_crossbar_sit_trot_com="",
+            jump_crossbar_post_trot_com="ggggggggg",
+            jump_crossbar_canter_com=""
         )
         rider_eval_checklist.save()
 
@@ -3595,6 +3773,79 @@ class TestRiderEvalChecklistForm(TestCase):
                     "jump_crossbar_sit_trot": "P",
                     "jump_crossbar_post_trot": "U",
                     "jump_crossbar_canter": "P",
+                    "basic_trail_rules_com":"",
+                    "mount_com":"aaaaaaa",
+                    "dismount_com":"bbbbbbbbbb",
+                    "emergency_dismount_com":"",
+                    "four_natural_aids_com":"cccccc",
+                    "basic_control_com":"",
+                    "reverse_at_walk_com":"dddddddd",
+                    "reverse_at_trot_com":"",
+                    "never_ridden_com":"eeeeeeeeee",
+                    "seat_at_walk_com":"fffffffff",
+                    "seat_at_trot_com":"gggggggggg",
+                    "seat_at_canter_com":"hhhhhhhh",
+                    "basic_seat_english_com":"",
+                    "basic_seat_western_com":"iiiiiiiii",
+                    "hand_pos_english_com":"",
+                    "hand_post_western_com":"jjjjjjj",
+                    "two_point_trot_com":"kkkkkkkkkk",
+                    "circle_trot_no_stirrups_com":"",
+                    "circle_at_canter_com":"",
+                    "circle_canter_no_stirrups_com":"lllllllll",
+                    "two_point_canter_com":"mmmmmmmmm",
+                    "circle_at_walk_com":"",
+                    "circle_at_trot_com":"nnnnnnnnnn",
+                    "holds_handhold_walk_com":"",
+                    "holds_handhold_sit_trot_com":"",
+                    "holds_handhold_post_trot_com":"ooooooooo",
+                    "holds_handhold_canter_com":"",
+                    "holds_reins_walk_com":"ppppppppppp",
+                    "holds_reins_sit_trot_com":"",
+                    "holds_reins_post_trot_com":"",
+                    "holds_reins_canter_com":"qqqqqqqqqq",
+                    "shorten_lengthen_reins_walk_com":"",
+                    "shorten_lengthen_reins_sit_trot_com":"rrrrrrrrrrr",
+                    "shorten_lengthen_reins_post_trot_com":"sssssssssss",
+                    "shorten_lengthen_reins_canter_com":"",
+                    "can_control_horse_walk_com":"",
+                    "can_control_horse_sit_trot_com":"ttttttttt",
+                    "can_control_horse_post_trot_com":"",
+                    "can_control_horse_canter_com":"uuuuuuuuu",
+                    "can_halt_walk_com":"vvvvvvvvvv",
+                    "can_halt_sit_trot_com":"",
+                    "can_halt_post_trot_com":"wwwwwwwwwwwwwww",
+                    "can_halt_canter_com":"",
+                    "drop_pickup_stirrups_walk_com":"",
+                    "drop_pickup_stirrups_sit_trot_com":"",
+                    "drop_pickup_stirrups_post_trot_com":"xxxxxxxxxxxxxxxx",
+                    "drop_pickup_stirrups_canter_com":"",
+                    "rides_no_stirrups_walk_com":"",
+                    "rides_no_stirrups_sit_trot_com":"yyyyyyyyyyyy",
+                    "rides_no_stirrups_post_trot_com":"",
+                    "rides_no_stirrups_canter_com":"zzzzzzzzzzzzz",
+                    "maintain_half_seat_walk_com":"",
+                    "maintain_half_seat_sit_trot_com":"",
+                    "maintain_half_seat_post_trot_com":"",
+                    "maintain_half_seat_canter_com":"aaaaaaaaaaa",
+                    "can_post_walk_com":"",
+                    "can_post_sit_trot_com":"",
+                    "can_post_post_trot_com":"bbbbbbbbbbbbb",
+                    "can_post_canter_com":"",
+                    "proper_diagonal_walk_com":"",
+                    "proper_diagonal_sit_trot_com":"ccccccccccc",
+                    "proper_diagonal_post_trot_com":"",
+                    "proper_diagonal_canter_com":"",
+                    "proper_lead_canter_sees_com":"dddddddddd",
+                    "proper_lead_canter_knows_com":"",
+                    "can_steer_over_cavalletti_walk_com":"",
+                    "can_steer_over_cavalletti_sit_trot_com":"eeeeeeeee",
+                    "can_steer_over_cavalletti_post_trot_com":"",
+                    "can_steer_over_cavalletti_canter_com":"",
+                    "jump_crossbar_walk_com":"ffffffffff",
+                    "jump_crossbar_sit_trot_com":"",
+                    "jump_crossbar_post_trot_com":"ggggggggg",
+                    "jump_crossbar_canter_com":""
                 }
 
                 test_participant_in_db=models.Participant.objects.get(
@@ -3707,6 +3958,79 @@ class TestRiderEvalChecklistForm(TestCase):
             "jump_crossbar_sit_trot": "P",
             "jump_crossbar_post_trot": "U",
             "jump_crossbar_canter": "P",
+            "basic_trail_rules_com":"",
+            "mount_com":"aaaaaaa",
+            "dismount_com":"bbbbbbbbbb",
+            "emergency_dismount_com":"",
+            "four_natural_aids_com":"cccccc",
+            "basic_control_com":"",
+            "reverse_at_walk_com":"dddddddd",
+            "reverse_at_trot_com":"",
+            "never_ridden_com":"eeeeeeeeee",
+            "seat_at_walk_com":"fffffffff",
+            "seat_at_trot_com":"gggggggggg",
+            "seat_at_canter_com":"hhhhhhhh",
+            "basic_seat_english_com":"",
+            "basic_seat_western_com":"iiiiiiiii",
+            "hand_pos_english_com":"",
+            "hand_post_western_com":"jjjjjjj",
+            "two_point_trot_com":"kkkkkkkkkk",
+            "circle_trot_no_stirrups_com":"",
+            "circle_at_canter_com":"",
+            "circle_canter_no_stirrups_com":"lllllllll",
+            "two_point_canter_com":"mmmmmmmmm",
+            "circle_at_walk_com":"",
+            "circle_at_trot_com":"nnnnnnnnnn",
+            "holds_handhold_walk_com":"",
+            "holds_handhold_sit_trot_com":"",
+            "holds_handhold_post_trot_com":"ooooooooo",
+            "holds_handhold_canter_com":"",
+            "holds_reins_walk_com":"ppppppppppp",
+            "holds_reins_sit_trot_com":"",
+            "holds_reins_post_trot_com":"",
+            "holds_reins_canter_com":"qqqqqqqqqq",
+            "shorten_lengthen_reins_walk_com":"",
+            "shorten_lengthen_reins_sit_trot_com":"rrrrrrrrrrr",
+            "shorten_lengthen_reins_post_trot_com":"sssssssssss",
+            "shorten_lengthen_reins_canter_com":"",
+            "can_control_horse_walk_com":"",
+            "can_control_horse_sit_trot_com":"ttttttttt",
+            "can_control_horse_post_trot_com":"",
+            "can_control_horse_canter_com":"uuuuuuuuu",
+            "can_halt_walk_com":"vvvvvvvvvv",
+            "can_halt_sit_trot_com":"",
+            "can_halt_post_trot_com":"wwwwwwwwwwwwwww",
+            "can_halt_canter_com":"",
+            "drop_pickup_stirrups_walk_com":"",
+            "drop_pickup_stirrups_sit_trot_com":"",
+            "drop_pickup_stirrups_post_trot_com":"xxxxxxxxxxxxxxxx",
+            "drop_pickup_stirrups_canter_com":"",
+            "rides_no_stirrups_walk_com":"",
+            "rides_no_stirrups_sit_trot_com":"yyyyyyyyyyyy",
+            "rides_no_stirrups_post_trot_com":"",
+            "rides_no_stirrups_canter_com":"zzzzzzzzzzzzz",
+            "maintain_half_seat_walk_com":"",
+            "maintain_half_seat_sit_trot_com":"",
+            "maintain_half_seat_post_trot_com":"",
+            "maintain_half_seat_canter_com":"aaaaaaaaaaa",
+            "can_post_walk_com":"",
+            "can_post_sit_trot_com":"",
+            "can_post_post_trot_com":"bbbbbbbbbbbbb",
+            "can_post_canter_com":"",
+            "proper_diagonal_walk_com":"",
+            "proper_diagonal_sit_trot_com":"ccccccccccc",
+            "proper_diagonal_post_trot_com":"",
+            "proper_diagonal_canter_com":"",
+            "proper_lead_canter_sees_com":"dddddddddd",
+            "proper_lead_canter_knows_com":"",
+            "can_steer_over_cavalletti_walk_com":"",
+            "can_steer_over_cavalletti_sit_trot_com":"eeeeeeeee",
+            "can_steer_over_cavalletti_post_trot_com":"",
+            "can_steer_over_cavalletti_canter_com":"",
+            "jump_crossbar_walk_com":"ffffffffff",
+            "jump_crossbar_sit_trot_com":"",
+            "jump_crossbar_post_trot_com":"ggggggggg",
+            "jump_crossbar_canter_com":""
         }
         form=forms.RiderEvalChecklistForm(form_data)
 
@@ -3817,6 +4141,79 @@ class TestRiderEvalChecklistForm(TestCase):
             "jump_crossbar_sit_trot": "P",
             "jump_crossbar_post_trot": "U",
             "jump_crossbar_canter": "P",
+            "basic_trail_rules_com": "",
+            "mount_com":"aaaaaaa",
+            "dismount_com":"bbbbbbbbbb",
+            "emergency_dismount_com":"",
+            "four_natural_aids_com":"cccccc",
+            "basic_control_com":"",
+            "reverse_at_walk_com":"dddddddd",
+            "reverse_at_trot_com":"",
+            "never_ridden_com":"eeeeeeeeee",
+            "seat_at_walk_com":"fffffffff",
+            "seat_at_trot_com":"gggggggggg",
+            "seat_at_canter_com":"hhhhhhhh",
+            "basic_seat_english_com":"",
+            "basic_seat_western_com":"iiiiiiiii",
+            "hand_pos_english_com":"",
+            "hand_post_western_com":"jjjjjjj",
+            "two_point_trot_com":"kkkkkkkkkk",
+            "circle_trot_no_stirrups_com":"",
+            "circle_at_canter_com":"",
+            "circle_canter_no_stirrups_com":"lllllllll",
+            "two_point_canter_com":"mmmmmmmmm",
+            "circle_at_walk_com":"",
+            "circle_at_trot_com":"nnnnnnnnnn",
+            "holds_handhold_walk_com":"",
+            "holds_handhold_sit_trot_com":"",
+            "holds_handhold_post_trot_com":"ooooooooo",
+            "holds_handhold_canter_com":"",
+            "holds_reins_walk_com":"ppppppppppp",
+            "holds_reins_sit_trot_com":"",
+            "holds_reins_post_trot_com":"",
+            "holds_reins_canter_com":"qqqqqqqqqq",
+            "shorten_lengthen_reins_walk_com":"",
+            "shorten_lengthen_reins_sit_trot_com":"rrrrrrrrrrr",
+            "shorten_lengthen_reins_post_trot_com":"sssssssssss",
+            "shorten_lengthen_reins_canter_com":"",
+            "can_control_horse_walk_com":"",
+            "can_control_horse_sit_trot_com":"ttttttttt",
+            "can_control_horse_post_trot_com":"",
+            "can_control_horse_canter_com":"uuuuuuuuu",
+            "can_halt_walk_com":"vvvvvvvvvv",
+            "can_halt_sit_trot_com":"",
+            "can_halt_post_trot_com":"wwwwwwwwwwwwwww",
+            "can_halt_canter_com":"",
+            "drop_pickup_stirrups_walk_com":"",
+            "drop_pickup_stirrups_sit_trot_com":"",
+            "drop_pickup_stirrups_post_trot_com":"xxxxxxxxxxxxxxxx",
+            "drop_pickup_stirrups_canter_com":"",
+            "rides_no_stirrups_walk_com":"",
+            "rides_no_stirrups_sit_trot_com":"yyyyyyyyyyyy",
+            "rides_no_stirrups_post_trot_com":"",
+            "rides_no_stirrups_canter_com":"zzzzzzzzzzzzz",
+            "maintain_half_seat_walk_com":"",
+            "maintain_half_seat_sit_trot_com":"",
+            "maintain_half_seat_post_trot_com":"",
+            "maintain_half_seat_canter_com":"aaaaaaaaaaa",
+            "can_post_walk_com":"",
+            "can_post_sit_trot_com":"",
+            "can_post_post_trot_com":"bbbbbbbbbbbbb",
+            "can_post_canter_com":"",
+            "proper_diagonal_walk_com":"",
+            "proper_diagonal_sit_trot_com":"ccccccccccc",
+            "proper_diagonal_post_trot_com":"",
+            "proper_diagonal_canter_com":"",
+            "proper_lead_canter_sees_com":"dddddddddd",
+            "proper_lead_canter_knows_com":"",
+            "can_steer_over_cavalletti_walk_com":"",
+            "can_steer_over_cavalletti_sit_trot_com":"eeeeeeeee",
+            "can_steer_over_cavalletti_post_trot_com":"",
+            "can_steer_over_cavalletti_canter_com":"",
+            "jump_crossbar_walk_com":"ffffffffff",
+            "jump_crossbar_sit_trot_com":"",
+            "jump_crossbar_post_trot_com":"ggggggggg",
+            "jump_crossbar_canter_com":""
         }
 
         test_participant_in_db=models.Participant.objects.get(
@@ -4174,6 +4571,298 @@ class TestRiderEvalChecklistForm(TestCase):
             rider_eval_in_db.jump_crossbar_canter,
             form_data["jump_crossbar_canter"]
         )
+        self.assertEqual(
+            rider_eval_in_db.basic_trail_rules_com,
+            form_data["basic_trail_rules_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.mount_com,
+            form_data["mount_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.dismount_com,
+            form_data["dismount_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.emergency_dismount_com,
+            form_data["emergency_dismount_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.four_natural_aids_com,
+            form_data["four_natural_aids_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_control_com,
+            form_data["basic_control_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.reverse_at_walk_com,
+            form_data["reverse_at_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.reverse_at_trot_com,
+            form_data["reverse_at_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.never_ridden_com,
+            form_data["never_ridden_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_walk_com,
+            form_data["seat_at_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_trot_com,
+            form_data["seat_at_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.seat_at_canter_com,
+            form_data["seat_at_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_seat_english_com,
+            form_data["basic_seat_english_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.basic_seat_western_com,
+            form_data["basic_seat_western_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.hand_pos_english_com,
+            form_data["hand_pos_english_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.hand_post_western_com,
+            form_data["hand_post_western_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.two_point_trot_com,
+            form_data["two_point_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_trot_no_stirrups_com,
+            form_data["circle_trot_no_stirrups_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_canter_com,
+            form_data["circle_at_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_canter_no_stirrups_com,
+            form_data["circle_canter_no_stirrups_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.two_point_canter_com,
+            form_data["two_point_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_walk_com,
+            form_data["circle_at_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.circle_at_trot_com,
+            form_data["circle_at_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_walk_com,
+            form_data["holds_handhold_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_sit_trot_com,
+            form_data["holds_handhold_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_post_trot_com,
+            form_data["holds_handhold_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_handhold_canter_com,
+            form_data["holds_handhold_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_walk_com,
+            form_data["holds_reins_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_sit_trot_com,
+            form_data["holds_reins_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_post_trot_com,
+            form_data["holds_reins_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.holds_reins_canter_com,
+            form_data["holds_reins_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_walk_com,
+            form_data["shorten_lengthen_reins_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_sit_trot_com,
+            form_data["shorten_lengthen_reins_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_post_trot_com,
+            form_data["shorten_lengthen_reins_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.shorten_lengthen_reins_canter_com,
+            form_data["shorten_lengthen_reins_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_walk_com,
+            form_data["can_control_horse_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_sit_trot_com,
+            form_data["can_control_horse_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_post_trot_com,
+            form_data["can_control_horse_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_control_horse_canter_com,
+            form_data["can_control_horse_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_walk_com,
+            form_data["can_halt_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_sit_trot_com,
+            form_data["can_halt_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_post_trot_com,
+            form_data["can_halt_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_halt_canter_com,
+            form_data["can_halt_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_walk_com,
+            form_data["drop_pickup_stirrups_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_sit_trot_com,
+            form_data["drop_pickup_stirrups_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_post_trot_com,
+            form_data["drop_pickup_stirrups_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.drop_pickup_stirrups_canter_com,
+            form_data["drop_pickup_stirrups_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_walk_com,
+            form_data["rides_no_stirrups_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_sit_trot_com,
+            form_data["rides_no_stirrups_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_post_trot_com,
+            form_data["rides_no_stirrups_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.rides_no_stirrups_canter_com,
+            form_data["rides_no_stirrups_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_walk_com,
+            form_data["maintain_half_seat_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_sit_trot_com,
+            form_data["maintain_half_seat_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_post_trot_com,
+            form_data["maintain_half_seat_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.maintain_half_seat_canter_com,
+            form_data["maintain_half_seat_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_walk_com,
+            form_data["can_post_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_sit_trot_com,
+            form_data["can_post_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_post_trot_com,
+            form_data["can_post_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_post_canter_com,
+            form_data["can_post_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_walk_com,
+            form_data["proper_diagonal_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_sit_trot_com,
+            form_data["proper_diagonal_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_post_trot_com,
+            form_data["proper_diagonal_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_diagonal_canter_com,
+            form_data["proper_diagonal_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_lead_canter_sees_com,
+            form_data["proper_lead_canter_sees_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.proper_lead_canter_knows_com,
+            form_data["proper_lead_canter_knows_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_walk_com,
+            form_data["can_steer_over_cavalletti_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_sit_trot_com,
+            form_data["can_steer_over_cavalletti_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_post_trot_com,
+            form_data["can_steer_over_cavalletti_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.can_steer_over_cavalletti_canter_com,
+            form_data["can_steer_over_cavalletti_canter_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_walk_com,
+            form_data["jump_crossbar_walk_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_sit_trot_com,
+            form_data["jump_crossbar_sit_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_post_trot_com,
+            form_data["jump_crossbar_post_trot_com"]
+        )
+        self.assertEqual(
+            rider_eval_in_db.jump_crossbar_canter_com,
+            form_data["jump_crossbar_canter_com"]
+        )
 
     def test_rider_eval_checklist_form_error_with_invalid_data(self):
         """ Verify that a Rider Evaluation Checklist form view, populated with
@@ -4261,6 +4950,79 @@ class TestRiderEvalChecklistForm(TestCase):
             "jump_crossbar_sit_trot": "P",
             "jump_crossbar_post_trot": "U",
             "jump_crossbar_canter": "P",
+            "basic_trail_rules_com":"",
+            "mount_com":"aaaaaaa",
+            "dismount_com":"bbbbbbbbbb",
+            "emergency_dismount_com":"",
+            "four_natural_aids_com":"cccccc",
+            "basic_control_com":"",
+            "reverse_at_walk_com":"dddddddd",
+            "reverse_at_trot_com":"",
+            "never_ridden_com":"eeeeeeeeee",
+            "seat_at_walk_com":"fffffffff",
+            "seat_at_trot_com":"gggggggggg",
+            "seat_at_canter_com":"hhhhhhhh",
+            "basic_seat_english_com":"",
+            "basic_seat_western_com":"iiiiiiiii",
+            "hand_pos_english_com":"",
+            "hand_post_western_com":"jjjjjjj",
+            "two_point_trot_com":"kkkkkkkkkk",
+            "circle_trot_no_stirrups_com":"",
+            "circle_at_canter_com":"",
+            "circle_canter_no_stirrups_com":"lllllllll",
+            "two_point_canter_com":"mmmmmmmmm",
+            "circle_at_walk_com":"",
+            "circle_at_trot_com":"nnnnnnnnnn",
+            "holds_handhold_walk_com":"",
+            "holds_handhold_sit_trot_com":"",
+            "holds_handhold_post_trot_com":"ooooooooo",
+            "holds_handhold_canter_com":"",
+            "holds_reins_walk_com":"ppppppppppp",
+            "holds_reins_sit_trot_com":"",
+            "holds_reins_post_trot_com":"",
+            "holds_reins_canter_com":"qqqqqqqqqq",
+            "shorten_lengthen_reins_walk_com":"",
+            "shorten_lengthen_reins_sit_trot_com":"rrrrrrrrrrr",
+            "shorten_lengthen_reins_post_trot_com":"sssssssssss",
+            "shorten_lengthen_reins_canter_com":"",
+            "can_control_horse_walk_com":"",
+            "can_control_horse_sit_trot_com":"ttttttttt",
+            "can_control_horse_post_trot_com":"",
+            "can_control_horse_canter_com":"uuuuuuuuu",
+            "can_halt_walk_com":"vvvvvvvvvv",
+            "can_halt_sit_trot_com":"",
+            "can_halt_post_trot_com":"wwwwwwwwwwwwwww",
+            "can_halt_canter_com":"",
+            "drop_pickup_stirrups_walk_com":"",
+            "drop_pickup_stirrups_sit_trot_com":"",
+            "drop_pickup_stirrups_post_trot_com":"xxxxxxxxxxxxxxxx",
+            "drop_pickup_stirrups_canter_com":"",
+            "rides_no_stirrups_walk_com":"",
+            "rides_no_stirrups_sit_trot_com":"yyyyyyyyyyyy",
+            "rides_no_stirrups_post_trot_com":"",
+            "rides_no_stirrups_canter_com":"zzzzzzzzzzzzz",
+            "maintain_half_seat_walk_com":"",
+            "maintain_half_seat_sit_trot_com":"",
+            "maintain_half_seat_post_trot_com":"",
+            "maintain_half_seat_canter_com":"aaaaaaaaaaa",
+            "can_post_walk_com":"",
+            "can_post_sit_trot_com":"",
+            "can_post_post_trot_com":"bbbbbbbbbbbbb",
+            "can_post_canter_com":"",
+            "proper_diagonal_walk_com":"",
+            "proper_diagonal_sit_trot_com":"ccccccccccc",
+            "proper_diagonal_post_trot_com":"",
+            "proper_diagonal_canter_com":"",
+            "proper_lead_canter_sees_com":"dddddddddd",
+            "proper_lead_canter_knows_com":"",
+            "can_steer_over_cavalletti_walk_com":"",
+            "can_steer_over_cavalletti_sit_trot_com":"eeeeeeeee",
+            "can_steer_over_cavalletti_post_trot_com":"",
+            "can_steer_over_cavalletti_canter_com":"",
+            "jump_crossbar_walk_com":"ffffffffff",
+            "jump_crossbar_sit_trot_com":"",
+            "jump_crossbar_post_trot_com":"ggggggggg",
+            "jump_crossbar_canter_com":""
         }
 
         test_participant_in_db=models.Participant.objects.get(
@@ -4357,7 +5119,7 @@ class TestRiderEvalChecklistForm(TestCase):
         response = self.client.get(
             reverse("private_form_rider_eval_checklist",
                 kwargs={
-                    "participant_id":987,
+                    "participant_id":99999999999,
                 }
             )
         )
@@ -4456,6 +5218,79 @@ class TestRiderEvalChecklistForm(TestCase):
             "jump_crossbar_sit_trot": "P",
             "jump_crossbar_post_trot": "U",
             "jump_crossbar_canter": "P",
+            "basic_trail_rules_com":"",
+            "mount_com":"aaaaaaa",
+            "dismount_com":"bbbbbbbbbb",
+            "emergency_dismount_com":"",
+            "four_natural_aids_com":"cccccc",
+            "basic_control_com":"",
+            "reverse_at_walk_com":"dddddddd",
+            "reverse_at_trot_com":"",
+            "never_ridden_com":"eeeeeeeeee",
+            "seat_at_walk_com":"fffffffff",
+            "seat_at_trot_com":"gggggggggg",
+            "seat_at_canter_com":"hhhhhhhh",
+            "basic_seat_english_com":"",
+            "basic_seat_western_com":"iiiiiiiii",
+            "hand_pos_english_com":"",
+            "hand_post_western_com":"jjjjjjj",
+            "two_point_trot_com":"kkkkkkkkkk",
+            "circle_trot_no_stirrups_com":"",
+            "circle_at_canter_com":"",
+            "circle_canter_no_stirrups_com":"lllllllll",
+            "two_point_canter_com":"mmmmmmmmm",
+            "circle_at_walk_com":"",
+            "circle_at_trot_com":"nnnnnnnnnn",
+            "holds_handhold_walk_com":"",
+            "holds_handhold_sit_trot_com":"",
+            "holds_handhold_post_trot_com":"ooooooooo",
+            "holds_handhold_canter_com":"",
+            "holds_reins_walk_com":"ppppppppppp",
+            "holds_reins_sit_trot_com":"",
+            "holds_reins_post_trot_com":"",
+            "holds_reins_canter_com":"qqqqqqqqqq",
+            "shorten_lengthen_reins_walk_com":"",
+            "shorten_lengthen_reins_sit_trot_com":"rrrrrrrrrrr",
+            "shorten_lengthen_reins_post_trot_com":"sssssssssss",
+            "shorten_lengthen_reins_canter_com":"",
+            "can_control_horse_walk_com":"",
+            "can_control_horse_sit_trot_com":"ttttttttt",
+            "can_control_horse_post_trot_com":"",
+            "can_control_horse_canter_com":"uuuuuuuuu",
+            "can_halt_walk_com":"vvvvvvvvvv",
+            "can_halt_sit_trot_com":"",
+            "can_halt_post_trot_com":"wwwwwwwwwwwwwww",
+            "can_halt_canter_com":"",
+            "drop_pickup_stirrups_walk_com":"",
+            "drop_pickup_stirrups_sit_trot_com":"",
+            "drop_pickup_stirrups_post_trot_com":"xxxxxxxxxxxxxxxx",
+            "drop_pickup_stirrups_canter_com":"",
+            "rides_no_stirrups_walk_com":"",
+            "rides_no_stirrups_sit_trot_com":"yyyyyyyyyyyy",
+            "rides_no_stirrups_post_trot_com":"",
+            "rides_no_stirrups_canter_com":"zzzzzzzzzzzzz",
+            "maintain_half_seat_walk_com":"",
+            "maintain_half_seat_sit_trot_com":"",
+            "maintain_half_seat_post_trot_com":"",
+            "maintain_half_seat_canter_com":"aaaaaaaaaaa",
+            "can_post_walk_com":"",
+            "can_post_sit_trot_com":"",
+            "can_post_post_trot_com":"bbbbbbbbbbbbb",
+            "can_post_canter_com":"",
+            "proper_diagonal_walk_com":"",
+            "proper_diagonal_sit_trot_com":"ccccccccccc",
+            "proper_diagonal_post_trot_com":"",
+            "proper_diagonal_canter_com":"",
+            "proper_lead_canter_sees_com":"dddddddddd",
+            "proper_lead_canter_knows_com":"",
+            "can_steer_over_cavalletti_walk_com":"",
+            "can_steer_over_cavalletti_sit_trot_com":"eeeeeeeee",
+            "can_steer_over_cavalletti_post_trot_com":"",
+            "can_steer_over_cavalletti_canter_com":"",
+            "jump_crossbar_walk_com":"ffffffffff",
+            "jump_crossbar_sit_trot_com":"",
+            "jump_crossbar_post_trot_com":"ggggggggg",
+            "jump_crossbar_canter_com":""
         }
 
         response = self.client.post(
@@ -4474,6 +5309,7 @@ class TestRiderEvalChecklistForm(TestCase):
                 views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
             )
         )
+
 
 class TestAdminIndex(TestCase):
     def setUp(self):
@@ -4914,17 +5750,18 @@ class TestEmergencyAuthorizationReport(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -5213,17 +6050,18 @@ class TestMedicalReleaseReport(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -6070,6 +6908,8 @@ class TestSeizureEvaluationReport(TestCase):
         self.assertEqual(response.status_code, 200) # Loaded...
 
 
+
+
 class TestAdoptParticipant(TestCase):
     def setUp(self):
         setup_test_environment() # Initaliaze the test environment
@@ -6759,6 +7599,10 @@ class TestSessionPlanForm(TestCase):
         )
         session_plan.save()
 
+        session_ind=models.SessionPlanInd(
+            horse_leader="Fucky McFuckboy"
+        )
+
         session_goals=models.SessionGoals(
             participant_id=test_participant,
             session_id=session_plan,
@@ -6769,7 +7613,7 @@ class TestSessionPlanForm(TestCase):
         session_goals.save()
 
         horse_info=models.Horse(
-            name="Charlie",
+            name="Charlie"
         )
         horse_info.save()
 
@@ -6856,6 +7700,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-5-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "diagnosis": "Herpes",
             "diagnosis_type": "P",
@@ -6919,6 +7764,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7006,6 +7852,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7059,6 +7906,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7115,6 +7963,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some super long shit..................."
@@ -7174,6 +8023,7 @@ class TestSessionPlanForm(TestCase):
                 form_data={
                     "date": "2016-5-1",
                     "horse_name": "Charlie",
+                    "horse_leader": "Fucky McFuckboy",
                     "tack": "Some words.",
                     "ambulatory_status": "I",
                     "ambulatory_status_other": "Some shit.",
