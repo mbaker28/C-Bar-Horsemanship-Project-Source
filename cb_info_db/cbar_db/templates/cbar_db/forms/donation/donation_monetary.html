@@ -22,10 +22,19 @@
             </span>
         </p>
         <p>
-            Your Email address:{{ form.email }}
+            Your Email address: {{ form.email }}
             <span class="error_message">
                 {{ form.email.errors.as_text }}
             </span>
+        </p>
+        <p>
+            Designate donation for: {{ form.purpose }}
+            <span class="error_message">
+                {{ form.purpose.errors.as_text }}
+            </span>
+            <br />
+            (leave blank to not designate the donation for a specific purpose)
+        </p>
         </div>
         <div id="SubmitButton">
             <input type="Submit" value="Submit">
