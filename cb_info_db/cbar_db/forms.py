@@ -1147,7 +1147,10 @@ class RiderEvalChecklistForm(forms.Form):
             required=False
     )
 
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
     basic_trail_rules=forms.NullBooleanField(widget=RadioSelect(
             choices=models.EvalRidingExercises._meta
