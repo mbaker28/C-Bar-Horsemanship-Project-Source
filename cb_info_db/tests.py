@@ -1657,7 +1657,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1668,7 +1669,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1720,7 +1721,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST I'm Batman!",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST I'm Batman!",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1731,7 +1733,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1783,7 +1785,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "Y",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1000-1-1",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1794,7 +1797,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1843,7 +1846,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -1863,7 +1867,7 @@ class TestMedicalReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["signature"],
+                name=form_data["name"],
                 birth_date=form_data["birth_date"]
             )
             print("Successfully retrieved participant record.")
@@ -1933,7 +1937,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Not Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Not Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -1984,7 +1989,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1455-9-30",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2037,7 +2043,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2088,7 +2095,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2099,7 +2107,7 @@ class TestMedicalReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["signature"],
+                name=form_data["name"],
                 birth_date=form_data["birth_date"]
             )
             print("Successfully retrieved participant record.")
@@ -2173,7 +2181,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-1-1"
         }
 
@@ -7599,6 +7608,10 @@ class TestSessionPlanForm(TestCase):
         )
         session_plan.save()
 
+        session_ind=models.SessionPlanInd(
+            horse_leader="Fucky McFuckboy"
+        )
+
         session_goals=models.SessionGoals(
             participant_id=test_participant,
             session_id=session_plan,
@@ -7609,7 +7622,7 @@ class TestSessionPlanForm(TestCase):
         session_goals.save()
 
         horse_info=models.Horse(
-            name="Charlie",
+            name="Charlie"
         )
         horse_info.save()
 
@@ -7696,6 +7709,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-5-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "diagnosis": "Herpes",
             "diagnosis_type": "P",
@@ -7759,6 +7773,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7846,6 +7861,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7899,6 +7915,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -7955,6 +7972,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some super long shit..................."
@@ -8014,6 +8032,7 @@ class TestSessionPlanForm(TestCase):
                 form_data={
                     "date": "2016-5-1",
                     "horse_name": "Charlie",
+                    "horse_leader": "Fucky McFuckboy",
                     "tack": "Some words.",
                     "ambulatory_status": "I",
                     "ambulatory_status_other": "Some shit.",
