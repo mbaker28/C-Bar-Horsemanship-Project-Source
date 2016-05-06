@@ -634,59 +634,70 @@ class RiderIntakeAssessmentForm(forms.Form):
             .get_field("ambulatory_status_other").max_length
         )
     )
-    gait_flat=forms.CharField(
-        max_length=(
-            models.AdaptationsNeeded._meta.get_field("gait_flat").max_length
-        )
+
+    gait_flat=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_flat").choices
+        ),
+        widget=RadioSelect
     )
-    gait_uneven=forms.CharField(
-        max_length=(
-            models.AdaptationsNeeded._meta.get_field("gait_uneven").max_length
-        )
+    gait_uneven=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_uneven").choices
+        ),
+        widget=RadioSelect
     )
-    gait_incline=forms.CharField(
-        max_length=(
-            models.AdaptationsNeeded._meta.get_field("gait_incline").max_length
-        )
+    gait_incline=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_incline").choices
+        ),
+        widget=RadioSelect
     )
-    gait_decline=forms.CharField(
-        max_length=(
-            models.AdaptationsNeeded._meta.get_field("gait_decline").max_length
-        )
+    gait_decline=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_decline").choices
+        ),
+        widget=RadioSelect
     )
-    gait_stairs=forms.CharField(
-        max_length=(
-            models.AdaptationsNeeded._meta.get_field("gait_stairs").max_length
-        )
+    gait_stairs=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_stairs").choices
+        ),
+        widget=RadioSelect
     )
-    gait_balance=forms.CharField(
-        max_length=(
-            models.AdaptationsNeeded._meta.get_field("gait_balance").max_length
-        )
+    gait_balance=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_balance").choices
+        ),
+        widget=RadioSelect
     )
-    gait_standing_up=forms.CharField(
-        max_length=(
+    gait_standing_up=forms.ChoiceField(
+        choices=(
             models.AdaptationsNeeded._meta.get_field("gait_standing_up")
-            .max_length
-        )
+            .choices
+        ),
+        widget=RadioSelect
     )
-    gait_sitting_down=forms.CharField(
-        max_length=(
+    gait_sitting_down=forms.ChoiceField(
+        choices=(
             models.AdaptationsNeeded._meta.get_field("gait_sitting_down")
-            .max_length
-        )
+            .choices
+        ),
+        widget=RadioSelect
     )
-    gait_straddle_up=forms.CharField(
-        max_length=(
+    gait_straddle_up=forms.ChoiceField(
+        choices=(
             models.AdaptationsNeeded._meta.get_field("gait_straddle_up")
-            .max_length
-        )
+            .choices
+        ),
+        widget=RadioSelect
     )
-    gait_straddle_down=forms.CharField(
-        max_length=(
+    gait_straddle_down=forms.ChoiceField(
+        choices=(
             models.AdaptationsNeeded._meta.get_field("gait_straddle_down")
-            .max_length
-        )
+            .choices
+        ),
+        widget=RadioSelect
     )
 
     # Stored in SeizureEval (should auto-fill)

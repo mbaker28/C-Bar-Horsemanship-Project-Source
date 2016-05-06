@@ -1525,6 +1525,13 @@ class AdaptationsNeeded(models.Model):
         (MIN_ASSISTANCE, "Minimal assistance"),
         (FULL_ASSISTANCE, "Full assistance")
     )
+    NOT_APPLICABLE="N"
+    ASSISTANCE_CHOICES_NA=(
+        (INDPENDENT, "Independent"),
+        (MIN_ASSISTANCE, "Minimal asst."),
+        (FULL_ASSISTANCE, "Full asst."),
+        (NOT_APPLICABLE, "n/a")
+    )
 
     WALKS_IND="I"
     IND_WITH_CANE_ETC="C"
@@ -1602,16 +1609,66 @@ class AdaptationsNeeded(models.Model):
         null=True
     )
 
-    gait_flat=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_uneven=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_incline=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_decline=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_stairs=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_balance=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_standing_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_sitting_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_straddle_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_straddle_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_flat=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_uneven=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_incline=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_decline=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_stairs=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_balance=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_standing_up=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_sitting_down=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_straddle_up=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_straddle_down=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
 
     # Sidewalker information for initial assessment
     num_sidewalkers_walk_spotter=models.DecimalField(
@@ -1737,4 +1794,3 @@ class AuthorizedUser(models.Model):
 #     motor_skills_fine=models.CharField(max_length=SHORT_ANSWER_LENGTH)
 #     motor_skills_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
 #     # motor skills: hand dominance is in Participant model.
-#
