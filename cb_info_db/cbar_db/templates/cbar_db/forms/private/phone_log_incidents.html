@@ -1,4 +1,40 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
+    <h1>SEIZURE EVALUATION FORM (Office Use Only)</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    <form action="{% url 'private-form-phone-log-incidents' participant.participant_id %}" method="post">
+        {% csrf_token %}
+        <p>
+            <strong><u>Participant:</u><strong> {{ participant.name }} ({{ participant.birth_date }})
+                <span class="error_message">
+                    {{ form.participant.errors.as_text }}
+                </span>
+        </p>
 
+        <h3>Phone Log</h3>
+        <p>
+            <strong>Date/Time:</strong> {{ form.phone_date }}
+            <span class="error_message">
+                {{ form.date.errors.as_text }}
+            </span>
+            <strong>Details:</strong> {{ form.phone_details }}
+            <span class="error_message">
+                {{ form.details.errors.as_text }}
+            </span>
+        </p>
+
+        <h3>Incidents/Comments</h3>
+        <p>
+            <strong>Date/Time:</strong> {{ form.inc_date }}
+            <strong>Details:</strong> {{ form.inc_details }}
+        </p>
+
+        <p>
+            <input type="submit" value="Submit" />
+        </p>
+    </form>
 {% endblock %}
