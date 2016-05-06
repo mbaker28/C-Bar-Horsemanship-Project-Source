@@ -63,7 +63,8 @@ class ApplicationForm(forms.Form):
     )
 
     school_institution=forms.CharField(
-        max_length=models.Participant._meta.get_field("school_institution").max_length
+        max_length=models.Participant._meta.get_field("school_institution").max_length,
+        required=False
     )
 
     guardian_name=forms.CharField(
@@ -1161,7 +1162,10 @@ class RiderEvalChecklistForm(forms.Form):
             required=False
     )
 
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
     basic_trail_rules=forms.NullBooleanField(widget=RadioSelect(
             choices=models.EvalRidingExercises._meta
