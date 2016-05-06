@@ -585,7 +585,10 @@ class SessionPlanForm(forms.Form):
     # birth_date=forms.DateField()
 
     # Stored in Session
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
     tack=forms.CharField(
         max_length=models.Session._meta.get_field("tack").max_length
     )
