@@ -226,6 +226,28 @@
                         {% endfor %}
                     </p>
                 </div>
+                <div id="gait_straddle_up">
+                    <p><strong>Straddle - Standing</p>
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_straddle_up }}
+                             {{ form.gait_straddle_up.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
+                </div>
+                <div id="gait_straddle_down">
+                    <p><strong>Straddle - Sitting</p>
+                    <p>
+                        {% for form, participant in formset_and_participants %}
+                            {{ participant }}:
+                             {{ form.gait_straddle_down }}
+                             {{ form.gait_straddle_down.errors.as_text }}
+                            <br />
+                        {% endfor %}
+                    </p>
+                </div>
             </div>
         </div>
 
