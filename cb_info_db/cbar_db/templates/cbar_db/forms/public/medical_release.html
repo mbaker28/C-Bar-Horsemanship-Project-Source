@@ -21,12 +21,10 @@
             information will help us do that.
         </p>
         <p>
-            Name: {{ form.name }}
+            Participant's Name: {{ form.name }}
             <span class="error_message">
                 {{ form.name.errors.as_text }}
             </span>
-        </p>
-        <p>
             Birth date: {{ form.birth_date }}
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
