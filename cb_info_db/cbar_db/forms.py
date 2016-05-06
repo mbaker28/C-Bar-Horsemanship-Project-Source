@@ -320,6 +320,11 @@ class LiabilityReleaseForm(forms.Form):
 
 
 class MedicalReleaseForm(forms.Form):
+    name=forms.CharField(
+        max_length=(models.Participant._meta
+            .get_field("name").max_length
+        )
+    )
     primary_physician_name=forms.CharField(
         max_length=(models.MedicalInfo._meta
             .get_field("primary_physician_name").max_length
