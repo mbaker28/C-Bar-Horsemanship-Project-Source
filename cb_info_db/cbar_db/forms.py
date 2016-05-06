@@ -670,9 +670,9 @@ class RiderIntakeAssessmentForm(forms.Form):
             .max_length
         )
     )
-    gait_standing_down=forms.CharField(
+    gait_sitting_down=forms.CharField(
         max_length=(
-            models.AdaptationsNeeded._meta.get_field("gait_standing_down")
+            models.AdaptationsNeeded._meta.get_field("gait_sitting_down")
             .max_length
         )
     )

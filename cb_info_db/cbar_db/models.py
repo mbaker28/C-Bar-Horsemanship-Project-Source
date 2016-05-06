@@ -140,10 +140,10 @@ class Participant(models.Model):
     phone_cell=PhoneNumberField()
     phone_work=PhoneNumberField()
     school_institution=models.CharField(max_length=150, blank=True)
-    handedness=models.CharField(
-        max_length=1,
-        choices=HAND_CHOICES
-    )
+    # handedness=models.CharField(
+    #     max_length=1,
+    #     choices=HAND_CHOICES
+    # )
 
     @property
     def height_in_feet_and_inches(self):
@@ -1601,6 +1601,7 @@ class AdaptationsNeeded(models.Model):
         max_length=SHORT_ANSWER_LENGTH,
         null=True
     )
+
     gait_flat=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_uneven=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_incline=models.CharField(max_length=SHORT_ANSWER_LENGTH)
@@ -1608,7 +1609,7 @@ class AdaptationsNeeded(models.Model):
     gait_stairs=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_balance=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_standing_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_standing_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    gait_sitting_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_straddle_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     gait_straddle_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
 
@@ -1705,35 +1706,35 @@ class AuthorizedUser(models.Model):
     authorized_user_id = models.OneToOneField(User)
 
 
-class IntakeAssessment(models.Model):
-    class Meta: # Sets up PK as (participant_id, date)
-        unique_together=(("participant_id","date"))
-
-    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateField()
-
-    staff_reviewed_medical_info=models.BooleanField()
-    staff_reviewed_medical_info_date=models.DateField()
-    precautions=models.CharField(max_length=500)
-    impulsive=models.BooleanField()
-    eye_contact=models.BooleanField()
-    attention_span=models.CharField(
-        max_length=1,
-        choices=LIKERT_LIKE_CHOICES_MINIMAL,
-    )
-    interacts_with_others=models.BooleanField()
-    communication_verbal=models.BooleanField()
-    language_skills=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    visual_impaired=models.BooleanField()
-    visual_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    hearing_impaired=models.BooleanField()
-    hearing_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    tactile_no_touch=models.BooleanField()
-    tactile_light_touch=models.BooleanField()
-    tactile_deep_pressure=models.BooleanField()
-    tactile_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    motor_skills_gross=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    motor_skills_fine=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    motor_skills_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    # motor skills: hand dominance is in Participant model.
-    
+# class IntakeAssessment(models.Model):
+#     class Meta: # Sets up PK as (participant_id, date)
+#         unique_together=(("participant_id","date"))
+#
+#     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+#     date=models.DateField()
+#
+#     staff_reviewed_medical_info=models.BooleanField()
+#     staff_reviewed_medical_info_date=models.DateField()
+#     precautions=models.CharField(max_length=500)
+#     impulsive=models.BooleanField()
+#     eye_contact=models.BooleanField()
+#     attention_span=models.CharField(
+#         max_length=1,
+#         choices=LIKERT_LIKE_CHOICES_MINIMAL,
+#     )
+#     interacts_with_others=models.BooleanField()
+#     communication_verbal=models.BooleanField()
+#     language_skills=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+#     visual_impaired=models.BooleanField()
+#     visual_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+#     hearing_impaired=models.BooleanField()
+#     hearing_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+#     tactile_no_touch=models.BooleanField()
+#     tactile_light_touch=models.BooleanField()
+#     tactile_deep_pressure=models.BooleanField()
+#     tactile_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+#     motor_skills_gross=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+#     motor_skills_fine=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+#     motor_skills_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+#     # motor skills: hand dominance is in Participant model.
+#

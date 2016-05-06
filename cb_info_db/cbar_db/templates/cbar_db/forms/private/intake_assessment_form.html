@@ -215,13 +215,13 @@
                         {% endfor %}
                     </p>
                 </div>
-                <div id="gait_standing_down">
-                    <p><strong>Standing Down <span style="color:red">NAMING IS A THING</span></strong></p> <!-- Um... lah? -->
+                <div id="gait_sitting_down">
+                    <p><strong>Sitting Down</p>
                     <p>
                         {% for form, participant in formset_and_participants %}
                             {{ participant }}:
-                             {{ form.gait_standing_down }}
-                             {{ form.gait_standing_down.errors.as_text }}
+                             {{ form.gait_sitting_down }}
+                             {{ form.gait_sitting_down.errors.as_text }}
                             <br />
                         {% endfor %}
                     </p>
