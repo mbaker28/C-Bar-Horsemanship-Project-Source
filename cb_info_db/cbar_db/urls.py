@@ -66,8 +66,12 @@ urlpatterns = [
         name='user-login'),
 
     # Admin index page
-    url(r'^admin/reports/$', views.index_admin_reports,
-        name='index-admin-reports'),
+    url(r'^admin/$', views.index_admin,
+        name='index-admin'),
+
+    # Admin reports page
+    url(r'^admin/reports/$', views.report_select_participant,
+        name='report-select-participant'),
 
     # Participant record overview page
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/$',

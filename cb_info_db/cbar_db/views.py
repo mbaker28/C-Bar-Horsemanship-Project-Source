@@ -1650,13 +1650,24 @@ def private_form_rider_eval_checklist(request, participant_id):
         )
 
 @login_required
-def index_admin_reports(request):
+def index_admin(request):
     """ Logged in user index view. """
     participants=models.Participant.objects.all()
 
     return render(
         request,
         'cbar_db/admin/admin.html',
+        {'participants':participants}
+    )
+
+@login_required
+def report_select_participant(request):
+    """ Logged in user select participant record view. """
+    participants=models.Participant.objects.all()
+
+    return render(
+        request,
+        'cbar_db/admin/reports/participant_select.html',
         {'participants':participants}
     )
 
@@ -1673,7 +1684,7 @@ def participant_record(request, participant_id):
         # Set the error message and redisplay the form:
         return render(
             request,
-            "cbar_db/admin/participant.html",
+            "cbar_db/admin/reports/participant.html",
             {
                 'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
             }
@@ -1716,7 +1727,7 @@ def participant_record(request, participant_id):
 
     return render(
         request,
-        "cbar_db/admin/participant.html",
+        "cbar_db/admin/reports/participant.html",
         {
             "participant": participant,
             "media_releases": media_releases,

@@ -5361,14 +5361,14 @@ class TestAdminIndex(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('index-admin-reports'))
+        response = self.client.get(reverse('report-select-participant'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_admin_index_redirects_if_user_not_logged_in(self):
         """ Tests whether the Admin Index page redirects to the login page if
          the user is not logged in."""
 
-        response = self.client.get(reverse('index-admin-reports'))
+        response = self.client.get(reverse('report-select-participant'))
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
