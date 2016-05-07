@@ -1650,7 +1650,7 @@ def private_form_rider_eval_checklist(request, participant_id):
         )
 
 @login_required
-def index_private_admin(request):
+def index_admin_reports(request):
     """ Logged in user index view. """
     participants=models.Participant.objects.all()
 
