@@ -105,6 +105,17 @@ CONSENT_CHOICES=(
     (NO_CONSENT, "do not consent")
 )
 
+ONE="1"
+TWO="2"
+THREE="3"
+UNKNOWN="-"
+ONE_TWO_THREE_CHOICES=(
+    (ONE, "1"),
+    (TWO, "2"),
+    (THREE, "3"),
+    (UNKNOWN, "N/A")
+)
+
 class Participant(models.Model):
     participant_id=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
@@ -394,72 +405,215 @@ class EvalAttitude(models.Model):
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
 
-    # Attiude choices:
-    walking_through_barn=models.CharField(
+    # 1/2/3/- choices:
+    walking_through_barn_willing=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    looking_at_horses=models.CharField(
+    walking_through_barn_motivated=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    petting_horses=models.CharField(
+    walking_through_barn_appearance=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    up_down_ramp=models.CharField(
+
+    looking_at_horses_willing=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    mounting_before=models.CharField(
+    looking_at_horses_motivated=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    mounting_after=models.CharField(
+    looking_at_horses_appearance=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    riding_before=models.CharField(
+
+    petting_horses_willing=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    riding_during=models.CharField(
+    petting_horses_motivated=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    riding_after=models.CharField(
+    petting_horses_appearance=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    understands_directions=models.CharField(
+
+    up_down_ramp_willing=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    participates_exercises=models.CharField(
+    up_down_ramp_motivated=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    participates_games=models.CharField(
+    up_down_ramp_appearance=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
-    general_attitude=models.CharField(
+
+    mounting_before_willing=models.CharField(
         max_length=1,
-        choices=ATTITUDE_CHOICES,
-        blank=True
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
     )
+    mounting_before_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    mounting_before_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
+    mounting_after_willing=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    mounting_after_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    mounting_after_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
+    riding_before_willing=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    riding_before_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    riding_before_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
+    riding_during_willing=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    riding_during_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    riding_during_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
+    riding_after_willing=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    riding_after_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    riding_after_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
+    understands_directions_willing=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    understands_directions_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    understands_directions_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
+    participates_exercises_willing=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    participates_exercises_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    participates_exercises_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
+    participates_games_willing=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    participates_games_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    participates_games_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
+    general_attitude_willing=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    general_attitude_motivated=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+    general_attitude_appearance=models.CharField(
+        max_length=1,
+        choices=ONE_TWO_THREE_CHOICES,
+        default="-"
+    )
+
 
     # Likert like choices w/o PARTIALLY_COMPLETES:
     comprehension=models.CharField(
