@@ -6934,6 +6934,7 @@ class TestObservationEvaluation(TestCase):
             phone_home="300-200-1000",
             phone_cell="300-500-6000",
             phone_work="598-039-3008",
+            school_institution="n/a"
         )
         test_participant.save()
 
@@ -7094,15 +7095,9 @@ class TestObservationEvaluation(TestCase):
             )
         )
 
-    def test_observation_evaluation_form_error_no_participant(self):
-
+    def test_observation_evaluation_form_error_no_participant_get(self):
         test_user=models.User.objects.get(
             username="testuser"
-        )
-
-        test_participant_in_db=models.Participant.objects.get(
-            name="Test Matthew Clear",
-            birth_date="1236-9-18"
         )
 
         self.client.force_login(test_user)
@@ -7124,6 +7119,141 @@ class TestObservationEvaluation(TestCase):
             )
         )
 
+    def test_observation_evaluation_form_error_no_participant_post(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        form_data={
+            "date":"2016-2-13",
+            "walking_through_barn_motivated": "1",
+            "walking_through_barn_willing": "1",
+            "walking_through_barn_appearance": "1",
+            "looking_at_horses_motivated": "1",
+            "looking_at_horses_willing": "1",
+            "looking_at_horses_appearance": "1",
+            "petting_horses_motivated": "1",
+            "petting_horses_willing": "1",
+            "petting_horses_appearance": "1",
+            "up_down_ramp_motivated": "1",
+            "up_down_ramp_willing": "1",
+            "up_down_ramp_appearance": "1",
+            "mounting_before_motivated": "1",
+            "mounting_before_willing": "1",
+            "mounting_before_appearance": "1",
+            "mounting_after_motivated": "1",
+            "mounting_after_willing": "1",
+            "mounting_after_appearance": "1",
+            "riding_before_motivated": "1",
+            "riding_before_willing": "1",
+            "riding_before_appearance": "1",
+            "riding_during_motivated": "1",
+            "riding_during_willing": "1",
+            "riding_during_appearance": "1",
+            "riding_after_motivated": "1",
+            "riding_after_willing": "1",
+            "riding_after_appearance": "1",
+            "understands_directions_motivated": "1",
+            "understands_directions_willing": "1",
+            "understands_directions_appearance": "1",
+            "participates_exercises_motivated": "1",
+            "participates_exercises_willing": "1",
+            "participates_exercises_appearance": "1",
+            "participates_games_motivated": "1",
+            "participates_games_willing": "1",
+            "participates_games_appearance": "1",
+            "general_attitude_motivated":"1",
+            "general_attitude_willinge":"1",
+            "general_attitude_appearance":"1",
+        }
+
+        self.client.force_login(test_user)
+
+        response=self.client.post(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":99999999999,
+                }
+            ),
+            form_data
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+
+    def test_observation_eval_saves_valid_data(self):
+        test_user=models.User.objects.get(
+            username="testuser",
+        )
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18"
+        )
+
+        form_data={
+            "date":"2016-2-13",
+            "walking_through_barn_motivated": "1",
+            "walking_through_barn_willing": "1",
+            "walking_through_barn_appearance": "1",
+            "looking_at_horses_motivated": "1",
+            "looking_at_horses_willing": "1",
+            "looking_at_horses_appearance": "1",
+            "petting_horses_motivated": "1",
+            "petting_horses_willing": "1",
+            "petting_horses_appearance": "1",
+            "up_down_ramp_motivated": "1",
+            "up_down_ramp_willing": "1",
+            "up_down_ramp_appearance": "1",
+            "mounting_before_motivated": "1",
+            "mounting_before_willing": "1",
+            "mounting_before_appearance": "1",
+            "mounting_after_motivated": "1",
+            "mounting_after_willing": "1",
+            "mounting_after_appearance": "1",
+            "riding_before_motivated": "1",
+            "riding_before_willing": "1",
+            "riding_before_appearance": "1",
+            "riding_during_motivated": "1",
+            "riding_during_willing": "1",
+            "riding_during_appearance": "1",
+            "riding_after_motivated": "1",
+            "riding_after_willing": "1",
+            "riding_after_appearance": "1",
+            "understands_directions_motivated": "1",
+            "understands_directions_willing": "1",
+            "understands_directions_appearance": "1",
+            "participates_exercises_motivated": "1",
+            "participates_exercises_willing": "1",
+            "participates_exercises_appearance": "1",
+            "participates_games_motivated": "1",
+            "participates_games_willing": "1",
+            "participates_games_appearance": "1",
+            "general_attitude_motivated":"1",
+            "general_attitude_willinge":"1",
+            "general_attitude_appearance":"1",
+        }
+
+        response=self.client.post(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                }
+            ),
+            form_data
+        )
+
+        # Assert that the reponse code is a 200 (redirect):
+        self.assertEqual(response.status_code, 200)
 
 
 class TestAdoptParticipant(TestCase):

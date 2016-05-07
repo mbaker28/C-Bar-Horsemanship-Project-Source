@@ -2150,7 +2150,6 @@ def observation_evaluation(request, participant_id):
                 "cbar_db/forms/private/observation_evaluation.html",
                 {
                     'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
-                    "participant": participant
                 }
             )
 
