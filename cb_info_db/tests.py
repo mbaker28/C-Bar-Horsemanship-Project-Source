@@ -497,18 +497,18 @@ class TestEmergencyAuthorizationForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Bruce Wayne",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1023,18 +1023,18 @@ class TestMediaReleaseForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Bruce Wayne",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1605,18 +1605,18 @@ class TestMedicalReleaseForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1632,32 +1632,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1668,7 +1669,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1695,32 +1696,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST I'm Batman!",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST I'm Batman!",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1731,7 +1733,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1758,32 +1760,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "Y",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "Y",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "Y",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "Y",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "Y",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1000-1-1",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1794,7 +1797,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1818,32 +1821,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -1863,7 +1867,7 @@ class TestMedicalReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["signature"],
+                name=form_data["name"],
                 birth_date=form_data["birth_date"]
             )
             print("Successfully retrieved participant record.")
@@ -1908,32 +1912,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Not Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Not Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -1959,32 +1964,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1455-9-30",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2012,32 +2018,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "11122233332u3094890238402",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2063,32 +2070,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "",
             "medication_two_reason": "",
             "medication_two_frequency": "",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2099,7 +2107,7 @@ class TestMedicalReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["signature"],
+                name=form_data["name"],
                 birth_date=form_data["birth_date"]
             )
             print("Successfully retrieved participant record.")
@@ -2149,31 +2157,32 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
-            "limiting_surgeries_last_six_monthes": False,
+            "present_restrictions_for_horse_activity": "Y",
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-1-1"
         }
 
@@ -5750,18 +5759,18 @@ class TestEmergencyAuthorizationReport(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -6050,18 +6059,18 @@ class TestMedicalReleaseReport(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -6934,8 +6943,15 @@ class TestObservationEvaluation(TestCase):
             phone_home="300-200-1000",
             phone_cell="300-500-6000",
             phone_work="598-039-3008",
+            school_institution="n/a"
         )
         test_participant.save()
+
+        test_observation_eval=models.ObservationEvaluation(
+            participant_id=test_participant,
+            date="2000-1-1",
+        )
+        test_observation_eval.save()
 
         test_eval_attitude=models.EvalAttitude(
             participant_id=test_participant,
@@ -7093,6 +7109,524 @@ class TestObservationEvaluation(TestCase):
                 views.ERROR_TEXT_FORM_INVALID
             )
         )
+
+    def test_observation_evaluation_form_error_no_participant_get(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response=self.client.get(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":99999999999,
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_observation_evaluation_form_error_no_participant_post(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        form_data={
+            "date":"2016-2-13",
+            "walking_through_barn_motivated": "1",
+            "walking_through_barn_willing": "1",
+            "walking_through_barn_appearance": "1",
+            "looking_at_horses_motivated": "1",
+            "looking_at_horses_willing": "1",
+            "looking_at_horses_appearance": "1",
+            "petting_horses_motivated": "1",
+            "petting_horses_willing": "1",
+            "petting_horses_appearance": "1",
+            "up_down_ramp_motivated": "1",
+            "up_down_ramp_willing": "1",
+            "up_down_ramp_appearance": "1",
+            "mounting_before_motivated": "1",
+            "mounting_before_willing": "1",
+            "mounting_before_appearance": "1",
+            "mounting_after_motivated": "1",
+            "mounting_after_willing": "1",
+            "mounting_after_appearance": "1",
+            "riding_before_motivated": "1",
+            "riding_before_willing": "1",
+            "riding_before_appearance": "1",
+            "riding_during_motivated": "1",
+            "riding_during_willing": "1",
+            "riding_during_appearance": "1",
+            "riding_after_motivated": "1",
+            "riding_after_willing": "1",
+            "riding_after_appearance": "1",
+            "understands_directions_motivated": "1",
+            "understands_directions_willing": "1",
+            "understands_directions_appearance": "1",
+            "participates_exercises_motivated": "1",
+            "participates_exercises_willing": "1",
+            "participates_exercises_appearance": "1",
+            "participates_games_motivated": "1",
+            "participates_games_willing": "1",
+            "participates_games_appearance": "1",
+            "general_attitude_motivated":"1",
+            "general_attitude_willing":"1",
+            "general_attitude_appearance":"1",
+        }
+
+        self.client.force_login(test_user)
+
+        response=self.client.post(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":99999999999,
+                }
+            ),
+            form_data
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_observation_eval_saves_valid_data(self):
+        test_user=models.User.objects.get(
+            username="testuser",
+        )
+        self.client.force_login(test_user)
+
+        form_data={
+            "date":"2016-2-13",
+            "walking_through_barn_motivated": "1",
+            "walking_through_barn_willing": "1",
+            "walking_through_barn_appearance": "1",
+            "looking_at_horses_motivated": "1",
+            "looking_at_horses_willing": "1",
+            "looking_at_horses_appearance": "1",
+            "petting_horses_motivated": "1",
+            "petting_horses_willing": "1",
+            "petting_horses_appearance": "1",
+            "up_down_ramp_motivated": "1",
+            "up_down_ramp_willing": "1",
+            "up_down_ramp_appearance": "1",
+            "mounting_before_motivated": "1",
+            "mounting_before_willing": "1",
+            "mounting_before_appearance": "1",
+            "mounting_after_motivated": "1",
+            "mounting_after_willing": "1",
+            "mounting_after_appearance": "1",
+            "riding_before_motivated": "1",
+            "riding_before_willing": "1",
+            "riding_before_appearance": "1",
+            "riding_during_motivated": "1",
+            "riding_during_willing": "1",
+            "riding_during_appearance": "1",
+            "riding_after_motivated": "1",
+            "riding_after_willing": "1",
+            "riding_after_appearance": "1",
+            "understands_directions_motivated": "1",
+            "understands_directions_willing": "1",
+            "understands_directions_appearance": "1",
+            "participates_exercises_motivated": "1",
+            "participates_exercises_willing": "1",
+            "participates_exercises_appearance": "1",
+            "participates_games_motivated": "1",
+            "participates_games_willing": "1",
+            "participates_games_appearance": "1",
+            "general_attitude_motivated":"1",
+            "general_attitude_willing":"1",
+            "general_attitude_appearance":"1",
+        }
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18"
+        )
+
+        response=self.client.post(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                }
+            ),
+            form_data
+        )
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        # Retrieve the new EvalAttitude record:
+        found_eval_attitude=False
+        try:
+            # We found it
+            eval_attitude_in_db=models.EvalAttitude.objects.get(
+                participant_id=test_participant_in_db.participant_id,
+                date=form_data["date"]
+            )
+            found_eval_attitude=True
+        except ObjectDoesNotExist:
+            # We didn't find it
+            pass
+        self.assertTrue(found_eval_attitude)
+
+        # Checked the EvalAttitude attributes were stored correctly:
+        self.assertEqual(
+            eval_attitude_in_db.walking_through_barn_willing,
+            form_data["walking_through_barn_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.walking_through_barn_motivated,
+            form_data["walking_through_barn_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.walking_through_barn_appearance,
+            form_data["walking_through_barn_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.looking_at_horses_willing,
+            form_data["looking_at_horses_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.looking_at_horses_motivated,
+            form_data["looking_at_horses_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.looking_at_horses_appearance,
+            form_data["looking_at_horses_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.petting_horses_willing,
+            form_data["petting_horses_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.petting_horses_motivated,
+            form_data["petting_horses_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.petting_horses_appearance,
+            form_data["petting_horses_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.up_down_ramp_willing,
+            form_data["up_down_ramp_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.up_down_ramp_motivated,
+            form_data["up_down_ramp_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.up_down_ramp_appearance,
+            form_data["up_down_ramp_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_before_willing,
+            form_data["mounting_before_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_before_motivated,
+            form_data["mounting_before_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_before_appearance,
+            form_data["mounting_before_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_after_willing,
+            form_data["mounting_after_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_after_motivated,
+            form_data["mounting_after_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_after_appearance,
+            form_data["mounting_after_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_before_willing,
+            form_data["riding_before_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_before_motivated,
+            form_data["riding_before_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_before_appearance,
+            form_data["riding_before_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_during_willing,
+            form_data["riding_during_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_during_motivated,
+            form_data["riding_during_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_during_appearance,
+            form_data["riding_during_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_after_willing,
+            form_data["riding_after_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_after_motivated,
+            form_data["riding_after_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_after_appearance,
+            form_data["riding_after_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.understands_directions_willing,
+            form_data["understands_directions_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.understands_directions_motivated,
+            form_data["understands_directions_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.understands_directions_appearance,
+            form_data["understands_directions_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_exercises_willing,
+            form_data["participates_exercises_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_exercises_motivated,
+            form_data["participates_exercises_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_exercises_appearance,
+            form_data["participates_exercises_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_games_willing,
+            form_data["participates_games_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_games_motivated,
+            form_data["participates_games_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_games_appearance,
+            form_data["participates_games_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.general_attitude_willing,
+            form_data["general_attitude_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.general_attitude_motivated,
+            form_data["general_attitude_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.general_attitude_appearance,
+            form_data["general_attitude_appearance"]
+        )
+
+        found_observation_evaluation=False
+        try:
+            # We found it
+            observation_evaluation=models.ObservationEvaluation.objects.get(
+                participant_id=test_participant_in_db.participant_id,
+                date=form_data["date"]
+            )
+            found_observation_evaluation=True
+        except ObjectDoesNotExist:
+            # We didn't find it
+            pass
+        self.assertTrue(found_observation_evaluation)
+
+    def test_observation_eval_duplicate_pk_observationevaluation(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         participant already has a ObservationEvaluation record with the same
+         (participant_id, date) as its primary key. """
+
+        try:
+            with transaction.atomic():
+                test_user=models.User.objects.get(
+                    username="testuser",
+                )
+                self.client.force_login(test_user)
+
+                form_data={
+                    "date":"2000-1-1",
+                    "walking_through_barn_motivated": "1",
+                    "walking_through_barn_willing": "1",
+                    "walking_through_barn_appearance": "1",
+                    "looking_at_horses_motivated": "1",
+                    "looking_at_horses_willing": "1",
+                    "looking_at_horses_appearance": "1",
+                    "petting_horses_motivated": "1",
+                    "petting_horses_willing": "1",
+                    "petting_horses_appearance": "1",
+                    "up_down_ramp_motivated": "1",
+                    "up_down_ramp_willing": "1",
+                    "up_down_ramp_appearance": "1",
+                    "mounting_before_motivated": "1",
+                    "mounting_before_willing": "1",
+                    "mounting_before_appearance": "1",
+                    "mounting_after_motivated": "1",
+                    "mounting_after_willing": "1",
+                    "mounting_after_appearance": "1",
+                    "riding_before_motivated": "1",
+                    "riding_before_willing": "1",
+                    "riding_before_appearance": "1",
+                    "riding_during_motivated": "1",
+                    "riding_during_willing": "1",
+                    "riding_during_appearance": "1",
+                    "riding_after_motivated": "1",
+                    "riding_after_willing": "1",
+                    "riding_after_appearance": "1",
+                    "understands_directions_motivated": "1",
+                    "understands_directions_willing": "1",
+                    "understands_directions_appearance": "1",
+                    "participates_exercises_motivated": "1",
+                    "participates_exercises_willing": "1",
+                    "participates_exercises_appearance": "1",
+                    "participates_games_motivated": "1",
+                    "participates_games_willing": "1",
+                    "participates_games_appearance": "1",
+                    "general_attitude_motivated":"1",
+                    "general_attitude_willing":"1",
+                    "general_attitude_appearance":"1",
+                }
+
+                test_participant_in_db=models.Participant.objects.get(
+                    name="Test Matthew Clear",
+                    birth_date="1236-9-18"
+                )
+
+                response=self.client.post(
+                    reverse(
+                        "private-form-observation-evaluation",
+                        kwargs={
+                            "participant_id":test_participant_in_db.participant_id,
+                        }
+                    ),
+                    form_data
+                )
+
+                # Assert that the reponse code is a 302 (redirect):
+                self.assertEqual(response.status_code, 302)
+
+                # Assert that the context for the new view
+                # contains the correct error:
+                self.assertEqual(
+                    views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                        form="observation evaluation"
+                    ),
+                    response.context["error_text"]
+                )
+        except:
+            pass
+
+    def test_observation_eval_duplicate_pk_evalattitude(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         participant already has a EvalAttitude record with the same
+         (participant_id, date) as its primary key. """
+
+        try:
+            with transaction.atomic():
+                test_user=models.User.objects.get(
+                    username="testuser",
+                )
+                self.client.force_login(test_user)
+
+                form_data={
+                    "date": "1993-6-14",
+                    "walking_through_barn_motivated": "1",
+                    "walking_through_barn_willing": "1",
+                    "walking_through_barn_appearance": "1",
+                    "looking_at_horses_motivated": "1",
+                    "looking_at_horses_willing": "1",
+                    "looking_at_horses_appearance": "1",
+                    "petting_horses_motivated": "1",
+                    "petting_horses_willing": "1",
+                    "petting_horses_appearance": "1",
+                    "up_down_ramp_motivated": "1",
+                    "up_down_ramp_willing": "1",
+                    "up_down_ramp_appearance": "1",
+                    "mounting_before_motivated": "1",
+                    "mounting_before_willing": "1",
+                    "mounting_before_appearance": "1",
+                    "mounting_after_motivated": "1",
+                    "mounting_after_willing": "1",
+                    "mounting_after_appearance": "1",
+                    "riding_before_motivated": "1",
+                    "riding_before_willing": "1",
+                    "riding_before_appearance": "1",
+                    "riding_during_motivated": "1",
+                    "riding_during_willing": "1",
+                    "riding_during_appearance": "1",
+                    "riding_after_motivated": "1",
+                    "riding_after_willing": "1",
+                    "riding_after_appearance": "1",
+                    "understands_directions_motivated": "1",
+                    "understands_directions_willing": "1",
+                    "understands_directions_appearance": "1",
+                    "participates_exercises_motivated": "1",
+                    "participates_exercises_willing": "1",
+                    "participates_exercises_appearance": "1",
+                    "participates_games_motivated": "1",
+                    "participates_games_willing": "1",
+                    "participates_games_appearance": "1",
+                    "general_attitude_motivated":"1",
+                    "general_attitude_willing":"1",
+                    "general_attitude_appearance":"1",
+                }
+
+                test_participant_in_db=models.Participant.objects.get(
+                    name="Test Matthew Clear",
+                    birth_date="1236-9-18"
+                )
+
+                response=self.client.post(
+                    reverse(
+                        "private-form-observation-evaluation",
+                        kwargs={
+                            "participant_id":test_participant_in_db.participant_id,
+                        }
+                    ),
+                    form_data
+                )
+
+                # Assert that the reponse code is a 302 (redirect):
+                self.assertEqual(response.status_code, 302)
+
+                # Assert that the context for the new view
+                # contains the correct error:
+                self.assertEqual(
+                    views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                        form="observation evaluation"
+                    ),
+                    response.context["error_text"]
+                )
+        except:
+            pass
 
 
 class TestAdoptParticipant(TestCase):
@@ -7784,6 +8318,10 @@ class TestSessionPlanForm(TestCase):
         )
         session_plan.save()
 
+        session_ind=models.SessionPlanInd(
+            horse_leader="Fucky McFuckboy"
+        )
+
         session_goals=models.SessionGoals(
             participant_id=test_participant,
             session_id=session_plan,
@@ -7794,7 +8332,7 @@ class TestSessionPlanForm(TestCase):
         session_goals.save()
 
         horse_info=models.Horse(
-            name="Charlie",
+            name="Charlie"
         )
         horse_info.save()
 
@@ -7862,7 +8400,7 @@ class TestSessionPlanForm(TestCase):
 
         self.assertEqual(response.status_code, 302) # Redirected...
 
-         # Print the url we were redirected to:
+        # Print the url we were redirected to:
         print("response[\"location\"]" + response["location"])
 
         # Print the base url for the login page:
@@ -7881,6 +8419,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-5-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "diagnosis": "Herpes",
             "diagnosis_type": "P",
@@ -7944,6 +8483,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -8031,6 +8571,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -8084,6 +8625,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -8140,6 +8682,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some super long shit..................."
@@ -8199,6 +8742,7 @@ class TestSessionPlanForm(TestCase):
                 form_data={
                     "date": "2016-5-1",
                     "horse_name": "Charlie",
+                    "horse_leader": "Fucky McFuckboy",
                     "tack": "Some words.",
                     "ambulatory_status": "I",
                     "ambulatory_status_other": "Some shit.",

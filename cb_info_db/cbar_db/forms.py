@@ -63,7 +63,8 @@ class ApplicationForm(forms.Form):
     )
 
     school_institution=forms.CharField(
-        max_length=models.Participant._meta.get_field("school_institution").max_length
+        max_length=models.Participant._meta.get_field("school_institution").max_length,
+        required=False
     )
 
     guardian_name=forms.CharField(
@@ -320,6 +321,11 @@ class LiabilityReleaseForm(forms.Form):
 
 
 class MedicalReleaseForm(forms.Form):
+    name=forms.CharField(
+        max_length=(models.Participant._meta
+            .get_field("name").max_length
+        )
+    )
     primary_physician_name=forms.CharField(
         max_length=(models.MedicalInfo._meta
             .get_field("primary_physician_name").max_length
@@ -612,7 +618,6 @@ class ObservationEvaluation(forms.Form):
             "looking_at_horses_willing"
         ).choices
     )
-
     looking_at_horses_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -635,7 +640,6 @@ class ObservationEvaluation(forms.Form):
             "petting_horses_willing"
         ).choices
     )
-
     petting_horses_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -643,7 +647,6 @@ class ObservationEvaluation(forms.Form):
             "petting_horses_motivated"
         ).choices
     )
-
     petting_horses_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -666,7 +669,6 @@ class ObservationEvaluation(forms.Form):
             "up_down_ramp_motivated"
         ).choices
     )
-
     up_down_ramp_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -682,7 +684,6 @@ class ObservationEvaluation(forms.Form):
             "mounting_before_willing"
         ).choices
     )
-
     mounting_before_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -690,7 +691,6 @@ class ObservationEvaluation(forms.Form):
             "mounting_before_motivated"
         ).choices
     )
-
     mounting_before_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -706,7 +706,6 @@ class ObservationEvaluation(forms.Form):
             "mounting_after_willing"
         ).choices
     )
-
     mounting_after_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -714,7 +713,6 @@ class ObservationEvaluation(forms.Form):
             "mounting_after_motivated"
         ).choices
     )
-
     mounting_after_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -730,7 +728,6 @@ class ObservationEvaluation(forms.Form):
             "riding_before_willing"
         ).choices
     )
-
     riding_before_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -738,7 +735,6 @@ class ObservationEvaluation(forms.Form):
             "riding_before_motivated"
         ).choices
     )
-
     riding_before_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -754,7 +750,6 @@ class ObservationEvaluation(forms.Form):
             "riding_during_willing"
         ).choices
     )
-
     riding_during_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -762,7 +757,6 @@ class ObservationEvaluation(forms.Form):
             "riding_during_motivated"
         ).choices
     )
-
     riding_during_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -778,7 +772,6 @@ class ObservationEvaluation(forms.Form):
             "riding_after_willing"
         ).choices
     )
-
     riding_after_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -786,7 +779,6 @@ class ObservationEvaluation(forms.Form):
             "riding_after_motivated"
         ).choices
     )
-
     riding_after_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -802,7 +794,6 @@ class ObservationEvaluation(forms.Form):
             "understands_directions_willing"
         ).choices
     )
-
     understands_directions_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -810,7 +801,6 @@ class ObservationEvaluation(forms.Form):
             "understands_directions_motivated"
         ).choices
     )
-
     understands_directions_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -826,7 +816,6 @@ class ObservationEvaluation(forms.Form):
             "participates_exercises_willing"
         ).choices
     )
-
     participates_exercises_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -834,7 +823,6 @@ class ObservationEvaluation(forms.Form):
             "participates_exercises_motivated"
         ).choices
     )
-
     participates_exercises_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -850,7 +838,6 @@ class ObservationEvaluation(forms.Form):
             "participates_games_willing"
         ).choices
     )
-
     participates_games_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -858,7 +845,6 @@ class ObservationEvaluation(forms.Form):
             "participates_games_motivated"
         ).choices
     )
-
     participates_games_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -874,7 +860,6 @@ class ObservationEvaluation(forms.Form):
             "general_attitude_willing"
         ).choices
     )
-
     general_attitude_motivated=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -882,7 +867,6 @@ class ObservationEvaluation(forms.Form):
             "general_attitude_motivated"
         ).choices
     )
-
     general_attitude_appearance=forms.ChoiceField(
         widget=RadioSelect,
         initial="-",
@@ -900,9 +884,18 @@ class SessionPlanForm(forms.Form):
     # birth_date=forms.DateField()
 
     # Stored in Session
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
     tack=forms.CharField(
         max_length=models.Session._meta.get_field("tack").max_length
+    )
+
+    # Stored in SessionPlanInd
+    horse_leader=forms.CharField(
+        max_length=models.SessionPlanInd
+        ._meta.get_field("horse_leader").max_length
     )
 
     # Stored in SessionGoals
@@ -1462,7 +1455,10 @@ class RiderEvalChecklistForm(forms.Form):
             required=False
     )
 
-    date=forms.DateField(widget=SelectDateWidget(years=YEARS))
+    date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS),
+        initial=date.today()
+    )
 
     basic_trail_rules=forms.NullBooleanField(widget=RadioSelect(
             choices=models.EvalRidingExercises._meta

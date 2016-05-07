@@ -25,7 +25,11 @@
             information will help us do that.
         </p>
         <p>
-            <span style="color: red">*</span> Birth date: {{ form.birth_date }}
+            <span style="color: red">*</span>Participant's Name: {{ form.name }}
+            <span class="error_message">
+                {{ form.name.errors.as_text }}
+            </span>
+            <span style="color: red">*</span>Birth date: {{ form.birth_date }}
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
             </span>

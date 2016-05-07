@@ -165,7 +165,7 @@ def public_form_med_release(request):
             # Find the participant's record based on their (name, birth_date):
             try:
                 participant=models.Participant.objects.get(
-                    name=form.cleaned_data['signature'],
+                    name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date']
                 )
             except ObjectDoesNotExist:
@@ -2147,10 +2147,9 @@ def observation_evaluation(request, participant_id):
         except ObjectDoesNotExist:
             return render(
                 request,
-                "cbar_db/admin/reports/observation_evaluation.html",
+                "cbar_db/forms/private/observation_evaluation.html",
                 {
                     'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
-                    "participant": participant
                 }
             )
 
@@ -2299,7 +2298,7 @@ def observation_evaluation(request, participant_id):
         except ObjectDoesNotExist:
             return render(
                 request,
-                "cbar_db/admin/reports/observation_evaluation.html",
+                "cbar_db/forms/private/observation_evaluation.html",
                 {
                     'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
                 }
@@ -2352,6 +2351,13 @@ def private_form_session_plan(request, participant_id):
                 tack=form.cleaned_data['tack']
             )
             session_plan.save()
+
+            session_ind=models.SessionPlanInd(
+                participant_id=participant,
+                date=form.cleaned_data["date"],
+                horse_leader=form.cleaned_data['horse_leader']
+            )
+            session_ind.save()
 
             session_goals=models.SessionGoals(
                 participant_id=participant,
