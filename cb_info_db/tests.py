@@ -497,18 +497,18 @@ class TestEmergencyAuthorizationForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Bruce Wayne",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1023,18 +1023,18 @@ class TestMediaReleaseForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Bruce Wayne",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1605,18 +1605,18 @@ class TestMedicalReleaseForm(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -1632,32 +1632,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1668,7 +1669,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1695,32 +1696,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST I'm Batman!",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST I'm Batman!",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1731,7 +1733,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1758,32 +1760,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "Y",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "Y",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "Y",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "Y",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "Y",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1000-1-1",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1794,7 +1797,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1818,32 +1821,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -1863,7 +1867,7 @@ class TestMedicalReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["signature"],
+                name=form_data["name"],
                 birth_date=form_data["birth_date"]
             )
             print("Successfully retrieved participant record.")
@@ -1908,32 +1912,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Not Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Not Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -1959,32 +1964,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1455-9-30",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2012,32 +2018,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "11122233332u3094890238402",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2063,32 +2070,33 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "",
             "medication_two_reason": "",
             "medication_two_frequency": "",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
+            "present_restrictions_for_horse_activity": "Y",
             # TODO: description of present restriction description/etc.
-            "limiting_surgeries_last_six_monthes": False,
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2099,7 +2107,7 @@ class TestMedicalReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["signature"],
+                name=form_data["name"],
                 birth_date=form_data["birth_date"]
             )
             print("Successfully retrieved participant record.")
@@ -2149,31 +2157,32 @@ class TestMedicalReleaseForm(TestCase):
             "primary_physician_phone": "1112223333",
             "last_seen_by_physician_date": "2016-1-1",
             "last_seen_by_physician_reason": "Shoulder injury",
-            "allergies_conditions_that_exclude": True,
+            "allergies_conditions_that_exclude": "N",
             "allergies_conditions_that_exclude_description": "Asthma and other"
                 "things and stuff.",
-            "heat_exhaustion_stroke": False,
-            "tetanus_shot_last_ten_years": True,
-            "seizures_last_six_monthes": False,
-            "currently_taking_any_medication": True,
-            "pregnant": False,
+            "heat_exhaustion_stroke": "N",
+            "tetanus_shot_last_ten_years": "Y",
+            "seizures_last_six_monthes": "N",
+            "currently_taking_any_medication": "Y",
+            "pregnant": "N",
             "medication_one_name": "Excedrin",
             "medication_one_reason": "Headaches",
             "medication_one_frequency": "Every 6 hours",
             "medication_two_name": "Asprin",
             "medication_two_reason": "Toothaches",
             "medication_two_frequency": "3-4 hours (as needed)",
-            "doctor_concered_re_horse_activites": True,
-            "physical_or_mental_issues_affecting_riding": True,
+            "doctor_concered_re_horse_activites": "Y",
+            "physical_or_mental_issues_affecting_riding": "Y",
             "physical_or_mental_issues_affecting_riding_description":
                 "Shoulder injury requires medication for pain.",
-            "restriction_for_horse_activity_last_five_years": False,
+            "restriction_for_horse_activity_last_five_years": "N",
             "restriction_for_horse_activity_last_five_years_description": "",
-            "present_restrictions_for_horse_activity": True,
-            "limiting_surgeries_last_six_monthes": False,
+            "present_restrictions_for_horse_activity": "Y",
+            "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-1-1"
         }
 
@@ -5750,18 +5759,18 @@ class TestEmergencyAuthorizationReport(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -6050,18 +6059,18 @@ class TestMedicalReleaseReport(TestCase):
             primary_physician_phone="111-111-1111",
             last_seen_by_physician_date="2016-1-1",
             last_seen_by_physician_reason="Normal check up visit.",
-            allergies_conditions_that_exclude=False,
-            heat_exhaustion_stroke=False,
-            tetanus_shot_last_ten_years=True,
-            seizures_last_six_monthes=False,
-            doctor_concered_re_horse_activites=False,
-            physical_or_mental_issues_affecting_riding=False,
-            restriction_for_horse_activity_last_five_years=False,
-            present_restrictions_for_horse_activity=False,
-            limiting_surgeries_last_six_monthes=False,
+            allergies_conditions_that_exclude="N",
+            heat_exhaustion_stroke="N",
+            tetanus_shot_last_ten_years="Y",
+            seizures_last_six_monthes="N",
+            doctor_concered_re_horse_activites="N",
+            physical_or_mental_issues_affecting_riding="N",
+            restriction_for_horse_activity_last_five_years="N",
+            present_restrictions_for_horse_activity="N",
+            limiting_surgeries_last_six_monthes="N",
             signature="TEST Oliver Queen",
-            currently_taking_any_medication=False,
-            pregnant=False
+            currently_taking_any_medication="N",
+            pregnant="N"
         )
         test_medical_info.save()
 
@@ -8309,6 +8318,10 @@ class TestSessionPlanForm(TestCase):
         )
         session_plan.save()
 
+        session_ind=models.SessionPlanInd(
+            horse_leader="Fucky McFuckboy"
+        )
+
         session_goals=models.SessionGoals(
             participant_id=test_participant,
             session_id=session_plan,
@@ -8319,7 +8332,7 @@ class TestSessionPlanForm(TestCase):
         session_goals.save()
 
         horse_info=models.Horse(
-            name="Charlie",
+            name="Charlie"
         )
         horse_info.save()
 
@@ -8406,6 +8419,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-5-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "diagnosis": "Herpes",
             "diagnosis_type": "P",
@@ -8469,6 +8483,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -8556,6 +8571,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -8609,6 +8625,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some shit.",
@@ -8665,6 +8682,7 @@ class TestSessionPlanForm(TestCase):
         form_data={
             "date": "2016-1-1",
             "horse_name": "Charlie",
+            "horse_leader": "Fucky McFuckboy",
             "tack": "Some words.",
             "ambulatory_status": "I",
             "ambulatory_status_other": "Some super long shit..................."
@@ -8724,6 +8742,7 @@ class TestSessionPlanForm(TestCase):
                 form_data={
                     "date": "2016-5-1",
                     "horse_name": "Charlie",
+                    "horse_leader": "Fucky McFuckboy",
                     "tack": "Some words.",
                     "ambulatory_status": "I",
                     "ambulatory_status_other": "Some shit.",

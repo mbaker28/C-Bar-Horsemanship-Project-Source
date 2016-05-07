@@ -54,11 +54,11 @@ MINOR_STATUS_CHOICES=(
     (ADULT_WITHOUT_GUARDIAN, "Independent adult")
 )
 
-YES_BOOL=True
-NO_BOOL=False
-YES_NO_BOOL_CHOICES=(
-    (YES_BOOL, "Yes"),
-    (NO_BOOL, "No")
+YES="Y"
+NO="N"
+YES_NO_CHOICES=(
+    (YES, "Yes"),
+    (NO, "No")
 )
 
 NULL_GAY=2 # anything that's not 1 or 0
@@ -157,6 +157,14 @@ class Session(models.Model):
     date=models.DateTimeField()
     tack=models.CharField(max_length=250)
 
+class SessionPlanInd(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+    horse_leader=models.CharField(max_length=NAME_LENGTH, null=True)
+
 
 class SessionGoals(models.Model):
     GOAL_SHORT_TERM="S"
@@ -232,6 +240,7 @@ class Donation(models.Model):
     donation_type=models.CharField(max_length=1, choices=DONATION_CHOICES)
     purpose=models.CharField(max_length=SHORT_ANSWER_LENGTH, null=True)
     date=models.DateField(auto_now_add=True)
+
 
 class Grouping(models.Model):
     """ AKA Class... reserved words and such """
@@ -323,7 +332,7 @@ class ConfidentialityPolicy(models.Model):
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
-    agreement=models.BooleanField(choices=YES_NO_BOOL_CHOICES)
+    agreement=models.CharField(max_length=1, choices=YES_NO_CHOICES)
 
 
 class AuthorizeEmergencyMedicalTreatment(models.Model):
@@ -1503,54 +1512,67 @@ class MedicalInfo(models.Model):
     primary_physician_phone=PhoneNumberField()
     last_seen_by_physician_date=models.DateField()
     last_seen_by_physician_reason=models.CharField(max_length=250)
-    allergies_conditions_that_exclude=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    allergies_conditions_that_exclude=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     allergies_conditions_that_exclude_description=models.CharField(
         max_length=500,
         null=True
     )
-    heat_exhaustion_stroke=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    heat_exhaustion_stroke=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    tetanus_shot_last_ten_years=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    tetanus_shot_last_ten_years=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    seizures_last_six_monthes=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    seizures_last_six_monthes=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    doctor_concered_re_horse_activites=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    doctor_concered_re_horse_activites=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    physical_or_mental_issues_affecting_riding=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    physical_or_mental_issues_affecting_riding=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     physical_or_mental_issues_affecting_riding_description=models.CharField(
         max_length=500,
         null=True
     )
-    restriction_for_horse_activity_last_five_years=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    restriction_for_horse_activity_last_five_years=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     restriction_for_horse_activity_last_five_years_description=models.CharField(
         max_length=500,
         null=True
     )
-    present_restrictions_for_horse_activity=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    present_restrictions_for_horse_activity=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     ) # If yes -> PhysRelease required
-    limiting_surgeries_last_six_monthes=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    limiting_surgeries_last_six_monthes=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
     limiting_surgeries_last_six_monthes_description=models.CharField(
         max_length=500,
         null=True
     )
     signature=models.CharField(max_length=NAME_LENGTH)
-    currently_taking_any_medication=models.BooleanField(
-        choices=YES_NO_BOOL_CHOICES
+    currently_taking_any_medication=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
     )
-    pregnant=models.BooleanField(choices=YES_NO_BOOL_CHOICES)
+    pregnant=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
 
 
 class Medication(models.Model):
