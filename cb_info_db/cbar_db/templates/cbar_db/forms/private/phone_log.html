@@ -1,0 +1,22 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Seizure Evaluation Phone Log</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    {% if participant %}
+        <form action="{% url 'private-form-phone-log' participant.participant_id %}" method="post">
+            {% csrf_token %}
+            <p>
+                Participant: {{ participant.name }}<br />
+                Birth Date: {{ participant.birth_date }}<br />
+            </p>
+
+            <p>
+                <strong>Date:</strong> 
+            </p>
+        </form>
+    {% endif %}
+{% endblock %}
