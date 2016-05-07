@@ -2147,7 +2147,7 @@ def observation_evaluation(request, participant_id):
         except ObjectDoesNotExist:
             return render(
                 request,
-                "cbar_db/admin/reports/observation_evaluation.html",
+                "cbar_db/forms/private/observation_evaluation.html",
                 {
                     'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
                     "participant": participant
@@ -2299,7 +2299,7 @@ def observation_evaluation(request, participant_id):
         except ObjectDoesNotExist:
             return render(
                 request,
-                "cbar_db/admin/reports/observation_evaluation.html",
+                "cbar_db/forms/private/observation_evaluation.html",
                 {
                     'error_text':(ERROR_TEXT_PARTICIPANT_NOT_FOUND),
                 }

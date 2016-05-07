@@ -18,6 +18,7 @@
         {{ form.non_field_errors }}
         {{ form.errors }}
     {% endif %}
+    {% if participant %}
     <form action="{% url 'private-form-observation-evaluation' participant.participant_id %}" method="post">
         {% csrf_token %}
 
@@ -342,4 +343,5 @@
         <input type="Submit" value="Submit" />
     </div>
     </form>
+{% endif %}
 {% endblock %}

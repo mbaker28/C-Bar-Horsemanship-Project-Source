@@ -7094,6 +7094,37 @@ class TestObservationEvaluation(TestCase):
             )
         )
 
+    def test_observation_evaluation_form_error_no_participant(self):
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18"
+        )
+
+        self.client.force_login(test_user)
+
+        response=self.client.get(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":99999999999,
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+
 
 class TestAdoptParticipant(TestCase):
     def setUp(self):
