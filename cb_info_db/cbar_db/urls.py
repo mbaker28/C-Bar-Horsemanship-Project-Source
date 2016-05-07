@@ -112,6 +112,9 @@ urlpatterns = [
     url(r'^forms/private/rider_eval_checklist/(?P<participant_id>[0-9]+)$', views.private_form_rider_eval_checklist,
         name='private_form_rider_eval_checklist'),
 
-    url(r'^forms/private/phone_log_incidents/(?P<participant_id>[0-9]+)$', views.private_form_phone_log_incidents,
-        name='private-form-phone-log-incidents'),
+    url(r'^forms/private/phone_log/(?P<participant_id>[0-9]+)$', views.private_form_phone_log,
+        name='private-form-phone-log'),
+
+    url(r'^forms/private/incidents/(?P<participant_id>[0-9]+)$', views.private_form_incidents,
+        name='private-form-incidents'),
 ]
