@@ -1445,7 +1445,7 @@ class PhoneLog(models.Model):
     date=models.DateTimeField()
     details=models.CharField(max_length=500)
 
-class incidents(models.Model):
+class Incidents(models.Model):
     class Meta:
         unique_together=(("participant_id","date"))
 
