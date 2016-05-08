@@ -23,7 +23,7 @@
         {% csrf_token %}
 
         <p>
-            <strong>Participant:</strong> {{ participant.name }}
+            <strong>Participant:</strong> {{ participant.name }} ({{ participant.birth_date }})
         </p>
         <p>
             <strong>Date:</strong> {{ form.date }}
