@@ -2352,12 +2352,12 @@ def private_form_phone_log(request, participant_id):
                         'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
                     }
                 )
-
-            phone_log=models.PhoneLog(
-                participant_id=participant,
-                date=form.cleaned_data["date"],
-                details=form.cleaned_data["details"]
-            )
+            try:
+                phone_log=models.PhoneLog(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    details=form.cleaned_data["details"]
+                )
             # Catch duplicate primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
@@ -2471,11 +2471,12 @@ def private_form_incidents(request, participant_id):
                     }
                 )
 
-            phone_log=models.PhoneLog(
-                participant_id=participant,
-                date=form.cleaned_data["date"],
-                details=form.cleaned_data["details"]
-            )
+            try:
+                incidents=models.Incidents(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    details=form.cleaned_data["details"]
+                )
             # Catch duplicate primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
