@@ -1442,7 +1442,7 @@ class PhoneLog(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateTimeField()
+    date=models.DateField()
     details=models.CharField(max_length=500)
 
 class Incidents(models.Model):
@@ -1450,7 +1450,7 @@ class Incidents(models.Model):
         unique_together=(("participant_id","date"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-    date=models.DateTimeField()
+    date=models.DateField()
     details=models.CharField(max_length=500)
 
 class SeizureEval(models.Model):
