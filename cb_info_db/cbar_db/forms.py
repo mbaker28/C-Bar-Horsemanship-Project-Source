@@ -641,7 +641,8 @@ class RiderIntakeAssessmentForm(forms.Form):
         max_length=(
             models.AdaptationsNeeded._meta
             .get_field("ambulatory_status_other").max_length
-        )
+        ),
+        required=False
     )
     gait_flat=forms.ChoiceField(
         choices=(
@@ -859,16 +860,16 @@ class RiderIntakeAssessmentForm(forms.Form):
             .max_length
         )
     )
-    posture_forward_halt=forms.BooleanField()
-    posture_forward_walk=forms.BooleanField()
-    posture_back_halt=forms.BooleanField()
-    posture_back_walk=forms.BooleanField()
-    posture_center_halt=forms.BooleanField()
-    posture_center_walk=forms.BooleanField()
-    posture_chairseat_halt=forms.BooleanField()
-    posture_chairseat_walk=forms.BooleanField()
-    posture_aligned_halt=forms.BooleanField()
-    posture_aligned_walk=forms.BooleanField()
+    posture_forward_halt=forms.BooleanField(required=False)
+    posture_forward_walk=forms.BooleanField(required=False)
+    posture_back_halt=forms.BooleanField(required=False)
+    posture_back_walk=forms.BooleanField(required=False)
+    posture_center_halt=forms.BooleanField(required=False)
+    posture_center_walk=forms.BooleanField(required=False)
+    posture_chairseat_halt=forms.BooleanField(required=False)
+    posture_chairseat_walk=forms.BooleanField(required=False)
+    posture_aligned_halt=forms.BooleanField(required=False)
+    posture_aligned_walk=forms.BooleanField(required=False)
     rein_use_hold_halt=forms.ChoiceField(
         choices=(
             models.IntakeAssessment._meta.get_field("motor_skills_fine_right")
