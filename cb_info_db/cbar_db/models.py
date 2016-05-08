@@ -1974,16 +1974,28 @@ class IntakeAssessment(models.Model):
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
 
-    staff_reviewed_medical_info=models.BooleanField()
+    staff_reviewed_medical_info=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
     staff_reviewed_medical_info_date=models.DateField()
     precautions=models.CharField(max_length=500)
-    impulsive=models.BooleanField()
-    eye_contact=models.BooleanField()
+    impulsive=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
+    eye_contact=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
     attention_span=models.CharField(
         max_length=1,
         choices=LIKERT_LIKE_CHOICES_MINIMAL,
     )
-    interacts_with_others=models.BooleanField()
+    interacts_with_others=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
     communication_verbal=models.CharField(
         max_length=1,
         choices=YES_NO_IMPAIRED_CHOICES,

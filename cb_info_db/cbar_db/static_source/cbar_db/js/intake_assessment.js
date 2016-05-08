@@ -1,7 +1,6 @@
 // This function is called after all HTML DOM elements have loaded:
 $( document ).ready(function() {
     $("#premounted").hide();
-    $("#sidewalkers_required").hide();
 
     $("#section").change(function() {
         // alert("Section selection changed."); // DEBUGGING
@@ -19,10 +18,6 @@ $( document ).ready(function() {
             $("#premounted").show().siblings("div").hide();
             $("#premounted").children().show(); // Show all the child elements
         };
-        if ($("#section").val() == "sidewalkers_required") {
-            // alert("Section selection is 'sidewalkers_required'."); // DEBUGGING
-            $("#sidewalkers_required").show().siblings("div").hide();
-        };
 
         /*
             Show or hide the second-to-top category div tags if the right option
@@ -37,6 +32,11 @@ $( document ).ready(function() {
             // alert("Section selection is 'premounted_ambulatory'."); // DEBUGGING
             $("#premounted").show().siblings("div").hide();
             $("#ambulatory").show().siblings("div").hide();
+        };
+        if ($("#section").val() == "premounted_behavior") {
+            // alert("Section selection is 'premounted_ambulatory'."); // DEBUGGING
+            $("#premounted").show().siblings("div").hide();
+            $("#behavior").show().siblings("div").hide();
         };
     });
 });

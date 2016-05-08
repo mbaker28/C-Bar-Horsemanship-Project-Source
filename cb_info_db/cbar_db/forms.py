@@ -614,19 +614,22 @@ class RiderIntakeAssessmentForm(forms.Form):
         choices=(
             models.AdaptationsNeeded._meta
             .get_field("posture_standing").choices
-        )
+        ),
+        widget=RadioSelect
     )
     posture_sitting=forms.ChoiceField(
         choices=(
             models.AdaptationsNeeded._meta
             .get_field("posture_sitting").choices
-        )
+        ),
+        widget=RadioSelect
     )
     posture_mounted=forms.ChoiceField(
         choices=(
             models.AdaptationsNeeded._meta
             .get_field("posture_mounted").choices
-        )
+        ),
+        widget=RadioSelect
     )
     ambulatory_status=forms.ChoiceField(
         choices=(
@@ -640,7 +643,6 @@ class RiderIntakeAssessmentForm(forms.Form):
             .get_field("ambulatory_status_other").max_length
         )
     )
-
     gait_flat=forms.ChoiceField(
         choices=(
             models.AdaptationsNeeded._meta.get_field("gait_flat").choices
@@ -728,49 +730,26 @@ class RiderIntakeAssessmentForm(forms.Form):
     # Should this ^ be stored somehwere else? Seems to be related to the
     # participant, not a given session.
 
-    # TODO:
-    # Calculated fields:
-    #   -Participant.age_at_assessment
-    #   -Seizures (y/n), from whether the Participant has SeizureType records?
-
-    # Not in Model (need to add?):
-    #   -Mounted
-    #       -Posture stuff (duplicate of attributes already there?). It's
-    #        unclear what the fields are for / what data type gets put in them.
-    #   -Recommendations
-    #       -Can / can't benefit
-    #       -Frequency <-- Of sessions?
-    #   -Activity: <-- no idea what goes here...
-    #       -Riding skills
-    #       -Horsemanship
-    #   -Horse type
-    #   -Helmet size <-- should go in participant model
-    #   -Problem list
-    #   -Plans & goals
-    #   -Other comments
-    #   -Evaluator Signature
-
-    # Stored somewhere...:
+    # Stored in IntakeAssessment:
     date=forms.DateField(widget=SelectDateWidget)
-    # Mount
-    # Dismount
-
-    num_sidewalkers_walk_spotter=forms.DecimalField(
-        max_digits=models.AdaptationsNeeded._meta.get_field(
-            "num_sidewalkers_walk_spotter"
-        ).max_digits,
-        decimal_places=models.AdaptationsNeeded._meta.get_field(
-            "num_sidewalkers_walk_spotter"
-        ).decimal_places
+    impulsive=forms.ChoiceField(
+        choices=models.IntakeAssessment._meta.get_field("impulsive").choices,
+        widget=RadioSelect
     )
-
-    num_sidewalkers_walk_heel_hold=forms.DecimalField(
-        max_digits=models.AdaptationsNeeded._meta.get_field(
-            "num_sidewalkers_walk_heel_hold"
-        ).max_digits,
-        decimal_places=models.AdaptationsNeeded._meta.get_field(
-            "num_sidewalkers_walk_heel_hold"
-        ).decimal_places
+    eye_contact=forms.ChoiceField(
+        choices=models.IntakeAssessment._meta.get_field("eye_contact").choices,
+        widget=RadioSelect
+    )
+    attention_span=forms.ChoiceField(
+        choices=models.IntakeAssessment._meta.get_field("attention_span").choices,
+        widget=RadioSelect
+    )
+    interacts_with_others=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("interacts_with_others")
+            .choices
+        ),
+        widget=RadioSelect
     )
 
 

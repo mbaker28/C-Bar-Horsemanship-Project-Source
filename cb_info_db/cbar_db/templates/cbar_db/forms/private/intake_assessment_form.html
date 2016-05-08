@@ -24,7 +24,7 @@
             <option value="premounted">--- Premounted ---</option>
             <option value="premounted_posture">Posture</option>
             <option value="premounted_ambulatory">Ambulatory Status</option>
-            <option value="sidewalkers_required">--- Sidewalkers Required ---</option>
+            <option value="premounted_behavior">Behavior</option>
         </select>
     </form>
 
@@ -96,36 +96,30 @@
                 <h3>Posture</h3>
                 <div id="standing_posture">
                     <p><strong>Standing</strong></p>
-                    <p>
-                        {% for form, participant in formset_and_participants %}
-                            {{ participant }}:
-                             {{ form.posture_standing }}
-                             {{ form.posture_standing.errors.as_text }}
-                            <br />
-                        {% endfor %}
-                    </p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.posture_standing }}
+                         {{ form.posture_standing.errors.as_text }}
+                        <br />
+                    {% endfor %}
                 </div>
                 <div id="sitting_posture">
                     <p><strong>Sitting</strong></p>
-                    <p>
-                        {% for form, participant in formset_and_participants %}
-                            {{ participant }}:
-                             {{ form.posture_sitting }}
-                             {{ form.posture_sitting.errors.as_text }}
-                            <br />
-                        {% endfor %}
-                    </p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.posture_sitting }}
+                         {{ form.posture_sitting.errors.as_text }}
+                        <br />
+                    {% endfor %}
                 </div>
                 <div id="mounted_posture">
                     <p><strong>Mounted</strong></p>
-                    <p>
-                        {% for form, participant in formset_and_participants %}
-                            {{ participant }}:
-                             {{ form.posture_mounted }}
-                             {{ form.posture_mounted.errors.as_text }}
-                            <br />
-                        {% endfor %}
-                    </p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.posture_mounted }}
+                         {{ form.posture_mounted.errors.as_text }}
+                        <br />
+                    {% endfor %}
                 </div>
             </div>
             <div id="ambulatory">
@@ -141,7 +135,7 @@
                     {% endfor %}
                 </p>
 
-                <h2>Gait</h2>
+                <h3>Gait</h3>
                 <div id="gait_flat">
                     <p><strong>Flat</strong></p>
                     {% for form, participant in formset_and_participants %}
@@ -234,34 +228,39 @@
                     </p>
                 </div>
             </div>
-        </div>
+            <div id="behavior">
+                <h3>Behavior</h3>
+                <p><strong>Impulsive</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.impulsive }}
+                     {{ form.impulsive.errors.as_text }}
+                    <br />
+                {% endfor %}
 
-        <div id="sidewalkers_required">
-            <h2>Number of Sidewalkers Required</h2>
-            <div id="walking">
-                <h3>Walking</h3>
-                <div id="heel_holds_walk">
-                    <p><strong>Heel Holds</strong></p>
-                    <p>
-                        {% for form, participant in formset_and_participants %}
-                            {{ participant }}:
-                             {{ form.num_sidewalkers_walk_heel_hold }}
-                             {{ form.num_sidewalkers_walk_heel_hold.errors.as_text }}
-                            <br />
-                        {% endfor %}
-                    </p>
-                </div>
-                <div id="spotters_walk">
-                    <p><strong>Spotters</strong></p>
-                    <p>
-                        {% for form, participant in formset_and_participants %}
-                            {{ participant }}:
-                             {{ form.num_sidewalkers_walk_spotter }}
-                             {{ form.num_sidewalkers_walk_spotter.errors.as_text }}
-                            <br />
-                        {% endfor %}
-                    </p>
-                </div>
+                <p><strong>Eye Contact</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.eye_contact }}
+                     {{ form.eye_contact.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Attention Span</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.attention_span }}
+                     {{ form.attention_span.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Interacts with others</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.interacts_with_others }}
+                     {{ form.interacts_with_others.errors.as_text }}
+                    <br />
+                {% endfor %}
             </div>
         </div>
 
