@@ -1437,6 +1437,21 @@ class Medication(models.Model):
     reason_taken=models.CharField(max_length=50)
     frequency=models.CharField(max_length=50)
 
+class PhoneLog(models.Model):
+    class Meta:
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateTimeField()
+    details=models.CharField(max_length=500)
+
+class incidents(models.Model):
+    class Meta:
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateTimeField()
+    details=models.CharField(max_length=500)
 
 class SeizureEval(models.Model):
     SEIZURE_GRAND="G"
