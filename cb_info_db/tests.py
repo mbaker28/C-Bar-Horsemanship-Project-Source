@@ -8409,3 +8409,342 @@ class TestPhoneLogForm(TestCase):
                 )
         except:
             pass
+
+class TestIncidentsForm(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        # Create a Participant record and save it
+        test_participant=models.Participant(
+            name="TEST Dat Boi",
+            birth_date="1989-10-15",
+            email="dat.boi@Something.com",
+            weight=186.0,
+            gender="M",
+            guardian_name="Some Person",
+            height=80.0,
+            minor_status="G",
+            address_street="1234 Dat St.",
+            address_city="Dat City",
+            address_state="OK",
+            address_zip= "74804",
+            phone_home="200-500-1234",
+            phone_cell="100-200-1000",
+            phone_work="499-139-3209",
+            school_institution="Dat School"
+        )
+        test_participant.save()
+
+        incidents=models.Incidents(
+            participant_id=test_participant,
+            date="2016-5-8",
+            details="Ran over by horse."
+        )
+
+    def test_incidents_loads_if_user_logged_in(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Dat Boi",
+            birth_date="1989-10-15"
+        )
+
+        response=self.client.get(
+            reverse(
+                "private-form-incidents",
+                kwargs={"participant_id": test_participant.participant_id}
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_incidents_redirects_if_user_not_logged_in(self):
+        test_participant=models.Participant.objects.get(
+            name="TEST Dat Boi",
+            birth_date="1989-10-15"
+        )
+
+        response=self.client.get(
+            reverse(
+                "private-form-incidents",
+                kwargs={"participant_id": test_participant.participant_id}
+            )
+        )
+
+        self.assertEqual(response.status_code, 302) # Redirected...
+
+         # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_incidents_form_finds_valid_participant(self):
+        """ Tests whether the form finds a valid participant record if a
+         matching (name, date) is entered """
+
+        # If we are able to find the matching record, we set this to True:
+        found_participant=False
+
+        form_data={
+            "date": "2016-5-8",
+            "details": "Stepped in pile of shit."
+        }
+        form=forms.IncidentsForm(form_data)
+
+        if form.is_valid(): # Performs validation, needed for form.cleaned_data
+            print("Form is valid.")
+
+            try:
+                print("Finding participant...")
+                participant_instance=models.Participant.objects.get(
+                    name="TEST Dat Boi",
+                    birth_date="1989-10-15"
+                )
+                print("Found participant.")
+                found_participant=True
+
+            except ObjectDoesNotExist:
+                found_participant=False
+
+        else:
+            print("Form is not valid.")
+
+        # We should say we could find the participant:
+        self.assertTrue(found_participant)
+
+    def test_incidents_form_saves_with_valid_data(self):
+        """ Verify that a Incidents form view, populated with
+         valid data, correctly saves the form to the database. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Dat Boi",
+            birth_date="1989-10-15"
+        )
+
+        form_data={
+            "date": "2016-2-1",
+            "details": "Impaled by tree."
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("private-form-incidents",
+        kwargs={"participant_id": test_participant.participant_id}), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        # Attempt to retreive the updated MedicalInfo record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                participant_id=test_participant.participant_id
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+    def test_incidents_error_if_invalid_participant_get(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Dat Boi",
+            birth_date="1989-10-15"
+        )
+
+        response=self.client.get(
+            reverse(
+                "private-form-incidents",
+                kwargs={"participant_id": 999999999999}
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Redirected...
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_incidents_error_if_invalid_participant_valid_form_post(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Dat Boi",
+            birth_date="1989-10-15"
+        )
+
+        form_data={
+            "date": "2016-3-5",
+            "details": "The summoning of Satan."
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(
+            reverse(
+                "private-form-incidents",
+                kwargs={"participant_id": 999999999999999}
+            ),
+            form_data
+        )
+
+        self.assertEqual(response.status_code, 200) # Redirected...
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_incidents_error_if_invalid_participant_invalid_form_post(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Dat Boi",
+            birth_date="1989-10-15"
+        )
+
+        form_data={
+            "date": "2016-1-1",
+            "details": "Got dick stuck under tree."
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(
+            reverse(
+                "private-form-incidents",
+                kwargs={"participant_id": 999999999999999}
+            ),
+            form_data
+        )
+
+        self.assertEqual(response.status_code, 200) # Redirected...
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_incidents_form_with_invalid_data_shows_error(self):
+        """ Verify that a Incidents form view, populated with
+         invalid data, displays the correct error message. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant=models.Participant.objects.get(
+            name="TEST Dat Boi",
+            birth_date="1989-10-15"
+        )
+
+        form_data={
+            "date": "2016-6-1",
+            "Details": "Some super long shit zzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+            "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+            "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("private-form-phone-log",
+        kwargs={"participant_id": test_participant.participant_id}), form_data)
+
+        # Assert that the reponse code is a 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert we displayed the correct error message:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_incidents_form_with_duplicate_pk(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         particpant already has a PhoneLog record with the same
+         (participant_id, date) as its primary key. """
+
+        try:
+            with transaction.atomic():
+                test_user=models.User.objects.get(
+                    username="testuser"
+                )
+
+                self.client.force_login(test_user)
+
+                test_participant=models.Participant.objects.get(
+                    name="TEST Dat Boi",
+                    birth_date="1989-10-15"
+                )
+
+                form_data={
+                    "date": "2016-5-1",
+                    "details": "Child lost their eye"
+                }
+
+                # Send a post request to the form view with the form_data
+                # defined above:
+                response=self.client.post(
+                    reverse(
+                        "private-form-incidents",
+                        kwargs={
+                            "participant_id": test_participant.participant_id
+                        }
+                    ),
+                    form_data
+                )
+
+                # Assert that the reponse code is 302 (Redirect):
+                self.assertEqual(response.status_code, 302)
+
+                # Assert that the context for the new view
+                # contains the correct error:
+                self.assertEqual(
+                    views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                        form="incidents"
+                    ),
+                    response.context["error_text"]
+                )
+        except:
+            pass
