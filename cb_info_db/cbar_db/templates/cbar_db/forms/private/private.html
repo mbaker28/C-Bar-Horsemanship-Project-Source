@@ -1,0 +1,42 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Private Forms</h1>
+
+    <p style="text-align:center">
+        Click a participant's name under a heading below to fill out the desired
+         form.
+    </p>
+
+    <h2 style="text-align:left">Observation Evaluation</h2>
+    <ul>
+        {% for participant in participants %}
+            <li>
+                <a href="{% url 'private-form-observation-evaluation' participant.participant_id %}">
+                    {{ participant.name }} ({{ participant.birth_date }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2 style="text-align:left">Individual Session Plan</h2>
+    <ul>
+        {% for participant in participants %}
+            <li>
+                <a href="{% url 'private-form-session-plan' participant.participant_id %}">
+                    {{ participant.name }} ({{ participant.birth_date }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2 style="text-align:left">Rider Evaluation Checklist</h2>
+    <ul>
+        {% for participant in participants %}
+            <li>
+                <a href="{% url 'private_form_rider_eval_checklist' participant.participant_id %}">
+                    {{ participant.name }} ({{ participant.birth_date }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

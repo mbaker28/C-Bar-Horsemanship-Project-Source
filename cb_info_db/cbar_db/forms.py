@@ -897,7 +897,8 @@ class SessionPlanForm(forms.Form):
     )
     tack=forms.CharField(
         widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
-        max_length=models.Session._meta.get_field("tack").max_length
+        max_length=models.Session._meta.get_field("tack").max_length,
+        required=False
     )
 
     # Stored in SessionPlanInd
