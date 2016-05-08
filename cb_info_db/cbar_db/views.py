@@ -2271,7 +2271,7 @@ def private_form_intake_assessment(request):
 
                     loggeyMcLogging.error(
                         "request.session['post_participants']: "
-                        + str(request.session["post_participants"])
+                        + str(request.session["intake_post_participants"])
                     )
 
                     # Set the error message and redisplay the form:
