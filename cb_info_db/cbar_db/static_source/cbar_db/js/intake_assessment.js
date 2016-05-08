@@ -4,7 +4,7 @@ $( document ).ready(function() {
     $("#sidewalkers_required").hide();
 
     $("#section").change(function() {
-        alert("Section selection changed."); // DEBUGGING
+        // alert("Section selection changed."); // DEBUGGING
 
         /*
             Show or hide the top category div tags if the right option is
