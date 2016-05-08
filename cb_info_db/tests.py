@@ -5331,6 +5331,49 @@ class TestAdminIndex(TestCase):
         )
         test_user.save()
 
+    def test_admin_index_loads_if_user_logged_in(self):
+        """ Tests whether the Admin Index page loads if the user is logged
+         in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse('index-admin'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_admin_index_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Admin Index page redirects to the login page if
+         the user is not logged in."""
+
+        response = self.client.get(reverse("index-admin"))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+
+class TestReportSelectParticipant(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
         test_participant=models.Participant(
             name="TEST Peter Parker",
             birth_date="1985-4-02",
@@ -5351,9 +5394,9 @@ class TestAdminIndex(TestCase):
         )
         test_participant.save()
 
-    def test_admin_index_loads_if_user_logged_in(self):
-        """ Tests whether the Admin Index page loads if the user is logged
-         in."""
+    def test_report_select_participant_loads_if_user_logged_in(self):
+        """ Tests whether the Select Participant for Reports page loads if the
+         user is logged in."""
 
         test_user=models.User.objects.get(
             username="testuser"
@@ -5361,14 +5404,77 @@ class TestAdminIndex(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('index-private-admin'))
+        response = self.client.get(reverse('report-select-participant'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
-    def test_admin_index_redirects_if_user_not_logged_in(self):
-        """ Tests whether the Admin Index page redirects to the login page if
-         the user is not logged in."""
+    def test_report_select_participant_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Select Participant for Reports page redirects to
+         the login page if the user is not logged in."""
 
-        response = self.client.get(reverse('index-private-admin'))
+        response = self.client.get(reverse('report-select-participant'))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+
+class TestPrivateFormsIndex(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_state="OK",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant.save()
+
+    def test_private_forms_index_loads_if_user_logged_in(self):
+        """ Tests whether the Private Forms Index page loads if the user is
+         logged in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse('index-private-forms'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_private_forms_index_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Private Forms Index page redirects to the login
+         page if the user is not logged in."""
+
+        response = self.client.get(reverse("index-private-forms"))
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
