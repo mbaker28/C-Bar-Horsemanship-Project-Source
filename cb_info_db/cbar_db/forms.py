@@ -708,6 +708,17 @@ class SessionPlanForm(forms.Form):
         ._meta.get_field("num_sidewalkers_trot_other").decimal_places
     )
 
+class PhoneLogForm(forms.Form):
+    date=forms.DateField()
+    details=forms.CharField(
+        max_length=models.PhoneLog._meta.get_field("details").max_length
+    )
+
+class IncidentsForm(forms.Form):
+    date=forms.DateField()
+    details=forms.CharField(
+        max_length=models.Incidents._meta.get_field("details").max_length
+    )
 
 class RiderEvalChecklistForm(forms.Form):
     comments=forms.CharField(
