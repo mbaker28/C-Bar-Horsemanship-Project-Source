@@ -19,9 +19,12 @@
                 </span>
 
                 Horse: {{ form.horse_name }}
+                <br />
+                <br />
                 Horse Leader: {{ form.horse_leader }}
                 <br />
-                Tack: {{ form.tack }}
+                <br />
+                Tack: <br /> {{ form.tack }}
                 <span class="error_message">
                     {{ form.tack.errors.as_text }}
                 </span>
@@ -112,11 +115,14 @@
                 <span class="error_message">
                     {{ form.goal_type.errors.as_text }}
                 </span>
-                Description: {{ form.goal_description }}
+                <br />
+                <br />
+                Description: <br />{{ form.goal_description }}
                 <span class="error_message">
                     {{ form.goal_description.errors.as_text }}
                 </span>
-                Motivation: {{ form.motivation }}
+                <br />
+                Motivation: <br /> {{ form.motivation }}
                 <span class="error_message">
                     {{ form.motivation.errors.as_text }}
                 </span>
