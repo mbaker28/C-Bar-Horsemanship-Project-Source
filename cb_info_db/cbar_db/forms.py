@@ -751,6 +751,67 @@ class RiderIntakeAssessmentForm(forms.Form):
         ),
         widget=RadioSelect
     )
+    communication_verbal=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("communication_verbal")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    language_skills_signs=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("language_skills_signs")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    language_skills_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("language_skills_comments")
+            .max_length
+        ),
+        widget=RadioSelect
+    )
+    visual_impaired=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("visual_impaired")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    visual_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("visual_comments")
+            .max_length
+        ),
+        required=False
+    )
+    visual_impaired=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("visual_impaired")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    visual_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("visual_comments")
+            .max_length
+        )
+    )
+    hearing_impaired=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("hearing_impaired")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    hearing_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("hearing_comments")
+            .max_length
+        )
+    )
 
 
 class ObservationEvaluation(forms.Form):

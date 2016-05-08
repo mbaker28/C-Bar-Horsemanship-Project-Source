@@ -3,8 +3,6 @@ $( document ).ready(function() {
     $("#premounted").hide();
 
     $("#section").change(function() {
-        // alert("Section selection changed."); // DEBUGGING
-
         /*
             Show or hide the top category div tags if the right option is
             selected in the dropdown menu.
@@ -37,6 +35,21 @@ $( document ).ready(function() {
             // alert("Section selection is 'premounted_ambulatory'."); // DEBUGGING
             $("#premounted").show().siblings("div").hide();
             $("#behavior").show().siblings("div").hide();
+        };
+        if ($("#section").val() == "communication_verbal") {
+            // alert("Section selection is 'premounted_ambulatory'."); // DEBUGGING
+            $("#premounted").show().siblings("div").hide();
+            $("#communication_verbal").show().siblings("div").hide();
+        };
+        if ($("#section").val() == "communication_visual") {
+            // alert("Section selection is 'premounted_ambulatory'."); // DEBUGGING
+            $("#premounted").show().siblings("div").hide();
+            $("#communication_visual").show().siblings("div").hide();
+        };
+        if ($("#section").val() == "communication_hearing") {
+            // alert("Section selection is 'premounted_ambulatory'."); // DEBUGGING
+            $("#premounted").show().siblings("div").hide();
+            $("#communication_hearing").show().siblings("div").hide();
         };
     });
 });

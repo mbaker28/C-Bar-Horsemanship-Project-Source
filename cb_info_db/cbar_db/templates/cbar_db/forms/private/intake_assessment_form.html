@@ -25,6 +25,9 @@
             <option value="premounted_posture">Posture</option>
             <option value="premounted_ambulatory">Ambulatory Status</option>
             <option value="premounted_behavior">Behavior</option>
+            <option value="communication_verbal">Communication: Verbal</option>
+            <option value="communication_visual">Communication: Visual</option>
+            <option value="communication_hearing">Communication: Hearing</option>
         </select>
     </form>
 
@@ -259,6 +262,60 @@
                     {{ participant }}:
                      {{ form.interacts_with_others }}
                      {{ form.interacts_with_others.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="communication_verbal">
+                <h3>Communication</h3>
+                <p><strong>Verbal Communication</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.communication_verbal}}
+                     {{ form.communication_verbal.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Sign language skills</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.language_skills_signs}}
+                     {{ form.language_skills_signs.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="communication_visual">
+                <h3>Communication</h3>
+                <p><strong>Visually Impaired</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.visual_impaired }}
+                     {{ form.visual_impaired.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Comments</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.visual_comments }}
+                     {{ form.visual_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="communication_hearing">
+                <h3>Communication</h3>
+                <p><strong>Hearing Impaired</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.hearing_impaired }}
+                     {{ form.hearing_impaired.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Comments</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.hearing_comments }}
+                     {{ form.hearing_comments.errors.as_text }}
                     <br />
                 {% endfor %}
             </div>
