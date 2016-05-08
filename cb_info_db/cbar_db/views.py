@@ -106,6 +106,7 @@ def public_form_application(request):
 
                 # Create a new ApplicationForm for the participant and save it:
                 form_data_application=models.Participant(
+                    participant_type=form.cleaned_data['participant_type'],
                     name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date'],
                     height=height_in_inches,
