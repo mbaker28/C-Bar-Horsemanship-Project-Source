@@ -903,6 +903,20 @@ class RiderIntakeAssessmentForm(forms.Form):
             .max_length
         )
     )
+    risk_benefit_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("risk_benefit_comments")
+            .max_length
+        ),
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40})
+    )
+    goals_expectations=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("goals_expectations")
+            .max_length
+        ),
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40})
+    )
 
 class ObservationEvaluation(forms.Form):
     # name=forms.CharField(

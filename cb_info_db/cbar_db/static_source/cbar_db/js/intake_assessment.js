@@ -2,6 +2,7 @@
 $( document ).ready(function() {
     $("#premounted").hide();
     $("#mounted").hide();
+    $("#precautions").hide();
 
     $("#section").change(function() {
         /*
@@ -18,6 +19,9 @@ $( document ).ready(function() {
         if ($("#section").val() == "mounted") {
             $("#mounted").show().siblings("div").hide();
             $("#mounted").children().show(); // Show all the child elements
+        };
+        if ($("#section").val() == "precautions") {
+            $("#precautions").show().siblings("div").hide();
         };
 
         /*

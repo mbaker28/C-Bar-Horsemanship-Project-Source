@@ -42,6 +42,9 @@
                 Posture &amp; Rein Use: At Walk
             </option>
             <option value="mounted_comments">Comments</option>
+            <option value="precautions">
+                --- Precautions &amp; Contraindications ---
+            </option>
         </select>
     </form>
 
@@ -488,6 +491,31 @@
                     <br />
                 {% endfor %}
             </div>
+        </div>
+        <div id="precautions">
+            <h3>Risk vs. Benefit Ratio</h3>
+            <h4>
+                There is always potential for a fall, this is how we minimize
+                 the risk.
+            </h4>
+            {% for form, participant in formset_and_participants %}
+                <p>
+                    {{ participant }}:<br />
+                    {{ form.risk_benefit_comments }}
+                    {{ form.risk_benefit_comments.errors.as_text }}
+                </p>
+            {% endfor %}
+
+            <h3>
+                Goals &amp; Expectations (parent/rider):
+            </h3>
+            {% for form, participant in formset_and_participants %}
+                <p>
+                    {{ participant }}:<br />
+                    {{ form.goals_expectations }}
+                    {{ form.goals_expectations.errors.as_text }}
+                </p>
+            {% endfor %}
         </div>
 
         <input type="hidden" name="save_form" value="True" />

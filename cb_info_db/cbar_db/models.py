@@ -2106,3 +2106,4 @@ class IntakeAssessment(models.Model):
     )
     mounted_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     risk_benefit_comments=models.CharField(max_length=500)
+    goals_expectations=models.CharField(max_length=500)
