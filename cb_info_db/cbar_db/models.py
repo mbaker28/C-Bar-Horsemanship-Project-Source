@@ -153,10 +153,12 @@ class Participant(models.Model):
     LEFT="L"
     RIGHT="R"
     AMBIDEXTROUS="A"
+    NO_HAND_USE="N"
     HAND_CHOICES=(
         (LEFT, "Left"),
         (RIGHT, "Right"),
-        (AMBIDEXTROUS, "Ambidextrous")
+        (AMBIDEXTROUS, "Ambidextrous"),
+        (NO_HAND_USE, "No meaningful hand use")
     )
 
     def __str__(self):
@@ -179,10 +181,11 @@ class Participant(models.Model):
     phone_cell=PhoneNumberField()
     phone_work=PhoneNumberField()
     school_institution=models.CharField(max_length=150, blank=True)
-    # handedness=models.CharField(
-    #     max_length=1,
-    #     choices=HAND_CHOICES
-    # )
+    handedness=models.CharField(
+        max_length=1,
+        choices=HAND_CHOICES,
+        null=True
+    )
 
     @property
     def height_in_feet_and_inches(self):
@@ -205,6 +208,7 @@ class Session(models.Model):
     session_ID=models.AutoField(primary_key=True) # Auto generated PK
     date=models.DateTimeField()
     tack=models.CharField(max_length=250, null=True)
+
 
 class SessionPlanInd(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
@@ -1953,6 +1957,17 @@ class AuthorizedUser(models.Model):
 
 
 class IntakeAssessment(models.Model):
+    NO_ISSUES="N"
+    DO_NOT_TOUCH="T"
+    LIGHT_TOUCH="L"
+    DEEP_PRESSURE="P"
+    TACTILE_ISSUE_CHOICES=(
+        (NO_ISSUES, "No tactile issues"),
+        (DO_NOT_TOUCH, "Don't touch me!"),
+        (LIGHT_TOUCH, "Light touch"),
+        (DEEP_PRESSURE, "Deep pressure")
+    )
+
     class Meta: # Sets up PK as (participant_id, date)
         unique_together=(("participant_id","date"))
 
@@ -1982,23 +1997,37 @@ class IntakeAssessment(models.Model):
         choices=YES_NO_SOME_CHOICES,
         null=True
     )
-    language_skills_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    language_skills_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
     visual_impaired=models.CharField(
         max_length=1,
         choices=YES_NO_CHOICES,
         null=True
     )
-    visual_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    visual_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
     hearing_impaired=models.CharField(
         max_length=1,
         choices=YES_NO_CHOICES,
         null=True
     )
-    hearing_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    tactile_no_touch=models.BooleanField()
-    tactile_light_touch=models.BooleanField()
-    tactile_deep_pressure=models.BooleanField()
-    tactile_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    hearing_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    tactile=models.CharField(
+        max_length=1,
+        choices=TACTILE_ISSUE_CHOICES,
+        null=True
+    )
+    tactile_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
     motor_skills_gross_left=models.CharField(
         max_length=1,
         choices=ASSISTANCE_CHOICES_NA,
@@ -2028,3 +2057,40 @@ class IntakeAssessment(models.Model):
         null=True
     )
     # motor skills: hand dominance is in Participant model.
+    posture_forward_halt=models.NullBooleanField()
+    posture_forward_walk=models.NullBooleanField()
+    posture_back_halt=models.NullBooleanField()
+    posture_back_walk=models.NullBooleanField()
+    posture_center_halt=models.NullBooleanField()
+    posture_center_walk=models.NullBooleanField()
+    posture_chairseat_halt=models.NullBooleanField()
+    posture_chairseat_walk=models.NullBooleanField()
+    posture_aligned_halt=models.NullBooleanField()
+    posture_aligned_walk=models.NullBooleanField()
+
+    rein_use_hold_halt=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    rein_use_steer_left_right_halt=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    rein_use_hold_walk=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    rein_use_steer_left_right_walk=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    mounted_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    risk_benefit_comments=models.CharField(max_length=500)
