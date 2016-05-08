@@ -15,7 +15,18 @@
             </p>
 
             <p>
-                <strong>Date:</strong> 
+                <strong>Date/Time:</strong> {{ form.date }}
+                <span class="error_message">
+                    {{ form.date.errors.as_text }}
+                </span>
+                <strong>Details:</strong> {{ form.details }}
+                <span class="error_message">
+                    {{ form.details.errors.as_text }}
+                </strong>
+            </p>
+
+            <p>
+                <input style="submit" value="Submit" />
             </p>
         </form>
     {% endif %}
