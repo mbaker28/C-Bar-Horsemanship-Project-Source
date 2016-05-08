@@ -106,7 +106,6 @@ def public_form_application(request):
 
                 # Create a new ApplicationForm for the participant and save it:
                 form_data_application=models.Participant(
-                    participant_type=form.cleaned_data['participant_type'],
                     name=form.cleaned_data['name'],
                     birth_date=form.cleaned_data['birth_date'],
                     height=height_in_inches,
@@ -125,6 +124,15 @@ def public_form_application(request):
                     email=form.cleaned_data['email'],
                 )
                 form_data_application.save()
+
+                form_data_position=models.ParticipantType(
+                    participant_type=form.cleaned_data['participant_type'],
+                    participant_id=models.Participant.objects.get(
+                        name=form.cleaned_data['name'],
+                        birth_date=form.cleaned_data['birth_date']
+                    )
+                )
+                form_data_position.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
