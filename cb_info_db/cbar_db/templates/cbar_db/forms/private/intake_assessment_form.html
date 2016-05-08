@@ -20,14 +20,20 @@
 
     <form style="text-align: center">
         <select name="section" id="section" style="text-align: center">
-            <option value="general_information">--- General Information ---</option>
+            <option value="general_information">
+                --- General Information ---
+            </option>
             <option value="premounted">--- Premounted ---</option>
             <option value="premounted_posture">Posture</option>
             <option value="premounted_ambulatory">Ambulatory Status</option>
             <option value="premounted_behavior">Behavior</option>
             <option value="communication_verbal">Communication: Verbal</option>
             <option value="communication_visual">Communication: Visual</option>
-            <option value="communication_hearing">Communication: Hearing</option>
+            <option value="communication_hearing">
+                Communication: Hearing
+            </option>
+            <option value="tactile">Tactile</option>
+            <option value="motor_skills">Motor Skills</option>
         </select>
     </form>
 
@@ -316,6 +322,66 @@
                     {{ participant }}:
                      {{ form.hearing_comments }}
                      {{ form.hearing_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="tactile">
+                <h3>Tactile</h3>
+                <p><strong>Tactile Restrictions</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.tactile }}
+                     {{ form.tactile.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Comments</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.tactile_comments }}
+                     {{ form.tactile_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="motor_skills">
+                <h3>Motor Skills</h3>
+                <p><strong>Gross (ring reach) - Left</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_gross_left }}
+                     {{ form.motor_skills_gross_left.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Gross (ring reach) - Right</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_gross_right }}
+                     {{ form.motor_skills_gross_right.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Fine (helmet latch, clothespin) - Left</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_fine_left }}
+                     {{ form.motor_skills_fine_left.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Fine (helmet latch, clothespin) - Right</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_fine_right }}
+                     {{ form.motor_skills_fine_right.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Comments</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_comments }}
+                     {{ form.motor_skills_comments.errors.as_text }}
                     <br />
                 {% endfor %}
             </div>

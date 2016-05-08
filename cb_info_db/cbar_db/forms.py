@@ -812,6 +812,53 @@ class RiderIntakeAssessmentForm(forms.Form):
             .max_length
         )
     )
+    tactile=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("tactile")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    tactile_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("tactile_comments")
+            .max_length
+        )
+    )
+    motor_skills_gross_left=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_gross_left")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    motor_skills_gross_right=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_gross_right")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    motor_skills_fine_left=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_fine_left")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    motor_skills_fine_right=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_fine_right")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    motor_skills_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("motor_skills_comments")
+            .max_length
+        )
+    )
 
 
 class ObservationEvaluation(forms.Form):
