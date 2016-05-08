@@ -34,6 +34,14 @@
             </option>
             <option value="tactile">Tactile</option>
             <option value="motor_skills">Motor Skills</option>
+            <option value="mounted">--- Mounted ---</option>
+            <option value="posture_halt">
+                Posture &amp; Rein Use: At Halt
+            </option>
+            <option value="posture_walk">
+                Posture &amp; Rein Use: At Walk
+            </option>
+            <option value="mounted_comments">Comments</option>
         </select>
     </form>
 
@@ -382,6 +390,101 @@
                     {{ participant }}:
                      {{ form.motor_skills_comments }}
                      {{ form.motor_skills_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <div id="mounted">
+            <h2>Mounted</h2>
+            <div id="posture_halt">
+                <h3>Posture - At Halt</h3>
+                <p><strong>Posture</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.posture_forward_halt }}
+                     {{ form.posture_forward_halt.errors.as_text }}
+                     forward
+                     {{ form.posture_back_halt }}
+                     {{ form.posture_back_halt.errors.as_text }}
+                     back
+                     {{ form.posture_center_halt }}
+                     {{ form.posture_center_halt.errors.as_text }}
+                     center
+                     {{ form.posture_chairseat_halt }}
+                     {{ form.posture_chairseat_halt.errors.as_text }}
+                     chair seat
+                     {{ form.posture_aligned_halt }}
+                     {{ form.posture_aligned_halt.errors.as_text }}
+                     aligned
+                    <br />
+                {% endfor %}
+
+                <h3>Rein Use - At Halt</h3>
+                <p><strong>Hold</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.rein_use_hold_halt }}
+                     {{ form.rein_use_hold_halt.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Steer Left and Right</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.rein_use_steer_left_right_halt }}
+                     {{ form.rein_use_steer_left_right_halt.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+
+            <div id="posture_walk">
+                <h3>Posture - At Walk</h3>
+                <p><strong>Posture</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.posture_forward_walk }}
+                     {{ form.posture_forward_walk.errors.as_text }}
+                     forward
+                     {{ form.posture_back_walk }}
+                     {{ form.posture_back_walk.errors.as_text }}
+                     back
+                     {{ form.posture_center_walk }}
+                     {{ form.posture_center_walk.errors.as_text }}
+                     center
+                     {{ form.posture_chairseat_walk }}
+                     {{ form.posture_chairseat_walk.errors.as_text }}
+                     chair seat
+                     {{ form.posture_aligned_walk }}
+                     {{ form.posture_aligned_walk.errors.as_text }}
+                     aligned
+                    <br />
+                {% endfor %}
+
+                <h3>Rein Use - At Walk</h3>
+                <p><strong>Hold</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.rein_use_hold_walk }}
+                     {{ form.rein_use_hold_walk.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Steer Left and Right</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.rein_use_steer_left_right_walk }}
+                     {{ form.rein_use_steer_left_right_walk.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+
+            <div id="mounted_comments">
+                <h3>Comments</h3>
+                <p><strong>Posture</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.mounted_comments }}
+                     {{ form.mounted_comments.errors.as_text }}
                     <br />
                 {% endfor %}
             </div>

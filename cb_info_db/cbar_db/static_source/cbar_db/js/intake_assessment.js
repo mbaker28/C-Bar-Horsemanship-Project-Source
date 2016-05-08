@@ -1,6 +1,7 @@
 // This function is called after all HTML DOM elements have loaded:
 $( document ).ready(function() {
     $("#premounted").hide();
+    $("#mounted").hide();
 
     $("#section").change(function() {
         /*
@@ -13,6 +14,10 @@ $( document ).ready(function() {
         if ($("#section").val() == "premounted") {
             $("#premounted").show().siblings("div").hide();
             $("#premounted").children().show(); // Show all the child elements
+        };
+        if ($("#section").val() == "mounted") {
+            $("#mounted").show().siblings("div").hide();
+            $("#mounted").children().show(); // Show all the child elements
         };
 
         /*
@@ -50,6 +55,18 @@ $( document ).ready(function() {
         if ($("#section").val() == "motor_skills") {
             $("#premounted").show().siblings("div").hide();
             $("#motor_skills").show().siblings("div").hide();
+        };
+        if ($("#section").val() == "posture_halt") {
+            $("#mounted").show().siblings("div").hide();
+            $("#posture_halt").show().siblings("div").hide();
+        };
+        if ($("#section").val() == "posture_walk") {
+            $("#mounted").show().siblings("div").hide();
+            $("#posture_walk").show().siblings("div").hide();
+        };
+        if ($("#section").val() == "mounted_comments") {
+            $("#mounted").show().siblings("div").hide();
+            $("#mounted_comments").show().siblings("div").hide();
         };
     });
 });
