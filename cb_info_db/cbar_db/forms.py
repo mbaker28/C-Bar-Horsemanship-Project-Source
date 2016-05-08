@@ -172,6 +172,7 @@ class SeizureEvaluationForm(forms.Form):
     )
 
     seizure_indicators=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=(models.SeizureEval._meta
             .get_field("seizure_indicators").max_length
         )
@@ -261,6 +262,7 @@ class SeizureEvaluationForm(forms.Form):
     during_seizure_other=forms.BooleanField(required=False)
 
     during_seizure_other_description=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=(models.SeizureEval._meta
             .get_field("during_seizure_other_description").max_length
         ),
@@ -337,6 +339,7 @@ class MedicalReleaseForm(forms.Form):
     last_seen_by_physician_date=forms.DateField(widget=SelectDateWidget(years=YEARS))
 
     last_seen_by_physician_reason=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=(models.MedicalInfo._meta
             .get_field("last_seen_by_physician_reason").max_length
         )
@@ -349,6 +352,7 @@ class MedicalReleaseForm(forms.Form):
     )
 
     allergies_conditions_that_exclude_description=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=(models.MedicalInfo
             ._meta.get_field("allergies_conditions_that_exclude_description")
             .max_length
@@ -427,6 +431,7 @@ class MedicalReleaseForm(forms.Form):
     )
 
     physical_or_mental_issues_affecting_riding_description=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=(models.MedicalInfo._meta
             .get_field("physical_or_mental_issues_affecting_riding_description")
             .max_length
@@ -441,6 +446,7 @@ class MedicalReleaseForm(forms.Form):
     )
 
     restriction_for_horse_activity_last_five_years_description=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=(models.MedicalInfo._meta
             .get_field(
                 "restriction_for_horse_activity_last_five_years_description"
@@ -463,6 +469,7 @@ class MedicalReleaseForm(forms.Form):
     )
 
     limiting_surgeries_last_six_monthes_description=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=(models.MedicalInfo._meta
             .get_field("limiting_surgeries_last_six_monthes_description")
             .max_length
@@ -889,6 +896,7 @@ class SessionPlanForm(forms.Form):
         initial=date.today()
     )
     tack=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=models.Session._meta.get_field("tack").max_length
     )
 
@@ -900,14 +908,16 @@ class SessionPlanForm(forms.Form):
 
     # Stored in SessionGoals
     goal_type=forms.ChoiceField(
-        #max_length=models.SessionGoals._meta.get_field("goal_type").max_length,
+        #max_length=models.._meta.get_field("goal_type").max_length,
         choices=models.SessionGoals._meta.get_field("goal_type").choices
     )
     goal_description=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=models.SessionGoals
         ._meta.get_field("goal_description").max_length
     )
     motivation=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=models.SessionGoals._meta.get_field("motivation").max_length
     )
 
@@ -916,11 +926,13 @@ class SessionPlanForm(forms.Form):
         max_length=models.Horse._meta.get_field("name").max_length
     )
     # description=forms.CharField(
+    #     widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
     #     max_length=models.Horse._meta.get_field("description").max_length
     # )
 
     # Stored in Diagnosis
     # diagnosis=forms.CharField(
+    #     widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
     #     max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
     # )
     # diagnosis_type=forms.ChoiceField(
@@ -1010,6 +1022,7 @@ class SessionPlanForm(forms.Form):
 
 class RiderEvalChecklistForm(forms.Form):
     comments=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=(models.EvalRidingExercises._meta
             .get_field("comments").max_length),
             required=False
