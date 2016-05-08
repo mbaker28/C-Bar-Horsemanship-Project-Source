@@ -1652,12 +1652,10 @@ def private_form_rider_eval_checklist(request, participant_id):
 @login_required
 def index_admin(request):
     """ Logged in user index view. """
-    participants=models.Participant.objects.all()
 
     return render(
         request,
-        'cbar_db/admin/admin.html',
-        {'participants':participants}
+        "cbar_db/admin/admin.html",
     )
 
 @login_required
@@ -1669,6 +1667,17 @@ def report_select_participant(request):
         request,
         'cbar_db/admin/reports/participant_select.html',
         {'participants':participants}
+    )
+
+@login_required
+def index_private_forms(request):
+    """ Private forms index view. """
+    participants=models.Participant.objects.all()
+
+    return render(
+        request,
+        "cbar_db/forms/private/private.html",
+        {"participants": participants}
     )
 
 @login_required
@@ -2325,7 +2334,6 @@ def observation_evaluation(request, participant_id):
                 'participant': participant
             }
         )
-
 
 @login_required
 def private_form_session_plan(request, participant_id):

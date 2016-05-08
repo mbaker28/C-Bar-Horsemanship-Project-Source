@@ -1,6 +1,14 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     <h1>Administration</h1>
-    <h3>Private Forms</h3>
-    <h3><a href="{% url 'report-select-participant' %}">Participant Records</a></h3>
+    <h2>Forms</h2>
+    <ul>
+        <li><a href="{% url 'index-private-forms' %}">Evaluation &amp; Planning Forms</a></li>
+        <li>
+            <a href="{% url 'report-select-participant' %}">
+                Participant Records
+            </a>
+        </li>
+    </ul>
+    <h2>User Accounts</h2>
 {% endblock %}

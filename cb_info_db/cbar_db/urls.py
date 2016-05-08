@@ -4,7 +4,10 @@ from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
+    #######################################################################
     ######################### Publicly accessible #########################
+    #######################################################################
+
     # Website index
     url(r'^$', views.index_public, name='index-public'),
 
@@ -58,8 +61,11 @@ urlpatterns = [
     url(r'^donation/monetary$', views.donation_monetary,
         name='donation-monetary'),
 
-
+    #######################################################################
     ######################### User login required #########################
+    #######################################################################
+
+    ############################# Index pages #############################
     # Login page
     url(r'^user/login/$', auth_views.login,
         {'template_name': 'cbar_db/admin/login.html'},
@@ -73,6 +79,11 @@ urlpatterns = [
     url(r'^admin/reports/$', views.report_select_participant,
         name='report-select-participant'),
 
+    # Private forms index page
+    url(r'^forms/private/$', views.index_private_forms,
+        name='index-private-forms'),
+
+    ############################ Report pages ############################
     # Participant record overview page
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/$',
         views.participant_record,
@@ -108,6 +119,7 @@ urlpatterns = [
         views.report_seizure,
         name='report-seizure'),
 
+    ############################ Private forms ###########################
     #Observation Evaluation
     url(r'^forms/private/observation_evaluation/(?P<participant_id>[0-9]+)/$',
         views.observation_evaluation,
@@ -117,7 +129,7 @@ urlpatterns = [
     url(r'^forms/private/session_plan/(?P<participant_id>[0-9]+)$', views.private_form_session_plan,
         name='private-form-session-plan'),
 
-    # Rider Eval Checklist form
+    # Rider Eval Checklist
     url(r'^forms/private/rider_eval_checklist/(?P<participant_id>[0-9]+)$', views.private_form_rider_eval_checklist,
         name='private_form_rider_eval_checklist'),
 ]
