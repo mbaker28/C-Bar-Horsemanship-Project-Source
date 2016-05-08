@@ -38,10 +38,5 @@ $( document ).ready(function() {
             $("#premounted").show().siblings("div").hide();
             $("#ambulatory").show().siblings("div").hide();
         };
-        if ($("#section").val() == "premounted_gait") {
-            // alert("Section selection is 'premounted_gait'."); // DEBUGGING
-            $("#premounted").show().siblings("div").hide();
-            $("#gait").show().siblings("div").hide();
-        };
     });
 });

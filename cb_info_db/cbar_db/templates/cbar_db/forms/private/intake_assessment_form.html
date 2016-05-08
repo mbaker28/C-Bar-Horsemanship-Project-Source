@@ -24,7 +24,6 @@
             <option value="premounted">--- Premounted ---</option>
             <option value="premounted_posture">Posture</option>
             <option value="premounted_ambulatory">Ambulatory Status</option>
-            <option value="premounted_gait">Gait</option>
             <option value="sidewalkers_required">--- Sidewalkers Required ---</option>
         </select>
     </form>
@@ -141,9 +140,8 @@
                         <br />
                     {% endfor %}
                 </p>
-            </div>
-            <div id="gait">
-                <h3>Gait</h3>
+
+                <h2>Gait</h2>
                 <div id="gait_flat">
                     <p><strong>Flat</strong></p>
                     {% for form, participant in formset_and_participants %}
