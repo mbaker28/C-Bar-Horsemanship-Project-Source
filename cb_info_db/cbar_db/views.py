@@ -2243,9 +2243,22 @@ def private_form_intake_assessment(request):
                 )
                 loggeyMcLogging.error("request.POST == " + str(request.POST))
 
-                # create a form instance and populate it with data from the request:
+                # create a form instance, populate with data from the request:
                 formset=RiderIntakeAssessmentFormset(request.POST)
                 # check whether it's valid:
+
+                post_participants=request.session["intake_post_participants"]
+                print("post_participants: " + str(post_participants))
+
+                # Get the Participant records from the participant_id numbers in
+                # post_participants:
+                participants_selected=models.Participant.objects.filter(
+                    participant_id__in=post_participants
+                )
+                loggeyMcLogging.error(
+                    "participants_selected: " + str(participants_selected)
+                )
+
                 if formset.is_valid():
                     loggeyMcLogging.error("The form is valid.")
 
@@ -2256,6 +2269,11 @@ def private_form_intake_assessment(request):
                     # The form is not valid.
                     loggeyMcLogging.error("The form is not valid.")
 
+                    loggeyMcLogging.error(
+                        "request.session['post_participants']: "
+                        + str(request.session["post_participants"])
+                    )
+
                     # Set the error message and redisplay the form:
                     return render(
                         request,
@@ -2264,7 +2282,13 @@ def private_form_intake_assessment(request):
                             "formset": formset,
                             "error_text": ERROR_TEXT_FORM_INVALID,
                             "show_form": "True",
-                            "save_form": "False"
+                            "save_form": "False",
+                            "formset_and_participants": list(
+                                zip(
+                                    formset, participants_selected
+                                )
+                            ),
+                            "participants_selected": participants_selected
                         }
                     )
 
@@ -2291,6 +2315,9 @@ def private_form_intake_assessment(request):
                     participant_id__in=post_participants
                 )
                 loggeyMcLogging.error(str(participants_selected))
+
+                # Store a list of the selected participant id numbers in session
+                request.session["intake_post_participants"]=post_participants
 
                 return render(
                     request,
