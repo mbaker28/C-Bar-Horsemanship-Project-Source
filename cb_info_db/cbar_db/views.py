@@ -1650,14 +1650,34 @@ def private_form_rider_eval_checklist(request, participant_id):
         )
 
 @login_required
-def index_private_admin(request):
+def index_admin(request):
     """ Logged in user index view. """
+
+    return render(
+        request,
+        "cbar_db/admin/admin.html",
+    )
+
+@login_required
+def report_select_participant(request):
+    """ Logged in user select participant record view. """
     participants=models.Participant.objects.all()
 
     return render(
         request,
-        'cbar_db/admin/admin.html',
+        'cbar_db/admin/reports/participant_select.html',
         {'participants':participants}
+    )
+
+@login_required
+def index_private_forms(request):
+    """ Private forms index view. """
+    participants=models.Participant.objects.all()
+
+    return render(
+        request,
+        "cbar_db/forms/private/private.html",
+        {"participants": participants}
     )
 
 @login_required
@@ -1673,7 +1693,7 @@ def participant_record(request, participant_id):
         # Set the error message and redisplay the form:
         return render(
             request,
-            "cbar_db/admin/participant.html",
+            "cbar_db/admin/reports/participant.html",
             {
                 'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
             }
@@ -1716,7 +1736,7 @@ def participant_record(request, participant_id):
 
     return render(
         request,
-        "cbar_db/admin/participant.html",
+        "cbar_db/admin/reports/participant.html",
         {
             "participant": participant,
             "media_releases": media_releases,
@@ -2314,7 +2334,6 @@ def observation_evaluation(request, participant_id):
                 'participant': participant
             }
         )
-
 
 @login_required
 def private_form_session_plan(request, participant_id):
