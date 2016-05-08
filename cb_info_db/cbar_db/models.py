@@ -60,6 +60,18 @@ YES_NO_CHOICES=(
     (YES, "Yes"),
     (NO, "No")
 )
+SOME="S"
+YES_NO_SOME_CHOICES=(
+    (YES, "Yes"),
+    (NO, "No"),
+    (SOME, "Some")
+)
+IMPAIRED="I"
+YES_NO_IMPAIRED_CHOICES=(
+    (YES, "Yes"),
+    (NO, "No"),
+    (IMPAIRED, "Impaired")
+)
 
 NULL_GAY=2 # anything that's not 1 or 0
 TRUE_GAY=1 # Ryan ___
@@ -119,6 +131,22 @@ ONE_TWO_THREE_CHOICES=(
     (TWO, "2"),
     (THREE, "3"),
     (UNKNOWN, "N/A")
+)
+
+INDPENDENT="I"
+MIN_ASSISTANCE="M"
+FULL_ASSISTANCE="F"
+ASSISTANCE_CHOICES=(
+    (INDPENDENT, "Independent"),
+    (MIN_ASSISTANCE, "Minimal assistance"),
+    (FULL_ASSISTANCE, "Full assistance")
+)
+NOT_APPLICABLE="N"
+ASSISTANCE_CHOICES_NA=(
+    (INDPENDENT, "Independent"),
+    (MIN_ASSISTANCE, "Minimal asst."),
+    (FULL_ASSISTANCE, "Full asst."),
+    (NOT_APPLICABLE, "n/a")
 )
 
 class Participant(models.Model):
@@ -1679,22 +1707,6 @@ class SeizureEval(models.Model):
 
 
 class AdaptationsNeeded(models.Model):
-    INDPENDENT="I"
-    MIN_ASSISTANCE="M"
-    FULL_ASSISTANCE="F"
-    ASSISTANCE_CHOICES=(
-        (INDPENDENT, "Independent"),
-        (MIN_ASSISTANCE, "Minimal assistance"),
-        (FULL_ASSISTANCE, "Full assistance")
-    )
-    NOT_APPLICABLE="N"
-    ASSISTANCE_CHOICES_NA=(
-        (INDPENDENT, "Independent"),
-        (MIN_ASSISTANCE, "Minimal asst."),
-        (FULL_ASSISTANCE, "Full asst."),
-        (NOT_APPLICABLE, "n/a")
-    )
-
     WALKS_IND="I"
     IND_WITH_CANE_ETC="C"
     WHEELCHAIR_MIN_NO_ASSISTANCE="N"
@@ -1940,34 +1952,79 @@ class AuthorizedUser(models.Model):
     authorized_user_id = models.OneToOneField(User)
 
 
-# class IntakeAssessment(models.Model):
-#     class Meta: # Sets up PK as (participant_id, date)
-#         unique_together=(("participant_id","date"))
-#
-#     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
-#     date=models.DateField()
-#
-#     staff_reviewed_medical_info=models.BooleanField()
-#     staff_reviewed_medical_info_date=models.DateField()
-#     precautions=models.CharField(max_length=500)
-#     impulsive=models.BooleanField()
-#     eye_contact=models.BooleanField()
-#     attention_span=models.CharField(
-#         max_length=1,
-#         choices=LIKERT_LIKE_CHOICES_MINIMAL,
-#     )
-#     interacts_with_others=models.BooleanField()
-#     communication_verbal=models.BooleanField()
-#     language_skills=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-#     visual_impaired=models.BooleanField()
-#     visual_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-#     hearing_impaired=models.BooleanField()
-#     hearing_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-#     tactile_no_touch=models.BooleanField()
-#     tactile_light_touch=models.BooleanField()
-#     tactile_deep_pressure=models.BooleanField()
-#     tactile_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-#     motor_skills_gross=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-#     motor_skills_fine=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-#     motor_skills_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-#     # motor skills: hand dominance is in Participant model.
+class IntakeAssessment(models.Model):
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+
+    staff_reviewed_medical_info=models.BooleanField()
+    staff_reviewed_medical_info_date=models.DateField()
+    precautions=models.CharField(max_length=500)
+    impulsive=models.BooleanField()
+    eye_contact=models.BooleanField()
+    attention_span=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES_MINIMAL,
+    )
+    interacts_with_others=models.BooleanField()
+    communication_verbal=models.CharField(
+        max_length=1,
+        choices=YES_NO_IMPAIRED_CHOICES,
+        null=True
+    )
+    communication_verbal_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH
+    )
+    language_skills_signs=models.CharField(
+        max_length=1,
+        choices=YES_NO_SOME_CHOICES,
+        null=True
+    )
+    language_skills_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    visual_impaired=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES,
+        null=True
+    )
+    visual_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    hearing_impaired=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES,
+        null=True
+    )
+    hearing_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    tactile_no_touch=models.BooleanField()
+    tactile_light_touch=models.BooleanField()
+    tactile_deep_pressure=models.BooleanField()
+    tactile_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    motor_skills_gross_left=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    motor_skills_gross_right=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    motor_skills_fine_left=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    motor_skills_fine_right=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    motor_skills_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    # motor skills: hand dominance is in Participant model.
