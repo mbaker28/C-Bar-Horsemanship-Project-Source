@@ -110,11 +110,18 @@ class TestApplicationForm(TestCase):
         )
         test_participant.save()
 
+        test_position=models.ParticipantType(
+            participant_type="P",
+            participant_id=test_participant
+        )
+        test_position.save()
+
     def test_application_form_creates_participant(self):
         """ Tests whether the form creates a participant record once all
             fields are entered. """
 
         form_data={
+            "participant_type": "S",
             "name": "TEST Matt Murdock",
             "birth_date": "1989-5-20",
             "email": "matt@nelsonandmurdock.com",
@@ -224,6 +231,7 @@ class TestApplicationForm(TestCase):
         """ Form throws error if the participant already exists. """
 
         form_data={
+            "participant_type": "V",
             "name": "TEST Bruce Wayne",
             "birth_date": "1984-6-24",
             "email": "matt@nelsonandmurdock.com",
@@ -261,6 +269,7 @@ class TestApplicationForm(TestCase):
         """ Form throws an error if the form data is not valid. """
 
         form_data={
+            "participant_type": "P",
             "name": "TEST sdf83sdf",
             "birth_date": "sdf##df",
             "email": "matt@nelsonandmurdock.com",
@@ -299,6 +308,7 @@ class TestApplicationForm(TestCase):
          numbers, displays an error message. """
 
         form_data={
+            "participant_type": "V",
             "name": "TEST Matt Murdock",
             "birth_date": "1989-5-20",
             "email": "matt@nelsonandmurdock.com",
@@ -349,6 +359,7 @@ class TestApplicationForm(TestCase):
          number for the height_feet field displays an error message. """
 
         form_data={
+            "participant_type": "P",
             "name": "TEST Matt Murdock",
             "birth_date": "1989-5-20",
             "email": "matt@nelsonandmurdock.com",
@@ -387,6 +398,7 @@ class TestApplicationForm(TestCase):
          number for the height_inches field displays an error message. """
 
         form_data={
+            "participant_type": "S",
             "name": "TEST Matt Murdock",
             "birth_date": "1989-5-20",
             "email": "matt@nelsonandmurdock.com",
