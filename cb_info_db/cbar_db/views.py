@@ -2441,6 +2441,15 @@ def private_form_phone_log(request, participant_id):
                 }
             )
 
+        return render(
+            request,
+            "cbar_db/forms/private/phone_log.html",
+            {
+                'form': form,
+                'participant': participant
+            }
+        )
+
 @login_required
 def private_form_incidents(request, participant_id):
     """Data for incidents form."""
@@ -2559,3 +2568,11 @@ def private_form_incidents(request, participant_id):
                     'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
                 }
             )
+        return render(
+            request,
+            "cbar_db/forms/private/incidents.html",
+            {
+                'form': form,
+                'participant': participant
+            }
+        )
