@@ -62,7 +62,7 @@ YES_NO_CHOICES=(
 )
 
 NULL_GAY=2 # anything that's not 1 or 0
-TRUE_GAY=1
+TRUE_GAY=1 # Ryan ___
 FALSE_GAY=0
 YES_NO_NULL_BOOL_CHOICES=(
     (TRUE_GAY, "Yes"),
@@ -1762,9 +1762,24 @@ class AdaptationsNeeded(models.Model):
         max_length=1,
         choices=DISMOUNT_TYPE_CHOICES
     )
-    posture_standing=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    posture_sitting=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    posture_mounted=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    posture_standing=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    posture_sitting=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    posture_mounted=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
     ambulatory_status=models.CharField(max_length=1, choices=AMBULATORY_CHOICES)
     ambulatory_status_other=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,

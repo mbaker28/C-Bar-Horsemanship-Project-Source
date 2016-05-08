@@ -610,22 +610,22 @@ class RiderIntakeAssessmentForm(forms.Form):
     )
 
     # Stored in AdaptationsNeeded:
-    posture_standing=forms.CharField(
-        max_length=(
+    posture_standing=forms.ChoiceField(
+        choices=(
             models.AdaptationsNeeded._meta
-            .get_field("posture_standing").max_length
+            .get_field("posture_standing").choices
         )
     )
-    posture_sitting=forms.CharField(
-        max_length=(
+    posture_sitting=forms.ChoiceField(
+        choices=(
             models.AdaptationsNeeded._meta
-            .get_field("posture_sitting").max_length
+            .get_field("posture_sitting").choices
         )
     )
-    posture_mounted=forms.CharField(
-        max_length=(
+    posture_mounted=forms.ChoiceField(
+        choices=(
             models.AdaptationsNeeded._meta
-            .get_field("posture_mounted").max_length
+            .get_field("posture_mounted").choices
         )
     )
     ambulatory_status=forms.ChoiceField(
