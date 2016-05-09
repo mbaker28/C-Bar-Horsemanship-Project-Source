@@ -1,0 +1,148 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Rider Evaluation Checlist Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            <strong>Participant's Name:</strong>
+             {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong>
+             {{ participant.birth_date }}
+        </p>
+
+        <hr />
+
+        <h2>Basic/Mount/Aid</h2>
+
+        <p>
+            <strong><u>Basic Trail Rules:</u></strong>
+            {{ rider_eval_checklist.basic_trail_rules }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.basic_trail_rules_com }}
+        </p>
+        <p>
+            <strong><u>Mount:</u></strong>
+            {{ rider_eval_checklist.mount }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.mount_com }}
+        </p>
+        <p>
+            <strong><u>Dismount:</u></strong>
+            {{ rider_eval_checklist.dismount }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.dismount_com }}
+        </p>
+        <p>
+            <strong><u>Emergency Dismount:</u></strong>
+            {{ rider_eval_checklist.emergency_dismount }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.emergency_dismount_com }}
+        </p>
+        <p>
+            <strong><u>Four Natural Aids:</u></strong>
+            {{ rider_eval_checklist.four_natural_aids }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.four_natural_aids_com }}
+        </p>
+        <p>
+            <strong><u>Basic Control:</u></strong>
+            {{ rider_eval_checklist.basic_control }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.basic_trail_rules_com }}
+        </p>
+
+        <hr />
+
+        <h2>Reverse/Never Ridden/Seat</h2>
+
+        <p>
+            <strong><u>Reverse - At Walk:</u></strong>
+            {{ rider_eval_checklist.reverse_at_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.reverse_at_walk_com }}
+        </p>
+        <p>
+            <strong><u>Reverse - At Trot:</u></strong>
+            {{ rider_eval_checklist.reverse_at_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.reverse_at_trot_com }}
+        </p>
+        <p>
+            <strong><u>Never Ridden:</u></strong>
+            {{ rider_eval_checklist.never_ridden }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.never_ridden_com }}
+        </p>
+        <p>
+            <strong><u>Seat - At Walk:</u></strong>
+            {{ rider_eval_checklist.seat_at_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.seat_at_walk_com }}
+        </p>
+        <p>
+            <strong><u>Seat - At Trot:</u></strong>
+            {{ rider_eval_checklist.seat_at_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.seat_at_trot_com }}
+        </p>
+        <p>
+            <strong><u>Seat - At Canter:</u></strong>
+            {{ rider_eval_checklist.seat_at_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.seat_at_canter_com }}
+        </p>
+        <p>
+            <strong><u>Basic Seat - English:</u></strong>
+            {{ rider_eval_checklist.basic_seat_english }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.basic_seat_english_com }}
+        </p>
+        <p>
+            <strong><u>Basic Seat - Western</u></strong>
+            {{ rider_eval_checklist.basic_seat_western }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.basic_seat_western_com }}
+        </p>
+
+        <hr />
+
+        <h2>Handpost/Twopoint/Circle</h2>
+
+        <p>
+
+        </p>
+    {% endif %}
+{% endblock %}
