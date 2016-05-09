@@ -9028,3 +9028,241 @@ class TestSessionPlanForm(TestCase):
                 )
         except:
             pass
+
+class TestObservationEvaluationReport(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Billy Bob Jr.",
+            birth_date="1988-03-26",
+            email="billy.bob@junior.com",
+            weight=168,
+            gender="M",
+            height=90,
+            minor_status="A",
+            address_street="1234 Billy Bob City",
+            address_city="Example City",
+            address_state="OK",
+            address_zip="74801",
+            phone_home="900-132-0024",
+            phone_cell="800-456-8800",
+            phone_work="300-039-3008",
+            school_institution="Billy Bob School"
+        )
+        test_participant.save()
+
+        test_observation_eval=models.ObservationEvaluation(
+            participant_id=test_participant,
+            date="2000-1-1",
+        )
+        test_observation_eval.save()
+
+        test_eval_attitude=models.EvalAttitude(
+            participant_id=test_participant,
+            date="1996-6-14",
+            walking_through_barn_willing="1",
+            walking_through_barn_motivated="1",
+            walking_through_barn_appearance="1",
+            looking_at_horses_willing="2",
+            looking_at_horses_motivated="2",
+            looking_at_horses_appearance="2",
+            petting_horses_willing="3",
+            petting_horses_motivated="3",
+            petting_horses_appearance="3",
+            up_down_ramp_willing="-",
+            up_down_ramp_motivated="-",
+            up_down_ramp_appearance="-",
+            mounting_before_willing="2",
+            mounting_before_motivated="2",
+            mounting_before_appearance="2",
+            mounting_after_willing="3",
+            mounting_after_motivated="3",
+            mounting_after_appearance="3",
+            riding_before_willing="1",
+            riding_before_motivated="1",
+            riding_before_appearance="1",
+            riding_during_willing="-",
+            riding_during_motivated="-",
+            riding_during_appearance="-",
+            riding_after_willing="3",
+            riding_after_motivated="3",
+            riding_after_appearance="3",
+            understands_directions_willing="1",
+            understands_directions_motivated="1",
+            understands_directions_appearance="1",
+            participates_exercises_willing="2",
+            participates_exercises_motivated="2",
+            participates_exercises_appearance="2",
+            participates_games_willing="3",
+            participates_games_motivated="3",
+            participates_games_appearance="3",
+            general_attitude_willing="-",
+            general_attitude_motivated="-",
+            general_attitude_appearance="-",
+        )
+        test_eval_attitude.save()
+
+    def test_observation_evaluation_report_loads_if_user_logged_in(self):
+        """ Tests whether the Observation Evaluation report page loads if the user is
+         logged in and valid URL parameters are passed (participant_id, year,
+         month, day)."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Billy Bob Jr.",
+            birth_date="1988-03-26"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-observation-evaluation",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_observation_evaluation_report_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Observation Evaluation report page redirects to the login
+         page if the user is not logged in."""
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse("report-observation-evaluation",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_observation_evaluation_report_shows_error_if_invalid_participant_id(self):
+        """ Tests whether the Observation Evaluation report page shows the correct error
+         if the user is logged in but an invalid participant_id is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-observation-evaluation",
+                kwargs={
+                    "participant_id":9999999999,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_observation_evaluation_report_shows_error_if_invalid_form_date(self):
+        """ Tests whether the Observation Evaluation report page shows the correct error
+         if the user is logged in but an invalid date for the Observation Evaluation
+         is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Billy Bob Jr.",
+            birth_date="1988-03-26"
+        )
+
+        response = self.client.get(
+            reverse("report-observation-evaluation",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "68904315",
+                    "month": "155",
+                    "day": "11122"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_INVALID_DATE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_observation_evaluation_report_shows_error_if_no_observation_evaluation(self):
+        """ Tests whether the Observation Evaluation report page shows the correct error
+         if the user is logged in and all parameters passed are valid, but the
+         Observation Evaluation record does not exist."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Billy Bob Jr.",
+            birth_date="1988-03-26"
+        )
+
+        response = self.client.get(
+            reverse("report-observation-evaluation",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "2016",
+                    "month": "1",
+                    "day": "1"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_OBS_EVAL_NOT_AVALIABLE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
