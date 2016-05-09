@@ -40,6 +40,9 @@ ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE=(
 ERROR_TEXT_SEIZURE_EVAL_NOT_AVAILABLE=(
     "The Seizure Evaluation requested is not available."
 )
+ERROR_TEXT_OBS_EVAL_NOT_AVALIABLE=(
+    "The Observation Evaluation requested is not avaliable."
+)
 ERROR_TEXT_DB_INTEGRITY=(
     "An internal database error has occured and the form could not be saved."
     " Please verify that you have not already filled out a form for this"
@@ -2559,9 +2562,9 @@ def report_observation_evaluation(request, participant_id, year, month, day):
             }
         )
 
-    # Find the MediaRelease record:
+    # Find the ObservationEvaluation record:
     try:
-        media_release=models.ObservationEvaluation.objects.get(
+        observation_evaluation=models.ObservationEvaluation.objects.get(
             participant_id=participant,
             date=time.strftime("%Y-%m-%d", date)
         )
@@ -2572,7 +2575,7 @@ def report_observation_evaluation(request, participant_id, year, month, day):
             request,
             "cbar_db/admin/reports/report_observation_evaluation.html",
             {
-                'error_text': ERROR_TEXT_MEDIA_RELEASE_NOT_AVAILABLE,
+                'error_text': ERROR_TEXT_OBS_EVAL_NOT_AVALIABLE,
             }
         )
 
