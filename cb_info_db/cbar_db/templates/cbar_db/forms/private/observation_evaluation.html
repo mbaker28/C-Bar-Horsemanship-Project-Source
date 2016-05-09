@@ -1,0 +1,351 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+<style>
+    .name_column, .willingness_column, .motivation_column, .appearance_column{
+        float: left;
+        width: 25%;
+        min-height: 1px;
+    }
+    li{
+        display:inline-block;
+    }
+</style>
+    <h1>Observation Evaluation</h1>
+    {% if error_text %}
+        <p></strong>
+            {{ error_text }}
+        </p></strong>
+        {{ form.non_field_errors }}
+        {{ form.errors }}
+    {% endif %}
+    {% if participant %}
+    <form action="{% url 'private-form-observation-evaluation' participant.participant_id %}" method="post">
+        {% csrf_token %}
+        <p>
+            Fields with an <span style="color: red">*</span> next to them are
+             required.
+        </p>
+
+        <p>
+            <strong>Participant:</strong> {{ participant }}
+        </p>
+        <p>
+            <strong>Date:</strong> {{ form.date }}
+            <span class="error_message">
+                {{ form.date.errors.as_text }}
+            </span>
+        </p>
+        <br>
+        <div id="observation_evaluation_content">
+            <div class="observation_eval_row">
+                <div class="name_column">
+                </div>
+
+                <div class="willingness_column" style="text-align: center;">
+                    <!-- W radio buttons -->
+                    W:
+                </div>
+                <div class="motivation_column" style="text-align: center;">
+                    <!-- M radio buttons -->
+                    M:
+                </div>
+                <div class="appearance_column" style="text-align: center;">
+                    <!-- A radio buttons -->
+                    A:
+                </div>
+            </div>
+        </div>
+
+        <div id="observation_evaluation_content">
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Walking through Barn:</strong>
+                </div>
+
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.walking_through_barn_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.walking_through_barn_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.walking_through_barn_appearance }}
+                </div>
+            </div>
+        </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Looking at Horses:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+
+                    <!-- W radio buttons -->
+
+                    {{ form.looking_at_horses_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.looking_at_horses_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.looking_at_horses_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Petting the Horses:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.petting_horses_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.petting_horses_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.petting_horses_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Up and Down Ramp:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.up_down_ramp_willing}}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.up_down_ramp_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.up_down_ramp_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Mounting Before:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.mounting_before_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.mounting_before_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.mounting_before_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Mounting After:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.mounting_after_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.mounting_after_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.mounting_after_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Riding Before:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+
+                    <!-- W radio buttons -->
+                    {{ form.riding_before_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.riding_before_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.riding_before_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Riding During:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.riding_during_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.riding_during_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.riding_during_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Riding After:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.riding_after_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.riding_after_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.riding_after_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Understands Directions:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.understands_directions_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.understands_directions_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.understands_directions_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Participates in Exercises:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.participates_exercises_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.participates_exercises_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.participates_exercises_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>Participates in Games:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.participates_games_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.participates_games_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.participates_games_appearance }}
+                </div>
+            </div>
+
+            <div class="observation_eval_row">
+                <div class="name_column">
+                    <span style="color: red">*</span> <strong>General Attitude:</strong>
+                </div>
+                <br>
+                <div class="willingness_column">
+                    <!-- W radio buttons -->
+
+                    {{ form.general_attitude_willing }}
+                </div>
+                <div class="motivation_column">
+                    <!-- M radio buttons -->
+
+                    {{ form.general_attitude_motivated }}
+                </div>
+                <div class="appearance_column">
+                    <!-- A radio buttons -->
+
+                    {{ form.general_attitude_appearance }}
+                </div>
+            </div>
+        <input type="Submit" value="Submit" />
+    </div>
+    </form>
+{% endif %}
+{% endblock %}

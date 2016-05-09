@@ -11,30 +11,36 @@
     {% if participant %}
         <form action="{% url 'private-form-session-plan' participant.participant_id %}" method="post">
             {% csrf_token %}
-            <p>Participant: {{ participant.name }}<br />
+            <p>
+                Fields with an <span style="color: red">*</span> next to them are
+                 required.
+            </p>
+            <p> Participant: {{ participant.name }}<br />
                 Birth Date: {{ participant.birth_date }}<br />
                 Current Date: {{ form.date }}
                 <span class="error_message">
                     {{ form.date.errors.as_text }}
                 </span>
 
-                Horse: {{ form.horse_name }}
-                Horse Leader: {{ form.horse_leader }}
+                <br /><span style="color: red">*</span> Horse: {{ form.horse_name }}
                 <br />
-                Tack: {{ form.tack }}
+                <span style="color: red">*</span> Horse Leader: {{ form.horse_leader }}
+                <br />
+                <span style="color: red">*</span> Tack: {{ form.tack }}
                 <span class="error_message">
                     {{ form.tack.errors.as_text }}
                 </span>
                 <br />
                 {% for diagnosis in diagnosis_types %}
-                    Diagnosis: {{ diagnosis.diagnosis }}
-                    Type: {{ diagnosis.get_diagnosis_type_display }}
+                    <span style="color: red">*</span> Diagnosis: {{ diagnosis.diagnosis }}
+                    <span style="color: red">*</span> Type: {{ diagnosis.get_diagnosis_type_display }}
                 {% endfor %}
                 <br />
-                Mobility: {{ form.ambulatory_status }}
+                <span style="color: red">*</span> Mobility: {{ form.ambulatory_status }}
                 <span class="error_message">
                     {{ form.ambulatory_status.errors.as_text }}
                 </span>
+                <br />
                 Mobility (other): {{ form.ambulatory_status_other }}
                 <span class="error_message">
                     {{ form.ambulatory_status_other.errors.as_text }}
@@ -42,26 +48,28 @@
             </p>
 
             <h2>Mounting Notes</h2>
-            <p>Assistance: {{ form.mount_assistance_required }}
+            <p><span style="color: red">*</span> Assistance: {{ form.mount_assistance_required }}
                 <span class="error_message">
                     {{ form.mount_assistance_required.errors.as_text }}
                 </span>
-                Mount Device Needed: {{ form.mount_device_needed }}
+                <span style="color: red">*</span> Mount Device Needed: {{ form.mount_device_needed }}
                 <span class="error_message">
                     {{ form.mount_device_needed.errors.as_text }}
                 </span>
-                Mount Type: {{ form.mount_type }}
+                <br />
+                <span style="color: red">*</span> Mount Type: {{ form.mount_type }}
                 <span class="error_message">
                     {{ form.mount_type.errors.as_text }}
                 </span>
             </p>
 
             <h2>Dismounting Notes</h2>
-            <p>Assistance: {{ form.dismount_assistance_required }}
+            <p><span style="color: red">*</span> Assistance: {{ form.dismount_assistance_required }}
                 <span class="error_message">
                     {{ form.dismount_assistance_required.errors.as_text }}
                 </span>
-                Dismount Type: {{ form.dismount_type }}
+                <br />
+                <span style="color: red">*</span> Dismount Type: {{ form.dismount_type }}
                 <span class="error_message">
                     {{ form.dismount_type.errors.as_text }}
                 </span>
@@ -70,15 +78,16 @@
             <h2>Sidewalkers</h2>
             <p><strong>At walk:</strong>
                 <br />
-                Spotter: {{ form.num_sidewalkers_walk_spotter }}
+                <span style="color: red">*</span> Spotter: {{ form.num_sidewalkers_walk_spotter }}
                 <span class="error_message">
                     {{ form.num_sidewalkers_walk_spotter.errors.as_text }}
                 </span>
-                Heelhold: {{ form.num_sidewalkers_walk_heel_hold }}
+                <span style="color: red">*</span> Heelhold: {{ form.num_sidewalkers_walk_heel_hold }}
                 <span class="error_message">
                     {{ form.num_sidewalkers_walk_heel_hold.errors.as_text }}
                 </span>
-                Over Thigh: {{ form.num_sidewalkers_walk_over_thigh }}
+                <br />
+                <span style="color: red">*</span> Over Thigh: {{ form.num_sidewalkers_walk_over_thigh }}
                 <span class="error_message">
                     {{ form.num_sidewalkers_walk_over_thigh.errors.as_text }}
                 </span>
@@ -89,15 +98,16 @@
                 <br />
                 <strong>At Trot:</strong>
                 <br />
-                Spotter: {{ form.num_sidewalkers_trot_spotter }}
+                <span style="color: red">*</span> Spotter: {{ form.num_sidewalkers_trot_spotter }}
                 <span class="error_message">
                     {{ form.num_sidewalkers_trot_spotter.errors.as_text }}
                 </span>
-                Heelhold: {{ form.num_sidewalkers_trot_heel_hold }}
+                <span style="color: red">*</span> Heelhold: {{ form.num_sidewalkers_trot_heel_hold }}
                 <span class="error_message">
                     {{ form.num_sidewalkers_trot_heel_hold.errors.as_text }}
                 </span>
-                Over Thigh: {{ form.num_sidewalkers_trot_over_thigh }}
+                <br />
+                <span style="color: red">*</span> Over Thigh: {{ form.num_sidewalkers_trot_over_thigh }}
                 <span class="error_message">
                     {{ form.num_sidewalkers_trot_over_thigh.errors.as_text }}
                 </span>
@@ -108,15 +118,16 @@
             </p>
 
             <h2>Session Goals</h2>
-            <p>Goal Type: {{ form.goal_type }}
+            <p><span style="color: red">*</span> Goal Type: {{ form.goal_type }}
                 <span class="error_message">
                     {{ form.goal_type.errors.as_text }}
                 </span>
-                Description: {{ form.goal_description }}
+                <span style="color: red">*</span> Description: {{ form.goal_description }}
                 <span class="error_message">
                     {{ form.goal_description.errors.as_text }}
                 </span>
-                Motivation: {{ form.motivation }}
+                <br />
+                <span style="color: red">*</span> Motivation: {{ form.motivation }}
                 <span class="error_message">
                     {{ form.motivation.errors.as_text }}
                 </span>

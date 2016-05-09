@@ -1657,7 +1657,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1668,7 +1669,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1720,7 +1721,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST I'm Batman!",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST I'm Batman!",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1731,7 +1733,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1783,7 +1785,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "Y",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1000-1-1",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
         form=forms.MedicalReleaseForm(form_data)
@@ -1794,7 +1797,7 @@ class TestMedicalReleaseForm(TestCase):
             try:
                 print("Finding participant...")
                 participant_instance=models.Participant.objects.get(
-                    name=form.cleaned_data["signature"],
+                    name=form.cleaned_data["name"],
                     birth_date=form.cleaned_data["birth_date"]
                 )
                 print("Found participant.")
@@ -1843,7 +1846,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -1863,7 +1867,7 @@ class TestMedicalReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["signature"],
+                name=form_data["name"],
                 birth_date=form_data["birth_date"]
             )
             print("Successfully retrieved participant record.")
@@ -1933,7 +1937,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Not Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Not Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -1984,7 +1989,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1455-9-30",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2037,7 +2043,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2088,7 +2095,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-3-30"
         }
 
@@ -2099,7 +2107,7 @@ class TestMedicalReleaseForm(TestCase):
         try:
             print("Retrieving participant record...")
             participant_in_db=models.Participant.objects.get(
-                name=form_data["signature"],
+                name=form_data["name"],
                 birth_date=form_data["birth_date"]
             )
             print("Successfully retrieved participant record.")
@@ -2173,7 +2181,8 @@ class TestMedicalReleaseForm(TestCase):
             "limiting_surgeries_last_six_monthes": "N",
             "limiting_surgeries_last_six_monthes_description": "",
             "birth_date": "1984-6-24",
-            "signature": "TEST Bruce Wayne",
+            "signature": "TEST Alfred Pennyworth",
+            "name": "TEST Bruce Wayne",
             "date": "2016-1-1"
         }
 
@@ -5322,6 +5331,49 @@ class TestAdminIndex(TestCase):
         )
         test_user.save()
 
+    def test_admin_index_loads_if_user_logged_in(self):
+        """ Tests whether the Admin Index page loads if the user is logged
+         in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse('index-admin'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_admin_index_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Admin Index page redirects to the login page if
+         the user is not logged in."""
+
+        response = self.client.get(reverse("index-admin"))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+
+class TestReportSelectParticipant(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
         test_participant=models.Participant(
             name="TEST Peter Parker",
             birth_date="1985-4-02",
@@ -5342,9 +5394,9 @@ class TestAdminIndex(TestCase):
         )
         test_participant.save()
 
-    def test_admin_index_loads_if_user_logged_in(self):
-        """ Tests whether the Admin Index page loads if the user is logged
-         in."""
+    def test_report_select_participant_loads_if_user_logged_in(self):
+        """ Tests whether the Select Participant for Reports page loads if the
+         user is logged in."""
 
         test_user=models.User.objects.get(
             username="testuser"
@@ -5352,14 +5404,77 @@ class TestAdminIndex(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('index-private-admin'))
+        response = self.client.get(reverse('report-select-participant'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
-    def test_admin_index_redirects_if_user_not_logged_in(self):
-        """ Tests whether the Admin Index page redirects to the login page if
-         the user is not logged in."""
+    def test_report_select_participant_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Select Participant for Reports page redirects to
+         the login page if the user is not logged in."""
 
-        response = self.client.get(reverse('index-private-admin'))
+        response = self.client.get(reverse('report-select-participant'))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+
+class TestPrivateFormsIndex(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_state="OK",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant.save()
+
+    def test_private_forms_index_loads_if_user_logged_in(self):
+        """ Tests whether the Private Forms Index page loads if the user is
+         logged in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse('index-private-forms'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_private_forms_index_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Private Forms Index page redirects to the login
+         page if the user is not logged in."""
+
+        response = self.client.get(reverse("index-private-forms"))
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
@@ -6908,6 +7023,716 @@ class TestSeizureEvaluationReport(TestCase):
         self.assertEqual(response.status_code, 200) # Loaded...
 
 
+class TestObservationEvaluation(TestCase):
+    def setUp(self):
+        setup_test_environment()
+        client=Client()
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass",
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18",
+            email="thedoctor@galifre.com",
+            weight=190,
+            gender="M",
+            height=76.0,
+            minor_status="A",
+            address_street="The TARDIS",
+            address_city="Time and space",
+            address_state="OK",
+            address_zip="74801",
+            phone_home="300-200-1000",
+            phone_cell="300-500-6000",
+            phone_work="598-039-3008",
+            school_institution="n/a"
+        )
+        test_participant.save()
+
+        test_observation_eval=models.ObservationEvaluation(
+            participant_id=test_participant,
+            date="2000-1-1",
+        )
+        test_observation_eval.save()
+
+        test_eval_attitude=models.EvalAttitude(
+            participant_id=test_participant,
+            date="1993-6-14",
+            walking_through_barn_willing="1",
+            walking_through_barn_motivated="1",
+            walking_through_barn_appearance="1",
+            looking_at_horses_willing="2",
+            looking_at_horses_motivated="2",
+            looking_at_horses_appearance="2",
+            petting_horses_willing="3",
+            petting_horses_motivated="3",
+            petting_horses_appearance="3",
+            up_down_ramp_willing="-",
+            up_down_ramp_motivated="-",
+            up_down_ramp_appearance="-",
+            mounting_before_willing="2",
+            mounting_before_motivated="2",
+            mounting_before_appearance="2",
+            mounting_after_willing="3",
+            mounting_after_motivated="3",
+            mounting_after_appearance="3",
+            riding_before_willing="1",
+            riding_before_motivated="1",
+            riding_before_appearance="1",
+            riding_during_willing="-",
+            riding_during_motivated="-",
+            riding_during_appearance="-",
+            riding_after_willing="3",
+            riding_after_motivated="3",
+            riding_after_appearance="3",
+            understands_directions_willing="1",
+            understands_directions_motivated="1",
+            understands_directions_appearance="1",
+            participates_exercises_willing="2",
+            participates_exercises_motivated="2",
+            participates_exercises_appearance="2",
+            participates_games_willing="3",
+            participates_games_motivated="3",
+            participates_games_appearance="3",
+            general_attitude_willing="-",
+            general_attitude_motivated="-",
+            general_attitude_appearance="-",
+        )
+        test_eval_attitude.save()
+
+    def test_observation_eval_loads_if_user_logged_in_no_release(self):
+
+        test_user=models.User.objects.get(
+            username="testuser",
+        )
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18"
+        )
+
+        response = self.client.get(
+            reverse('private-form-observation-evaluation',
+                kwargs={
+                    'participant_id':test_participant_in_db.participant_id
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_observation_eval_redirects_if_user_not_logged_in(self):
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse('private-form-observation-evaluation',
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id
+                }
+            )
+        )
+        self.assertEqual(response.status_code, 302)
+
+
+        print("reverse(\"user-login\")"+ reverse("user-login"))
+
+        self.assertTrue(reverse("user-login") in response["location"])
+
+    def test_user_inputs_not_valid_data(self):
+        test_user=models.User.objects.get(
+            username="testuser",
+        )
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18"
+        )
+
+        form_data={
+            "date": "2000-5-1",
+            "walking_through_barn_willing": "1waefhiowe",
+            "walking_through_barn_motivated": "1",
+            "walking_through_barn_appearance": "1",
+            "looking_at_horses_willing": "2",
+            "looking_at_horses_motivated": "?????????????????/",
+            "looking_at_horses_appearance": "2",
+            "petting_horses_willing": "3",
+            "petting_horses_motivated": "3",
+            "petting_horses_appearance": "3",
+            "up_down_ramp_willing": "-",
+            "up_down_ramp_motivated": "-",
+            "up_down_ramp_appearance": "-",
+            "mounting_before_willing": "2",
+            "mounting_before_motivated": "2",
+            "mounting_before_appearance": "2",
+            "mounting_after_willing": "3",
+            "mounting_after_motivated": "3",
+            "mounting_after_appearance": "3",
+            "riding_before_willing": "1",
+            "riding_before_motivated": "1",
+            "riding_before_appearance": "1",
+            "riding_during_willing": "-",
+            "riding_during_motivated": "-",
+            "riding_during_appearance": "-",
+            "riding_after_willing": "3",
+            "riding_after_motivated": "3",
+            "riding_after_appearance": "3",
+            "understands_directions_willing": "1",
+            "understands_directions_motivated": "1",
+            "understands_directions_appearance": "1",
+            "participates_exercises_willing": "2",
+            "participates_exercises_motivated": "2",
+            "participates_exercises_appearance": "2",
+            "participates_games_willing": "3",
+            "participates_games_motivated": "3",
+            "participates_games_appearance": "3",
+            "general_attitude_willing": "-",
+            "general_attitude_motivated": "-",
+            "general_attitude_appearance": "-",
+        }
+
+        response=self.client.post(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                }
+            ),
+            form_data
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
+    def test_observation_evaluation_form_error_no_participant_get(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response=self.client.get(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":99999999999,
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_observation_evaluation_form_error_no_participant_post(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        form_data={
+            "date":"2016-2-13",
+            "walking_through_barn_motivated": "1",
+            "walking_through_barn_willing": "1",
+            "walking_through_barn_appearance": "1",
+            "looking_at_horses_motivated": "1",
+            "looking_at_horses_willing": "1",
+            "looking_at_horses_appearance": "1",
+            "petting_horses_motivated": "1",
+            "petting_horses_willing": "1",
+            "petting_horses_appearance": "1",
+            "up_down_ramp_motivated": "1",
+            "up_down_ramp_willing": "1",
+            "up_down_ramp_appearance": "1",
+            "mounting_before_motivated": "1",
+            "mounting_before_willing": "1",
+            "mounting_before_appearance": "1",
+            "mounting_after_motivated": "1",
+            "mounting_after_willing": "1",
+            "mounting_after_appearance": "1",
+            "riding_before_motivated": "1",
+            "riding_before_willing": "1",
+            "riding_before_appearance": "1",
+            "riding_during_motivated": "1",
+            "riding_during_willing": "1",
+            "riding_during_appearance": "1",
+            "riding_after_motivated": "1",
+            "riding_after_willing": "1",
+            "riding_after_appearance": "1",
+            "understands_directions_motivated": "1",
+            "understands_directions_willing": "1",
+            "understands_directions_appearance": "1",
+            "participates_exercises_motivated": "1",
+            "participates_exercises_willing": "1",
+            "participates_exercises_appearance": "1",
+            "participates_games_motivated": "1",
+            "participates_games_willing": "1",
+            "participates_games_appearance": "1",
+            "general_attitude_motivated":"1",
+            "general_attitude_willing":"1",
+            "general_attitude_appearance":"1",
+        }
+
+        self.client.force_login(test_user)
+
+        response=self.client.post(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":99999999999,
+                }
+            ),
+            form_data
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+    def test_observation_eval_saves_valid_data(self):
+        test_user=models.User.objects.get(
+            username="testuser",
+        )
+        self.client.force_login(test_user)
+
+        form_data={
+            "date":"2016-2-13",
+            "walking_through_barn_motivated": "1",
+            "walking_through_barn_willing": "1",
+            "walking_through_barn_appearance": "1",
+            "looking_at_horses_motivated": "1",
+            "looking_at_horses_willing": "1",
+            "looking_at_horses_appearance": "1",
+            "petting_horses_motivated": "1",
+            "petting_horses_willing": "1",
+            "petting_horses_appearance": "1",
+            "up_down_ramp_motivated": "1",
+            "up_down_ramp_willing": "1",
+            "up_down_ramp_appearance": "1",
+            "mounting_before_motivated": "1",
+            "mounting_before_willing": "1",
+            "mounting_before_appearance": "1",
+            "mounting_after_motivated": "1",
+            "mounting_after_willing": "1",
+            "mounting_after_appearance": "1",
+            "riding_before_motivated": "1",
+            "riding_before_willing": "1",
+            "riding_before_appearance": "1",
+            "riding_during_motivated": "1",
+            "riding_during_willing": "1",
+            "riding_during_appearance": "1",
+            "riding_after_motivated": "1",
+            "riding_after_willing": "1",
+            "riding_after_appearance": "1",
+            "understands_directions_motivated": "1",
+            "understands_directions_willing": "1",
+            "understands_directions_appearance": "1",
+            "participates_exercises_motivated": "1",
+            "participates_exercises_willing": "1",
+            "participates_exercises_appearance": "1",
+            "participates_games_motivated": "1",
+            "participates_games_willing": "1",
+            "participates_games_appearance": "1",
+            "general_attitude_motivated":"1",
+            "general_attitude_willing":"1",
+            "general_attitude_appearance":"1",
+        }
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="Test Matthew Clear",
+            birth_date="1236-9-18"
+        )
+
+        response=self.client.post(
+            reverse(
+                "private-form-observation-evaluation",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                }
+            ),
+            form_data
+        )
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert the the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        # Retrieve the new EvalAttitude record:
+        found_eval_attitude=False
+        try:
+            # We found it
+            eval_attitude_in_db=models.EvalAttitude.objects.get(
+                participant_id=test_participant_in_db.participant_id,
+                date=form_data["date"]
+            )
+            found_eval_attitude=True
+        except ObjectDoesNotExist:
+            # We didn't find it
+            pass
+        self.assertTrue(found_eval_attitude)
+
+        # Checked the EvalAttitude attributes were stored correctly:
+        self.assertEqual(
+            eval_attitude_in_db.walking_through_barn_willing,
+            form_data["walking_through_barn_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.walking_through_barn_motivated,
+            form_data["walking_through_barn_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.walking_through_barn_appearance,
+            form_data["walking_through_barn_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.looking_at_horses_willing,
+            form_data["looking_at_horses_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.looking_at_horses_motivated,
+            form_data["looking_at_horses_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.looking_at_horses_appearance,
+            form_data["looking_at_horses_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.petting_horses_willing,
+            form_data["petting_horses_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.petting_horses_motivated,
+            form_data["petting_horses_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.petting_horses_appearance,
+            form_data["petting_horses_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.up_down_ramp_willing,
+            form_data["up_down_ramp_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.up_down_ramp_motivated,
+            form_data["up_down_ramp_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.up_down_ramp_appearance,
+            form_data["up_down_ramp_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_before_willing,
+            form_data["mounting_before_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_before_motivated,
+            form_data["mounting_before_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_before_appearance,
+            form_data["mounting_before_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_after_willing,
+            form_data["mounting_after_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_after_motivated,
+            form_data["mounting_after_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.mounting_after_appearance,
+            form_data["mounting_after_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_before_willing,
+            form_data["riding_before_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_before_motivated,
+            form_data["riding_before_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_before_appearance,
+            form_data["riding_before_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_during_willing,
+            form_data["riding_during_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_during_motivated,
+            form_data["riding_during_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_during_appearance,
+            form_data["riding_during_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_after_willing,
+            form_data["riding_after_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_after_motivated,
+            form_data["riding_after_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.riding_after_appearance,
+            form_data["riding_after_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.understands_directions_willing,
+            form_data["understands_directions_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.understands_directions_motivated,
+            form_data["understands_directions_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.understands_directions_appearance,
+            form_data["understands_directions_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_exercises_willing,
+            form_data["participates_exercises_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_exercises_motivated,
+            form_data["participates_exercises_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_exercises_appearance,
+            form_data["participates_exercises_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_games_willing,
+            form_data["participates_games_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_games_motivated,
+            form_data["participates_games_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.participates_games_appearance,
+            form_data["participates_games_appearance"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.general_attitude_willing,
+            form_data["general_attitude_willing"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.general_attitude_motivated,
+            form_data["general_attitude_motivated"]
+        )
+        self.assertEqual(
+            eval_attitude_in_db.general_attitude_appearance,
+            form_data["general_attitude_appearance"]
+        )
+
+        found_observation_evaluation=False
+        try:
+            # We found it
+            observation_evaluation=models.ObservationEvaluation.objects.get(
+                participant_id=test_participant_in_db.participant_id,
+                date=form_data["date"]
+            )
+            found_observation_evaluation=True
+        except ObjectDoesNotExist:
+            # We didn't find it
+            pass
+        self.assertTrue(found_observation_evaluation)
+
+    def test_observation_eval_duplicate_pk_observationevaluation(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         participant already has a ObservationEvaluation record with the same
+         (participant_id, date) as its primary key. """
+
+        try:
+            with transaction.atomic():
+                test_user=models.User.objects.get(
+                    username="testuser",
+                )
+                self.client.force_login(test_user)
+
+                form_data={
+                    "date":"2000-1-1",
+                    "walking_through_barn_motivated": "1",
+                    "walking_through_barn_willing": "1",
+                    "walking_through_barn_appearance": "1",
+                    "looking_at_horses_motivated": "1",
+                    "looking_at_horses_willing": "1",
+                    "looking_at_horses_appearance": "1",
+                    "petting_horses_motivated": "1",
+                    "petting_horses_willing": "1",
+                    "petting_horses_appearance": "1",
+                    "up_down_ramp_motivated": "1",
+                    "up_down_ramp_willing": "1",
+                    "up_down_ramp_appearance": "1",
+                    "mounting_before_motivated": "1",
+                    "mounting_before_willing": "1",
+                    "mounting_before_appearance": "1",
+                    "mounting_after_motivated": "1",
+                    "mounting_after_willing": "1",
+                    "mounting_after_appearance": "1",
+                    "riding_before_motivated": "1",
+                    "riding_before_willing": "1",
+                    "riding_before_appearance": "1",
+                    "riding_during_motivated": "1",
+                    "riding_during_willing": "1",
+                    "riding_during_appearance": "1",
+                    "riding_after_motivated": "1",
+                    "riding_after_willing": "1",
+                    "riding_after_appearance": "1",
+                    "understands_directions_motivated": "1",
+                    "understands_directions_willing": "1",
+                    "understands_directions_appearance": "1",
+                    "participates_exercises_motivated": "1",
+                    "participates_exercises_willing": "1",
+                    "participates_exercises_appearance": "1",
+                    "participates_games_motivated": "1",
+                    "participates_games_willing": "1",
+                    "participates_games_appearance": "1",
+                    "general_attitude_motivated":"1",
+                    "general_attitude_willing":"1",
+                    "general_attitude_appearance":"1",
+                }
+
+                test_participant_in_db=models.Participant.objects.get(
+                    name="Test Matthew Clear",
+                    birth_date="1236-9-18"
+                )
+
+                response=self.client.post(
+                    reverse(
+                        "private-form-observation-evaluation",
+                        kwargs={
+                            "participant_id":test_participant_in_db.participant_id,
+                        }
+                    ),
+                    form_data
+                )
+
+                # Assert that the reponse code is a 302 (redirect):
+                self.assertEqual(response.status_code, 302)
+
+                # Assert that the context for the new view
+                # contains the correct error:
+                self.assertEqual(
+                    views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                        form="observation evaluation"
+                    ),
+                    response.context["error_text"]
+                )
+        except:
+            pass
+
+    def test_observation_eval_duplicate_pk_evalattitude(self):
+        """ Regresison test for Issue #47. The form should throw an error if the
+         participant already has a EvalAttitude record with the same
+         (participant_id, date) as its primary key. """
+
+        try:
+            with transaction.atomic():
+                test_user=models.User.objects.get(
+                    username="testuser",
+                )
+                self.client.force_login(test_user)
+
+                form_data={
+                    "date": "1993-6-14",
+                    "walking_through_barn_motivated": "1",
+                    "walking_through_barn_willing": "1",
+                    "walking_through_barn_appearance": "1",
+                    "looking_at_horses_motivated": "1",
+                    "looking_at_horses_willing": "1",
+                    "looking_at_horses_appearance": "1",
+                    "petting_horses_motivated": "1",
+                    "petting_horses_willing": "1",
+                    "petting_horses_appearance": "1",
+                    "up_down_ramp_motivated": "1",
+                    "up_down_ramp_willing": "1",
+                    "up_down_ramp_appearance": "1",
+                    "mounting_before_motivated": "1",
+                    "mounting_before_willing": "1",
+                    "mounting_before_appearance": "1",
+                    "mounting_after_motivated": "1",
+                    "mounting_after_willing": "1",
+                    "mounting_after_appearance": "1",
+                    "riding_before_motivated": "1",
+                    "riding_before_willing": "1",
+                    "riding_before_appearance": "1",
+                    "riding_during_motivated": "1",
+                    "riding_during_willing": "1",
+                    "riding_during_appearance": "1",
+                    "riding_after_motivated": "1",
+                    "riding_after_willing": "1",
+                    "riding_after_appearance": "1",
+                    "understands_directions_motivated": "1",
+                    "understands_directions_willing": "1",
+                    "understands_directions_appearance": "1",
+                    "participates_exercises_motivated": "1",
+                    "participates_exercises_willing": "1",
+                    "participates_exercises_appearance": "1",
+                    "participates_games_motivated": "1",
+                    "participates_games_willing": "1",
+                    "participates_games_appearance": "1",
+                    "general_attitude_motivated":"1",
+                    "general_attitude_willing":"1",
+                    "general_attitude_appearance":"1",
+                }
+
+                test_participant_in_db=models.Participant.objects.get(
+                    name="Test Matthew Clear",
+                    birth_date="1236-9-18"
+                )
+
+                response=self.client.post(
+                    reverse(
+                        "private-form-observation-evaluation",
+                        kwargs={
+                            "participant_id":test_participant_in_db.participant_id,
+                        }
+                    ),
+                    form_data
+                )
+
+                # Assert that the reponse code is a 302 (redirect):
+                self.assertEqual(response.status_code, 302)
+
+                # Assert that the context for the new view
+                # contains the correct error:
+                self.assertEqual(
+                    views.ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK.format(
+                        form="observation evaluation"
+                    ),
+                    response.context["error_text"]
+                )
+        except:
+            pass
 
 
 class TestAdoptParticipant(TestCase):
@@ -7681,7 +8506,7 @@ class TestSessionPlanForm(TestCase):
 
         self.assertEqual(response.status_code, 302) # Redirected...
 
-         # Print the url we were redirected to:
+        # Print the url we were redirected to:
         print("response[\"location\"]" + response["location"])
 
         # Print the base url for the login page:
@@ -7809,6 +8634,139 @@ class TestSessionPlanForm(TestCase):
             print("ERROR: Unable to retreive participant record!")
 
         #TODO: Check all stored attributes, wait until changing sidewalker types
+
+        try:
+            print("Retrieving new Session record...")
+            session_in_db=(models.Session
+                .objects.get(
+                    tack=form_data["tack"],
+                    date=form_data["date"]
+                )
+            )
+            print("Retrieved new Session record")
+        except:
+            print("ERROR: Unable to retrieve new Session record!")
+        try:
+            session_ind_in_db=(models.SessionPlanInd
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print("Retrieved new Session Plan Ind record")
+        except:
+            print("ERROR: Unable to retrieve new Session Plan Ind record!")
+        try:
+            session_goals_in_db=(models.SessionGoals
+                .objects.get(
+                    participant_id=participant_in_db,
+                    session_id=session_in_db
+                )
+            )
+            print("Retrieved new Session Goal record")
+        except:
+            print("ERROR: Unable to retrieve new Session Goal record!")
+        try:
+            horse_in_db=(models.Horse
+                .objects.get(
+                    name=form_data["horse_name"]
+                )
+            )
+            print("Retrieved new Horse record")
+        except:
+            print("ERROR: Unable to retrieve new Horse record!")
+        try:
+            adaptations_in_db=(models.AdaptationsNeeded
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print("Retrieved new Adaptations Needed record")
+        except:
+            print("ERROR: Unable to retrieve new Adaptations Needed record!")
+
+        # Check that the attributes in the RiderEval were set correctly:
+        print(
+            "Checking stored ClassSession attributes..."
+        )
+        self.assertEqual(
+            session_ind_in_db.horse_leader,
+            form_data["horse_leader"]
+        )
+        self.assertEqual(
+            adaptations_in_db.ambulatory_status,
+            form_data["ambulatory_status"]
+        )
+        self.assertEqual(
+            adaptations_in_db.ambulatory_status_other,
+            form_data["ambulatory_status_other"]
+        )
+        self.assertEqual(
+            adaptations_in_db.mount_assistance_required,
+            form_data["mount_assistance_required"]
+        )
+        self.assertEqual(
+            adaptations_in_db.mount_device_needed,
+            form_data["mount_device_needed"]
+        )
+        self.assertEqual(
+            adaptations_in_db.mount_type,
+            form_data["mount_type"]
+        )
+        self.assertEqual(
+            adaptations_in_db.dismount_assistance_required,
+            form_data["dismount_assistance_required"]
+        )
+        self.assertEqual(
+            adaptations_in_db.dismount_type,
+            form_data["dismount_type"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_walk_spotter),
+            form_data["num_sidewalkers_walk_spotter"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_walk_heel_hold),
+            form_data["num_sidewalkers_walk_heel_hold"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_walk_over_thigh),
+            form_data["num_sidewalkers_walk_over_thigh"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_walk_other),
+            form_data["num_sidewalkers_walk_other"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_trot_spotter),
+            form_data["num_sidewalkers_trot_spotter"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_trot_heel_hold),
+            form_data["num_sidewalkers_trot_heel_hold"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_trot_over_thigh),
+            form_data["num_sidewalkers_trot_over_thigh"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_trot_other),
+            form_data["num_sidewalkers_trot_other"]
+        )
+        self.assertEqual(
+            session_goals_in_db.goal_type,
+            form_data["goal_type"]
+        )
+        self.assertEqual(
+            session_goals_in_db.goal_description,
+            form_data["goal_description"]
+        )
+        self.assertEqual(
+            session_goals_in_db.motivation,
+            form_data["motivation"]
+        )
+
 
     def test_session_plan_error_if_invalid_participant_get(self):
         test_user=models.User.objects.get(
