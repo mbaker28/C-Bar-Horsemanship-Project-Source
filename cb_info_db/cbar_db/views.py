@@ -1756,7 +1756,7 @@ def participant_record(request, participant_id):
     )
 
     # Find our Participant's EvalRidingExercises instances
-    rider_eval_checklists=(models.EvalRidingExercises.filter(
+    rider_eval_checklists=(models.EvalRidingExercises.objects.filter(
         participant_id=participant
         )
     )
