@@ -141,6 +141,14 @@
                 </a><br />
                 {% endfor %}
             </div>
+            <div class="floating_block">
+                <strong>Rider Evaluation Checklists</strong><br />
+                {% for rider_eval_checklist in rider_eval_checklists %}
+                <a href="{% url 'report-rider-eval-checklist' participant.participant_id rider_eval_checklist.date.year rider_eval_checklist.date.month rider_eval_checklist.date.day %}">
+                    {{ rider_eval_checklist.date }}
+                </a><br />
+                {% endfor %}
+            </div>
         </div>
     {% endif %}
 {% endblock %}
