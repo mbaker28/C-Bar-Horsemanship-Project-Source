@@ -2591,7 +2591,7 @@ def report_observation_evaluation(request, participant_id, year, month, day):
 
     # Find the ObservationEvaluation record:
     try:
-        observation_evaluation=models.ObservationEvaluation.objects.get(
+        observation_evaluation=models.EvalAttitude.objects.get(
             participant_id=participant,
             date=time.strftime("%Y-%m-%d", date)
         )
