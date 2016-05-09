@@ -21,7 +21,8 @@
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             <span style="color: red">*</span> Height: {{ form.height_feet }}
             <span class="error_message">
                 {{ form.height_feet.errors.as_text }}
@@ -34,7 +35,8 @@
             <span class="error_message">
                 {{ form.weight.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             <span style="color: red">*</span> Gender: {{ form.gender }}
             <span class="error_message">
                 {{ form.gender.errors.as_text }}
@@ -43,19 +45,22 @@
             <span class="error_message">
                 {{ form.minor_status.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             <span style="color: red">*</span> School or Institution presently attending:
             {{ form.school_institution }}
             <span class="error_message">
                 {{ form.school_institution.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             <span style="color: red">*</span> If minor or adult with legal guardian, parent or legal guardian
             name(s): {{ form.guardian_name }}
             <span class="error_message">
                 {{ form.guardian_name.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             <span style="color: red">*</span> Street Address:  {{ form.address_street }}
             <span class="error_message">
                 {{ form.address_street.errors.as_text }}
@@ -64,7 +69,8 @@
             <span class="error_message">
                 {{ form.address_city.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             <span style="color: red">*</span> State: {{ form.address_state }}
             <span class="error_message">
                 {{ form.address_state.errors.as_text }}
@@ -73,7 +79,8 @@
             <span class="error_message">
                 {{ form.address_zip.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             Home Phone: {{ form.phone_home }}
             <span class="error_message">
                 {{ form.phone_home.errors.as_text }}
@@ -82,25 +89,18 @@
             <span class="error_message">
                 {{ form.phone_cell.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             Work Phone: {{ form.phone_work }}
             <span class="error_message">
                 {{ form.phone_work.errors.as_text }}
             </span>
-            <br />
+        </p>
+        <p>
             <span style="color: red">*</span> E-Mail Address: {{ form.email }}
             <span class="error_message">
                 {{ form.email.errors.as_text }}
             </span>
-            <br />
-            <!--Signature: {{ form.signature }}
-            <span class="error_message">
-                {{ form.signature.errors.as_text }}
-            </span>
-            Date: {{ form.date }}
-            <span class="error_message">
-                {{ form.date.errors.as_text }}
-            </span>-->
         </p>
         <input type="Submit" value="Submit" />
     </form>
