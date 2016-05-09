@@ -4,14 +4,14 @@
 {% endblock %}
 {% block body %}
     <p>
-        Welcome to the public forms index. Please click a form below to continue.
+        Welcome to the registration forms index. Please click a form below to continue.
     </p>
 
     <ul>
         <li><a href="{% url 'public-form-application' %}">Application</a></li>
         <li><a href="{% url 'public-form-med-release' %}">Medical History</a></li>
         <li><a href="{% static "cbar_db/pdf/medical.pdf" %}">Medical Evaluation &amp; Physician's Release (PDF)</a></li>
-        <li><a href="{% url 'public-form-emerg-auth' %}">Emegency Medical Treatment Authorization</a></li>
+        <li><a href="{% url 'public-form-emerg-auth' %}">Emergency Medical Treatment Authorization</a></li>
         <li><a href="{% url 'public-form-liability' %}">Liability Release</a></li>
         <li><a href="{% url 'public-form-media' %}">Media Release</a></li>
         <li><a href="{% url 'public-form-background' %}">Background Check Authorization</a></li>

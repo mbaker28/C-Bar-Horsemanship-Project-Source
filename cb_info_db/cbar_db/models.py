@@ -155,7 +155,7 @@ class Caregiver(models.Model):
 class Session(models.Model):
     session_ID=models.AutoField(primary_key=True) # Auto generated PK
     date=models.DateTimeField()
-    tack=models.CharField(max_length=250)
+    tack=models.CharField(max_length=250, null=True)
 
 class SessionPlanInd(models.Model):
     class Meta: # Sets up PK as (participant_id, date)

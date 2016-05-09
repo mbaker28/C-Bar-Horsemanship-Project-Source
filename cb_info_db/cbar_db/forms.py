@@ -889,7 +889,8 @@ class SessionPlanForm(forms.Form):
         initial=date.today()
     )
     tack=forms.CharField(
-        max_length=models.Session._meta.get_field("tack").max_length
+        max_length=models.Session._meta.get_field("tack").max_length,
+        required=False
     )
 
     # Stored in SessionPlanInd

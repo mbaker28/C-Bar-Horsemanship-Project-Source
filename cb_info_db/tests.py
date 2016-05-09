@@ -5331,6 +5331,49 @@ class TestAdminIndex(TestCase):
         )
         test_user.save()
 
+    def test_admin_index_loads_if_user_logged_in(self):
+        """ Tests whether the Admin Index page loads if the user is logged
+         in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse('index-admin'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_admin_index_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Admin Index page redirects to the login page if
+         the user is not logged in."""
+
+        response = self.client.get(reverse("index-admin"))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+
+class TestReportSelectParticipant(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
         test_participant=models.Participant(
             name="TEST Peter Parker",
             birth_date="1985-4-02",
@@ -5351,9 +5394,9 @@ class TestAdminIndex(TestCase):
         )
         test_participant.save()
 
-    def test_admin_index_loads_if_user_logged_in(self):
-        """ Tests whether the Admin Index page loads if the user is logged
-         in."""
+    def test_report_select_participant_loads_if_user_logged_in(self):
+        """ Tests whether the Select Participant for Reports page loads if the
+         user is logged in."""
 
         test_user=models.User.objects.get(
             username="testuser"
@@ -5361,14 +5404,77 @@ class TestAdminIndex(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('index-private-admin'))
+        response = self.client.get(reverse('report-select-participant'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
-    def test_admin_index_redirects_if_user_not_logged_in(self):
-        """ Tests whether the Admin Index page redirects to the login page if
-         the user is not logged in."""
+    def test_report_select_participant_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Select Participant for Reports page redirects to
+         the login page if the user is not logged in."""
 
-        response = self.client.get(reverse('index-private-admin'))
+        response = self.client.get(reverse('report-select-participant'))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+
+class TestPrivateFormsIndex(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Peter Parker",
+            birth_date="1985-4-02",
+            email="peter@spider-man.com",
+            weight=195,
+            gender="M",
+            guardian_name="Aunt May",
+            height=72,
+            minor_status="G",
+            address_street="123 Apartment Street",
+            address_city="New York",
+            address_state="OK",
+            address_zip="74804",
+            phone_home="123-456-7890",
+            phone_cell="444-393-0098",
+            phone_work="598-039-3008",
+            school_institution="SHIELD"
+        )
+        test_participant.save()
+
+    def test_private_forms_index_loads_if_user_logged_in(self):
+        """ Tests whether the Private Forms Index page loads if the user is
+         logged in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse('index-private-forms'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_private_forms_index_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Private Forms Index page redirects to the login
+         page if the user is not logged in."""
+
+        response = self.client.get(reverse("index-private-forms"))
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
@@ -8528,6 +8634,139 @@ class TestSessionPlanForm(TestCase):
             print("ERROR: Unable to retreive participant record!")
 
         #TODO: Check all stored attributes, wait until changing sidewalker types
+
+        try:
+            print("Retrieving new Session record...")
+            session_in_db=(models.Session
+                .objects.get(
+                    tack=form_data["tack"],
+                    date=form_data["date"]
+                )
+            )
+            print("Retrieved new Session record")
+        except:
+            print("ERROR: Unable to retrieve new Session record!")
+        try:
+            session_ind_in_db=(models.SessionPlanInd
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print("Retrieved new Session Plan Ind record")
+        except:
+            print("ERROR: Unable to retrieve new Session Plan Ind record!")
+        try:
+            session_goals_in_db=(models.SessionGoals
+                .objects.get(
+                    participant_id=participant_in_db,
+                    session_id=session_in_db
+                )
+            )
+            print("Retrieved new Session Goal record")
+        except:
+            print("ERROR: Unable to retrieve new Session Goal record!")
+        try:
+            horse_in_db=(models.Horse
+                .objects.get(
+                    name=form_data["horse_name"]
+                )
+            )
+            print("Retrieved new Horse record")
+        except:
+            print("ERROR: Unable to retrieve new Horse record!")
+        try:
+            adaptations_in_db=(models.AdaptationsNeeded
+                .objects.get(
+                    participant_id=participant_in_db,
+                    date=form_data["date"]
+                )
+            )
+            print("Retrieved new Adaptations Needed record")
+        except:
+            print("ERROR: Unable to retrieve new Adaptations Needed record!")
+
+        # Check that the attributes in the RiderEval were set correctly:
+        print(
+            "Checking stored ClassSession attributes..."
+        )
+        self.assertEqual(
+            session_ind_in_db.horse_leader,
+            form_data["horse_leader"]
+        )
+        self.assertEqual(
+            adaptations_in_db.ambulatory_status,
+            form_data["ambulatory_status"]
+        )
+        self.assertEqual(
+            adaptations_in_db.ambulatory_status_other,
+            form_data["ambulatory_status_other"]
+        )
+        self.assertEqual(
+            adaptations_in_db.mount_assistance_required,
+            form_data["mount_assistance_required"]
+        )
+        self.assertEqual(
+            adaptations_in_db.mount_device_needed,
+            form_data["mount_device_needed"]
+        )
+        self.assertEqual(
+            adaptations_in_db.mount_type,
+            form_data["mount_type"]
+        )
+        self.assertEqual(
+            adaptations_in_db.dismount_assistance_required,
+            form_data["dismount_assistance_required"]
+        )
+        self.assertEqual(
+            adaptations_in_db.dismount_type,
+            form_data["dismount_type"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_walk_spotter),
+            form_data["num_sidewalkers_walk_spotter"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_walk_heel_hold),
+            form_data["num_sidewalkers_walk_heel_hold"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_walk_over_thigh),
+            form_data["num_sidewalkers_walk_over_thigh"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_walk_other),
+            form_data["num_sidewalkers_walk_other"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_trot_spotter),
+            form_data["num_sidewalkers_trot_spotter"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_trot_heel_hold),
+            form_data["num_sidewalkers_trot_heel_hold"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_trot_over_thigh),
+            form_data["num_sidewalkers_trot_over_thigh"]
+        )
+        self.assertEqual(
+            str(adaptations_in_db.num_sidewalkers_trot_other),
+            form_data["num_sidewalkers_trot_other"]
+        )
+        self.assertEqual(
+            session_goals_in_db.goal_type,
+            form_data["goal_type"]
+        )
+        self.assertEqual(
+            session_goals_in_db.goal_description,
+            form_data["goal_description"]
+        )
+        self.assertEqual(
+            session_goals_in_db.motivation,
+            form_data["motivation"]
+        )
+
 
     def test_session_plan_error_if_invalid_participant_get(self):
         test_user=models.User.objects.get(
