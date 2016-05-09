@@ -12,6 +12,10 @@
     <form action="{% url 'public-form-med-release' %}" method="post">
         {% csrf_token %}
         <p>
+            Fields with an <span style="color: red">*</span> next to them are
+             required.
+        </p>
+        <p>
             As you provide the following information, please keep in mind that
             this will NOT be used to exclude you from participating in C-Bar
             activities. It is for us to use to help provide you with the best
@@ -21,27 +25,27 @@
             information will help us do that.
         </p>
         <p>
-            Participant's Name: {{ form.name }}
+            <span style="color: red">*</span>Participant's Name: {{ form.name }}
             <span class="error_message">
                 {{ form.name.errors.as_text }}
             </span>
-            Birth date: {{ form.birth_date }}
+            <span style="color: red">*</span>Birth date: {{ form.birth_date }}
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
             </span>
         </p>
         <p>
-            Name of family physician: {{ form.primary_physician_name }}
+            <span style="color: red">*</span> Name of family physician: {{ form.primary_physician_name }}
             <span class="error_message">
                 {{ form.primary_physician_name.errors.as_text }}
             </span>
-            Phone: {{ form.primary_physician_phone }}
+            <span style="color: red">*</span> Phone: {{ form.primary_physician_phone }}
             <span class="error_message">
                 {{ form.primary_physician_phone.errors.as_text }}
             </span>
         </p>
         <p>
-            Date last seen by physician: {{ form.last_seen_by_physician_date }}
+            <span style="color: red">*</span> Date last seen by physician: {{ form.last_seen_by_physician_date }}
             <span class="error_message">
                 {{ form.last_seen_by_physician_date.errors.as_text }}
             </span>
@@ -256,10 +260,11 @@
             health and safety during any C-Bar activity I am involved.
         </p>
         <p>
-            Signature: {{ form.signature }}
+            <span style="color: red">*</span>
+             Signature: {{ form.signature }}
             <span class="error_message">
                 {{ form.signature.errors.as_text }}
-            </span> Date: {{ form.date }}
+            </span><span style="color: red">*</span> Date: {{ form.date }}
             <span class="error_message">
                 {{ form.date.errors.as_text }}
             </span>
