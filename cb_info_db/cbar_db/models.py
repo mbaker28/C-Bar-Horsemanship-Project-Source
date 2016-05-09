@@ -1593,11 +1593,12 @@ class Medication(models.Model):
 
 class PhoneLog(models.Model):
     class Meta:
-        unique_together=(("participant_id","date"))
+        unique_together=(("participant_id","date", "time"))
 
     participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
     date=models.DateField()
-    details=models.CharField(max_length=500)
+    time=models.TimeField()
+    details=models.CharField(max_length=2500)
 
 class Incidents(models.Model):
     class Meta:

@@ -2556,8 +2556,10 @@ def private_form_phone_log(request, participant_id):
                 phone_log=models.PhoneLog(
                     participant_id=participant,
                     date=form.cleaned_data["date"],
+                    time=form.cleaned_data["time"],
                     details=form.cleaned_data["details"]
                 )
+                phone_log.save()
             # Catch duplicate primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
