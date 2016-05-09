@@ -1,0 +1,177 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Observation Evaluation Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            <strong>Participant's Name:</strong>
+            {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong>
+            {{ participant.birth_date }}
+        </p>
+
+        <hr />
+
+        <p>
+            <strong>Walking Through Barn:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.walking_through_barn_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.walking_through_barn_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.walking_through_barn_appearance }}
+        </p>
+        <p>
+            <strong>Looking at Horses:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.looking_at_horses_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.looking_at_horses_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.looking_at_horses_appearance }}
+        </p>
+        <p>
+            <strong>Petting the Horses:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.petting_horses_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.petting_horses_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.petting_horses_appearance }}
+        </p>
+        <p>
+            <strong>Up and Down Ramp:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.up_down_ramp_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.up_down_ramp_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.up_down_ramp_appearance }}
+        </p>
+        <p>
+            <strong>Mounting Before:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.mounting_before_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.mounting_before_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.mounting_after_appearance }}
+        </p>
+        <p>
+            <strong>Mounting After:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.mounting_after_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.mounting_after_motivated }}
+            <br />
+            Apperance:
+            {{ observation_evaluation.mounting_after_appearance }}
+        </p>
+        <p>
+            <strong>Riding Before:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.riding_before_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.riding_before_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.riding_before_appearance }}
+        </p>
+        <p>
+            <strong>Riding During:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.riding_during_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.riding_during_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.riding_during_appearance }}
+        </p>
+        <p>
+            <strong>Riding After:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.riding_after_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.riding_after_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.riding_after_appearance }}
+        </p>
+        <p>
+            <strong>Understands Directions:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.understands_directions_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.understands_directions_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.understands_directions_appearance }}
+        </p>
+        <p>
+            <strong>Participates in Exercises</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.participates_exercises_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.participates_exercises_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.participates_exercises_appearance }}
+        </p>
+        <p>
+            <strong>Participates in Games:</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.participates_games_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.participates_games_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.participates_games_appearance }}
+        </p>
+        <p>
+            <strong>General Attitude</strong>
+            <br />
+            Willingness:
+            {{ observation_evaluation.general_attitude_willing }}
+            <br />
+            Motivation:
+            {{ observation_evaluation.general_attitude_motivated }}
+            <br />
+            Appearance:
+            {{ observation_evaluation.general_attitude_appearance }}
+        </p>
+    {% endif %}
+{% endblock %}
