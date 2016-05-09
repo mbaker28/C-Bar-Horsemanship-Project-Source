@@ -112,7 +112,7 @@
             Reason Taken: {{ form.medication_one_reason }}
             <span class="error_message">
                 {{ form.medication_one_reason.errors.as_text }}
-            </span>
+            </span><br />
             Frequency: {{ form.medication_one_frequency }}
             <span class="error_message">
                 {{ form.medication_one_frequency.errors.as_text }}
@@ -126,7 +126,7 @@
             Reason Taken: {{ form.medication_two_reason }}
             <span class="error_message">
                 {{ form.medication_two_reason.errors.as_text }}
-            </span>
+            </span><br />
             Frequency: {{ form.medication_two_frequency }}
             <span class="error_message">
                 {{ form.medication_two_frequency.errors.as_text }}
@@ -140,7 +140,7 @@
             Reason Taken: {{ form.medication_three_reason }}
             <span class="error_message">
                 {{ form.medication_three_reason.errors.as_text }}
-            </span>
+            </span><br />
             Frequency: {{ form.medication_three_frequency }}
             <span class="error_message">
                 {{ form.medication_three_frequency.errors.as_text }}
@@ -261,10 +261,10 @@
             <span class="error_message">
                 {{ form.signature.errors.as_text }}
             </span>
-            <span style="color: red">*</span> Date: {{ form.date }}
+            <p><span style="color: red">*</span> Date: {{ form.date }}
             <span class="error_message">
                 {{ form.date.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             <input type="submit" value="Submit" />

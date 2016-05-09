@@ -30,10 +30,10 @@
                 {{ form.birth_date.errors.as_text }}
             </span>
 
-            ,{{ form.consent }}
+            ,<p>{{ form.consent }}
             <span class="error_message">
                 {{ form.consent.errors.as_text }}
-            </span> to the above.
+            </span> to the above.</p>
         </p>
         <p>
             <span style="color: red">*</span> Signature: {{ form.signature }}.
@@ -41,10 +41,10 @@
                 {{ form.signature.errors.as_text }}
             </span>
 
-             <span style="color: red">*</span> Date: {{ form.date }}
+             <p><span style="color: red">*</span> Date: {{ form.date }}
             <span class="error_message">
                 {{ form.date.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <input type="submit" value="Submit" />
     </form>
