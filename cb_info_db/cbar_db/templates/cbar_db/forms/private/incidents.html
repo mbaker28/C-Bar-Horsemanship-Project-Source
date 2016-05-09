@@ -1,6 +1,6 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
-    <h1>Seizure Evaluation Incidents</h1>
+    <h1>Seizure Evaluation Incident</h1>
     {% if error_text %}
         <p><strong>
             {{ error_text }}
@@ -15,18 +15,26 @@
             </p>
 
             <p>
-                <strong>Date/Time:</strong> {{ form.date }}
+                <strong>Date:</strong> {{ form.date }}
                 <span class="error_message">
                     {{ form.date.errors.as_text }}
                 </span>
-                <strong>Details:</strong> {{ form.details }}
+
+                <strong>Time:</strong> {{ form.time }}
+                <span class="error_message">
+                    {{ form.time.errors.as_text }}
+                </span>
+            </p>
+            <p>
+                <strong>Details:</strong><br />
+                {{ form.details }}
                 <span class="error_message">
                     {{ form.details.errors.as_text }}
                 </strong>
             </p>
 
             <p>
-                <input style="submit" value="Submit" />
+                <input type="submit" value="Submit" />
             </p>
         </form>
     {% endif %}

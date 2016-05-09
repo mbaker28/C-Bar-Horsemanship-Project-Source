@@ -1018,9 +1018,11 @@ class PhoneLogForm(forms.Form):
     )
 
 class IncidentsForm(forms.Form):
-    date=forms.DateField()
+    date=forms.DateField(widget=SelectDateWidget, initial=date.today)
+    time=forms.TimeField(initial=datetime.datetime.now)
     details=forms.CharField(
-        max_length=models.Incidents._meta.get_field("details").max_length
+        max_length=models.PhoneLog._meta.get_field("details").max_length,
+        widget=forms.Textarea(attrs={'rows':10, 'cols':40}),
     )
 
 class RiderEvalChecklistForm(forms.Form):

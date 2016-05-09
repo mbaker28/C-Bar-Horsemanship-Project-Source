@@ -2686,8 +2686,10 @@ def private_form_incidents(request, participant_id):
                 incidents=models.Incidents(
                     participant_id=participant,
                     date=form.cleaned_data["date"],
+                    time=form.cleaned_data["time"],
                     details=form.cleaned_data["details"]
                 )
+                incidents.save()
             # Catch duplicate primary keys:
             except IntegrityError as error:
                 # Set the error message and redisplay the form:
