@@ -9,6 +9,10 @@
     <form action="{% url 'public-form-media' %}" method="post">
         {% csrf_token %}
         <p>
+            Fields with an <span style="color: red">*</span> next to them are
+             required.
+        </p>
+        <p>
             Authorization is given to C-Bar Therapeutic Riding to use and/or
              reproduce any and all photographs and/or any other audio/visual
              materials taken of visitors, volunteers, participants, or staff
@@ -16,28 +20,28 @@
              or for any other use for the benefit of the program.
         </p>
         <p>
-            I, {{ form.name }}
+            I,<span style="color: red">*</span> {{ form.name }}
             <span class="error_message">
                 {{ form.name.errors.as_text }}
             </span>
 
-            , born {{ form.birth_date }}
+            , born <span style="color: red">*</span> {{ form.birth_date }}
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
             </span>
 
-            , {{ form.consent }}
+            ,{{ form.consent }}
             <span class="error_message">
                 {{ form.consent.errors.as_text }}
             </span> to the above.
         </p>
         <p>
-            Signature: {{ form.signature }}.
+            <span style="color: red">*</span> Signature: {{ form.signature }}.
             <span class="error_message">
                 {{ form.signature.errors.as_text }}
             </span>
 
-             Date: {{ form.date }}
+             <span style="color: red">*</span> Date: {{ form.date }}
             <span class="error_message">
                 {{ form.date.errors.as_text }}
             </span>
