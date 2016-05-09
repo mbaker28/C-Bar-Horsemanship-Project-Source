@@ -8895,3 +8895,60 @@ class TestSessionPlanForm(TestCase):
                 )
         except:
             pass
+
+
+class TestLogout(TestCase):
+    def setUp(self):
+        setup_test_environment()
+        client=Client()
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass",
+        )
+        test_user.save()
+
+    def test_logout_confirmation_loads(self):
+        """Tests whether the index page loads."""
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse("logout-confirmation"))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_loggered_out(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse("loggered-out")+"?a=a")
+        self.assertEqual(response.status_code, 302)
+
+    def test_successfully_logs_out(self):
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse("logout-user"))
+        self.assertEqual(response.status_code, 302)
+
+    def test_log_out_redirects_if_user_just_entered_url(self):
+        response = self.client.get(reverse("loggered-out"))
+
+        self.assertEqual(response.status_code, 302)
+
+        self.assertEqual(reverse("index-public"), response["Location"])
+
+    def test_log_out_request_and_redirects(self):
+        response = self.client.get(reverse("loggered-out"))
+
+        self.assertEqual(response.status_code, 302)
+
+        self.assertEqual(reverse("index-public"), response["Location"])

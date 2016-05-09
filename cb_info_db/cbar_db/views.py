@@ -1150,15 +1150,15 @@ def logout_user(request):
     return HttpResponseRedirect(reverse("loggered-out")+"?a=a")
 
 def loggered_out(request):
-        """ Used to tell the user they loggered out. """
+    """ Used to tell the user they loggered out. """
 
-        # Check if the user just typed the url in the menu bar:
-        if request.GET.get("a") == "a":
-            # The user was redirected here from a loggered out page, display the message:
-            return render(request, "cbar_db/successfully_logged_out.html")
-        else:
-            # The user just typed in the address, redirect to the home page:
-            return HttpResponseRedirect("/")
+    # Check if the user just typed the url in the menu bar:
+    if request.GET.get("a") == "a":
+        # The user was redirected here from a loggered out page, display the message:
+        return render(request, "cbar_db/successfully_logged_out.html")
+    else:
+        # The user just typed in the address, redirect to the home page:
+        return HttpResponseRedirect("/")
 
 
 @login_required
