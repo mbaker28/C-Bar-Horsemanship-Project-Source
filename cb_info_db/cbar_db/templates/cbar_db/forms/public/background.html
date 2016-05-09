@@ -27,10 +27,13 @@
          <span class="error_message">
                 {{ form.signature.errors.as_text }}
         </span>
-         <span style="color: red">*</span> Date: {{ form.date }}
+         <p>
+         <span style="color: red">*</span>
+         Date: {{ form.date }}
          <span class="error_message">
              {{ form.date.errors.as_text }}
          </span>
+         </p>
          </p>
          <p>
          <span style="color: red">*</span> Date of Birth {{ form.birth_date }}
