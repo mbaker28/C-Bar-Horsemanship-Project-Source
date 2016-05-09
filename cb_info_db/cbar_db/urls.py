@@ -119,6 +119,11 @@ urlpatterns = [
         views.report_seizure,
         name='report-seizure'),
 
+    # Observation Evaluation form report view
+    url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/observation_evaluation/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+        views.report_observation_evaluation,
+        name='report-observation-evaluation'),
+
     ############################ Private forms ###########################
     #Observation Evaluation
     url(r'^forms/private/observation_evaluation/(?P<participant_id>[0-9]+)/$',
