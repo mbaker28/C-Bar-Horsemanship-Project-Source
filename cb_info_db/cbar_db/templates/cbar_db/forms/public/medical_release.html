@@ -49,7 +49,7 @@
             <span class="error_message">
                 {{ form.last_seen_by_physician_date.errors.as_text }}
             </span>
-            <p>Reason: {{ form.last_seen_by_physician_reason }}
+            <p>Reason: <br />{{ form.last_seen_by_physician_reason }}
             <span class="error_message">
                 {{ form.last_seen_by_physician_reason.errors.as_text }}
             </span></p>
@@ -72,6 +72,7 @@
         </p>
         <p>
             If yes, please specify:
+            <br />
              {{ form.allergies_conditions_that_exclude_description }}
              <span class="error_message">
                  {{ form.allergies_conditions_that_exclude_description.errors.as_text }}
@@ -189,6 +190,7 @@
         </p>
         <p>
             If yes, please specify:
+            <br />
              {{ form.physical_or_mental_issues_affecting_riding_description }}
              <span class="error_message">
                  {{ form.physical_or_mental_issues_affecting_riding_description.errors.as_text }}
@@ -207,6 +209,7 @@
         </p>
         <p>
             If yes, please specify:
+            <br />
              {{ form.restriction_for_horse_activity_last_five_years_description }}
             <span class="error_message">
              {{ form.restriction_for_horse_activity_last_five_years_description.errors.as_text }}
@@ -243,6 +246,7 @@
         </p>
         <p>
             If yes, please specify:
+            <br />
              {{ form.limiting_surgeries_last_six_monthes_description }}
              <span class="error_message">
                  {{ form.limiting_surgeries_last_six_monthes_description.errors.as_text }}
