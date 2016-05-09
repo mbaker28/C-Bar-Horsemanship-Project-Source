@@ -133,6 +133,14 @@
                 </a><br />
                 {% endfor %}
             </div>
+            <div class="floating_block">
+                <strong>Session Plans</strong><br />
+                {% for session_plan in session_plans %}
+                <a href="{% url 'report-session-plan' participant.participant_id session_plan.date.year session_plan.date.month session_plan.date.day %}">
+                    {{ session_plan.date }}
+                </a><br />
+                {% endfor %}
+            </div>
         </div>
     {% endif %}
 {% endblock %}
