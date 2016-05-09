@@ -9266,3 +9266,242 @@ class TestObservationEvaluationReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+class TestSessionPlanReport(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Fuck Me",
+            birth_date="1928-04-21",
+            email="fuck.me@ftc.com",
+            weight=170,
+            gender="M",
+            height=60,
+            minor_status="G",
+            address_street="1234 Fuck This St.",
+            address_city="Example City",
+            address_state="OK",
+            address_zip="74801",
+            phone_home="345-132-0024",
+            phone_cell="987-456-8800",
+            phone_work="305-039-3008",
+            school_institution="Fuck This School"
+        )
+        test_participant.save()
+
+        session_plan=models.Session(
+            date="2015-2-5",
+            tack="Some fucking shit"
+        )
+        session_plan.save()
+
+        session_ind=models.SessionPlanInd(
+            horse_leader="Dat Boi"
+        )
+
+        session_goals=models.SessionGoals(
+            participant_id=test_participant,
+            session_id=session_plan,
+            goal_type="S",
+            goal_description="Some text",
+            motivation="Don't die."
+        )
+        session_goals.save()
+
+        horse_info=models.Horse(
+            name="Fucky Horse"
+        )
+        horse_info.save()
+
+        diagnosis_info=models.Diagnosis(
+            participant_id=test_participant,
+            diagnosis="Genital Warts",
+            diagnosis_type="P"
+        )
+        diagnosis_info.save()
+
+        adaptations_needed=models.AdaptationsNeeded(
+            participant_id=test_participant,
+            date="2016-5-8",
+            ambulatory_status="I",
+            ambulatory_status_other="Some shit.",
+            mount_assistance_required="M",
+            mount_device_needed="S",
+            mount_type="T",
+            dismount_assistance_required="M",
+            dismount_type="A",
+            num_sidewalkers_walk_spotter=1,
+            num_sidewalkers_walk_heel_hold=2,
+            num_sidewalkers_walk_over_thigh=2,
+            num_sidewalkers_walk_other=3,
+            num_sidewalkers_trot_spotter=2,
+            num_sidewalkers_trot_heel_hold=2,
+            num_sidewalkers_trot_over_thigh=1,
+            num_sidewalkers_trot_other=3
+        )
+        adaptations_needed.save()
+
+    def test_session_plan_report_loads_if_user_logged_in(self):
+        """ Tests whether the Observation Evaluation report page loads if the user is
+         logged in and valid URL parameters are passed (participant_id, year,
+         month, day)."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Fuck Me",
+            birth_date="1928-04-21"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-session-plan",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_session_plan_report_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Session Plan report page redirects to the login
+         page if the user is not logged in."""
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse("report-session-plan",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_session_plan_report_shows_error_if_invalid_participant_id(self):
+        """ Tests whether the Session Plan report page shows the correct error
+         if the user is logged in but an invalid participant_id is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-session-plan",
+                kwargs={
+                    "participant_id":9999999999,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_session_plan_report_shows_error_if_invalid_form_date(self):
+        """ Tests whether the Observation Evaluation report page shows the correct error
+         if the user is logged in but an invalid date for the Observation Evaluation
+         is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Fuck Me",
+            birth_date="1928-04-21"
+        )
+
+        response = self.client.get(
+            reverse("report-session-plan",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "68904315",
+                    "month": "155",
+                    "day": "11122"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_INVALID_DATE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_session_plan_report_shows_error_if_no_session_plan(self):
+        """ Tests whether the Session Plan report page shows the correct error
+         if the user is logged in and all parameters passed are valid, but the
+         Session Plan record does not exist."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Fuck Me",
+            birth_date="1928-04-21"
+        )
+
+        response = self.client.get(
+            reverse("report-session-plan",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "2016",
+                    "month": "1",
+                    "day": "1"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_SES_PLAN_NOT_AVALIABLE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
