@@ -1,5 +1,12 @@
 @import "cbar_base.less";
 
+//makes text size larger on mobile device while remaining
+//same size on laptop or pc
+@media only screen and (max-device-width: 48em) {
+    * {
+      font-size:110% !important;
+    }
+  }
 
 body {
     background-color: white;
