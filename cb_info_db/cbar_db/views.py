@@ -43,6 +43,9 @@ ERROR_TEXT_SEIZURE_EVAL_NOT_AVAILABLE=(
 ERROR_TEXT_OBS_EVAL_NOT_AVALIABLE=(
     "The Observation Evaluation requested is not avaliable."
 )
+ERROR_TEXT_SES_PLAN_NOT_AVALIABLE=(
+    "The Session Plan requested is not available."
+)
 ERROR_TEXT_DB_INTEGRITY=(
     "An internal database error has occured and the form could not be saved."
     " Please verify that you have not already filled out a form for this"
@@ -2546,7 +2549,7 @@ def report_observation_evaluation(request, participant_id, year, month, day):
             }
         )
 
-    # Parse the Media Release's date from the URL attributes
+    # Parse the Observation Evaluation's date from the URL attributes
     try:
         loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
         date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
@@ -2584,6 +2587,68 @@ def report_observation_evaluation(request, participant_id, year, month, day):
         "cbar_db/admin/reports/report_observation_evaluation.html",
         {
             "observation_evaluation": observation_evaluation,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_session_plan(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Session Plan form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Observation Evaluation's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the ObservationEvaluation record:
+    try:
+        session_plan=models.SessionPlanInd.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': ERROR_TEXT_SES_PLAN_NOT_AVALIABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_session_plan.html",
+        {
+            "session_plan": session_plan,
             "participant": participant
         }
     )
