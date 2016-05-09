@@ -32,11 +32,9 @@ class ApplicationForm(forms.Form):
         "Must be between " + str(INCH_MIN) + " and " + str(INCH_MAX) + "."
     )
 
-    participant_type=forms.ChoiceField(
-        choices=models.ParticipantType
-        ._meta.get_field("participant_type"
-        ).choices
-    )
+    participant_type_participant=forms.BooleanField(required=False)
+    participant_type_volunteer=forms.BooleanField(required=False)
+    participant_type_staff=forms.BooleanField(required=False)
 
     name=forms.CharField(
         max_length=models.Participant._meta.get_field("name").max_length

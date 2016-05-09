@@ -9,11 +9,14 @@
     <form action="{% url 'public-form-application' %}" method="post">
         {% csrf_token %}
         <p>
-            Position applying for: {{ form.participant_type }}
-        </p>
-        <p>
             Fields with an <span style="color: red">*</span> next to them are
              required.
+        </p>
+        <p>
+            <span style="color: red">*</span> Position applying for:
+            {{ form.participant_type_participant }} Participant
+            {{ form.participant_type_volunteer }} Volunteer
+            {{ form.participant_type_staff }} Staff
         </p>
         <p>
             <span style="color: red">*</span> Name: {{ form.name }}
