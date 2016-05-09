@@ -194,8 +194,9 @@
             </span>
         </p>
         <p>
-            {{ form.during_seizure_other }} Other (Please explain:
-             {{ form.during_seizure_other_description }} )
+            {{ form.during_seizure_other }} Other (Please explain):
+            <br />
+             {{ form.during_seizure_other_description }}
             <span class="error_message">
                 {{ form.during_seizure_other_description.errors.as_text }}
             </span>
