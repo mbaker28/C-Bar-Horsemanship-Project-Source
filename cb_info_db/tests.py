@@ -9505,3 +9505,343 @@ class TestSessionPlanReport(TestCase):
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
+
+class TestRiderEvaluationChecklistReport(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_participant=models.Participant(
+            name="TEST Jesus Fucking Christ",
+            birth_date="1926-12-25",
+            email="jfc@ftc.com",
+            weight=200,
+            gender="M",
+            height=90,
+            minor_status="G",
+            address_street="1234 Christ St.",
+            address_city="Bethlehem",
+            address_state="OK",
+            address_zip="12345",
+            phone_home="900-456-0024",
+            phone_cell="100-156-8800",
+            phone_work="315-039-3028",
+            school_institution="Heaven"
+        )
+        test_participant.save()
+
+        rider_eval_checklist=models.EvalRidingExercises(
+            participant_id=test_participant,
+            date="2001-9-11",
+            comments="Yo dawg ima turn this water into wine, k fam?",
+            basic_trail_rules=1,
+            mount=0,
+            dismount=None,
+            emergency_dismount=None,
+            four_natural_aids=0,
+            basic_control=1,
+            reverse_at_walk=1,
+            reverse_at_trot=None,
+            never_ridden=0,
+            seat_at_walk=1,
+            seat_at_trot=1,
+            seat_at_canter=None,
+            basic_seat_english=1,
+            basic_seat_western=0,
+            hand_pos_english=1,
+            hand_post_western=None,
+            two_point_trot=1,
+            circle_trot_no_stirrups=None,
+            circle_at_canter=0,
+            circle_canter_no_stirrups=1,
+            two_point_canter=None,
+            circle_at_walk=1,
+            circle_at_trot=None,
+            holds_handhold_walk="U",
+            holds_handhold_sit_trot="P",
+            holds_handhold_post_trot="F",
+            holds_handhold_canter="G",
+            holds_reins_walk="E",
+            holds_reins_sit_trot="N",
+            holds_reins_post_trot="A",
+            holds_reins_canter="P",
+            shorten_lengthen_reins_walk="U",
+            shorten_lengthen_reins_sit_trot="P",
+            shorten_lengthen_reins_post_trot="A",
+            shorten_lengthen_reins_canter="G",
+            can_control_horse_walk="E",
+            can_control_horse_sit_trot="N",
+            can_control_horse_post_trot="A",
+            can_control_horse_canter="P",
+            can_halt_walk="U",
+            can_halt_sit_trot="P",
+            can_halt_post_trot="F",
+            can_halt_canter="G",
+            drop_pickup_stirrups_walk="E",
+            drop_pickup_stirrups_sit_trot="N",
+            drop_pickup_stirrups_post_trot="A",
+            drop_pickup_stirrups_canter="P",
+            rides_no_stirrups_walk="U",
+            rides_no_stirrups_sit_trot="P",
+            rides_no_stirrups_post_trot="F",
+            rides_no_stirrups_canter="G",
+            maintain_half_seat_walk="E",
+            maintain_half_seat_sit_trot="E",
+            maintain_half_seat_post_trot="N",
+            maintain_half_seat_canter="A",
+            can_post_walk="P",
+            can_post_sit_trot="U",
+            can_post_post_trot="P",
+            can_post_canter="F",
+            proper_diagonal_walk="G",
+            proper_diagonal_sit_trot="E",
+            proper_diagonal_post_trot="N",
+            proper_diagonal_canter="A",
+            proper_lead_canter_sees="P",
+            proper_lead_canter_knows="U",
+            can_steer_over_cavalletti_walk="P",
+            can_steer_over_cavalletti_sit_trot="F",
+            can_steer_over_cavalletti_post_trot="G",
+            can_steer_over_cavalletti_canter="E",
+            jump_crossbar_walk="N",
+            jump_crossbar_sit_trot="A",
+            jump_crossbar_post_trot="P",
+            jump_crossbar_canter="U",
+            basic_trail_rules_com="",
+            mount_com="aaaaaaa",
+            dismount_com="bbbbbbbbbb",
+            emergency_dismount_com="",
+            four_natural_aids_com="cccccc",
+            basic_control_com="",
+            reverse_at_walk_com="dddddddd",
+            reverse_at_trot_com="",
+            never_ridden_com="eeeeeeeeee",
+            seat_at_walk_com="fffffffff",
+            seat_at_trot_com="gggggggggg",
+            seat_at_canter_com="hhhhhhhh",
+            basic_seat_english_com="",
+            basic_seat_western_com="iiiiiiiii",
+            hand_pos_english_com="",
+            hand_post_western_com="jjjjjjj",
+            two_point_trot_com="kkkkkkkkkk",
+            circle_trot_no_stirrups_com="",
+            circle_at_canter_com="",
+            circle_canter_no_stirrups_com="lllllllll",
+            two_point_canter_com="mmmmmmmmm",
+            circle_at_walk_com="",
+            circle_at_trot_com="nnnnnnnnnn",
+            holds_handhold_walk_com="",
+            holds_handhold_sit_trot_com="",
+            holds_handhold_post_trot_com="ooooooooo",
+            holds_handhold_canter_com="",
+            holds_reins_walk_com="ppppppppppp",
+            holds_reins_sit_trot_com="",
+            holds_reins_post_trot_com="",
+            holds_reins_canter_com="qqqqqqqqqq",
+            shorten_lengthen_reins_walk_com="",
+            shorten_lengthen_reins_sit_trot_com="rrrrrrrrrrr",
+            shorten_lengthen_reins_post_trot_com="sssssssssss",
+            shorten_lengthen_reins_canter_com="",
+            can_control_horse_walk_com="",
+            can_control_horse_sit_trot_com="ttttttttt",
+            can_control_horse_post_trot_com="",
+            can_control_horse_canter_com="uuuuuuuuu",
+            can_halt_walk_com="vvvvvvvvvv",
+            can_halt_sit_trot_com="",
+            can_halt_post_trot_com="wwwwwwwwwwwwwww",
+            can_halt_canter_com="",
+            drop_pickup_stirrups_walk_com="",
+            drop_pickup_stirrups_sit_trot_com="",
+            drop_pickup_stirrups_post_trot_com="xxxxxxxxxxxxxxxx",
+            drop_pickup_stirrups_canter_com="",
+            rides_no_stirrups_walk_com="",
+            rides_no_stirrups_sit_trot_com="yyyyyyyyyyyy",
+            rides_no_stirrups_post_trot_com="",
+            rides_no_stirrups_canter_com="zzzzzzzzzzzzz",
+            maintain_half_seat_walk_com="",
+            maintain_half_seat_sit_trot_com="",
+            maintain_half_seat_post_trot_com="",
+            maintain_half_seat_canter_com="aaaaaaaaaaa",
+            can_post_walk_com="",
+            can_post_sit_trot_com="",
+            can_post_post_trot_com="bbbbbbbbbbbbb",
+            can_post_canter_com="",
+            proper_diagonal_walk_com="",
+            proper_diagonal_sit_trot_com="ccccccccccc",
+            proper_diagonal_post_trot_com="",
+            proper_diagonal_canter_com="",
+            proper_lead_canter_sees_com="dddddddddd",
+            proper_lead_canter_knows_com="",
+            can_steer_over_cavalletti_walk_com="",
+            can_steer_over_cavalletti_sit_trot_com="eeeeeeeee",
+            can_steer_over_cavalletti_post_trot_com="",
+            can_steer_over_cavalletti_canter_com="",
+            jump_crossbar_walk_com="ffffffffff",
+            jump_crossbar_sit_trot_com="",
+            jump_crossbar_post_trot_com="ggggggggg",
+            jump_crossbar_canter_com=""
+        )
+        rider_eval_checklist.save()
+
+    def test_rider_eval_checklist_report_loads_if_user_logged_in(self):
+        """ Tests whether the Rider Evaluation Checklist report page loads if the user is
+         logged in and valid URL parameters are passed (participant_id, year,
+         month, day)."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Jesus Fucking Christ",
+            birth_date="1926-12-25"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-rider-eval-checklist",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_rider_eval_checklist_report_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Rider Evaluation Checklist report page redirects to the login
+         page if the user is not logged in."""
+
+        test_participant_in_db=models.Participant.objects.filter().first()
+
+        response = self.client.get(
+            reverse("report-rider-eval-checklist",
+                kwargs={
+                    "participant_id":test_participant_in_db.participant_id,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_rider_eval_checklist_report_shows_error_if_invalid_participant_id(self):
+        """ Tests whether the Rider Evaluation Checklist report page shows the correct error
+         if the user is logged in but an invalid participant_id is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse("report-rider-eval-checklist",
+                kwargs={
+                    "participant_id":9999999999,
+                    "year": "2014",
+                    "month": "3",
+                    "day": "5"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_rider_eval_checklist_report_shows_error_if_invalid_form_date(self):
+        """ Tests whether the Rider Evaluation Checklist report page shows the correct error
+         if the user is logged in but an invalid date for the Observation Evaluation
+         is passed."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Jesus Fucking Christ",
+            birth_date="1926-12-25"
+        )
+
+        response = self.client.get(
+            reverse("report-rider-eval-checklist",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "68904315",
+                    "month": "155",
+                    "day": "11122"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_INVALID_DATE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_rider_eval_checklist_report_shows_error_if_no_rider_eval_checklist(self):
+        """ Tests whether the Rider Evaluation Checklist report page shows the correct error
+         if the user is logged in and all parameters passed are valid, but the
+         Rider Evaluation Checklist record does not exist."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        test_participant_in_db=models.Participant.objects.get(
+            name="TEST Jesus Fucking Christ",
+            birth_date="1926-12-25"
+        )
+
+        response = self.client.get(
+            reverse("report-rider-eval-checklist",
+                kwargs={
+                    "participant_id": test_participant_in_db.participant_id,
+                    "year": "2016",
+                    "month": "1",
+                    "day": "1"
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_RIDER_EVAL_CHECKLIST_NOT_AVAILABLE
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
