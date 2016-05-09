@@ -29,30 +29,30 @@
             <span class="error_message">
                 {{ form.name.errors.as_text }}
             </span>
-            <span style="color: red">*</span>Birth date: {{ form.birth_date }}
+            <p><span style="color: red">*</span>Birth date: {{ form.birth_date }}
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             <span style="color: red">*</span> Name of family physician: {{ form.primary_physician_name }}
             <span class="error_message">
                 {{ form.primary_physician_name.errors.as_text }}
             </span>
-            <span style="color: red">*</span> Phone: {{ form.primary_physician_phone }}
+            <p><span style="color: red">*</span> Physician Phone: {{ form.primary_physician_phone }}
             <span class="error_message">
                 {{ form.primary_physician_phone.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             <span style="color: red">*</span> Date last seen by physician: {{ form.last_seen_by_physician_date }}
             <span class="error_message">
                 {{ form.last_seen_by_physician_date.errors.as_text }}
             </span>
-            Reason: {{ form.last_seen_by_physician_reason }}
+            <p>Reason: {{ form.last_seen_by_physician_reason }}
             <span class="error_message">
                 {{ form.last_seen_by_physician_reason.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             C-Bar activities and/or events take place out in the open,
@@ -131,30 +131,31 @@
             Medication: {{ form.medication_one_name }}
             <span class="error_message">
                 {{ form.medication_one_name.errors.as_text }}
-            </span> Reason Taken:
+            </span> <br />Reason Taken:
              {{ form.medication_one_reason }}
              <span class="error_message">
                  {{ form.medication_one_reason.errors.as_text }}
-             </span>
-            <br>
+             </span><br />
             How Often: {{ form.medication_one_frequency }}
             <span class="error_message">
                 {{ form.medication_one_frequency.errors.as_text }}
             </span>
             <br>
+            <p>
             Medication: {{ form.medication_two_name }}
             <span class="error_message">
                 {{ form.medication_two_name.errors.as_text }}
-            </span> Reason Taken:
+            </span> <br />Reason Taken:
              {{ form.medication_two_reason }}
              <span class="error_message">
                  {{ form.medication_two_reason.errors.as_text }}
              </span>
-            <br>
+            <br />
             How Often: {{ form.medication_two_frequency }}
             <span class="error_message">
                 {{ form.medication_two_frequency.errors.as_text }}
             </span>
+          </p>
         </p>
         <p>
             Has your physician expressed concerns about you riding or
@@ -264,10 +265,10 @@
              Signature: {{ form.signature }}
             <span class="error_message">
                 {{ form.signature.errors.as_text }}
-            </span><span style="color: red">*</span> Date: {{ form.date }}
+            <p></span><span style="color: red">*</span> Date: {{ form.date }}
             <span class="error_message">
                 {{ form.date.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             <input type="submit" value="Submit" />
