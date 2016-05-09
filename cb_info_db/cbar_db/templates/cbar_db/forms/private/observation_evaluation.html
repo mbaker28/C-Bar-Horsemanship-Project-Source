@@ -21,9 +21,16 @@
     {% if participant %}
     <form action="{% url 'private-form-observation-evaluation' participant.participant_id %}" method="post">
         {% csrf_token %}
+        <p>
+            Fields with an <span style="color: red">*</span> next to them are
+             required.
+        </p>
 
         <p>
-            <strong>Participant:</strong> {{ participant }}
+            <strong>Participant Name:</strong> {{ participant.name }}
+        </p>
+        <p>
+            <strong>Birth Date:</strong> {{ participant.birth_date }}
         </p>
         <p>
             <strong>Date:</strong> {{ form.date }}
@@ -55,7 +62,7 @@
         <div id="observation_evaluation_content">
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Walking through Barn:</strong>
+                    <span style="color: red">*</span> <strong>Walking through Barn:</strong>
                 </div>
 
                 <div class="willingness_column">
@@ -78,7 +85,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Looking at Horses:</strong>
+                    <span style="color: red">*</span> <strong>Looking at Horses:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -101,7 +108,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Petting the Horses:</strong>
+                    <span style="color: red">*</span> <strong>Petting the Horses:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -123,7 +130,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Up and Down Ramp:</strong>
+                    <span style="color: red">*</span> <strong>Up and Down Ramp:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -145,7 +152,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Mounting Before:</strong>
+                    <span style="color: red">*</span> <strong>Mounting Before:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -167,7 +174,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Mounting After:</strong>
+                    <span style="color: red">*</span> <strong>Mounting After:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -189,7 +196,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Riding Before:</strong>
+                    <span style="color: red">*</span> <strong>Riding Before:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -211,7 +218,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Riding During:</strong>
+                    <span style="color: red">*</span> <strong>Riding During:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -233,7 +240,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Riding After:</strong>
+                    <span style="color: red">*</span> <strong>Riding After:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -255,7 +262,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Understands Directions:</strong>
+                    <span style="color: red">*</span> <strong>Understands Directions:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -277,7 +284,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Participates in Exercises:</strong>
+                    <span style="color: red">*</span> <strong>Participates in Exercises:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -299,7 +306,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>Participates in Games:</strong>
+                    <span style="color: red">*</span> <strong>Participates in Games:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">
@@ -321,7 +328,7 @@
 
             <div class="observation_eval_row">
                 <div class="name_column">
-                    <strong>General Attitude:</strong>
+                    <span style="color: red">*</span> <strong>General Attitude:</strong>
                 </div>
                 <br>
                 <div class="willingness_column">

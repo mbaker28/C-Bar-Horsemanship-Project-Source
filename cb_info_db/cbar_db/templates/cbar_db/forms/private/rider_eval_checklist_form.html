@@ -36,6 +36,10 @@
     {% if participant %}
         <form action="{% url 'private_form_rider_eval_checklist' participant.participant_id %}" method="post">
             {% csrf_token %}
+            <p>
+                Fields with an <span style="color: red">*</span> next to them are
+                 required.
+            </p>
         <div id="participant_info">
           <div id="participant_name">
             <p>
@@ -47,7 +51,7 @@
           </div>
           <div id="date">
             <p>
-                <b><u>Date:</u></b> {{ form.date }}
+                <span style="color: red">*</span> <b><u>Date:</u></b> {{ form.date }}
                 <span class="error_message">
                     {{ form.date.errors.as_text }}
                 </span>
@@ -57,7 +61,7 @@
         <div id="section_basic_mount_aid">
           <div id="basic_trail_rules">
             <p>
-                <b><u>Basic Trail Rules:</u></b> {{ form.basic_trail_rules }}
+                <span style="color: red">*</span><b><u>Basic Trail Rules:</u></b> {{ form.basic_trail_rules }}
                 <span class="error_message">
                     {{ form.basic_trail_rules.errors.as_text }}
                 </span>
@@ -73,7 +77,7 @@
           </div>
           <div id="mount">
             <p>
-                <b><u>Mount:</u></b> {{ form.mount }}
+                <span style="color: red">*</span> <b><u>Mount:</u></b> {{ form.mount }}
                 <span class="error_message">
                     {{ form.mount.errors.as_text }}
                 </span>
@@ -89,7 +93,7 @@
           </div>
           <div id="dismount">
             <p>
-                <b><u>Dismount:</u></b> {{ form.dismount }}
+                <span style="color: red">*</span> <b><u>Dismount:</u></b> {{ form.dismount }}
                 <span class="error_message">
                     {{ form.dismount.errors.as_text }}
                 </span>
@@ -105,7 +109,7 @@
           </div>
           <div id="emergency_dismount">
             <p>
-                <b><u>Emergency Dismount:</u></b> {{ form.emergency_dismount }}
+                <span style="color: red">*</span> <b><u>Emergency Dismount:</u></b> {{ form.emergency_dismount }}
                 <span class="error_message">
                     {{ form.emergency_dismount.errors.as_text }}
                 </span>
@@ -121,7 +125,7 @@
           </div>
           <div id="four_natural_aids">
             <p>
-                <b><u>Four Natural Aids:</u></b> {{ form.four_natural_aids }}
+                <span style="color: red">*</span> <b><u>Four Natural Aids:</u></b> {{ form.four_natural_aids }}
                 <span class="error_message">
                     {{ form.four_natural_aids.errors.as_text }}
                 </span>
@@ -137,7 +141,7 @@
           </div>
           <div id="basic_control">
             <p>
-                <b><u>Basic Control:</u></b> {{ form.basic_control }}
+                <span style="color: red">*</span> <b><u>Basic Control:</u></b> {{ form.basic_control }}
                 <span class="error_message">
                     {{ form.basic_control.errors.as_text }}
                 </span>
@@ -155,7 +159,7 @@
         <div id="section_reverse_never_ridden_seat">
           <div id="reverse_at_walk">
             <p>
-                <b><u>Reverse - At Walk:</u></b> {{ form.reverse_at_walk }}
+                <span style="color: red">*</span> <b><u>Reverse - At Walk:</u></b> {{ form.reverse_at_walk }}
                 <span class="error_message">
                     {{ form.reverse_at_walk.errors.as_text }}
                 </span>
@@ -171,7 +175,7 @@
           </div>
           <div id="reverse_at_trot">
             <p>
-                <b><u>Reverse - At Trot:</u></b> {{ form.reverse_at_trot }}
+                <span style="color: red">*</span> <b><u>Reverse - At Trot:</u></b> {{ form.reverse_at_trot }}
                 <span class="error_message">
                     {{ form.reverse_at_trot.errors.as_text }}
                 </span>
@@ -187,7 +191,7 @@
           </div>
           <div id="never_ridden">
             <p>
-                <b><u>Never Ridden:</u></b> {{ form.never_ridden }}
+                <span style="color: red">*</span> <b><u>Never Ridden:</u></b> {{ form.never_ridden }}
                 <span class="error_message">
                     {{ form.never_ridden.errors.as_text }}
                 </span>
@@ -203,7 +207,7 @@
           </div>
           <div id="seat_at_walk">
             <p>
-                <b><u>Seat - At Walk:</u></b> {{ form.seat_at_walk }}
+                <span style="color: red">*</span> <b><u>Seat - At Walk:</u></b> {{ form.seat_at_walk }}
                 <span class="error_message">
                     {{ form.seat_at_walk.errors.as_text }}
                 </span>
@@ -219,7 +223,7 @@
           </div>
           <div id="seat_at_trot">
             <p>
-                <b><u>Seat - At Trot:</u></b> {{ form.seat_at_trot }}
+                <span style="color: red">*</span> <b><u>Seat - At Trot:</u></b> {{ form.seat_at_trot }}
                 <span class="error_message">
                     {{ form.seat_at_trot.errors.as_text }}
                 </span>
@@ -235,7 +239,7 @@
           </div>
           <div id="seat_at_canter">
             <p>
-                <b><u>Seat - At Canter:</u></b> {{ form.seat_at_canter }}
+                <span style="color: red">*</span> <b><u>Seat - At Canter:</u></b> {{ form.seat_at_canter }}
                 <span class="error_message">
                     {{ form.seat_at_canter.errors.as_text }}
                 </span>
@@ -251,7 +255,7 @@
           </div>
           <div id="basic_seat_english">
             <p>
-                <b><u>Basic Seat - English:</u></b> {{ form.basic_seat_english }}
+                <span style="color: red">*</span> <b><u>Basic Seat - English:</u></b> {{ form.basic_seat_english }}
                 <span class="error_message">
                     {{ form.basic_seat_english.errors.as_text }}
                 </span>
@@ -267,7 +271,7 @@
           </div>
           <div id="basic_seat_western">
             <p>
-                <b><u>Basic Seat - Western:</u></b> {{ form.basic_seat_western }}
+                <span style="color: red">*</span> <b><u>Basic Seat - Western:</u></b> {{ form.basic_seat_western }}
                 <span class="error_message">
                     {{ form.basic_seat_western.errors.as_text }}
                 </span>
@@ -285,7 +289,7 @@
         <div id="section_handpost_twopoint_circle">
           <div id="hand_pos_english">
             <p>
-                <b><u>Hand Post - English:</u></b> {{ form.hand_pos_english }}
+                <span style="color: red">*</span> <b><u>Hand Post - English:</u></b> {{ form.hand_pos_english }}
                 <span class="error_message">
                     {{ form.hand_pos_english.errors.as_text }}
                 </span>
@@ -301,7 +305,7 @@
           </div>
           <div id="hand_post_western">
             <p>
-                <b><u>Hand Post - Western:</u></b> {{ form.hand_post_western }}
+                <span style="color: red">*</span> <b><u>Hand Post - Western:</u></b> {{ form.hand_post_western }}
                 <span class="error_message">
                     {{ form.hand_post_western.errors.as_text }}
                 </span>
@@ -317,7 +321,7 @@
           </div>
           <div id="two_point_trot">
             <p>
-                <b><u>Two Point - Trot:</u></b> {{ form.two_point_trot }}
+                <span style="color: red">*</span> <b><u>Two Point - Trot:</u></b> {{ form.two_point_trot }}
                 <span class="error_message">
                     {{ form.two_point_trot.errors.as_text }}
                 </span>
@@ -333,7 +337,7 @@
           </div>
           <div id="two_point_canter">
             <p>
-                <b><u>Two Point - Canter:</u></b> {{ form.two_point_canter }}
+                <span style="color: red">*</span> <b><u>Two Point - Canter:</u></b> {{ form.two_point_canter }}
                 <span class="error_message">
                     {{ form.two_point_canter.errors.as_text }}
                 </span>
@@ -349,7 +353,7 @@
           </div>
           <div id="circle_trot_no_stirrups">
             <p>
-                <b><u>Circle Trot - No Stirrups:</u></b> {{ form.circle_trot_no_stirrups }}
+                <span style="color: red">*</span> <b><u>Circle Trot - No Stirrups:</u></b> {{ form.circle_trot_no_stirrups }}
                 <span class="error_message">
                     {{ form.circle_trot_no_stirrups.errors.as_text }}
                 </span>
@@ -365,7 +369,7 @@
           </div>
           <div id="circle_at_canter">
             <p>
-                <b><u>Circle - At Canter:</u></b> {{ form.circle_at_canter }}
+                <span style="color: red">*</span> <b><u>Circle - At Canter:</u></b> {{ form.circle_at_canter }}
                 <span class="error_message">
                     {{ form.circle_at_canter.errors.as_text }}
                 </span>
@@ -381,7 +385,7 @@
           </div>
           <div id="circle_canter_no_stirrups">
             <p>
-                <b><u>Circle Canter - No Stirrups:</u></b> {{ form.circle_canter_no_stirrups }}
+                <span style="color: red">*</span> <b><u>Circle Canter - No Stirrups:</u></b> {{ form.circle_canter_no_stirrups }}
                 <span class="error_message">
                     {{ form.circle_canter_no_stirrups.errors.as_text }}
                 </span>
@@ -397,7 +401,7 @@
           </div>
           <div id="circle_at_walk">
             <p>
-                <b><u>Circle - At Walk:</u></b> {{ form.circle_at_walk }}
+                <span style="color: red">*</span> <b><u>Circle - At Walk:</u></b> {{ form.circle_at_walk }}
                 <span class="error_message">
                     {{ form.circle_at_walk.errors.as_text }}
                 </span>
@@ -413,7 +417,7 @@
           </div>
           <div id="circle_at_trot">
             <p>
-                <b><u>Circle - At Trot:</u></b> {{ form.circle_at_trot }}
+                <span style="color: red">*</span> <b><u>Circle - At Trot:</u></b> {{ form.circle_at_trot }}
                 <span class="error_message">
                     {{ form.circle_at_trot.errors.as_text }}
                 </span>
@@ -431,7 +435,7 @@
         <div id="section_holds">
           <div id="holds_handhold_walk">
             <p>
-                <b><u>Handhold - Walk:</u></b> {{ form.holds_handhold_walk }}
+                <span style="color: red">*</span> <b><u>Handhold - Walk:</u></b> {{ form.holds_handhold_walk }}
                 <span class="error_message">
                     {{ form.holds_handhold_walk.errors.as_text }}
                 </span>
@@ -447,7 +451,7 @@
           </div>
           <div id="holds_handhold_sit_trot">
             <p>
-                <b><u>Handhold - Sit Trot:</u></b> {{ form.holds_handhold_sit_trot }}
+                <span style="color: red">*</span> <b><u>Handhold - Sit Trot:</u></b> {{ form.holds_handhold_sit_trot }}
                 <span class="error_message">
                     {{ form.holds_handhold_sit_trot.errors.as_text }}
                 </span>
@@ -463,7 +467,7 @@
           </div>
           <div id="holds_handhold_post_trot">
             <p>
-                <b><u>Handhold - Post Trot:</u></b> {{ form.holds_handhold_post_trot }}
+                <span style="color: red">*</span> <b><u>Handhold - Post Trot:</u></b> {{ form.holds_handhold_post_trot }}
                 <span class="error_message">
                     {{ form.holds_handhold_post_trot.errors.as_text }}
                 </span>
@@ -479,7 +483,7 @@
           </div>
           <div id="holds_handhold_canter">
             <p>
-                <b><u>Handhold - Canter:</u></b> {{ form.holds_handhold_canter }}
+                <span style="color: red">*</span> <b><u>Handhold - Canter:</u></b> {{ form.holds_handhold_canter }}
                 <span class="error_message">
                     {{ form.holds_handhold_canter.errors.as_text }}
                 </span>
@@ -495,7 +499,7 @@
           </div>
           <div id="holds_reins_walk">
             <p>
-                <b><u>Holds Reins - Walk:</u></b> {{ form.holds_reins_walk }}
+                <span style="color: red">*</span> <b><u>Holds Reins - Walk:</u></b> {{ form.holds_reins_walk }}
                 <span class="error_message">
                     {{ form.holds_reins_walk.errors.as_text }}
                 </span>
@@ -511,7 +515,7 @@
           </div>
           <div id="holds_reins_sit_trot">
             <p>
-                <b><u>Holds Reins - Sit Trot:</u></b> {{ form.holds_reins_sit_trot }}
+                <span style="color: red">*</span> <b><u>Holds Reins - Sit Trot:</u></b> {{ form.holds_reins_sit_trot }}
                 <span class="error_message">
                     {{ form.holds_reins_sit_trot.errors.as_text }}
                 </span>
@@ -527,7 +531,7 @@
           </div>
           <div id="holds_reins_post_trot">
             <p>
-                <b><u>Holds Reins - Post Trot:</u></b> {{ form.holds_reins_post_trot }}
+                <span style="color: red">*</span> <b><u>Holds Reins - Post Trot:</u></b> {{ form.holds_reins_post_trot }}
                 <span class="error_message">
                     {{ form.holds_reins_post_trot.errors.as_text }}
                 </span>
@@ -543,7 +547,7 @@
           </div>
           <div id="holds_reins_canter">
             <p>
-                <b><u>Holds Reins - Canter:</u></b> {{ form.holds_reins_canter }}
+                <span style="color: red">*</span> <b><u>Holds Reins - Canter:</u></b> {{ form.holds_reins_canter }}
                 <span class="error_message">
                     {{ form.holds_reins_canter.errors.as_text }}
                 </span>
@@ -561,7 +565,7 @@
         <div id="section_shorten_lengthen_control_halt">
           <div id="shorten_lengthen_reins_walk">
             <p>
-                <b><u>Shorten/Lengthen Reins - Walk:</u></b> {{ form.shorten_lengthen_reins_walk }}
+                <span style="color: red">*</span> <b><u>Shorten/Lengthen Reins - Walk:</u></b> {{ form.shorten_lengthen_reins_walk }}
                 <span class="error_message">
                     {{ form.shorten_lengthen_reins_walk.errors.as_text }}
                 </span>
@@ -577,7 +581,7 @@
           </div>
           <div id="shorten_lengthen_reins_sit_trot">
             <p>
-                <b><u>Shorten/Lengthen Reins - Sit Trot:</u></b> {{ form.shorten_lengthen_reins_sit_trot }}
+                <span style="color: red">*</span> <b><u>Shorten/Lengthen Reins - Sit Trot:</u></b> {{ form.shorten_lengthen_reins_sit_trot }}
                 <span class="error_message">
                     {{ form.shorten_lengthen_reins_sit_trot.errors.as_text }}
                 </span>
@@ -593,7 +597,7 @@
           </div>
           <div id="shorten_lengthen_reins_post_trot">
             <p>
-                <b><u>Shorten/Lengthen Reins - Post Trot:</u></b> {{ form.shorten_lengthen_reins_post_trot }}
+                <span style="color: red">*</span> <b><u>Shorten/Lengthen Reins - Post Trot:</u></b> {{ form.shorten_lengthen_reins_post_trot }}
                 <span class="error_message">
                     {{ form.shorten_lengthen_reins_post_trot.errors.as_text }}
                 </span>
@@ -609,7 +613,7 @@
           </div>
           <div id="shorten_lengthen_reins_canter">
             <p>
-                <b><u>Shorten/Lengthen Reins - Canter:</u></b> {{ form.shorten_lengthen_reins_canter }}
+                <span style="color: red">*</span> <b><u>Shorten/Lengthen Reins - Canter:</u></b> {{ form.shorten_lengthen_reins_canter }}
                 <span class="error_message">
                     {{ form.shorten_lengthen_reins_canter.errors.as_text }}
                 </span>
@@ -625,7 +629,7 @@
           </div>
           <div id="can_control_horse_walk">
             <p>
-                <b><u>Can Control Horse - Walk:</u></b> {{ form.can_control_horse_walk }}
+                <span style="color: red">*</span> <b><u>Can Control Horse - Walk:</u></b> {{ form.can_control_horse_walk }}
                 <span class="error_message">
                     {{ form.can_control_horse_walk.errors.as_text }}
                 </span>
@@ -641,7 +645,7 @@
           </div>
           <div id="can_control_horse_sit_trot">
             <p>
-                <b><u>Can Control Horse - Sit Trot:</u></b> {{ form.can_control_horse_sit_trot }}
+                <span style="color: red">*</span> <b><u>Can Control Horse - Sit Trot:</u></b> {{ form.can_control_horse_sit_trot }}
                 <span class="error_message">
                     {{ form.can_control_horse_sit_trot.errors.as_text }}
                 </span>
@@ -657,7 +661,7 @@
           </div>
           <div id="can_control_horse_post_trot">
             <p>
-                <b><u>Can Control Horse - Post Trot:</u></b> {{ form.can_control_horse_post_trot }}
+                <span style="color: red">*</span> <b><u>Can Control Horse - Post Trot:</u></b> {{ form.can_control_horse_post_trot }}
                 <span class="error_message">
                     {{ form.can_control_horse_post_trot.errors.as_text }}
                 </span>
@@ -673,7 +677,7 @@
           </div>
           <div id="can_control_horse_canter">
             <p>
-                <b><u>Can Control Horse - Canter:</u></b> {{ form.can_control_horse_canter }}
+                <span style="color: red">*</span> <b><u>Can Control Horse - Canter:</u></b> {{ form.can_control_horse_canter }}
                 <span class="error_message">
                     {{ form.can_control_horse_canter.errors.as_text }}
                 </span>
@@ -689,7 +693,7 @@
           </div>
           <div id="can_halt_walk">
             <p>
-                <b><u>Can Halt - Walk:</u></b> {{ form.can_halt_walk }}
+                <span style="color: red">*</span> <b><u>Can Halt - Walk:</u></b> {{ form.can_halt_walk }}
                 <span class="error_message">
                     {{ form.can_halt_walk.errors.as_text }}
                 </span>
@@ -705,7 +709,7 @@
           </div>
           <div id="can_halt_sit_trot">
             <p>
-                <b><u>Can Halt - Sit Trot:</u></b> {{ form.can_halt_sit_trot }}
+                <span style="color: red">*</span> <b><u>Can Halt - Sit Trot:</u></b> {{ form.can_halt_sit_trot }}
                 <span class="error_message">
                     {{ form.can_halt_sit_trot.errors.as_text }}
                 </span>
@@ -721,7 +725,7 @@
           </div>
           <div id="can_halt_post_trot">
             <p>
-                <b><u>Can Halt - Post Trot:</u></b> {{ form.can_halt_post_trot }}
+                <span style="color: red">*</span> <b><u>Can Halt - Post Trot:</u></b> {{ form.can_halt_post_trot }}
                 <span class="error_message">
                     {{ form.can_halt_post_trot.errors.as_text }}
                 </span>
@@ -737,7 +741,7 @@
           </div>
           <div id="can_halt_canter">
             <p>
-                <b><u>Can Halt - Canter:</u></b> {{ form.can_halt_canter }}
+                <span style="color: red">*</span> <b><u>Can Halt - Canter:</u></b> {{ form.can_halt_canter }}
                 <span class="error_message">
                     {{ form.can_halt_canter.errors.as_text }}
                 </span>
@@ -755,7 +759,7 @@
         <div id="section_stirrups_half_seat">
           <div id="drop_pickup_stirrups_walk">
             <p>
-                <b><u>Drop/Pickup Stirrups - Walk:</u></b> {{ form.drop_pickup_stirrups_walk }}
+                <span style="color: red">*</span> <b><u>Drop/Pickup Stirrups - Walk:</u></b> {{ form.drop_pickup_stirrups_walk }}
                 <span class="error_message">
                     {{ form.drop_pickup_stirrups_walk.errors.as_text }}
                 </span>
@@ -771,7 +775,7 @@
           </div>
           <div id="drop_pickup_stirrups_sit_trot">
             <p>
-                <b><u>Drop/Pickup Stirrups - Sit Trot:</u></b> {{ form.drop_pickup_stirrups_sit_trot }}
+                <span style="color: red">*</span> <b><u>Drop/Pickup Stirrups - Sit Trot:</u></b> {{ form.drop_pickup_stirrups_sit_trot }}
                 <span class="error_message">
                     {{ form.drop_pickup_stirrups_sit_trot.errors.as_text }}
                 </span>
@@ -787,7 +791,7 @@
           </div>
           <div id="drop_pickup_stirrups_post_trot">
             <p>
-                <b><u>Drop/Pickup Stirrups - Post Trot:</u></b> {{ form.drop_pickup_stirrups_post_trot }}
+                <span style="color: red">*</span> <b><u>Drop/Pickup Stirrups - Post Trot:</u></b> {{ form.drop_pickup_stirrups_post_trot }}
                 <span class="error_message">
                     {{ form.drop_pickup_stirrups_post_trot.errors.as_text }}
                 </span>
@@ -803,7 +807,7 @@
           </div>
           <div id="drop_pickup_stirrups_canter">
             <p>
-                <b><u>Drop/Pickup Stirrups - Canter:</u></b> {{ form.drop_pickup_stirrups_canter }}
+                <span style="color: red">*</span> <b><u>Drop/Pickup Stirrups - Canter:</u></b> {{ form.drop_pickup_stirrups_canter }}
                 <span class="error_message">
                     {{ form.drop_pickup_stirrups_canter.errors.as_text }}
                 </span>
@@ -819,7 +823,7 @@
           </div>
           <div id="rides_no_stirrups_walk">
             <p>
-                <b><u>Rides No Stirrups - Walk:</u></b> {{ form.rides_no_stirrups_walk }}
+                <span style="color: red">*</span> <b><u>Rides No Stirrups - Walk:</u></b> {{ form.rides_no_stirrups_walk }}
                 <span class="error_message">
                     {{ form.rides_no_stirrups_walk.errors.as_text }}
                 </span>
@@ -835,7 +839,7 @@
           </div>
           <div id="rides_no_stirrups_sit_trot">
             <p>
-                <b><u>Rides No Stirrups - Sit Trot:</u></b> {{ form.rides_no_stirrups_sit_trot }}
+                <span style="color: red">*</span> <b><u>Rides No Stirrups - Sit Trot:</u></b> {{ form.rides_no_stirrups_sit_trot }}
                 <span class="error_message">
                     {{ form.rides_no_stirrups_sit_trot.errors.as_text }}
                 </span>
@@ -851,7 +855,7 @@
           </div>
           <div id="rides_no_stirrups_post_trot">
             <p>
-                <b><u>Rides No Stirrups - Post Trot:</u></b> {{ form.rides_no_stirrups_post_trot }}
+                <span style="color: red">*</span> <b><u>Rides No Stirrups - Post Trot:</u></b> {{ form.rides_no_stirrups_post_trot }}
                 <span class="error_message">
                     {{ form.rides_no_stirrups_post_trot.errors.as_text }}
                 </span>
@@ -867,7 +871,7 @@
           </div>
           <div id="rides_no_stirrups_canter">
             <p>
-                <b><u>Rides No Stirrups - Canter:</u></b> {{ form.rides_no_stirrups_canter }}
+                <span style="color: red">*</span> <b><u>Rides No Stirrups - Canter:</u></b> {{ form.rides_no_stirrups_canter }}
                 <span class="error_message">
                     {{ form.rides_no_stirrups_canter.errors.as_text }}
                 </span>
@@ -883,7 +887,7 @@
           </div>
           <div id="maintain_half_seat_walk">
             <p>
-                <b><u>Maintain Half Seat - Walk:</u></b> {{ form.maintain_half_seat_walk }}
+                <span style="color: red">*</span> <b><u>Maintain Half Seat - Walk:</u></b> {{ form.maintain_half_seat_walk }}
                 <span class="error_message">
                     {{ form.maintain_half_seat_walk.errors.as_text }}
                 </span>
@@ -899,7 +903,7 @@
           </div>
           <div id="maintain_half_seat_sit_trot">
             <p>
-                <b><u>Maintain Half Seat - Sit Trot:</u></b> {{ form.maintain_half_seat_sit_trot }}
+                <span style="color: red">*</span> <b><u>Maintain Half Seat - Sit Trot:</u></b> {{ form.maintain_half_seat_sit_trot }}
                 <span class="error_message">
                     {{ form.maintain_half_seat_sit_trot.errors.as_text }}
                 </span>
@@ -915,7 +919,7 @@
           </div>
           <div id="maintain_half_seat_post_trot">
             <p>
-                <b><u>Maintain Half Seat - Post Trot:</u></b> {{ form.maintain_half_seat_post_trot }}
+                <span style="color: red">*</span> <b><u>Maintain Half Seat - Post Trot:</u></b> {{ form.maintain_half_seat_post_trot }}
                 <span class="error_message">
                     {{ form.maintain_half_seat_post_trot.errors.as_text }}
                 </span>
@@ -931,7 +935,7 @@
           </div>
           <div id="maintain_half_seat_canter">
             <p>
-                <b><u>Maintain Half Seat - Canter:</u></b> {{ form.maintain_half_seat_canter }}
+                <span style="color: red">*</span> <b><u>Maintain Half Seat - Canter:</u></b> {{ form.maintain_half_seat_canter }}
                 <span class="error_message">
                     {{ form.maintain_half_seat_canter.errors.as_text }}
                 </span>
@@ -949,7 +953,7 @@
         <div id="section_post_proper">
           <div id="can_post_walk">
             <p>
-                <b><u>Can Post - Walk:</u></b> {{ form.can_post_walk }}
+                <span style="color: red">*</span> <b><u>Can Post - Walk:</u></b> {{ form.can_post_walk }}
                 <span class="error_message">
                     {{ form.can_post_walk.errors.as_text }}
                 </span>
@@ -965,7 +969,7 @@
           </div>
           <div id="can_post_sit_trot">
             <p>
-                <b><u>Can Post - Sit Trot:</u></b> {{ form.can_post_sit_trot }}
+                <span style="color: red">*</span> <b><u>Can Post - Sit Trot:</u></b> {{ form.can_post_sit_trot }}
                 <span class="error_message">
                     {{ form.can_post_sit_trot.errors.as_text }}
                 </span>
@@ -981,7 +985,7 @@
           </div>
           <div id="can_post_post_trot">
             <p>
-                <b><u>Can Post - Post Trot:</u></b> {{ form.can_post_post_trot }}
+                <span style="color: red">*</span> <b><u>Can Post - Post Trot:</u></b> {{ form.can_post_post_trot }}
                 <span class="error_message">
                     {{ form.can_post_post_trot.errors.as_text }}
                 </span>
@@ -997,7 +1001,7 @@
           </div>
           <div id="can_post_canter">
             <p>
-                <b><u>Can Post - Canter:</u></b> {{ form.can_post_canter }}
+                <span style="color: red">*</span> <b><u>Can Post - Canter:</u></b> {{ form.can_post_canter }}
                 <span class="error_message">
                     {{ form.can_post_canter.errors.as_text }}
                 </span>
@@ -1013,7 +1017,7 @@
           </div>
           <div id="proper_diagonal_walk">
             <p>
-                <b><u>Proper Diagonal - Walk:</u></b> {{ form.proper_diagonal_walk }}
+                <span style="color: red">*</span> <b><u>Proper Diagonal - Walk:</u></b> {{ form.proper_diagonal_walk }}
                 <span class="error_message">
                     {{ form.proper_diagonal_walk.errors.as_text }}
                 </span>
@@ -1029,7 +1033,7 @@
           </div>
           <div id="proper_diagonal_sit_trot">
             <p>
-                <b><u>Proper Diagonal - Sit Trot:</u></b> {{ form.proper_diagonal_sit_trot }}
+                <span style="color: red">*</span> <b><u>Proper Diagonal - Sit Trot:</u></b> {{ form.proper_diagonal_sit_trot }}
                 <span class="error_message">
                     {{ form.proper_diagonal_sit_trot.errors.as_text }}
                 </span>
@@ -1045,7 +1049,7 @@
           </div>
           <div id="proper_diagonal_post_trot">
             <p>
-                <b><u>Proper Diagonal - Post Trot:</u></b> {{ form.proper_diagonal_post_trot }}
+                <span style="color: red">*</span> <b><u>Proper Diagonal - Post Trot:</u></b> {{ form.proper_diagonal_post_trot }}
                 <span class="error_message">
                     {{ form.proper_diagonal_post_trot.errors.as_text }}
                 </span>
@@ -1061,7 +1065,7 @@
           </div>
           <div id="proper_diagonal_canter">
             <p>
-                <b><u>Proper Diagonal - Canter:</u></b> {{ form.proper_diagonal_canter }}
+                <span style="color: red">*</span> <b><u>Proper Diagonal - Canter:</u></b> {{ form.proper_diagonal_canter }}
                 <span class="error_message">
                     {{ form.proper_diagonal_canter.errors.as_text }}
                 </span>
@@ -1077,7 +1081,7 @@
           </div>
           <div id="proper_lead_canter_sees">
             <p>
-                <b><u>Proper Lead Canter - Sees:</u></b> {{ form.proper_lead_canter_sees }}
+                <span style="color: red">*</span> <b><u>Proper Lead Canter - Sees:</u></b> {{ form.proper_lead_canter_sees }}
                 <span class="error_message">
                     {{ form.proper_lead_canter_sees.errors.as_text }}
                 </span>
@@ -1093,7 +1097,7 @@
           </div>
           <div id="proper_lead_canter_knows">
             <p>
-                <b><u>Proper Lead Canter - Knows:</u></b> {{ form.proper_lead_canter_knows }}
+                <span style="color: red">*</span> <b><u>Proper Lead Canter - Knows:</u></b> {{ form.proper_lead_canter_knows }}
                 <span class="error_message">
                     {{ form.proper_lead_canter_knows.errors.as_text }}
                 </span>
@@ -1111,7 +1115,7 @@
         <div id="section_cavaletti_crossbar">
           <div id="can_steer_over_cavalletti_walk">
             <p>
-                <b><u>Can Steer Over Cavalletti - Walk:</u></b> {{ form.can_steer_over_cavalletti_walk }}
+                <span style="color: red">*</span> <b><u>Can Steer Over Cavalletti - Walk:</u></b> {{ form.can_steer_over_cavalletti_walk }}
                 <span class="error_message">
                     {{ form.can_steer_over_cavalletti_walk.errors.as_text }}
                 </span>
@@ -1127,7 +1131,7 @@
           </div>
           <div id="can_steer_over_cavalletti_sit_trot">
             <p>
-                <b><u>Can Steer Over Cavalletti - Sit Trot:</u></b> {{ form.can_steer_over_cavalletti_sit_trot }}
+                <span style="color: red">*</span> <b><u>Can Steer Over Cavalletti - Sit Trot:</u></b> {{ form.can_steer_over_cavalletti_sit_trot }}
                 <span class="error_message">
                     {{ form.can_steer_over_cavalletti_sit_trot.errors.as_text }}
                 </span>
@@ -1143,7 +1147,7 @@
           </div>
           <div id="can_steer_over_cavalletti_post_trot">
             <p>
-                <b><u>Can Steer Over Cavalletti - Post Trot:</u></b> {{ form.can_steer_over_cavalletti_post_trot }}
+                <span style="color: red">*</span> <b><u>Can Steer Over Cavalletti - Post Trot:</u></b> {{ form.can_steer_over_cavalletti_post_trot }}
                 <span class="error_message">
                     {{ form.can_steer_over_cavalletti_post_trot.errors.as_text }}
                 </span>
@@ -1175,7 +1179,7 @@
           </div>
           <div id="jump_crossbar_walk">
             <p>
-                <b><u>Jump Crossbar - Walk:</u></b> {{ form.jump_crossbar_walk }}
+                <span style="color: red">*</span> <b><u>Jump Crossbar - Walk:</u></b> {{ form.jump_crossbar_walk }}
                 <span class="error_message">
                     {{ form.jump_crossbar_walk.errors.as_text }}
                 </span>
@@ -1191,7 +1195,7 @@
           </div>
           <div id="jump_crossbar_sit_trot">
             <p>
-                <b><u>Jump Crossbar - Sit Trot:</u></b> {{ form.jump_crossbar_sit_trot }}
+                <span style="color: red">*</span> <b><u>Jump Crossbar - Sit Trot:</u></b> {{ form.jump_crossbar_sit_trot }}
                 <span class="error_message">
                     {{ form.jump_crossbar_sit_trot.errors.as_text }}
                 </span>
@@ -1207,7 +1211,7 @@
           </div>
           <div id="jump_crossbar_post_trot">
             <p>
-                <b><u>Jump Crossbar - Post Trot:</u></b> {{ form.jump_crossbar_post_trot }}
+                <span style="color: red">*</span> <b><u>Jump Crossbar - Post Trot:</u></b> {{ form.jump_crossbar_post_trot }}
                 <span class="error_message">
                     {{ form.jump_crossbar_post_trot.errors.as_text }}
                 </span>
@@ -1223,7 +1227,7 @@
           </div>
           <div id="jump_crossbar_canter">
             <p>
-                <b><u>Jump Crossbar - Canter:</u></b> {{ form.jump_crossbar_canter }}
+                <span style="color: red">*</span> <b><u>Jump Crossbar - Canter:</u></b> {{ form.jump_crossbar_canter }}
                 <span class="error_message">
                     {{ form.jump_crossbar_canter.errors.as_text }}
                 </span>
@@ -1241,7 +1245,7 @@
         <div id="section_overall_comments">
           <div id="comments">
             <p>
-                <b><u>Overall Comments:</u></b> {{ form.comments }}
+                <span style="color: red">*</span> <b><u>Overall Comments:</u></b> {{ form.comments }}
                 <span class="error_message">
                     {{ form.comments.errors.as_text }}
                 </span>

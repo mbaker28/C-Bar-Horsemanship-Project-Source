@@ -6,6 +6,10 @@
     {{ error_text }}
     </strong></p>
     {% endif %}
+    <p>
+        Fields with an <span style="color: red">*</span> next to them are
+         required.
+    </p>
     <p><strong>Warning: </strong>Under Oklahoma law, an equine professional is
         not liable for an injury to or death of a participant in equine
         activities resulting from the inherent risks of equine activities
@@ -17,10 +21,10 @@
           <span class="error_message">
               {{ form.name.errors.as_text }}
           </span>
-          (name of participant), born {{ form.birth_date }}
+          <span style="color: red">*</span>  (name of participant) <p>Born: <span style="color: red">*</span>  {{ form.birth_date }}
           <span class="error_message">
               {{ form.birth_date.errors.as_text }}
-          </span>, would like to participate in the
+          </span></p>, would like to participate in the
           C-Bar Horsemanship sponsored program(s). I acknowledge the potential
           risks involved in the various activities performed in the programs
           (e.g., horseback riding and other equine-assisted activities,
@@ -34,14 +38,14 @@
           injuries and/or losses I/my son/my daughter/my ward may sustain while
           participating in C-Bar Horsemanship sponsored programs.</p>
 
-      <p>Signature: {{ form.signature }}
+      <p> <span style="color: red">*</span> Signature: {{ form.signature }}
           <span class="error_message">
               {{ form.signature.errors.as_text }}
           </span>
-          Date: {{ form.date }}
+          <p><span style="color: red">*</span> Date: {{ form.date }}
           <span class="error_message">
               {{ form.date.errors.as_text }}
-          </span>
+          </span></p>
       </p>
 
       <input type="Submit" value="Submit" />
