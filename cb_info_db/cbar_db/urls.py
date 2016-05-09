@@ -132,4 +132,13 @@ urlpatterns = [
     # Rider Eval Checklist
     url(r'^forms/private/rider_eval_checklist/(?P<participant_id>[0-9]+)$', views.private_form_rider_eval_checklist,
         name='private_form_rider_eval_checklist'),
+
+    url(r'^private/logout/$', views.logout_confirmation,
+        name='logout-confirmation'),
+
+    url(r'^private/logout/confirmed/$', views.logout_user,
+        name='logout-user'),
+
+    url(r'^private/logged_out/$', views.loggered_out,
+        name="loggered-out"),
 ]
