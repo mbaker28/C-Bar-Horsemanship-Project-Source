@@ -123,5 +123,16 @@
                 {% endfor %}
             </div>
         </div>
+        <h2>Evaluation and Planning Forms</h2>
+        <div id="evaluation_and_planning_forms" class="floating_block_wrapper">
+            <div class="floating_block">
+                <strong>Observation Evaluations</strong><br />
+                {% for observation_evaluation in observation_evaluations %}
+                <a href="{% url 'report-observation-evaluation' participant.participant_id observation_evaluation.date.year observation_evaluation.date.month observation_evaluation.date.day %}">
+                    {{ observation_evaluation.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
