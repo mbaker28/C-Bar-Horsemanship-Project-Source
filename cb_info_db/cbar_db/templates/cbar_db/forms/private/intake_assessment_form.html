@@ -57,9 +57,7 @@
                 <p><strong>Participant Name</strong></p>
                 <p>
                     {% for form, participant in formset_and_participants %}
-                        {{ participant }}:
-                         {{ form.participant_name }}
-                         {{ form.participant_name.errors.as_text }}
+                        {{ participant.name }}
                         <br />
                     {% endfor %}
                 </p>
@@ -69,8 +67,7 @@
                 <p>
                     {% for form, participant in formset_and_participants %}
                         {{ participant }}:
-                         {{ form.birth_date }}
-                         {{ form.birth_date.errors.as_text }}
+                         {{ participant.birth_date }}
                         <br />
                     {% endfor %}
                 </p>
@@ -80,8 +77,7 @@
                 <p>
                     {% for form, participant in formset_and_participants %}
                         {{ participant }}:
-                         {{ form.height }}
-                         {{ form.height.errors.as_text }}
+                         {{ participant.height_in_feet_and_inches }}
                         <br />
                     {% endfor %}
                 </p>
@@ -91,8 +87,7 @@
                 <p>
                     {% for form, participant in formset_and_participants %}
                         {{ participant }}:
-                         {{ form.weight }}
-                         {{ form.weight.errors.as_text }}
+                         {{ participant.weight }} lbs
                         <br />
                     {% endfor %}
                 </p>
@@ -102,8 +97,7 @@
                 <p>
                     {% for form, participant in formset_and_participants %}
                         {{ participant }}:
-                         {{ form.gender }}
-                         {{ form.gender.errors.as_text }}
+                         {{ participant.get_gender_display }}
                         <br />
                     {% endfor %}
                 </p>

@@ -588,27 +588,6 @@ class RiderIntakeAssessmentForm(forms.Form):
     #   -"Volunteer Folder/.../blank/Rider Intake Assessment (Spring 2014).pdf"
     #   -"Volunteer Folder/.../Rider Intake Assessment (Spring 2014).pdf"
 
-    # Stored in Participant model (all should auto-fill):
-    participant_name=forms.CharField(
-        max_length=models.Participant._meta.get_field("name").max_length
-    )
-    birth_date=forms.DateField(widget=SelectDateWidget)
-    height=forms.DecimalField(
-        max_digits=models.Participant._meta.get_field("height").max_digits,
-        decimal_places=(
-            models.Participant._meta.get_field("height").decimal_places
-        )
-    )
-    weight=forms.DecimalField(
-        max_digits=models.Participant._meta.get_field("weight").max_digits,
-        decimal_places=(
-            models.Participant._meta.get_field("weight").decimal_places
-        )
-    )
-    gender=forms.ChoiceField(
-        choices=models.Participant._meta.get_field("gender").choices
-    )
-
     # Stored in AdaptationsNeeded:
     posture_standing=forms.ChoiceField(
         choices=(
