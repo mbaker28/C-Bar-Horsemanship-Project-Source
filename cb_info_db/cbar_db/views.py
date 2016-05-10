@@ -1149,6 +1149,7 @@ def logout_user(request):
     # redirect to a new URL:
     return HttpResponseRedirect(reverse("loggered-out")+"?a=a")
 
+
 def loggered_out(request):
     """ Used to tell the user they loggered out. """
 

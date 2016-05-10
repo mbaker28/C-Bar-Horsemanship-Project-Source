@@ -8927,7 +8927,7 @@ class TestLogout(TestCase):
         self.client.force_login(test_user)
 
         response = self.client.get(reverse("loggered-out")+"?a=a")
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_successfully_logs_out(self):
         test_user=models.User.objects.get(
@@ -8940,13 +8940,6 @@ class TestLogout(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_log_out_redirects_if_user_just_entered_url(self):
-        response = self.client.get(reverse("loggered-out"))
-
-        self.assertEqual(response.status_code, 302)
-
-        self.assertEqual(reverse("index-public"), response["Location"])
-
-    def test_log_out_request_and_redirects(self):
         response = self.client.get(reverse("loggered-out"))
 
         self.assertEqual(response.status_code, 302)
