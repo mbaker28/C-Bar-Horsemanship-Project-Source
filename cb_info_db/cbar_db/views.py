@@ -125,6 +125,28 @@ def public_form_application(request):
                 )
                 form_data_application.save()
 
+                if form.cleaned_data["participant_type_staff"] == True:
+                    participant_type_staff=models.ParticipantType(
+                        participant_type=models.ParticipantType.STAFF,
+                        participant_id=form_data_application
+                    )
+                    participant_type_staff.save()
+
+                if form.cleaned_data["participant_type_volunteer"] == True:
+                    participant_type_volunteer=models.ParticipantType(
+                        participant_type=models.ParticipantType.VOLUNTEER,
+                        participant_id=form_data_application
+                    )
+                    participant_type_volunteer.save()
+
+                if form.cleaned_data["participant_type_participant"] == True:
+                    participant_type_participant=models.ParticipantType(
+                        participant_type=models.ParticipantType.PARTICIPANT,
+                        participant_id=form_data_application
+                    )
+                    participant_type_participant.save()
+
+
             # redirect to a new URL:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 

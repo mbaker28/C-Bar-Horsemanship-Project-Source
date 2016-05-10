@@ -13,6 +13,12 @@
              required.
         </p>
         <p>
+            <span style="color: red">*</span> Position applying for:
+            {{ form.participant_type_participant }} Participant
+            {{ form.participant_type_volunteer }} Volunteer
+            {{ form.participant_type_staff }} Staff
+        </p>
+        <p>
             <span style="color: red">*</span> Name: {{ form.name }}
             <span class="error_message">
                 {{ form.name.errors.as_text }}

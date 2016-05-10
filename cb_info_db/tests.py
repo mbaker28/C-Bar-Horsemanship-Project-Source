@@ -110,11 +110,20 @@ class TestApplicationForm(TestCase):
         )
         test_participant.save()
 
+        test_position=models.ParticipantType(
+            participant_type="P",
+            participant_id=test_participant
+        )
+        test_position.save()
+
     def test_application_form_creates_participant(self):
         """ Tests whether the form creates a participant record once all
             fields are entered. """
 
         form_data={
+            "participant_type_staff": False,
+            "participant_type_volunteer": False,
+            "participant_type_participant": True,
             "name": "TEST Matt Murdock",
             "birth_date": "1989-5-20",
             "email": "matt@nelsonandmurdock.com",
@@ -140,12 +149,11 @@ class TestApplicationForm(TestCase):
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
 
-        # DISABLED: We don't have a post form url redirect location or view yet
         # Assert the the redirect url matches the post-form page:
-        # self.assertEqual(
-        #     resp['Location'],
-        #     'http://testserver/thank you place'
-        # )
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
 
         # Attempt to retreive the updated Participant record:
         try:
@@ -220,10 +228,182 @@ class TestApplicationForm(TestCase):
             form_data["email"]
         )
 
+    def test_application_form_creates_participanttype_records_if_true(self):
+        """ Tests whether the form creates the relevant ParticipantType records
+        if they were selected. """
+
+        form_data={
+            "participant_type_staff": True,
+            "participant_type_volunteer": True,
+            "participant_type_participant": True,
+            "name": "TEST Matt Murdock",
+            "birth_date": "2010-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height_feet": "5",
+            "height_inches": "8.5",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "74801",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Attempt to retreive the new Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retrieve the staff ParticipantType record:
+        found_staff=False
+        try:
+            print("Retrieving staff ParticipantType record...")
+            staff_in_db=models.ParticipantType.objects.get(
+                participant_id=participant_in_db,
+                participant_type=models.ParticipantType.STAFF
+            )
+            found_staff=True
+        except:
+            print("ERROR: Unable to retreive staff ParticipantType record!")
+        self.assertTrue(found_staff)
+
+        # Attempt to retrieve the volunteer ParticipantType record:
+        found_volunteer=False
+        try:
+            print("Retrieving volunteer ParticipantType record...")
+            volunteer_in_db=models.ParticipantType.objects.get(
+                participant_id=participant_in_db,
+                participant_type=models.ParticipantType.VOLUNTEER
+            )
+            found_volunteer=True
+        except:
+            print("ERROR: Unable to retreive volunteer ParticipantType record!")
+        self.assertTrue(found_volunteer)
+
+        # Attempt to retrieve the participant ParticipantType record:
+        found_participant=False
+        try:
+            print("Retrieving participant ParticipantType record...")
+            participant_in_db=models.ParticipantType.objects.get(
+                participant_id=participant_in_db,
+                participant_type=models.ParticipantType.PARTICIPANT
+            )
+            found_participant=True
+        except:
+            print(
+                "ERROR: Unable to retrieve participant ParticipantType record!"
+            )
+        self.assertTrue(found_participant)
+
+    def test_application_form_no_creates_participanttype_records_if_false(self):
+        """ Tests that the form does not create the relevant ParticipantType
+         records if they were not selected. """
+
+        form_data={
+            "participant_type_staff": False,
+            "participant_type_volunteer": False,
+            "participant_type_participant": False,
+            "name": "TEST Matt Murdock",
+            "birth_date": "2013-5-20",
+            "email": "matt@nelsonandmurdock.com",
+            "weight": "180.0",
+            "gender": "M",
+            "guardian_name": "Stick",
+            "height_feet": "5",
+            "height_inches": "8.5",
+            "minor_status": "G",
+            "address_street": "1234 Murdock Street",
+            "address_city": "Hell's Kitchen",
+            "address_state": "OK",
+            "address_zip": "74801",
+            "phone_home": "400-100-2000",
+            "phone_cell": "400-200-3000",
+            "phone_work": "400-300-4000",
+            "school_institution": "Stick's School of Kung Fu"
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("public-form-application"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Attempt to retreive the new Participant record:
+        try:
+            print("Retrieving participant record...")
+            participant_in_db=models.Participant.objects.get(
+                name=form_data["name"],
+                birth_date=form_data["birth_date"]
+            )
+        except:
+            print("ERROR: Unable to retreive participant record!")
+
+        # Attempt to retrieve the staff ParticipantType record:
+        found_staff=False
+        try:
+            print("Retrieving staff ParticipantType record...")
+            staff_in_db=models.ParticipantType.objects.get(
+                participant_id=participant_in_db,
+                participant_type=models.ParticipantType.STAFF
+            )
+            found_staff=True
+            print("ERROR: Found staff ParticipantType record!")
+        except:
+            pass
+        self.assertFalse(found_staff)
+
+        # Attempt to retrieve the volunteer ParticipantType record:
+        found_volunteer=False
+        try:
+            print("Retrieving volunteer ParticipantType record...")
+            volunteer_in_db=models.ParticipantType.objects.get(
+                participant_id=participant_in_db,
+                participant_type=models.ParticipantType.VOLUNTEER
+            )
+            found_volunteer=True
+            print("ERROR: Found volunteer ParticipantType record!")
+        except:
+            pass
+        self.assertFalse(found_volunteer)
+
+        # Attempt to retrieve the participant ParticipantType record:
+        found_participant=False
+        try:
+            print("Retrieving participant ParticipantType record...")
+            participant_in_db=models.ParticipantType.objects.get(
+                participant_id=participant_in_db,
+                participant_type=models.ParticipantType.PARTICIPANT
+            )
+            found_participant=True
+            print("ERROR: Found participant ParticipantType record!")
+        except:
+            pass
+        self.assertFalse(found_participant)
+
     def test_application_form_participant_already_exists(self):
         """ Form throws error if the participant already exists. """
 
         form_data={
+            "participant_type_staff": False,
+            "participant_type_volunteer": False,
+            "participant_type_participant": True,
             "name": "TEST Bruce Wayne",
             "birth_date": "1984-6-24",
             "email": "matt@nelsonandmurdock.com",
@@ -261,6 +441,9 @@ class TestApplicationForm(TestCase):
         """ Form throws an error if the form data is not valid. """
 
         form_data={
+            "participant_type_staff": False,
+            "participant_type_volunteer": False,
+            "participant_type_participant": True,
             "name": "TEST sdf83sdf",
             "birth_date": "sdf##df",
             "email": "matt@nelsonandmurdock.com",
@@ -299,6 +482,9 @@ class TestApplicationForm(TestCase):
          numbers, displays an error message. """
 
         form_data={
+            "participant_type_staff": False,
+            "participant_type_volunteer": False,
+            "participant_type_participant": True,
             "name": "TEST Matt Murdock",
             "birth_date": "1989-5-20",
             "email": "matt@nelsonandmurdock.com",
@@ -349,6 +535,9 @@ class TestApplicationForm(TestCase):
          number for the height_feet field displays an error message. """
 
         form_data={
+            "participant_type_staff": False,
+            "participant_type_volunteer": False,
+            "participant_type_participant": True,
             "name": "TEST Matt Murdock",
             "birth_date": "1989-5-20",
             "email": "matt@nelsonandmurdock.com",
@@ -387,6 +576,9 @@ class TestApplicationForm(TestCase):
          number for the height_inches field displays an error message. """
 
         form_data={
+            "participant_type_staff": False,
+            "participant_type_volunteer": False,
+            "participant_type_participant": True,
             "name": "TEST Matt Murdock",
             "birth_date": "1989-5-20",
             "email": "matt@nelsonandmurdock.com",
