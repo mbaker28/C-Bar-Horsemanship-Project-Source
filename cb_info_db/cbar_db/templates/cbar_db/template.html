@@ -2,6 +2,11 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{% static "cbar_db/css/cbar_styles.css" %}" />
     {% block header %}{% endblock %}
+    <style>
+        #logout-button{
+            text-align: right;
+        }
+    </style>
     <title>C-Bar Information Database</title>
 </head>
 <body>
@@ -13,6 +18,11 @@
                 <a class="button" href="{% url 'index-public-forms' %}">Registration</a>
                 <a class="button" href="{% url 'index-admin' %}">Administration</a>
             </div>
+            {% if user.is_authenticated %}
+            <div id="logout-button">
+                <a href="{% url 'logout-confirmation' %}"> Logout </a>
+            </div>
+            {% endif %}
         </div>
 
         <div class="content_container">

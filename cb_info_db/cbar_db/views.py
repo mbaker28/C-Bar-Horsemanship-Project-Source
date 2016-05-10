@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db import IntegrityError
@@ -1170,6 +1171,26 @@ def donation_monetary(request):
                 'form': form
             }
         )
+
+def logout_confirmation(request):
+    return render (request, 'cbar_db/logout.html')
+
+def logout_user(request):
+    logout(request)
+    # redirect to a new URL:
+    return HttpResponseRedirect(reverse("loggered-out")+"?a=a")
+
+
+def loggered_out(request):
+    """ Used to tell the user they loggered out. """
+
+    # Check if the user just typed the url in the menu bar:
+    if request.GET.get("a") == "a":
+        # The user was redirected here from a loggered out page, display the message:
+        return render(request, "cbar_db/successfully_logged_out.html")
+    else:
+        # The user just typed in the address, redirect to the home page:
+        return HttpResponseRedirect("/")
 
 
 @login_required

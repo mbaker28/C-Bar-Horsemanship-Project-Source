@@ -148,6 +148,15 @@ urlpatterns = [
     url(r'^forms/private/rider_eval_checklist/(?P<participant_id>[0-9]+)$', views.private_form_rider_eval_checklist,
         name='private_form_rider_eval_checklist'),
 
+    url(r'^private/logout/$', views.logout_confirmation,
+        name='logout-confirmation'),
+
+    url(r'^private/logout/confirmed/$', views.logout_user,
+        name='logout-user'),
+
+    url(r'^private/logged_out/$', views.loggered_out,
+        name="loggered-out"),
+
     # Seizure Phone Log form
     url(r'^forms/private/phone_log/(?P<participant_id>[0-9]+)$', views.private_form_phone_log,
         name='private-form-phone-log'),
