@@ -588,6 +588,13 @@ class RiderIntakeAssessmentForm(forms.Form):
     #   -"Volunteer Folder/.../blank/Rider Intake Assessment (Spring 2014).pdf"
     #   -"Volunteer Folder/.../Rider Intake Assessment (Spring 2014).pdf"
 
+    # GAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRR
+    # participant_id_index=forms.CharField(
+    #     max_length=1000,
+    #     widget=forms.HiddenInput,
+    #     initial="Burp"
+    # )
+
     # Stored in AdaptationsNeeded:
     posture_standing=forms.ChoiceField(
         choices=(
@@ -897,6 +904,7 @@ class RiderIntakeAssessmentForm(forms.Form):
         ),
         widget=forms.Textarea(attrs={'rows':4, 'cols':40})
     )
+
 
 class ObservationEvaluation(forms.Form):
     # name=forms.CharField(

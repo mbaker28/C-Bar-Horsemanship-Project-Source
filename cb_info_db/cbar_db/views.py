@@ -2260,7 +2260,22 @@ def private_form_intake_assessment(request):
                 )
 
                 if formset.is_valid():
+                    # The formset is valid. Check all the forms are valid and
+                    # save them.
                     loggeyMcLogging.error("The form is valid.")
+
+                    for form in formset:
+                        if form.is_valid():
+                            loggeyMcLogging.error("The current form is valid.")
+
+                        else:
+                            # One of the forms isn't valid.
+                            # The form is not valid.
+
+                            loggeyMcLogging.error("One of the forms is not valid")
+
+                            # TODO: Actually show error if invalid instead of
+                            #       blowing up.
 
                     # Redirect to the form saved page:
                     return HttpResponseRedirect(reverse("form-saved")+"?a=a")
