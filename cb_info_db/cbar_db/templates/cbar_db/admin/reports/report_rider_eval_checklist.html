@@ -1,0 +1,649 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Rider Evaluation Checlist Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            <strong>Participant's Name:</strong>
+             {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong>
+             {{ participant.birth_date }}
+        </p>
+
+        <hr />
+
+        <h2>Basic/Mount/Aid</h2>
+
+        <p>
+            <strong><u>Basic Trail Rules:</u></strong>
+            {{ rider_eval_checklist.basic_trail_rules }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.basic_trail_rules_com }}
+        </p>
+        <p>
+            <strong><u>Mount:</u></strong>
+            {{ rider_eval_checklist.mount }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.mount_com }}
+        </p>
+        <p>
+            <strong><u>Dismount:</u></strong>
+            {{ rider_eval_checklist.dismount }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.dismount_com }}
+        </p>
+        <p>
+            <strong><u>Emergency Dismount:</u></strong>
+            {{ rider_eval_checklist.emergency_dismount }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.emergency_dismount_com }}
+        </p>
+        <p>
+            <strong><u>Four Natural Aids:</u></strong>
+            {{ rider_eval_checklist.four_natural_aids }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.four_natural_aids_com }}
+        </p>
+        <p>
+            <strong><u>Basic Control:</u></strong>
+            {{ rider_eval_checklist.basic_control }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.basic_trail_rules_com }}
+        </p>
+
+        <hr />
+
+        <h2>Reverse/Never Ridden/Seat</h2>
+
+        <p>
+            <strong><u>Reverse - At Walk:</u></strong>
+            {{ rider_eval_checklist.reverse_at_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.reverse_at_walk_com }}
+        </p>
+        <p>
+            <strong><u>Reverse - At Trot:</u></strong>
+            {{ rider_eval_checklist.reverse_at_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.reverse_at_trot_com }}
+        </p>
+        <p>
+            <strong><u>Never Ridden:</u></strong>
+            {{ rider_eval_checklist.never_ridden }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.never_ridden_com }}
+        </p>
+        <p>
+            <strong><u>Seat - At Walk:</u></strong>
+            {{ rider_eval_checklist.seat_at_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.seat_at_walk_com }}
+        </p>
+        <p>
+            <strong><u>Seat - At Trot:</u></strong>
+            {{ rider_eval_checklist.seat_at_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.seat_at_trot_com }}
+        </p>
+        <p>
+            <strong><u>Seat - At Canter:</u></strong>
+            {{ rider_eval_checklist.seat_at_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.seat_at_canter_com }}
+        </p>
+        <p>
+            <strong><u>Basic Seat - English:</u></strong>
+            {{ rider_eval_checklist.basic_seat_english }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.basic_seat_english_com }}
+        </p>
+        <p>
+            <strong><u>Basic Seat - Western</u></strong>
+            {{ rider_eval_checklist.basic_seat_western }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.basic_seat_western_com }}
+        </p>
+
+        <hr />
+
+        <h2>Handpost/Twopoint/Circle</h2>
+
+        <p>
+            <strong><u>Hand Post - English:</u></strong>
+            {{ rider_eval_checklist.hand_pos_english }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.hand_pos_english_com }}
+        </p>
+        <p>
+            <strong><u>Hand Post - Western:</u></strong>
+            {{ rider_eval_checklist.hand_post_western }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.hand_post_western_com }}
+        </p>
+        <p>
+            <strong><u>Two Point - Trot:</u></strong>
+            {{ rider_eval_checklist.two_point_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.two_point_trot_com }}
+        </p>
+        <p>
+            <strong><u>Two Point - Canter:</u></strong>
+            {{ rider_eval_checklist.two_point_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.two_point_canter_com }}
+        </p>
+        <p>
+            <strong><u>Circle Trot - No Stirrups:</u></strong>
+            {{ rider_eval_checklist.circle_trot_no_stirrups }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.circle_trot_no_stirrups_com }}
+        </p>
+        <p>
+            <strong><u>Circle - At Canter:</u></strong>
+            {{ rider_eval_checklist.circle_at_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.circle_at_canter_com }}
+        </p>
+        <p>
+            <strong><u>Circle Canter - No Stirrups:</u></strong>
+            {{ rider_eval_checklist.circle_canter_no_stirrups }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.circle_canter_no_stirrups_com }}
+        </p>
+        <p>
+            <strong><u>Circle - At Walk:</u></strong>
+            {{ rider_eval_checklist.circle_at_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.circle_at_walk_com }}
+        </p>
+        <p>
+            <strong><u>Circle - At Trot:</u></strong>
+            {{ rider_eval_checklist.circle_at_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.circle_at_trot_com }}
+        </p>
+
+        <hr />
+
+        <h2>Holds</h2>
+
+        <p>
+            <strong><u>Handhold - Walk:</u></strong>
+            {{ rider_eval_checklist.holds_handhold_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.holds_handhold_walk_com }}
+        </p>
+        <p>
+            <strong><u>Handhold - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.holds_handhold_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.holds_handhold_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Handhold - Post Trot:</u></strong>
+            {{ rider_eval_checklist.holds_handhold_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.holds_handhold_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Handhold - Canter:</u></strong>
+            {{ rider_eval_checklist.holds_handhold_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.holds_handhold_canter_com }}
+        </p>
+        <p>
+            <strong><u>Hold Reins - Walk:</u></strong>
+            {{ rider_eval_checklist.holds_reins_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.holds_reins_walk_com }}
+        </p>
+        <p>
+            <strong><u>Hold Reins - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.holds_reins_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.holds_reins_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Holds Reins - Post Trot:</u></strong>
+            {{ rider_eval_checklist.holds_reins_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.holds_reins_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Holds Reins - Canter:</u></strong>
+            {{ rider_eval_checklist.holds_reins_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.holds_reins_canter_com }}
+        </p>
+
+        <hr />
+
+        <h2>Shorten/Lengthen/Control/Halt</h2>
+
+        <p>
+            <strong><u>Shorten/Lengthen Reins - Walk:</u></strong>
+            {{ rider_eval_checklist.shorten_lengthen_reins_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.shorten_lengthen_reins_walk_com }}
+        </p>
+        <p>
+            <strong><u>Shorten/Lengthen Reins - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.shorten_lengthen_reins_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.shorten_lengthen_reins_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Shorten/Lengthen Reins - Post Trot:</u></strong>
+            {{ rider_eval_checklist.shorten_lengthen_reins_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.shorten_lengthen_reins_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Shorten/Lengthen Reins - Canter:</u></strong>
+            {{ rider_eval_checklist.shorten_lengthen_reins_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.shorten_lengthen_reins_canter_com }}
+        </p>
+        <p>
+            <strong><u>Can Control Horse - Walk:</u></strong>
+            {{ rider_eval_checklist.can_control_horse_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_control_horse_walk_com }}
+        </p>
+        <p>
+            <strong><u>Can Control Horse - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.can_control_horse_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_control_horse_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Can Control Horse - Post Trot:</u></strong>
+            {{ rider_eval_checklist.can_control_horse_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_control_horse_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Can Control Horse - Canter:</u></strong>
+            {{ rider_eval_checklist.can_control_horse_canter_com }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_control_horse_canter_com }}
+        </p>
+        <p>
+            <strong><u>Can Halt - Walk:</u></strong>
+            {{ rider_eval_checklist.can_halt_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_halt_walk_com }}
+        </p>
+        <p>
+            <strong><u>Can Halt - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.can_halt_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_halt_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Can Halt - Post Trot:</u></strong>
+            {{ rider_eval_checklist.can_halt_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_halt_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Can Halt - Canter:</u></strong>
+            {{ rider_eval_checklist.can_halt_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_halt_canter_com }}
+        </p>
+
+        <hr />
+
+        <h2>Stirrups/Half-Seat</h2>
+
+        <p>
+            <strong><u>Drop/Pickup Stirrups - Walk:</u></strong>
+            {{ rider_eval_checklist.drop_pickup_stirrups_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.drop_pickup_stirrups_walk_com }}
+        </p>
+        <p>
+            <strong><u>Drop/Pickup Stirrups - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.drop_pickup_stirrups_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.drop_pickup_stirrups_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Drop/Pickup Stirrups - Post Trot:</u></strong>
+            {{ rider_eval_checklist.drop_pickup_stirrups_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.drop_pickup_stirrups_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Drop/Pickup Stirrups - Canter:</u></strong>
+            {{ rider_eval_checklist.drop_pickup_stirrups_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.drop_pickup_stirrups_canter_com }}
+        </p>
+        <p>
+            <strong><u>Rides No Stirrups - Walk:</u></strong>
+            {{ rider_eval_checklist.rides_no_stirrups_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.rides_no_stirrups_walk_com }}
+        </p>
+        <p>
+            <strong><u>Rides No Stirrups - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.rides_no_stirrups_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.rides_no_stirrups_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Rides No Stirrups - Post Trot</u></strong>
+            {{ rider_eval_checklist.rides_no_stirrups_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.rides_no_stirrups_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Rides No Stirrups - Canter:</u></strong>
+            {{ rider_eval_checklist.rides_no_stirrups_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.rides_no_stirrups_canter_com }}
+        </p>
+        <p>
+            <strong><u>Maintain Half Seat - Walk:</u></strong>
+            {{ rider_eval_checklist.maintain_half_seat_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.maintain_half_seat_walk_com }}
+        </p>
+        <p>
+            <strong><u>Maintain Half Seat - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.maintain_half_seat_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.maintain_half_seat_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Maintain Half Seat - Post Trot:</u></strong>
+            {{ rider_eval_checklist.maintain_half_seat_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.maintain_half_seat_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Maintain Half Seat - Canter:</u></strong>
+            {{ rider_eval_checklist.maintain_half_seat_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.maintain_half_seat_canter_com }}
+        </p>
+
+        <hr />
+
+        <h2>Post/Proper</h2>
+
+        <p>
+            <strong><u>Can Post - Walk:</u></strong>
+            {{ rider_eval_checklist.can_post_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_post_walk_com }}
+        </p>
+        <p>
+            <strong><u>Can Post - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.can_post_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_post_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Can Post - Post Trot:</u></strong>
+            {{ rider_eval_checklist.can_post_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_post_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Can Post - Canter:</u></strong>
+            {{ rider_eval_checklist.can_post_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_post_canter_com }}
+        </p>
+        <p>
+            <strong><u>Proper Diagonal - Walk:</u></strong>
+            {{ rider_eval_checklist.proper_diagonal_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.proper_diagonal_walk_com }}
+        </p>
+        <p>
+            <strong><u>Proper Diagonal - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.proper_diagonal_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.proper_diagonal_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Proper Diagonal - Post Trot:</u></strong>
+            {{ rider_eval_checklist.proper_diagonal_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.proper_diagonal_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Proper Diagonal - Canter:</u></strong>
+            {{ rider_eval_checklist.proper_diagonal_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.proper_diagonal_canter_com }}
+        </p>
+        <p>
+            <strong><u>Proper Lead Canter - Sees:</u></strong>
+            {{ rider_eval_checklist.proper_lead_canter_sees }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.proper_lead_canter_sees_com }}
+        </p>
+        <p>
+            <strong><u>Proper Lead Canter - Knows:</u></strong>
+            {{ rider_eval_checklist.proper_lead_canter_knows }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.proper_lead_canter_knows_com }}
+        </p>
+
+        <hr />
+
+        <h2>Cavaletti/Crossbar</h2>
+
+        <p>
+            <strong><u>Can Steer Over Cavaletti - Walk:</u></strong>
+            {{ rider_eval_checklist.can_steer_over_cavalletti_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_steer_over_cavalletti_walk_com }}
+        </p>
+        <p>
+            <strong><u>Can Steer Over Cavalletti - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.can_steer_over_cavalletti_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_steer_over_cavalletti_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Can Steer Over Cavalletti - Post Trot:</u></strong>
+            {{ rider_eval_checklist.can_steer_over_cavalletti_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_steer_over_cavalletti_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Can Steer Over Cavalletti - Canter:</u></strong>
+            {{ rider_eval_checklist.can_steer_over_cavalletti_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.can_steer_over_cavalletti_canter_com }}
+        </p>
+        <p>
+            <strong><u>Jump Crossbar - Walk:</u></strong>
+            {{ rider_eval_checklist.jump_crossbar_walk }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.jump_crossbar_walk_com }}
+        </p>
+        <p>
+            <strong><u>Jump Crossbar - Sit Trot:</u></strong>
+            {{ rider_eval_checklist.jump_crossbar_sit_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.jump_crossbar_sit_trot_com }}
+        </p>
+        <p>
+            <strong><u>Jump Crossbar - Post Trot:</u></strong>
+            {{ rider_eval_checklist.jump_crossbar_post_trot }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.jump_crossbar_post_trot_com }}
+        </p>
+        <p>
+            <strong><u>Jump Crossbar - Canter:</u></strong>
+            {{ rider_eval_checklist.jump_crossbar_canter }}
+        </p>
+        <p>
+            <strong>Comments:</strong>
+            {{ rider_eval_checklist.jump_crossbar_canter_com }}
+        </p>
+
+        <hr />
+
+        <p>
+            <strong><u>Overall Comments:</u></strong>
+            {{ rider_eval_checklist.comments }}
+        </p>
+    {% endif %}
+{% endblock %}

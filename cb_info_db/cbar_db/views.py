@@ -40,6 +40,15 @@ ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE=(
 ERROR_TEXT_SEIZURE_EVAL_NOT_AVAILABLE=(
     "The Seizure Evaluation requested is not available."
 )
+ERROR_TEXT_OBS_EVAL_NOT_AVALIABLE=(
+    "The Observation Evaluation requested is not avaliable."
+)
+ERROR_TEXT_SES_PLAN_NOT_AVALIABLE=(
+    "The Session Plan requested is not available."
+)
+ERROR_TEXT_RIDER_EVAL_CHECKLIST_NOT_AVAILABLE=(
+    "The Rider Evaluation Checklist requested is not available."
+)
 ERROR_TEXT_DB_INTEGRITY=(
     "An internal database error has occured and the form could not be saved."
     " Please verify that you have not already filled out a form for this"
@@ -1756,6 +1765,24 @@ def participant_record(request, participant_id):
         )
     )
 
+    # Find our Participant's ObservationEvaluation instances
+    observation_evaluations=(models.EvalAttitude.objects.filter(
+        participant_id=participant
+        )
+    )
+
+    # Find our Participant's SessionPlanInd instances
+    session_plans=(models.SessionPlanInd.objects.filter(
+        participant_id=participant
+        )
+    )
+
+    # Find our Participant's EvalRidingExercises instances
+    rider_eval_checklists=(models.EvalRidingExercises.objects.filter(
+        participant_id=participant
+        )
+    )
+
     return render(
         request,
         "cbar_db/admin/reports/participant.html",
@@ -1766,7 +1793,10 @@ def participant_record(request, participant_id):
             "emergency_authorizations": emergency_authorizations,
             "liability_releases": liability_releases,
             "background_checks": background_checks,
-            "seizure_evals": seizure_evals
+            "seizure_evals": seizure_evals,
+            "observation_evaluations": observation_evaluations,
+            "session_plans": session_plans,
+            "rider_eval_checklists": rider_eval_checklists
         }
     )
 
@@ -2802,3 +2832,191 @@ def private_form_incidents(request, participant_id):
                 'participant': participant
             }
         )
+
+
+@login_required
+def report_observation_evaluation(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Observation Evaluation form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_observation_evaluation.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Observation Evaluation's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_observation_evaluation.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the ObservationEvaluation record:
+    try:
+        observation_evaluation=models.EvalAttitude.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_observation_evaluation.html",
+            {
+                'error_text': ERROR_TEXT_OBS_EVAL_NOT_AVALIABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_observation_evaluation.html",
+        {
+            "observation_evaluation": observation_evaluation,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_session_plan(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Session Plan form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Observation Evaluation's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the ObservationEvaluation record:
+    try:
+        session_plan=models.SessionPlanInd.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': ERROR_TEXT_SES_PLAN_NOT_AVALIABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_session_plan.html",
+        {
+            "session_plan": session_plan,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_rider_eval_checklist(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Rider Evaluation Checklist
+        form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_eval_checklist.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Observation Evaluation's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_eval_checklist.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the ObservationEvaluation record:
+    try:
+        rider_eval_checklist=models.EvalRidingExercises.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_eval_checklist.html",
+            {
+                'error_text': ERROR_TEXT_RIDER_EVAL_CHECKLIST_NOT_AVAILABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_rider_eval_checklist.html",
+        {
+            "rider_eval_checklist": rider_eval_checklist,
+            "participant": participant
+        }
+    )

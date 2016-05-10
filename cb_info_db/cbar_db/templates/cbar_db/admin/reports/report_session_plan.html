@@ -1,0 +1,133 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Individual Session Plan Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <p>
+            <strong>Participant's Name:</strong>
+             {{ participant.name }}
+        </p>
+        <p>
+            <strong>Participant's Birth Date:</strong>
+             {{ participant.birth_date }}
+        </p>
+
+        <hr />
+
+        <p>
+            <strong>Horse:</strong>
+            {{ session_plan.horse_name }}
+        </p>
+        <p>
+            <strong>Horse Leader:</strong>
+            {{ session_plan.horse_leader }}
+        </p>
+        <p>
+            <strong>Tack:</strong>
+            {{ session_plan.tack }}
+        </p>
+        <p>
+            {% for diagnosis in diagnosis_types %}
+                <strong>Diagnosis:</strong> {{ diagnosis.diagnosis }}
+                <strong>Type:</strong> {{ diagnosis.get_diagnosis_type_display }}
+            {% endfor %}
+        </p>
+        <p>
+            <strong>Mobility:</strong>
+            {{ session_plan.ambulatory_status }}
+            <strong>Mobility (other):</strong> {{ session_plan.ambulatory_status_other }}
+        </p>
+
+        <hr />
+
+        <h2>Mounting Notes</h2>
+        <p>
+            <strong>Assistance:</strong>
+            {{ session_plan.mount_assistance_required }}
+        </p>
+        <p>
+            <strong>Mount Device Needed:</strong>
+            {{ session_plan.mount_device_needed }}
+        </p>
+        <p>
+            <strong>Mount Type:</strong>
+            {{ session_plan.mount_type }}
+        </p>
+
+        <hr />
+
+        <h2>Dismounting Notes</h2>
+
+        <p>
+            <strong>Assistance:</strong>
+            {{ session_plan.dismount_assistance_required }}
+        </p>
+        <p>
+            <strong>Dismount Type:</strong>
+            {{ session_plan.dismount_type }}
+        </p>
+
+        <hr />
+
+        <h2>Sidewalkers</h2>
+
+        <p>
+            <strong><u>At Walk:</u></strong>
+        </p>
+        <p>
+            <strong>Spotter:</strong>
+            {{ session_plan.num_sidewalkers_walk_spotter }}
+        </p>
+        <p>
+            <strong>Heelhold:</strong>
+            {{ session_plan.num_sidewalkers_walk_heel_hold }}
+        </p>
+        <p>
+            <strong>Over Thigh:</strong>
+            {{ session_plan.num_sidewalkers_walk_over_thigh }}
+        </p>
+        <p>
+            <strong>Other:</strong>
+            {{ session_plan.num_sidewalkers_walk_other }}
+        </p>
+        <p>
+            <strong><u>At Trot:</u></strong>
+        </p>
+        <p>
+            <strong>Spotter:</strong>
+            {{ session_plan.num_sidewalkers_trot_spotter }}
+        </p>
+        <p>
+            <strong>Heelhold:</strong>
+            {{ session_plan.num_sidewalkers_trot_heel_hold }}
+        </p>
+        <p>
+            <strong>Over Thigh:</strong>
+            {{ session_plan.num_sidewalkers_trot_over_thigh }}
+        </p>
+        <p>
+            <strong>Other:</strong>
+            {{ session_plan.num_sidewalkers_trot_other }}
+        </p>
+
+        <hr />
+
+        <h2>Session Goals</h2>
+
+        <p>
+            <strong>Goal Type:</strong>
+            {{ session_plan.goal_type }}
+        </p>
+        <p>
+            <strong>Description:</strong>
+            {{ session_plan.goal_description }}
+        </p>
+        <p>
+            <strong>Motivation:</strong>
+            {{ session_plan.motivation }}
+        </p>
+    {% endif %}
+{% endblock %}
