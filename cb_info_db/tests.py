@@ -9067,7 +9067,7 @@ class TestObservationEvaluationReport(TestCase):
 
         test_eval_attitude=models.EvalAttitude(
             participant_id=test_participant,
-            date="1996-6-14",
+            date="2000-1-1",
             walking_through_barn_willing="1",
             walking_through_barn_motivated="1",
             walking_through_barn_appearance="1",
