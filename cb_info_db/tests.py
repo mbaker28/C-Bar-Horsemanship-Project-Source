@@ -9130,9 +9130,9 @@ class TestObservationEvaluationReport(TestCase):
             reverse("report-observation-evaluation",
                 kwargs={
                     "participant_id":test_participant_in_db.participant_id,
-                    "year": "2014",
-                    "month": "3",
-                    "day": "5"
+                    "year": "2000",
+                    "month": "1",
+                    "day": "1"
                 }
             )
         )
@@ -9304,8 +9304,11 @@ class TestSessionPlanReport(TestCase):
         session_plan.save()
 
         session_ind=models.SessionPlanInd(
-            horse_leader="Dat Boi"
+            participant_id=test_participant,
+            date="2014-3-5",
+            horse_leader="Dat Boi",
         )
+        session_ind.save()
 
         session_goals=models.SessionGoals(
             participant_id=test_participant,
@@ -9538,7 +9541,7 @@ class TestRiderEvaluationChecklistReport(TestCase):
 
         rider_eval_checklist=models.EvalRidingExercises(
             participant_id=test_participant,
-            date="2001-9-11",
+            date="2014-3-5",
             comments="Yo dawg ima turn this water into wine, k fam?",
             basic_trail_rules=1,
             mount=0,
