@@ -2167,11 +2167,11 @@ def private_form_intake_assessment(request):
         )
 
     if request.method == "POST":
-        if request.POST.get("show_form") == "False":
-            # Let the user pick the partcipants to evaluate
+        if request.POST.get("show_evaluation_form") == "False":
+            # Let the user pick the participants to evaluate:
             loggeyMcLogging.error("Request type is POST.")
             loggeyMcLogging.error(
-                "'show_form' is False. Displaying participant selection form"
+                "'show_evaluation_form' is False. Displaying participant selection form"
             )
 
             form=SelectedParticipantsForm(request.POST)
@@ -2222,7 +2222,7 @@ def private_form_intake_assessment(request):
                 "cbar_db/forms/private/intake_assessment_form.html",
                 {
                     "selected_participants": selected_participants,
-                    "show_form": "False",
+                    "show_evaluation_form": "False",
                     "save_form": "False"
                 }
             )
@@ -2230,7 +2230,7 @@ def private_form_intake_assessment(request):
         else:
             # Let the user evaluate the participants.
             loggeyMcLogging.error("Request type is POST.")
-            loggeyMcLogging.error("show_form != False.")
+            loggeyMcLogging.error("show_evaluation_form != False.")
 
             RiderIntakeAssessmentFormset=django_forms.formset_factory(
                 forms.RiderIntakeAssessmentForm
@@ -2281,7 +2281,7 @@ def private_form_intake_assessment(request):
                         {
                             "formset": formset,
                             "error_text": ERROR_TEXT_FORM_INVALID,
-                            "show_form": "True",
+                            "show_evaluation_form": "True",
                             "save_form": "False",
                             "formset_and_participants": list(
                                 zip(
@@ -2330,7 +2330,7 @@ def private_form_intake_assessment(request):
                             )
                         ),
                         "save_form": "True",
-                        "show_form": "True",
+                        "show_evaluation_form": "True",
                         "participants_selected": participants_selected
                     }
                 )
