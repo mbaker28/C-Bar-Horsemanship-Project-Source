@@ -12,6 +12,10 @@
     <form action="{% url 'public-form-med-release' %}" method="post">
         {% csrf_token %}
         <p>
+            Fields with an <span style="color: red">*</span> next to them are
+             required.
+        </p>
+        <p>
             As you provide the following information, please keep in mind that
             this will NOT be used to exclude you from participating in C-Bar
             activities. It is for us to use to help provide you with the best
@@ -21,34 +25,34 @@
             information will help us do that.
         </p>
         <p>
-            Participant's Name: {{ form.name }}
+            <span style="color: red">*</span>Participant's Name: {{ form.name }}
             <span class="error_message">
                 {{ form.name.errors.as_text }}
             </span>
-            Birth date: {{ form.birth_date }}
+            <p><span style="color: red">*</span>Birth date: {{ form.birth_date }}
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
-            Name of family physician: {{ form.primary_physician_name }}
+            <span style="color: red">*</span> Name of family physician: {{ form.primary_physician_name }}
             <span class="error_message">
                 {{ form.primary_physician_name.errors.as_text }}
             </span>
-            Phone: {{ form.primary_physician_phone }}
+            <p><span style="color: red">*</span> Physician Phone: {{ form.primary_physician_phone }}
             <span class="error_message">
                 {{ form.primary_physician_phone.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
-            Date last seen by physician: {{ form.last_seen_by_physician_date }}
+            <span style="color: red">*</span> Date last seen by physician: {{ form.last_seen_by_physician_date }}
             <span class="error_message">
                 {{ form.last_seen_by_physician_date.errors.as_text }}
             </span>
-            Reason: {{ form.last_seen_by_physician_reason }}
+            <p>Reason: <br />{{ form.last_seen_by_physician_reason }}
             <span class="error_message">
                 {{ form.last_seen_by_physician_reason.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             C-Bar activities and/or events take place out in the open,
@@ -68,6 +72,7 @@
         </p>
         <p>
             If yes, please specify:
+            <br />
              {{ form.allergies_conditions_that_exclude_description }}
              <span class="error_message">
                  {{ form.allergies_conditions_that_exclude_description.errors.as_text }}
@@ -127,30 +132,31 @@
             Medication: {{ form.medication_one_name }}
             <span class="error_message">
                 {{ form.medication_one_name.errors.as_text }}
-            </span> Reason Taken:
+            </span> <br />Reason Taken:
              {{ form.medication_one_reason }}
              <span class="error_message">
                  {{ form.medication_one_reason.errors.as_text }}
-             </span>
-            <br>
+             </span><br />
             How Often: {{ form.medication_one_frequency }}
             <span class="error_message">
                 {{ form.medication_one_frequency.errors.as_text }}
             </span>
             <br>
+            <p>
             Medication: {{ form.medication_two_name }}
             <span class="error_message">
                 {{ form.medication_two_name.errors.as_text }}
-            </span> Reason Taken:
+            </span> <br />Reason Taken:
              {{ form.medication_two_reason }}
              <span class="error_message">
                  {{ form.medication_two_reason.errors.as_text }}
              </span>
-            <br>
+            <br />
             How Often: {{ form.medication_two_frequency }}
             <span class="error_message">
                 {{ form.medication_two_frequency.errors.as_text }}
             </span>
+          </p>
         </p>
         <p>
             Has your physician expressed concerns about you riding or
@@ -184,6 +190,7 @@
         </p>
         <p>
             If yes, please specify:
+            <br />
              {{ form.physical_or_mental_issues_affecting_riding_description }}
              <span class="error_message">
                  {{ form.physical_or_mental_issues_affecting_riding_description.errors.as_text }}
@@ -202,6 +209,7 @@
         </p>
         <p>
             If yes, please specify:
+            <br />
              {{ form.restriction_for_horse_activity_last_five_years_description }}
             <span class="error_message">
              {{ form.restriction_for_horse_activity_last_five_years_description.errors.as_text }}
@@ -238,6 +246,7 @@
         </p>
         <p>
             If yes, please specify:
+            <br />
              {{ form.limiting_surgeries_last_six_monthes_description }}
              <span class="error_message">
                  {{ form.limiting_surgeries_last_six_monthes_description.errors.as_text }}
@@ -256,13 +265,14 @@
             health and safety during any C-Bar activity I am involved.
         </p>
         <p>
-            Signature: {{ form.signature }}
+            <span style="color: red">*</span>
+             Signature: {{ form.signature }}
             <span class="error_message">
                 {{ form.signature.errors.as_text }}
-            </span> Date: {{ form.date }}
+            <p></span><span style="color: red">*</span> Date: {{ form.date }}
             <span class="error_message">
                 {{ form.date.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             <input type="submit" value="Submit" />
