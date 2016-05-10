@@ -117,6 +117,9 @@ ONE_TWO_THREE_CHOICES=(
 )
 
 class Participant(models.Model):
+    def __str__(self):
+        return self.name + " (" + str(self.birth_date) + ")"
+
     participant_id=models.AutoField(primary_key=True) # Auto generated PK
     name=models.CharField(max_length=NAME_LENGTH)
     birth_date=models.DateField()
@@ -1591,6 +1594,23 @@ class Medication(models.Model):
     reason_taken=models.CharField(max_length=50)
     frequency=models.CharField(max_length=50)
 
+class PhoneLog(models.Model):
+    class Meta:
+        unique_together=(("participant_id", "date", "time"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+    time=models.TimeField()
+    details=models.CharField(max_length=2500)
+
+class Incidents(models.Model):
+    class Meta:
+        unique_together=(("participant_id", "date", "time"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+    time=models.TimeField()
+    details=models.CharField(max_length=2500)
 
 class SeizureEval(models.Model):
     SEIZURE_GRAND="G"
