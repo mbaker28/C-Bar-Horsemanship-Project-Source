@@ -19,6 +19,16 @@ YEARS=range(this_year-125, this_year+1)
 
 loggeyMcLogging=logging.getLogger(__name__)
 
+class CreateUserForm(forms.Form):
+    username=forms.CharField(
+        max_length=50
+    )
+    password=forms.CharField(
+        widget=forms.PasswordInput
+    )
+    email=forms.CharField(
+        max_length=100
+    )
 
 class ApplicationForm(forms.Form):
     FEET_MIN=2
