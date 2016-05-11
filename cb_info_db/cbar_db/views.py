@@ -1725,6 +1725,17 @@ def report_select_participant(request):
     )
 
 @login_required
+def report_select_class(request):
+    """ Logged in user select class record view. """
+    grouping=models.Grouping.objects.all()
+
+    return render(
+        request,
+        'cbar_db/admin/reports/class_select.html',
+        {'grouping':grouping}
+    )
+
+@login_required
 def index_private_forms(request):
     """ Private forms index view. """
     participants=models.Participant.objects.all()
