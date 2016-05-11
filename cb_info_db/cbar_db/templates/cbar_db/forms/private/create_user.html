@@ -2,9 +2,9 @@
 {% block body %}
     <h1>Create New User</h1>
     {% if error_text %}
-        <p></strong>
+        <p><strong>
             {{ error_text }}
-        </p></strong>
+        </strong></p>
     {% endif %}
     <form action="{% url 'private_form_create_user' %}" method="post">
         {% csrf_token %}
@@ -18,6 +18,9 @@
         </p>
         <p>
             Create password: {{ form.password }}
+        </p>
+        <p>
+            User's email: {{ form.email }}
         </p>
 
         <p>
