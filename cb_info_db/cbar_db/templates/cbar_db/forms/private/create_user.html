@@ -6,7 +6,7 @@
             {{ error_text }}
         </strong></p>
     {% endif %}
-    <form action="{% url 'private_form_create_user' %}" method="post">
+    <form action="{% url 'private-form-create-user' %}" method="post">
         {% csrf_token %}
         <p>
             Fields with an <span style="color: red">*</span> next to them are
@@ -14,13 +14,22 @@
         </p>
 
         <p>
-            Create username: {{ form.username }}
+            <span style="color: red">*</span>Create username: {{ form.username }}
+            <span class="error_text">
+                {{ form.username.errors.as_text }}
+            </span>
         </p>
         <p>
-            Create password: {{ form.password }}
+            <span style="color: red">*</span>Create password: {{ form.password }}
+            <span class="error_text">
+                {{ form.password.errors.as_text }}
+            </span>
         </p>
         <p>
-            User's email: {{ form.email }}
+            <span style="color: red">*</span>User's email: {{ form.email }}
+            <span class="error_text">
+                {{ form.email.errors.as_text }}
+            </span>
         </p>
 
         <p>
