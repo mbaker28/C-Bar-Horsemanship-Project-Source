@@ -2858,7 +2858,7 @@ def private_form_incidents(request, participant_id):
         )
 
 @login_required
-def private_form_classes(request):
+def private_form_define_a_class(request):
     """ Classes form view. """
 
     # if this is a POST request we need to process the form data
@@ -2876,7 +2876,7 @@ def private_form_classes(request):
                 )
                 return render(
                     request,
-                    "cbar_db/forms/private/classes.html",
+                    "cbar_db/forms/private/define_a_class.html",
                     {
                         'form': form,
                         'error_text': ERROR_TEXT_CLASS_ALREADY_EXISTS,
@@ -2900,7 +2900,7 @@ def private_form_classes(request):
             # Set the error message and redisplay the form:
             return render(
                 request,
-                "cbar_db/forms/private/classes.html",
+                "cbar_db/forms/private/define_a_class.html",
                 {
                     'form': form,
                     'error_text': ERROR_TEXT_FORM_INVALID,
@@ -2913,7 +2913,7 @@ def private_form_classes(request):
 
         return render(
             request,
-            'cbar_db/forms/private/classes.html',
+            'cbar_db/forms/private/define_a_class.html',
             {'form': form}
         )
 

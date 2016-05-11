@@ -8,7 +8,7 @@
         {{ form.non_field_errors }}
     </strong></p>
     {% endif %}
-    <form action="{% url 'private-form-classes' %}" method="post">
+    <form action="{% url 'private-form-define-a-class' %}" method="post">
         {% csrf_token %}
         <p>
             Fields with an <span style="color: red">*</span> next to them are

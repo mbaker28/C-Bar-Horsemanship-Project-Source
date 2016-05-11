@@ -612,7 +612,7 @@ class TestApplicationForm(TestCase):
             forms.ApplicationForm.ERROR_TEXT_INVALID_HEIGHT_IN
         )
 
-class TestClassesForm(TestCase):
+class TestDefineAClassForm(TestCase):
     def setUp(self):
         setup_test_environment() #Initialize the test enviornment
         client=Client() #Make a test client (someone viewing the database)
@@ -630,8 +630,8 @@ class TestClassesForm(TestCase):
         )
         test_class.save()
 
-    def test_classes_form_loads_if_user_logged_in(self):
-        """ Tests whether the Classes form loads if the user is logged
+    def test_define_a_class_form_loads_if_user_logged_in(self):
+        """ Tests whether the Define a Class form loads if the user is logged
          in."""
 
         test_user=models.User.objects.get(
@@ -640,14 +640,14 @@ class TestClassesForm(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('private-form-classes'))
+        response = self.client.get(reverse('private-form-define-a-class'))
         self.assertEqual(response.status_code, 200) # Loaded...
 
-    def test_classes_form_redirects_if_user_not_logged_in(self):
-        """ Tests whether the Classes form redirects to the login page if
+    def test_define_a_class_form_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Define a Class form redirects to the login page if
          the user is not logged in."""
 
-        response = self.client.get(reverse("private-form-classes"))
+        response = self.client.get(reverse("private-form-define-a-class"))
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
@@ -661,7 +661,7 @@ class TestClassesForm(TestCase):
         # Assert the url we were redirected to contains the base login page url:
         self.assertTrue(reverse("user-login") in response["Location"])
 
-    def test_classes_form_creates_class(self):
+    def test_define_a_class_form_creates_class(self):
         """ Tests whether the form creates a class record once all
             fields are entered. """
 
@@ -677,7 +677,7 @@ class TestClassesForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-classes"), form_data)
+        response=self.client.post(reverse("private-form-define-a-class"), form_data)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -707,7 +707,7 @@ class TestClassesForm(TestCase):
             form_data["description"]
         )
 
-    def test_classes_form_class_already_exists(self):
+    def test_define_a_class_form_class_already_exists(self):
         """ Form throws error if the class already exists. """
 
         test_user=models.User.objects.get(
@@ -722,7 +722,7 @@ class TestClassesForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-classes"), form_data)
+        response=self.client.post(reverse("private-form-define-a-class"), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -735,7 +735,7 @@ class TestClassesForm(TestCase):
             )
         )
 
-    def test_classes_form_class_does_not_exist_with_invalid_data(self):
+    def test_define_a_class_form_class_does_not_exist_with_invalid_data(self):
         """ Form throws an error if the form data is not valid. """
 
         test_user=models.User.objects.get(
@@ -775,7 +775,7 @@ class TestClassesForm(TestCase):
         form=forms.ClassesForm(form_data)
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-classes"), form_data)
+        response=self.client.post(reverse("private-form-define-a-class"), form_data)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
