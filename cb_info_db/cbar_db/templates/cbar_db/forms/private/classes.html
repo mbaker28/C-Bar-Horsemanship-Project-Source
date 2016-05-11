@@ -21,12 +21,14 @@
                 {{ form.name.errors.as_text }}
             </span>
         </p>
-
         <p>
             <span style="color: red">*</span>Class Description: {{ form.description }}
             <span class="error_text">
                 {{ form.description.errors.as_text }}
             </span>
+        </p>
+        <p>
+            <input type="submit" value="Submit" />
         </p>
     </form>
 {% endblock %}
