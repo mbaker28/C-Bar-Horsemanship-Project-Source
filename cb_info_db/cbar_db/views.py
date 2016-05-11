@@ -1772,7 +1772,7 @@ def private_form_create_user(request):
 
         return render(
             request,
-            'cbar_db/forms/private/add_user.html',
+            'cbar_db/forms/private/create_user.html',
             {'form': form}
         )
 
