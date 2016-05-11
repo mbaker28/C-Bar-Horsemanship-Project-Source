@@ -1757,7 +1757,8 @@ class AdaptationsNeeded(models.Model):
 
     mount_assistance_required=models.CharField(
         max_length=1,
-        choices=ASSISTANCE_CHOICES
+        choices=ASSISTANCE_CHOICES,
+        null=True
     )
     mount_device_needed=models.CharField(
         max_length=1,
@@ -1772,11 +1773,13 @@ class AdaptationsNeeded(models.Model):
 
     dismount_assistance_required=models.CharField(
         max_length=1,
-        choices=ASSISTANCE_CHOICES
+        choices=ASSISTANCE_CHOICES,
+        null=True
     )
     dismount_type=models.CharField(
         max_length=1,
-        choices=DISMOUNT_TYPE_CHOICES
+        choices=DISMOUNT_TYPE_CHOICES,
+        null=True
     )
     posture_standing=models.CharField(
         max_length=1,
@@ -1796,7 +1799,11 @@ class AdaptationsNeeded(models.Model):
         default=NOT_APPLICABLE,
         null=True
     )
-    ambulatory_status=models.CharField(max_length=1, choices=AMBULATORY_CHOICES)
+    ambulatory_status=models.CharField(
+        max_length=1,
+        choices=AMBULATORY_CHOICES,
+        null=True
+    )
     ambulatory_status_other=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,
         null=True
@@ -1866,35 +1873,43 @@ class AdaptationsNeeded(models.Model):
     # Sidewalker information for initial assessment
     num_sidewalkers_walk_spotter=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_walk_heel_hold=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_walk_over_thigh=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_walk_other=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_trot_spotter=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_trot_heel_hold=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_trot_over_thigh=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_trot_other=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
 
 

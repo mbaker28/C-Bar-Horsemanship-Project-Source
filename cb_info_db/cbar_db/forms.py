@@ -761,19 +761,21 @@ class RiderIntakeAssessmentForm(forms.Form):
         ),
         required=False
     )
-    visual_impaired=forms.ChoiceField(
-        choices=(
-            models.IntakeAssessment._meta.get_field("visual_impaired")
-            .choices
-        ),
-        widget=RadioSelect
-    )
-    visual_comments=forms.CharField(
-        max_length=(
-            models.IntakeAssessment._meta.get_field("visual_comments")
-            .max_length
-        )
-    )
+    ###################### DAFUQ? ###################
+    # Duplicate? of above ^
+    # visual_impaired=forms.ChoiceField(
+    #     choices=(
+    #         models.IntakeAssessment._meta.get_field("visual_impaired")
+    #         .choices
+    #     ),
+    #     widget=RadioSelect
+    # )
+    # visual_comments=forms.CharField(
+    #     max_length=(
+    #         models.IntakeAssessment._meta.get_field("visual_comments")
+    #         .max_length
+    #     )
+    # )
     hearing_impaired=forms.ChoiceField(
         choices=(
             models.IntakeAssessment._meta.get_field("hearing_impaired")

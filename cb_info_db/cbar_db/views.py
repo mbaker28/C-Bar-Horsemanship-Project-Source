@@ -2162,8 +2162,7 @@ def private_form_intake_assessment(request):
     """ Intake assessment view. """
 
     # TODO:
-    #   -Add seizure info from seizure evaluations
-    #   -Use current date to save records
+    #   -Add seizure info from seizure evaluations?
 
     class SelectedParticipantsForm(django_forms.Form):
         participants_selected=django_forms.ModelMultipleChoiceField(
@@ -2286,11 +2285,76 @@ def private_form_intake_assessment(request):
                     for form in formset:
                         if form.is_valid():
                             loggeyMcLogging.error("The current form is valid.")
-                            loggeyMcLogging.error(
-                                str(
-                                    request.session["intake_post_participants"][current_form_index]
-                                )
+                            part_id=(
+                                request.session["intake_post_participants"][current_form_index]
                             )
+                            loggeyMcLogging.error(str(part_id))
+
+                            participant=models.Participant.objects.get(
+                                participant_id=part_id
+                            )
+                            # Should probably do try...except here ^
+
+                            adaptions=models.AdaptationsNeeded(
+                                participant_id=participant,
+                                date=request.session["date"],
+                                posture_standing=form.cleaned_data["posture_standing"],
+                                posture_sitting=form.cleaned_data["posture_sitting"],
+                                posture_mounted=form.cleaned_data["posture_mounted"],
+                                ambulatory_status=form.cleaned_data["ambulatory_status"],
+                                ambulatory_status_other=form.cleaned_data["ambulatory_status_other"],
+                                gait_flat=form.cleaned_data["gait_flat"],
+                                gait_uneven=form.cleaned_data["gait_uneven"],
+                                gait_incline=form.cleaned_data["gait_incline"],
+                                gait_decline=form.cleaned_data["gait_decline"],
+                                gait_stairs=form.cleaned_data["gait_stairs"],
+                                gait_balance=form.cleaned_data["gait_balance"],
+                                gait_standing_up=form.cleaned_data["gait_standing_up"],
+                                gait_sitting_down=form.cleaned_data["gait_sitting_down"],
+                                gait_straddle_up=form.cleaned_data["gait_straddle_up"],
+                                gait_straddle_down=form.cleaned_data["gait_straddle_down"],
+                            )
+                            adaptions.save()
+
+                            intake_ass=models.IntakeAssessment(
+                                participant_id=participant,
+                                date=request.session["date"],
+                                impulsive=form.cleaned_data["impulsive"],
+                                eye_contact=form.cleaned_data["eye_contact"],
+                                attention_span=form.cleaned_data["attention_span"],
+                                interacts_with_others=form.cleaned_data["interacts_with_others"],
+                                communication_verbal=form.cleaned_data["communication_verbal"],
+                                language_skills_signs=form.cleaned_data["language_skills_signs"],
+                                visual_impaired=form.cleaned_data["visual_impaired"],
+                                visual_comments=form.cleaned_data["visual_comments"],
+                                hearing_impaired=form.cleaned_data["hearing_impaired"],
+                                hearing_comments=form.cleaned_data["hearing_comments"],
+                                tactile=form.cleaned_data["tacile"],
+                                tactile_comments=form.cleaned_data["tactile_comments"],
+                                motor_skills_gross_left=form.cleaned_data["motor_skills_gross_left"],
+                                motor_skills_gross_right=form.cleaned_data["motor_skills_gross_right"],
+                                motor_skills_fine_left=form.cleaned_data["motor_skills_fine_left"],
+                                motor_skills_fine_right=form.cleaned_data["motor_skills_fine_right"],
+                                motor_skills_comments=form.cleaned_data["motor_skills_comments"],
+                                posture_forward_halt=form.cleaned_data["posture_forward_halt"],
+                                posture_forward_walk=form.cleaned_data["posture_forward_walk"],
+                                posture_back_halt=form.cleaned_data["posture_back_halt"],
+                                posture_back_walk=form.cleaned_data["posture_back_walk"],
+                                posture_center_halt=form.cleaned_data["posture_center_halt"],
+                                posture_center_walk=form.cleaned_data["posture_center_walk"],
+                                posture_chairseat_halt=form.cleaned_data["posture_chairseat_halt"],
+                                posture_chairseat_walk=form.cleaned_data["posture_chairseat_walk"],
+                                posture_aligned_halt=form.cleaned_data["posture_aligned_halt"],
+                                posture_aligned_walk=form.cleaned_data["posture_aligned_walk"],
+                                rein_use_hold_halt=form.cleaned_data["rein_use_hold_halt"],
+                                rein_use_hold_walk=form.cleaned_data["rein_use_hold_walk"],
+                                rein_use_steer_left_right_halt=form.cleaned_data["rein_use_steer_left_right_halt"],
+                                rein_use_steer_left_right_walk=form.cleaned_data["rein_use_steer_left_right_walk"],
+                                mounted_comments=form.cleaned_data["mounted_comments"],
+                                risk_benefit_comments=form.cleaned_data["risk_benefit_comments"],
+                                goals_expectations=form.cleaned_data["goals_expectations"],
+                            )
+                            intake_ass.save()
 
                             current_form_index+=1
                         else:
