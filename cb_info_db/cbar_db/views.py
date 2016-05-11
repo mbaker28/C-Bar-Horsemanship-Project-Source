@@ -2867,9 +2867,9 @@ def private_form_classes(request):
         form=forms.ClassesForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            # Create an instance of the ApplicationForm model to hold form data
+            # Create an instance of the ClassesForm model to hold form data
             try:
-                # Find the participant that matches the name and birth date from
+                # Find the class that matches the name from
                 # the form data:
                 grouping=models.Grouping.objects.get(
                     name=form.cleaned_data['name']
@@ -2885,7 +2885,7 @@ def private_form_classes(request):
 
             except ObjectDoesNotExist:
 
-                # Create a new ClassesForm for the participant and save it:
+                # Create a new ClassesForm for the class and save it:
                 form_data_classes=models.Grouping(
                     name=form.cleaned_data['name'],
                     description=form.cleaned_data['description']
