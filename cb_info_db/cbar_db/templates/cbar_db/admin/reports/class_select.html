@@ -9,11 +9,11 @@
     </p>
 
     <ul>
-        {% for class in classes %}
+        {% for group in grouping %}
             <li>
-                <a href="{% url 'class-record' class.class_id %}">
-                    {{ class.name }}
-                </a>
+
+                    {{ group.name }}
+                
             </li>
         {% endfor %}
     </ul>
