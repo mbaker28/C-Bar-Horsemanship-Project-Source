@@ -11,9 +11,9 @@
     <ul>
         {% for group in grouping %}
             <li>
-
+                <a href="{% url 'class-record' group.class_id %}">
                     {{ group.name }}
-                
+                </a>
             </li>
         {% endfor %}
     </ul>
