@@ -27,3 +27,9 @@
             {{ error_text }}
         </strong></p>
     {% endif %}
+    {% if group %}
+        <p>
+            {{ group.description }}
+        </p>
+    {% endif %}
+{% endblock %}
