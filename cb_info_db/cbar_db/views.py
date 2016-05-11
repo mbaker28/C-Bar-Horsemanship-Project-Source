@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,6 +16,9 @@ ERROR_TEXT_PARTICIPANT_NOT_FOUND=(
 )
 ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS=(
     "The participant already exists in the database."
+)
+ERROR_TEXT_USER_ALREADY_EXISTS=(
+    "The user already exists in the database."
 )
 ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
     "The requested participant does not have their medical information on file."
@@ -1709,6 +1713,68 @@ def index_admin(request):
         request,
         "cbar_db/admin/admin.html",
     )
+
+@login_required
+def private_form_create_user(request):
+    """ User creation form view. """
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.CreateUserForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create an instance of the ApplicationForm model to hold form data
+            try:
+                # Find the user that matches the username and email from
+                # the form data:
+                user=User.objects.get(
+                    username=form.cleaned_data['username'],
+                    email=form.cleaned_data['email']
+                )
+                return render(
+                    request,
+                    "cbar_db/forms/private/create_user.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_USER_ALREADY_EXISTS,
+                    }
+                )
+
+            except ObjectDoesNotExist:
+                # Create a new CreateUserForm for the user and save it:
+                form_data_create_user=User.objects.create_user(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password'],
+                    email=form.cleaned_data['email']
+                )
+                form_data_create_user.save()
+
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/create_user.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.CreateUserForm()
+
+        return render(
+            request,
+            'cbar_db/forms/private/add_user.html',
+            {'form': form}
+        )
 
 @login_required
 def report_select_participant(request):
