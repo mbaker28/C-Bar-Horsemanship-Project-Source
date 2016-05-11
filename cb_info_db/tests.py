@@ -5792,6 +5792,53 @@ class TestReportSelectParticipant(TestCase):
         # Assert the url we were redirected to contains the base login page url:
         self.assertTrue(reverse("user-login") in response["Location"])
 
+class TestReportSelectClass(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_class=models.Grouping(
+            name="TEST Capstone Therapy",
+            description="Recover from the horrors that was this fucking class."
+        )
+        test_class.save()
+
+    def test_report_select_class_loads_if_user_logged_in(self):
+        """ Tests whether the Select Class for Reports page loads if the
+         user is logged in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse('report-select-class'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_report_select_class_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Select Class page redirects to
+         the login page if the user is not logged in."""
+
+        response = self.client.get(reverse('report-select-class'))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
 
 class TestPrivateFormsIndex(TestCase):
     def setUp(self):
@@ -5958,6 +6005,100 @@ class TestParticipantRecord(TestCase):
         self.assertTrue(
             response.context["error_text"] == (
                 views.ERROR_TEXT_PARTICIPANT_NOT_FOUND
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+class TestClassRecord(TestCase):
+    def setUp(self):
+        setup_test_environment() # Initaliaze the test environment
+        client=Client() # Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        test_class=models.Grouping(
+            name="TEST Ultimate Buttfucking",
+            description="Some words."
+        )
+        test_class.save()
+
+    def test_class_record_loads_if_user_logged_in(self):
+        """ Tests whether the Class report page loads if the user is
+         logged in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        test_class_in_db=models.Grouping.objects.get(
+            name="TEST Ultimate Buttfucking",
+            description="Some words."
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse('class-record',
+                kwargs={
+                    'class_id':test_class_in_db.class_id
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_class_record_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Class Record page redirects to the login
+         page if the user is not logged in."""
+
+        test_class_in_db=models.Grouping.objects.filter().first()
+
+        response = self.client.get(
+            reverse('class-record',
+                kwargs={
+                    'class_id':test_class_in_db.class_id
+                }
+            )
+        )
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_class_record_shows_error_if_invalid_class_name(self):
+        """ Tests whether the Class report page shows the correct error if
+         the user is logged in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(
+            reverse('class-record',
+                kwargs={
+                    'class_id': 9999999999
+                }
+            )
+        )
+
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_CLASS_NOT_FOUND
             )
         )
 
