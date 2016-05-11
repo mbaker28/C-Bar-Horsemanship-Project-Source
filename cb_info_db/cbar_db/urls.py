@@ -79,6 +79,10 @@ urlpatterns = [
     url(r'^admin/reports/$', views.report_select_participant,
         name='report-select-participant'),
 
+    # Class select page
+    url(r'^admin/reports/class_select/$', views.report_select_class,
+        name='report-select-class'),
+
     # Private forms index page
     url(r'^forms/private/$', views.index_private_forms,
         name='index-private-forms'),
