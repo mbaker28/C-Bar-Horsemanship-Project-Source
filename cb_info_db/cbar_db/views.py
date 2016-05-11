@@ -2186,6 +2186,11 @@ def private_form_intake_assessment(request):
 
             form=SelectedParticipantsForm(request.POST)
 
+            if form.is_valid():
+                loggeyMcLogging.error("[Saving Participant Selection] The form is valid")
+            else:
+                loggeyMcLogging.error("[Saving Participant Selection] The form is NOT valid")
+
             # Log things for debugging / testing purposes:
             loggeyMcLogging.error("request.POST == " + str(request.POST))
             loggeyMcLogging.error(
@@ -2270,6 +2275,8 @@ def private_form_intake_assessment(request):
                     "participants_selected: " + str(participants_selected)
                 )
 
+                loggeyMcLogging.error("request.session['date']: " + request.session["date"])
+
                 if formset.is_valid():
                     # The formset is valid. Check all the forms are valid and
                     # save them.
@@ -2351,6 +2358,16 @@ def private_form_intake_assessment(request):
                 # Store a list of the selected participant id numbers in session
                 request.session["intake_post_participants"]=post_participants
 
+                # Set the date in session plan from post data:
+                the_date=(
+                    request.POST["date_year"] + "-" + request.POST["date_month"]
+                    + "-" + request.POST["date_day"]
+                )
+                request.session["date"]=the_date
+                loggeyMcLogging.error(
+                    "request.session['date']: " + request.session["date"]
+                )
+
                 return render(
                     request,
                     "cbar_db/forms/private/intake_assessment_form.html",
@@ -2368,7 +2385,7 @@ def private_form_intake_assessment(request):
                 )
 
     else:
-        # Normal request type -> display things.
+        # Normal request type -> display blank participant selection form.
         loggeyMcLogging.error("Request type is " + request.method + ".")
         loggeyMcLogging.error(
             "Loaded intake assessment with a non-POST request method."
