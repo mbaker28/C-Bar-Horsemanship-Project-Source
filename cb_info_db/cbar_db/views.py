@@ -1711,7 +1711,7 @@ def index_admin(request):
 
     return render(
         request,
-        "cbar_db/admin/admin.html",
+        "cbar_db/admin/admin.html"
     )
 
 @login_required
@@ -1746,10 +1746,9 @@ def private_form_create_user(request):
                 form_data_create_user=User.objects.create_user(
                     username=form.cleaned_data['username'],
                     password=form.cleaned_data['password'],
-                    email=form.cleaned_data['email']
+                    email=form.cleaned_data['email'],
                 )
                 form_data_create_user.save()
-
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
