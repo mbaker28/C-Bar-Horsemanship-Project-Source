@@ -612,6 +612,181 @@ class TestApplicationForm(TestCase):
             forms.ApplicationForm.ERROR_TEXT_INVALID_HEIGHT_IN
         )
 
+class TestClassesForm(TestCase):
+    def setUp(self):
+        setup_test_environment() #Initialize the test enviornment
+        client=Client() #Make a test client (someone viewing the database)
+
+        test_user=models.User(
+            username="testuser",
+            password="testpass"
+        )
+        test_user.save()
+
+        # Create a Class record and save it
+        test_class=models.Grouping(
+            name="TEST Some Class",
+            description="Fuck this class."
+        )
+        test_class.save()
+
+    def test_classes_form_loads_if_user_logged_in(self):
+        """ Tests whether the Classes form loads if the user is logged
+         in."""
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        response = self.client.get(reverse('private-form-classes'))
+        self.assertEqual(response.status_code, 200) # Loaded...
+
+    def test_classes_form_redirects_if_user_not_logged_in(self):
+        """ Tests whether the Classes form redirects to the login page if
+         the user is not logged in."""
+
+        response = self.client.get(reverse("private-form-classes"))
+
+        # Assert we redirected to the user login page:
+        self.assertEqual(response.status_code, 302) # redirected...
+
+        # Print the url we were redirected to:
+        print("response[\"location\"]" + response["location"])
+
+        # Print the base url for the login page:
+        print("reverse(\"user-login\")" + reverse("user-login"))
+
+        # Assert the url we were redirected to contains the base login page url:
+        self.assertTrue(reverse("user-login") in response["Location"])
+
+    def test_classes_form_creates_class(self):
+        """ Tests whether the form creates a class record once all
+            fields are entered. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        form_data={
+            "name": "TEST Master Debation",
+            "description": "Learn to become a master debator."
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("private-form-classes"), form_data)
+
+        # Assert that the reponse code is a 302 (redirect):
+        self.assertEqual(response.status_code, 302)
+
+        # Assert that the redirect url matches the post-form page:
+        self.assertEqual(
+            response["Location"],
+            reverse("form-saved")+"?a=a"
+        )
+
+        # Attempt to retreive the updated Class record:
+        try:
+            print("Retrieving class record...")
+            class_in_db=models.Grouping.objects.get(
+                name=form_data["name"]
+            )
+        except:
+            print("ERROR: Unable to retreive class record!")
+
+        # Verify that all of the Class fields were set correctly:
+        self.assertEqual(
+            class_in_db.name,
+            form_data["name"]
+        )
+        self.assertEqual(
+            class_in_db.description,
+            form_data["description"]
+        )
+
+    def test_classes_form_class_already_exists(self):
+        """ Form throws error if the class already exists. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        form_data={
+            "name": "TEST Some Class",
+            "description": "Fuck this class."
+        }
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("private-form-classes"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        print(response.context)
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_CLASS_ALREADY_EXISTS
+            )
+        )
+
+    def test_classes_form_class_does_not_exist_with_invalid_data(self):
+        """ Form throws an error if the form data is not valid. """
+
+        test_user=models.User.objects.get(
+            username="testuser"
+        )
+
+        self.client.force_login(test_user)
+
+        form_data={
+            "name": "TEST sdlfijsogiu9e8ujgsogudsgus8dygs8g",
+            "description": "Some really long shit............................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+            "................................................................."
+        }
+        form=forms.ClassesForm(form_data)
+
+        # Send a post request to the form view with the form_data defined above:
+        response=self.client.post(reverse("private-form-classes"), form_data)
+
+        # Assert that the reponse code is 200 (OK):
+        self.assertEqual(response.status_code, 200)
+
+        # Assert that the context for the new view contains the correct error:
+        self.assertTrue(
+            response.context["error_text"] == (
+                views.ERROR_TEXT_FORM_INVALID
+            )
+        )
+
 
 class TestFormSavedPage(TestCase):
     def test_form_saved_page_loads_with_correct_parameter(self):
