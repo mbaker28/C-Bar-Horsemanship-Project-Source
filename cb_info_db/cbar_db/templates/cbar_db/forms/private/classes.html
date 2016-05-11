@@ -1,0 +1,14 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Define a Class</h1>
+    {% if error_text %}
+    <p><strong>
+        {{ error_text }}
+        {{ form.errors }}
+        {{ form.non_field_errors }}
+    </strong></p>
+    {% endif %}
+    <form action="{% url 'private-form-classes' %}" method="post">
+        
+    </form>
+{% endblock %}
