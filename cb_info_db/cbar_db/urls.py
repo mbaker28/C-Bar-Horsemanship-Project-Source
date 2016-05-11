@@ -166,6 +166,6 @@ urlpatterns = [
         name='private-form-incidents'),
 
     # Add Classes form
-    url(r'^forms/private/classes$', views.private_form_classes,
+    url(r'^forms/private/classes/$', views.private_form_classes,
         name='private-form-classes'),
 ]
