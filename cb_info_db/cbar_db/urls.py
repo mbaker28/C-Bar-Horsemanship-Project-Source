@@ -93,6 +93,11 @@ urlpatterns = [
         views.participant_record,
         name='participant-record'),
 
+    # Class record overview page
+    url(r'^admin/reports/class/(?P<class_id>[0-9]+)/$',
+        views.class_record,
+        name='class-record'),
+
     # Media Release form report view
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/media/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_media_release,
