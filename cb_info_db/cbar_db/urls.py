@@ -164,4 +164,8 @@ urlpatterns = [
     # Seizure Incidents form
     url(r'^forms/private/incidents/(?P<participant_id>[0-9]+)$', views.private_form_incidents,
         name='private-form-incidents'),
+
+    # Add Classes form
+    url(r'^forms/private/classes$', views.private_form_classes,
+        name='private-form-classes'),
 ]
