@@ -16,6 +16,9 @@ ERROR_TEXT_PARTICIPANT_NOT_FOUND=(
 ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS=(
     "The participant already exists in the database."
 )
+ERROR_TEXT_CLASS_ALREADY_EXISTS=(
+    "The class already exists in the database."
+)
 ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
     "The requested participant does not have their medical information on file."
     " Please fill out a medical release first."
@@ -2852,6 +2855,66 @@ def private_form_incidents(request, participant_id):
                 'form': form,
                 'participant': participant
             }
+        )
+
+@login_required
+def private_form_classes(request):
+    """ Classes form view. """
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.ClassesForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create an instance of the ApplicationForm model to hold form data
+            try:
+                # Find the participant that matches the name and birth date from
+                # the form data:
+                grouping=models.Grouping.objects.get(
+                    name=form.cleaned_data['name']
+                )
+                return render(
+                    request,
+                    "cbar_db/forms/private/classes.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_CLASS_ALREADY_EXISTS,
+                    }
+                )
+
+            except ObjectDoesNotExist:
+
+                # Create a new ClassesForm for the participant and save it:
+                form_data_classes=models.Grouping(
+                    name=form.cleaned_data['name'],
+                    description=form.cleaned_data['description']
+                )
+                form_data_classes.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/classes.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.ClassesForm()
+
+        return render(
+            request,
+            'cbar_db/forms/private/classes.html',
+            {'form': form}
         )
 
 
