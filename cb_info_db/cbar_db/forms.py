@@ -133,6 +133,7 @@ class ClassesForm(forms.Form):
     )
 
     description=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
         max_length=models.Grouping._meta.get_field("description").max_length
     )
 
