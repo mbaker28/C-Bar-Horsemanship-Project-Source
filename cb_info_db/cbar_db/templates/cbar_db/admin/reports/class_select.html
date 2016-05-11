@@ -1,0 +1,20 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Administration</h1>
+    <h2>Class Records</h2>
+
+    <p>
+        Click a class below to see their detailed record displaying
+         all of the class's information.
+    </p>
+
+    <ul>
+        {% for class in classes %}
+            <li>
+                <a href="{% url 'class-record' class.class_id %}">
+                    {{ class.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
