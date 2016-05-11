@@ -52,10 +52,11 @@
         {{ formset.management_form }}
         {% for form, participant in formset_and_participants %}
             {{ form.participant_id_index }}
+            {{ form.errors.as_text }}
+            {{ form.non_form_errors.as_text }}
             <br />
         {% endfor %}
         <div id="general_information">
-            <h2>General Information</h2>
             <div id="participant_name">
                 <p><strong>Participant Name</strong></p>
                 <p>

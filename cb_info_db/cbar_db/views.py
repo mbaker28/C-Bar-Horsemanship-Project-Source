@@ -6,6 +6,7 @@ from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 import logging
+from datetime import date
 import time
 from cbar_db import forms
 from cbar_db import models
@@ -2160,10 +2161,18 @@ def report_seizure(request, participant_id, year, month, day):
 def private_form_intake_assessment(request):
     """ Intake assessment view. """
 
+    # TODO:
+    #   -Add seizure info from seizure evaluations
+    #   -Use current date to save records
+
     class SelectedParticipantsForm(django_forms.Form):
         participants_selected=django_forms.ModelMultipleChoiceField(
             queryset=models.Participant.objects.all(),
             widget=django_forms.CheckboxSelectMultiple,
+        )
+        date=django_forms.DateField(
+            widget=django_forms.SelectDateWidget,
+            initial=date.today
         )
 
     if request.method == "POST":
@@ -2171,7 +2180,8 @@ def private_form_intake_assessment(request):
             # Let the user pick the participants to evaluate:
             loggeyMcLogging.error("Request type is POST.")
             loggeyMcLogging.error(
-                "'show_evaluation_form' is False. Displaying participant selection form"
+                "'show_evaluation_form' is False. Displaying participant"
+                " selection form"
             )
 
             form=SelectedParticipantsForm(request.POST)
@@ -2194,7 +2204,8 @@ def private_form_intake_assessment(request):
             for participant in selected_participant_id_numbers:
                 try:
                     loggeyMcLogging.error(
-                        "Retrieving participant with ID " + str(participant) + "..."
+                        "Retrieving participant with ID " + str(participant)
+                        + "..."
                     )
 
                     selected_participants.append(
@@ -2264,13 +2275,19 @@ def private_form_intake_assessment(request):
                     # save them.
                     loggeyMcLogging.error("The form is valid.")
 
+                    current_form_index=0 # For finding the right participant_id
                     for form in formset:
                         if form.is_valid():
                             loggeyMcLogging.error("The current form is valid.")
+                            loggeyMcLogging.error(
+                                str(
+                                    request.session["intake_post_participants"][current_form_index]
+                                )
+                            )
 
+                            current_form_index+=1
                         else:
                             # One of the forms isn't valid.
-                            # The form is not valid.
 
                             loggeyMcLogging.error("One of the forms is not valid")
 
@@ -2285,7 +2302,7 @@ def private_form_intake_assessment(request):
                     loggeyMcLogging.error("The form is not valid.")
 
                     loggeyMcLogging.error(
-                        "request.session['post_participants']: "
+                        "request.session['intake_post_participants']: "
                         + str(request.session["intake_post_participants"])
                     )
 

@@ -150,8 +150,7 @@ class SeizureEvaluationForm(forms.Form):
     phone_work=USPhoneNumberField(required=False)
 
     type_of_seizure=forms.ChoiceField(
-        choices=models.SeizureEval._meta.get_field("type_of_seizure").choices,
-        initial="N"
+        choices=models.SeizureEval._meta.get_field("type_of_seizure").choices
     )
 
     date_of_last_seizure=forms.DateField(widget=SelectDateWidget(years=YEARS))
@@ -696,29 +695,25 @@ class RiderIntakeAssessmentForm(forms.Form):
     )
 
     # Stored in SeizureEval (should auto-fill)
-    type_of_seizure=forms.ChoiceField(
-        choices=models.SeizureEval._meta.get_field("type_of_seizure").choices
-    )
+    # type_of_seizure=forms.ChoiceField(
+    #     choices=models.SeizureEval._meta.get_field("type_of_seizure").choices
+    # )
 
     # Stored in Diagnosis:
-    primary_diagnosis=forms.CharField( # Should be auto-filled if applicable
-        max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
-    )
+    # primary_diagnosis=forms.CharField( # Should be auto-filled if applicable
+    #     max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
+    # )
 
     # Stored in AuthorizedUser (?):
-    assessor_name=forms.CharField(
-        max_length=models.Participant._meta.get_field("name").max_length
-    )
-
-    # Stored in Session:
-    tack=forms.CharField(
-        max_length=models.Session._meta.get_field("tack").max_length
-    )
-    # Should this ^ be stored somehwere else? Seems to be related to the
-    # participant, not a given session.
+    # assessor_name=forms.CharField(
+    #     max_length=models.Participant._meta.get_field("name").max_length
+    # )
 
     # Stored in IntakeAssessment:
-    date=forms.DateField(widget=SelectDateWidget)
+    # date=forms.DateField(
+    #     widget=SelectDateWidget,
+    #     initial=date.today
+    # )
     impulsive=forms.ChoiceField(
         choices=models.IntakeAssessment._meta.get_field("impulsive").choices,
         widget=RadioSelect
@@ -749,13 +744,6 @@ class RiderIntakeAssessmentForm(forms.Form):
         choices=(
             models.IntakeAssessment._meta.get_field("language_skills_signs")
             .choices
-        ),
-        widget=RadioSelect
-    )
-    language_skills_comments=forms.CharField(
-        max_length=(
-            models.IntakeAssessment._meta.get_field("language_skills_comments")
-            .max_length
         ),
         widget=RadioSelect
     )
@@ -1210,10 +1198,6 @@ class SessionPlanForm(forms.Form):
     date=forms.DateField(
         widget=SelectDateWidget(years=YEARS),
         initial=date.today()
-    )
-    tack=forms.CharField(
-        max_length=models.Session._meta.get_field("tack").max_length,
-        required=False
     )
 
     # Stored in SessionPlanInd
