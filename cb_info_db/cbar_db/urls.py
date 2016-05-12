@@ -79,6 +79,10 @@ urlpatterns = [
     url(r'^admin/reports/$', views.report_select_participant,
         name='report-select-participant'),
 
+    # Class select page
+    url(r'^admin/reports/class_select/$', views.report_select_class,
+        name='report-select-class'),
+
     # Private forms index page
     url(r'^forms/private/$', views.index_private_forms,
         name='index-private-forms'),
@@ -88,6 +92,11 @@ urlpatterns = [
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/$',
         views.participant_record,
         name='participant-record'),
+
+    # Class record overview page
+    url(r'^admin/reports/class/(?P<class_id>[0-9]+)/$',
+        views.class_record,
+        name='class-record'),
 
     # Media Release form report view
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/media/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
@@ -126,6 +135,21 @@ urlpatterns = [
         name="private-form-intake-assessment"
     ),
 
+    # Observation Evaluation form report view
+    url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/observation_evaluation/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+        views.report_observation_evaluation,
+        name='report-observation-evaluation'),
+
+    # Session Plan form report view
+    url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/session_plan/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+        views.report_session_plan,
+        name='report-session-plan'),
+
+    # Rider Evaluation Checklist form report view
+    url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/rider_eval_checklist/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+        views.report_rider_eval_checklist,
+        name='report-rider-eval-checklist'),
+
     ############################ Private forms ###########################
     #Observation Evaluation
     url(r'^forms/private/observation_evaluation/(?P<participant_id>[0-9]+)/$',
@@ -139,4 +163,38 @@ urlpatterns = [
     # Rider Eval Checklist
     url(r'^forms/private/rider_eval_checklist/(?P<participant_id>[0-9]+)$', views.private_form_rider_eval_checklist,
         name='private_form_rider_eval_checklist'),
+
+    url(r'^private/logout/$', views.logout_confirmation,
+        name='logout-confirmation'),
+
+    url(r'^private/logout/confirmed/$', views.logout_user,
+        name='logout-user'),
+
+    url(r'^private/logged_out/$', views.loggered_out,
+        name="loggered-out"),
+
+    # Seizure Phone Log form
+    url(r'^forms/private/phone_log/(?P<participant_id>[0-9]+)$', views.private_form_phone_log,
+        name='private-form-phone-log'),
+
+    # Seizure Incidents form
+    url(r'^forms/private/incidents/(?P<participant_id>[0-9]+)$', views.private_form_incidents,
+        name='private-form-incidents'),
+
+    # Create User form
+    url(r'^forms/private/create_user/$', views.private_form_create_user,
+        name='private-form-create-user'),
+
+    # User Accounts page
+    url(r'^admin/reports/user_select/$', views.report_select_user,
+        name='report-select-user'),
+
+    # User Account overview page
+    url(r'^admin/reports/user/(?P<user_id>[0-9]+)/$',
+        views.user_record,
+        name='user-record'),
+
+    # Define a Class form
+    url(r'^forms/private/define_a_class/$', views.private_form_define_a_class,
+        name='private-form-define-a-class'),
 ]

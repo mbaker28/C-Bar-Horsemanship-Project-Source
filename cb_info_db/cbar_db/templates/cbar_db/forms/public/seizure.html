@@ -8,6 +8,10 @@
     {% endif %}
     <form action="{% url 'public-form-seizure' %}" method="post">
         {% csrf_token %}
+        <p>
+            Fields with an <span style="color: red">*</span> next to them are
+             required.
+        </p>
         <p><b>Instructions: </b>
             Equine-assisted activities are a risky activity; therefore, conditions
             that increase that risk are carefully analyzed.  The safety of all the
@@ -15,19 +19,19 @@
             thoroughly to maximize safety.
         </p>
         <p>
-            Participant's Name: {{ form.name }}
+            <span style="color: red">*</span> Participant's Name: {{ form.name }}
             <span class="error_message">
                 {{ form.name.errors.as_text }}
             </span>
         </p>
         <p>
-            Birth Date: {{ form.birth_date }}
+            <span style="color: red">*</span> Birth Date: {{ form.birth_date }}
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
             </span>
         </p>
         <p>
-            Parent/Guardian Name: {{ form.guardian_name }}
+            <span style="color: red">*</span> Parent/Guardian Name: {{ form.guardian_name }}
             <span class="error_message">
                 {{ form.guardian_name.errors.as_text }}
             </span>
@@ -51,47 +55,47 @@
             </span>
         </p>
         <p>
-            Type of Seizure (if more than one, please list all types):
+            <span style="color: red">*</span> Type of Seizure (if more than one, please list all types):
              {{ form.type_of_seizure }}
             <span class="error_message">
                 {{ form.type_of_seizure.errors.as_text }}
             </span>
-            <span style="color: red">SHOULD WE BE ABLE TO SELECT MORE THAN ONE TYPE HERE? CHECK CHOICES ARE CORRECT.</span>
+
         </p>
         <p>
-            Date of Last Seizure: {{ form.date_of_last_seizure }}
+            <span style="color: red">*</span> Date of Last Seizure: {{ form.date_of_last_seizure }}
             <span class="error_message">
                 {{form.date_of_last_seizure.errors.as_text }}
             </span>
         </p>
         <p>
-            Frequency of Seizures: {{ form.seizure_frequency }}
+            <span style="color: red">*</span> Frequency of Seizures: {{ form.seizure_frequency }}
             <span class="error_message">
                 {{ form.seizure_frequency.errors.as_text }}
             </span>
         </p>
         <p>
-            Duration of Last Seizure: {{ form.duration_of_last_seizure }}
+            <span style="color: red">*</span> Duration of Last Seizure: {{ form.duration_of_last_seizure }}
             <span class="error_message">
                 {{ form.duration_of_last_seizure.errors.as_text }}
             </span>
         </p>
         <p>
-            Typical Causes of Seizure Activity: {{ form.typical_cause }}
+            <span style="color: red">*</span> Typical Causes of Seizure Activity: {{ form.typical_cause }}
             <span class="error_message">
                 {{ form.typical_cause.errors.as_text }}
             </span>
         </p>
         <p>
             Seizure activity indicators (aura, behaviors or
-            manifestations of oncoming seizure activity):
+            manifestations of oncoming seizure activity): <br />
             {{ form.seizure_indicators }}
             <span class="error_message">
                 {{ form.seizure_indicators.errors.as_text }}
             </span>
         </p>
         <p>
-            After Effect: {{ form.after_effect }}
+            <span style="color: red">*</span> After Effect: {{ form.after_effect }}
             <span class="error_message">
                 {{ form.after_effect.errors.as_text }}
             </span>
@@ -108,7 +112,7 @@
             Reason Taken: {{ form.medication_one_reason }}
             <span class="error_message">
                 {{ form.medication_one_reason.errors.as_text }}
-            </span>
+            </span><br />
             Frequency: {{ form.medication_one_frequency }}
             <span class="error_message">
                 {{ form.medication_one_frequency.errors.as_text }}
@@ -122,7 +126,7 @@
             Reason Taken: {{ form.medication_two_reason }}
             <span class="error_message">
                 {{ form.medication_two_reason.errors.as_text }}
-            </span>
+            </span><br />
             Frequency: {{ form.medication_two_frequency }}
             <span class="error_message">
                 {{ form.medication_two_frequency.errors.as_text }}
@@ -136,7 +140,7 @@
             Reason Taken: {{ form.medication_three_reason }}
             <span class="error_message">
                 {{ form.medication_three_reason.errors.as_text }}
-            </span>
+            </span><br />
             Frequency: {{ form.medication_three_frequency }}
             <span class="error_message">
                 {{ form.medication_three_frequency.errors.as_text }}
@@ -190,8 +194,9 @@
             </span>
         </p>
         <p>
-            {{ form.during_seizure_other }} Other (Please explain:
-             {{ form.during_seizure_other_description }} )
+            {{ form.during_seizure_other }} Other (Please explain):
+            <br />
+             {{ form.during_seizure_other_description }}
             <span class="error_message">
                 {{ form.during_seizure_other_description.errors.as_text }}
             </span>
@@ -252,14 +257,14 @@
             </span>
         </p>
         <p>
-            Student/Parent/Guardian signature: {{ form.signature }}
+            <span style="color: red">*</span> Student/Parent/Guardian signature: {{ form.signature }}
             <span class="error_message">
                 {{ form.signature.errors.as_text }}
             </span>
-            Date: {{ form.date }}
+            <p><span style="color: red">*</span> Date: {{ form.date }}
             <span class="error_message">
                 {{ form.date.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             <input type="submit" value="Submit" />

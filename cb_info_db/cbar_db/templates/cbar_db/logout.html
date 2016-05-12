@@ -1,0 +1,20 @@
+{% extends "cbar_db/template.html" %}
+{% block header %}
+    {% load staticfiles %}
+    <script src="{% static 'cbar_db/js/jquery-1.12.3.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $('a#cancel_mf').click(function() {
+                parent.history.back();
+                return false;
+            });
+        });
+    </script>
+{% endblock %}
+{% block body %}
+    <h2>Are you sure you want to logout?</h2>
+    <p style="text-align: center;">
+        <a class="button" id="cancel_mf" href="#">Cancel</a>
+        <a class="button" href="{% url 'logout-user' %}">Logout</a>
+    </p>
+{% endblock %}

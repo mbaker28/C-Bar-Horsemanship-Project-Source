@@ -123,5 +123,32 @@
                 {% endfor %}
             </div>
         </div>
+        <h2>Evaluation and Planning Forms</h2>
+        <div id="evaluation_and_planning_forms" class="floating_block_wrapper">
+            <div class="floating_block">
+                <strong>Observation Evaluations</strong><br />
+                {% for observation_evaluation in observation_evaluations %}
+                <a href="{% url 'report-observation-evaluation' participant.participant_id observation_evaluation.date.year observation_evaluation.date.month observation_evaluation.date.day %}">
+                    {{ observation_evaluation.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Session Plans</strong><br />
+                {% for session_plan in session_plans %}
+                <a href="{% url 'report-session-plan' participant.participant_id session_plan.date.year session_plan.date.month session_plan.date.day %}">
+                    {{ session_plan.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
+                <strong>Rider Evaluation Checklists</strong><br />
+                {% for rider_eval_checklist in rider_eval_checklists %}
+                <a href="{% url 'report-rider-eval-checklist' participant.participant_id rider_eval_checklist.date.year rider_eval_checklist.date.month rider_eval_checklist.date.day %}">
+                    {{ rider_eval_checklist.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+        </div>
     {% endif %}
 {% endblock %}

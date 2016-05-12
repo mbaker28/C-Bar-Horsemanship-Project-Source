@@ -30,6 +30,7 @@
 from math import floor
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission
 from localflavor.us.models import USStateField
 from localflavor.us.models import PhoneNumberField
 from localflavor.us.models import USZipCodeField
@@ -1644,6 +1645,23 @@ class Medication(models.Model):
     reason_taken=models.CharField(max_length=50)
     frequency=models.CharField(max_length=50)
 
+class PhoneLog(models.Model):
+    class Meta:
+        unique_together=(("participant_id", "date", "time"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+    time=models.TimeField()
+    details=models.CharField(max_length=2500)
+
+class Incidents(models.Model):
+    class Meta:
+        unique_together=(("participant_id", "date", "time"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+    time=models.TimeField()
+    details=models.CharField(max_length=2500)
 
 class SeizureEval(models.Model):
     SEIZURE_GRAND="G"
@@ -1958,7 +1976,6 @@ class Sidewalker(models.Model):
         max_length=SHORT_ANSWER_LENGTH,
         null=True
     )
-
 
 class AuthorizedUser(models.Model):
     """ Links to the built in Django authentication system. Acts as a bridge

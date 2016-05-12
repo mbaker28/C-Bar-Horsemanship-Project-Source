@@ -1,7 +1,6 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
     <h1>Private Forms</h1>
-
     <p style="text-align:center">
         Click a participant's name under a heading below to fill out the desired
          form.
@@ -26,7 +25,7 @@
         {% endfor %}
     </ul>
 
-    <h2 style="text-align:left">Individual Session Plan</h2>
+    <h3 style="text-align:left">Individual Session Plan</h3>
     <ul>
         {% for participant in participants %}
             <li>
@@ -37,11 +36,35 @@
         {% endfor %}
     </ul>
 
-    <h2 style="text-align:left">Rider Evaluation Checklist</h2>
+    <h3 style="text-align:left">Rider Evaluation Checklist</h3>
     <ul>
         {% for participant in participants %}
             <li>
                 <a href="{% url 'private_form_rider_eval_checklist' participant.participant_id %}">
+                    {{ participant.name }} ({{ participant.birth_date }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Incident Forms</h2>
+
+    <h3 style="text-align:left">Log Seizure Phone Call</h3>
+    <ul>
+        {% for participant in participants %}
+            <li>
+                <a href="{% url 'private-form-phone-log' participant.participant_id %}">
+                    {{ participant.name }} ({{ participant.birth_date }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h3 style="text-align:left">Log Seizure Incident</h3>
+    <ul>
+        {% for participant in participants %}
+            <li>
+                <a href="{% url 'private-form-incidents' participant.participant_id %}">
                     {{ participant.name }} ({{ participant.birth_date }})
                 </a>
             </li>

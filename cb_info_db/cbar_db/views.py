@@ -1,4 +1,8 @@
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, Group
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django import forms as django_forms
@@ -16,6 +20,18 @@ ERROR_TEXT_PARTICIPANT_NOT_FOUND=(
 )
 ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS=(
     "The participant already exists in the database."
+)
+ERROR_TEXT_USER_NOT_FOUND=(
+    "The requested user isn't in the database."
+)
+ERROR_TEXT_USER_ALREADY_EXISTS=(
+    "The user already exists in the database."
+)
+ERROR_TEXT_CLASS_NOT_FOUND=(
+    "The requested class isn't in the database."
+)
+ERROR_TEXT_CLASS_ALREADY_EXISTS=(
+    "The class already exists in the database."
 )
 ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
     "The requested participant does not have their medical information on file."
@@ -41,6 +57,15 @@ ERROR_TEXT_BACKGROUND_CHECK_NOT_AVAILABLE=(
 )
 ERROR_TEXT_SEIZURE_EVAL_NOT_AVAILABLE=(
     "The Seizure Evaluation requested is not available."
+)
+ERROR_TEXT_OBS_EVAL_NOT_AVALIABLE=(
+    "The Observation Evaluation requested is not avaliable."
+)
+ERROR_TEXT_SES_PLAN_NOT_AVALIABLE=(
+    "The Session Plan requested is not available."
+)
+ERROR_TEXT_RIDER_EVAL_CHECKLIST_NOT_AVAILABLE=(
+    "The Rider Evaluation Checklist requested is not available."
 )
 ERROR_TEXT_DB_INTEGRITY=(
     "An internal database error has occured and the form could not be saved."
@@ -126,6 +151,28 @@ def public_form_application(request):
                     email=form.cleaned_data['email'],
                 )
                 form_data_application.save()
+
+                if form.cleaned_data["participant_type_staff"] == True:
+                    participant_type_staff=models.ParticipantType(
+                        participant_type=models.ParticipantType.STAFF,
+                        participant_id=form_data_application
+                    )
+                    participant_type_staff.save()
+
+                if form.cleaned_data["participant_type_volunteer"] == True:
+                    participant_type_volunteer=models.ParticipantType(
+                        participant_type=models.ParticipantType.VOLUNTEER,
+                        participant_id=form_data_application
+                    )
+                    participant_type_volunteer.save()
+
+                if form.cleaned_data["participant_type_participant"] == True:
+                    participant_type_participant=models.ParticipantType(
+                        participant_type=models.ParticipantType.PARTICIPANT,
+                        participant_id=form_data_application
+                    )
+                    participant_type_participant.save()
+
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
@@ -1142,6 +1189,26 @@ def donation_monetary(request):
             }
         )
 
+def logout_confirmation(request):
+    return render (request, 'cbar_db/logout.html')
+
+def logout_user(request):
+    logout(request)
+    # redirect to a new URL:
+    return HttpResponseRedirect(reverse("loggered-out")+"?a=a")
+
+
+def loggered_out(request):
+    """ Used to tell the user they loggered out. """
+
+    # Check if the user just typed the url in the menu bar:
+    if request.GET.get("a") == "a":
+        # The user was redirected here from a loggered out page, display the message:
+        return render(request, "cbar_db/successfully_logged_out.html")
+    else:
+        # The user just typed in the address, redirect to the home page:
+        return HttpResponseRedirect("/")
+
 
 @login_required
 def private_form_rider_eval_checklist(request, participant_id):
@@ -1657,8 +1724,70 @@ def index_admin(request):
 
     return render(
         request,
-        "cbar_db/admin/admin.html",
+        "cbar_db/admin/admin.html"
     )
+
+@login_required
+def private_form_create_user(request):
+    """ User creation form view. """
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.CreateUserForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create an instance of the ApplicationForm model to hold form data
+            try:
+                # Find the user that matches the username and email from
+                # the form data:
+                user=User.objects.get(
+                    username=form.cleaned_data['username'],
+                    email=form.cleaned_data['email']
+                )
+                return render(
+                    request,
+                    "cbar_db/forms/private/create_user.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_USER_ALREADY_EXISTS,
+                    }
+                )
+
+            except ObjectDoesNotExist:
+                # Create a new CreateUserForm for the user and save it:
+                form_data_create_user=User.objects.create_user(
+                    username=form.cleaned_data['username'],
+                    password=form.cleaned_data['password'],
+                    email=form.cleaned_data['email'],
+                )
+                form_data_create_user.save()
+                user_id = form_data_create_user
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/create_user.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.CreateUserForm()
+
+        return render(
+            request,
+            'cbar_db/forms/private/create_user.html',
+            {'form': form}
+        )
 
 @login_required
 def report_select_participant(request):
@@ -1669,6 +1798,29 @@ def report_select_participant(request):
         request,
         'cbar_db/admin/reports/participant_select.html',
         {'participants':participants}
+    )
+
+@login_required
+def report_select_user(request):
+    """ Logged in user select user acount view. """
+    users=User.objects.all()
+
+    return render(
+        request,
+        'cbar_db/admin/reports/user_select.html',
+        {'users':users}
+    )
+
+
+@login_required
+def report_select_class(request):
+    """ Logged in user select class record view. """
+    grouping=models.Grouping.objects.all()
+
+    return render(
+        request,
+        'cbar_db/admin/reports/class_select.html',
+        {'grouping':grouping}
     )
 
 @login_required
@@ -1736,6 +1888,24 @@ def participant_record(request, participant_id):
         )
     )
 
+    # Find our Participant's ObservationEvaluation instances
+    observation_evaluations=(models.EvalAttitude.objects.filter(
+        participant_id=participant
+        )
+    )
+
+    # Find our Participant's SessionPlanInd instances
+    session_plans=(models.SessionPlanInd.objects.filter(
+        participant_id=participant
+        )
+    )
+
+    # Find our Participant's EvalRidingExercises instances
+    rider_eval_checklists=(models.EvalRidingExercises.objects.filter(
+        participant_id=participant
+        )
+    )
+
     return render(
         request,
         "cbar_db/admin/reports/participant.html",
@@ -1746,7 +1916,63 @@ def participant_record(request, participant_id):
             "emergency_authorizations": emergency_authorizations,
             "liability_releases": liability_releases,
             "background_checks": background_checks,
-            "seizure_evals": seizure_evals
+            "seizure_evals": seizure_evals,
+            "observation_evaluations": observation_evaluations,
+            "session_plans": session_plans,
+            "rider_eval_checklists": rider_eval_checklists
+        }
+    )
+
+@login_required
+def class_record(request, class_id):
+    """ Class record view. """
+
+    try:
+        group=models.Grouping.objects.get(
+            class_id=class_id
+        )
+    except ObjectDoesNotExist:
+        # The class doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/class.html",
+            {
+                'error_text': (ERROR_TEXT_CLASS_NOT_FOUND),
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/class.html",
+        {
+            "group": group
+        }
+    )
+
+
+@login_required
+def user_record(request, user_id):
+    """ User Account view. """
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/user.html",
+            {
+                'error_text': (ERROR_TEXT_USER_NOT_FOUND),
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/user.html",
+        {
+            "user": user,
         }
     )
 
@@ -2902,3 +3128,509 @@ def private_form_session_plan(request, participant_id):
                 'diagnosis_types': diagnosis_types
             }
         )
+
+@login_required
+def private_form_phone_log(request, participant_id):
+    """Data for phone log form."""
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        # Create a form instance and populate it with data from the request:
+        form=forms.PhoneLogForm(request.POST)
+
+        # Check whether the form data entered is valid:
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+            # Find the participant's record based on their (name, birth_date):
+            try:
+                participant=models.Participant.objects.get(
+                    participant_id=participant_id
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/private/phone_log.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                    }
+                )
+            try:
+                phone_log=models.PhoneLog(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    time=form.cleaned_data["time"],
+                    details=form.cleaned_data["details"]
+                )
+                phone_log.save()
+            # Catch duplicate primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/private/phone_log.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="phone log")
+                            ),
+                        }
+                    )
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/private/phone_log.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
+
+            # redirect to a "you saved a form" page:
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid
+            loggeyMcLogging.error("The form is NOT valid")
+
+            try:
+                participant=models.Participant.objects.get(
+                    participant_id=participant_id
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/private/phone_log.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                    }
+                )
+
+            return render(
+                request,
+                "cbar_db/forms/private/phone_log.html",
+                {
+                    'form': form,
+                    'participant': participant,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+    else:
+        # If request type is GET (or any other method) create a blank form and
+        # display it:
+        form=forms.PhoneLogForm()
+
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            # The participant doesn't exist.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/phone_log.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                }
+            )
+
+        return render(
+            request,
+            "cbar_db/forms/private/phone_log.html",
+            {
+                'form': form,
+                'participant': participant
+            }
+        )
+
+@login_required
+def private_form_incidents(request, participant_id):
+    """Data for incidents form."""
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        loggeyMcLogging.error("Request is of type POST")
+        # Create a form instance and populate it with data from the request:
+        form=forms.IncidentsForm(request.POST)
+
+        # Check whether the form data entered is valid:
+        if form.is_valid():
+            loggeyMcLogging.error("The form is valid")
+            # Find the participant's record based on their (name, birth_date):
+            try:
+                participant=models.Participant.objects.get(
+                    participant_id=participant_id
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/private/incidents.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                    }
+                )
+
+            try:
+                incidents=models.Incidents(
+                    participant_id=participant,
+                    date=form.cleaned_data["date"],
+                    time=form.cleaned_data["time"],
+                    details=form.cleaned_data["details"]
+                )
+                incidents.save()
+            # Catch duplicate primary keys:
+            except IntegrityError as error:
+                # Set the error message and redisplay the form:
+                if "Duplicate entry" in str(error.__cause__) or "UNIQUE constraint failed" in str(error.__cause__):
+                    return render(
+                        request,
+                        "cbar_db/forms/private/incidents.html",
+                        {
+                            'form': form,
+                            'error_text': (
+                                ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                .format(form="incidents")
+                            ),
+                        }
+                    )
+                else: # pragma: no cover
+                    # Excluded from coverage results because no way to test
+                    # without intentionally breaking validation code
+                    loggeyMcLogging.error(
+                        "Caught generic database exception:\n" + str(error)
+                    )
+                    return render(
+                        request,
+                        "cbar_db/forms/private/incidents.html",
+                        {
+                            'form': form,
+                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                        }
+                    )
+
+            # redirect to a "you saved a form" page:
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid
+            loggeyMcLogging.error("The form is NOT valid")
+
+            try:
+                participant=models.Participant.objects.get(
+                    participant_id=participant_id
+                )
+            except ObjectDoesNotExist:
+                # The participant doesn't exist.
+                # Set the error message and redisplay the form:
+                return render(
+                    request,
+                    "cbar_db/forms/private/incidents.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                    }
+                )
+
+            return render(
+                request,
+                "cbar_db/forms/private/incidents.html",
+                {
+                    'form': form,
+                    'participant': participant,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+    else:
+        # If request type is GET (or any other method) create a blank form and
+        # display it:
+        form=forms.IncidentsForm()
+
+        try:
+            participant=models.Participant.objects.get(
+                participant_id=participant_id
+            )
+        except ObjectDoesNotExist:
+            # The participant doesn't exist.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/incidents.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_PARTICIPANT_NOT_FOUND,
+                }
+            )
+        return render(
+            request,
+            "cbar_db/forms/private/incidents.html",
+            {
+                'form': form,
+                'participant': participant
+            }
+        )
+
+@login_required
+def private_form_define_a_class(request):
+    """ Classes form view. """
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.ClassesForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create an instance of the ClassesForm model to hold form data
+            try:
+                # Find the class that matches the name from
+                # the form data:
+                grouping=models.Grouping.objects.get(
+                    name=form.cleaned_data['name']
+                )
+                return render(
+                    request,
+                    "cbar_db/forms/private/define_a_class.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_CLASS_ALREADY_EXISTS,
+                    }
+                )
+
+            except ObjectDoesNotExist:
+
+                # Create a new ClassesForm for the class and save it:
+                form_data_classes=models.Grouping(
+                    name=form.cleaned_data['name'],
+                    description=form.cleaned_data['description']
+                )
+                form_data_classes.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/define_a_class.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.ClassesForm()
+
+        return render(
+            request,
+            'cbar_db/forms/private/define_a_class.html',
+            {'form': form}
+        )
+
+
+@login_required
+def report_observation_evaluation(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Observation Evaluation form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_observation_evaluation.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Observation Evaluation's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_observation_evaluation.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the ObservationEvaluation record:
+    try:
+        observation_evaluation=models.EvalAttitude.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_observation_evaluation.html",
+            {
+                'error_text': ERROR_TEXT_OBS_EVAL_NOT_AVALIABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_observation_evaluation.html",
+        {
+            "observation_evaluation": observation_evaluation,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_session_plan(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Session Plan form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Observation Evaluation's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the ObservationEvaluation record:
+    try:
+        session_plan=models.SessionPlanInd.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_session_plan.html",
+            {
+                'error_text': ERROR_TEXT_SES_PLAN_NOT_AVALIABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_session_plan.html",
+        {
+            "session_plan": session_plan,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_rider_eval_checklist(request, participant_id, year, month, day):
+    """ Displays a the data entered in a previous Rider Evaluation Checklist
+        form. """
+
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_eval_checklist.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Observation Evaluation's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_eval_checklist.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the ObservationEvaluation record:
+    try:
+        rider_eval_checklist=models.EvalRidingExercises.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The MediaRelease doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_eval_checklist.html",
+            {
+                'error_text': ERROR_TEXT_RIDER_EVAL_CHECKLIST_NOT_AVAILABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_rider_eval_checklist.html",
+        {
+            "rider_eval_checklist": rider_eval_checklist,
+            "participant": participant
+        }
+    )
