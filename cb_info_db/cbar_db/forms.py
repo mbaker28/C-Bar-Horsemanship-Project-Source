@@ -710,10 +710,15 @@ class RiderIntakeAssessmentForm(forms.Form):
     # )
 
     # Stored in IntakeAssessment:
-    # date=forms.DateField(
-    #     widget=SelectDateWidget,
-    #     initial=date.today
-    # )
+    staff_reviewed_medical_info=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta
+            .get_field("staff_reviewed_medical_info").choices
+        )
+    )
+    staff_reviewed_medical_info_date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS)
+    )
     impulsive=forms.ChoiceField(
         choices=models.IntakeAssessment._meta.get_field("impulsive").choices,
         widget=RadioSelect
@@ -738,7 +743,8 @@ class RiderIntakeAssessmentForm(forms.Form):
             models.IntakeAssessment._meta.get_field("communication_verbal")
             .choices
         ),
-        widget=RadioSelect
+        widget=RadioSelect,
+        required=False
     )
     language_skills_signs=forms.ChoiceField(
         choices=(
@@ -761,21 +767,6 @@ class RiderIntakeAssessmentForm(forms.Form):
         ),
         required=False
     )
-    ###################### DAFUQ? ###################
-    # Duplicate? of above ^
-    # visual_impaired=forms.ChoiceField(
-    #     choices=(
-    #         models.IntakeAssessment._meta.get_field("visual_impaired")
-    #         .choices
-    #     ),
-    #     widget=RadioSelect
-    # )
-    # visual_comments=forms.CharField(
-    #     max_length=(
-    #         models.IntakeAssessment._meta.get_field("visual_comments")
-    #         .max_length
-    #     )
-    # )
     hearing_impaired=forms.ChoiceField(
         choices=(
             models.IntakeAssessment._meta.get_field("hearing_impaired")
@@ -787,7 +778,8 @@ class RiderIntakeAssessmentForm(forms.Form):
         max_length=(
             models.IntakeAssessment._meta.get_field("hearing_comments")
             .max_length
-        )
+        ),
+        required=False
     )
     tactile=forms.ChoiceField(
         choices=(
@@ -800,7 +792,8 @@ class RiderIntakeAssessmentForm(forms.Form):
         max_length=(
             models.IntakeAssessment._meta.get_field("tactile_comments")
             .max_length
-        )
+        ),
+        required=False
     )
     motor_skills_gross_left=forms.ChoiceField(
         choices=(
@@ -834,7 +827,8 @@ class RiderIntakeAssessmentForm(forms.Form):
         max_length=(
             models.IntakeAssessment._meta.get_field("motor_skills_comments")
             .max_length
-        )
+        ),
+        required=False
     )
     posture_forward_halt=forms.BooleanField(required=False)
     posture_forward_walk=forms.BooleanField(required=False)
@@ -878,21 +872,24 @@ class RiderIntakeAssessmentForm(forms.Form):
         max_length=(
             models.IntakeAssessment._meta.get_field("mounted_comments")
             .max_length
-        )
+        ),
+        required=False
     )
     risk_benefit_comments=forms.CharField(
         max_length=(
             models.IntakeAssessment._meta.get_field("risk_benefit_comments")
             .max_length
         ),
-        widget=forms.Textarea(attrs={'rows':4, 'cols':40})
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
+        required=False
     )
     goals_expectations=forms.CharField(
         max_length=(
             models.IntakeAssessment._meta.get_field("goals_expectations")
             .max_length
         ),
-        widget=forms.Textarea(attrs={'rows':4, 'cols':40})
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
+        required=False
     )
 
 

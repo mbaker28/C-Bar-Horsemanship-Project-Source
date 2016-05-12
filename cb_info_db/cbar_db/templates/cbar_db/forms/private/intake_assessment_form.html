@@ -17,6 +17,7 @@
         </strong></p>
     {% endif %}
 
+    {% if formset_and_participants %}
     <form style="text-align: center">
         <select name="section" id="section" style="text-align: center">
             <option value="general_information">
@@ -75,6 +76,15 @@
                         <br />
                     {% endfor %}
                 </p>
+            </div>
+            <div id="reviewed_medical_info">
+                <p><strong>Medical Info Reviewed By Staff</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.staff_reviewed_medical_info }}, Date:
+                     {{ form.staff_reviewed_medical_info_date }}
+                    <br />
+                {% endfor %}
             </div>
             <div id="height">
                 <p><strong>Height</strong></p>
@@ -520,4 +530,5 @@
 
         <input type="submit" value="Submit" />
     </form>
+    {% endif %}
 {% endblock %}
