@@ -61,9 +61,21 @@ YES_NO_CHOICES=(
     (YES, "Yes"),
     (NO, "No")
 )
+SOME="S"
+YES_NO_SOME_CHOICES=(
+    (YES, "Yes"),
+    (NO, "No"),
+    (SOME, "Some")
+)
+IMPAIRED="I"
+YES_NO_IMPAIRED_CHOICES=(
+    (YES, "Yes"),
+    (NO, "No"),
+    (IMPAIRED, "Impaired")
+)
 
 NULL_GAY=2 # anything that's not 1 or 0
-TRUE_GAY=1
+TRUE_GAY=1 # Ryan ___
 FALSE_GAY=0
 YES_NO_NULL_BOOL_CHOICES=(
     (TRUE_GAY, "Yes"),
@@ -98,6 +110,11 @@ LIKERT_LIKE_CHOICES_NO_PC=(
     (NOT_PERFORMED_DISABILITY, "Rider not able to perform due to disability"),
     (ATTEMPTS, "Attempts")
 )
+LIKERT_LIKE_CHOICES_MINIMAL=(
+    (POOR, "Poor"),
+    (FAIR, "Fair"),
+    (GOOD, "Good")
+)
 
 CONSENT="Y"
 NO_CONSENT="N"
@@ -117,7 +134,34 @@ ONE_TWO_THREE_CHOICES=(
     (UNKNOWN, "N/A")
 )
 
+INDPENDENT="I"
+MIN_ASSISTANCE="M"
+FULL_ASSISTANCE="F"
+ASSISTANCE_CHOICES=(
+    (INDPENDENT, "Independent"),
+    (MIN_ASSISTANCE, "Minimal assistance"),
+    (FULL_ASSISTANCE, "Full assistance")
+)
+NOT_APPLICABLE="N"
+ASSISTANCE_CHOICES_NA=(
+    (INDPENDENT, "Independent"),
+    (MIN_ASSISTANCE, "Minimal asst."),
+    (FULL_ASSISTANCE, "Full asst."),
+    (NOT_APPLICABLE, "n/a")
+)
+
 class Participant(models.Model):
+    LEFT="L"
+    RIGHT="R"
+    AMBIDEXTROUS="A"
+    NO_HAND_USE="N"
+    HAND_CHOICES=(
+        (LEFT, "Left"),
+        (RIGHT, "Right"),
+        (AMBIDEXTROUS, "Ambidextrous"),
+        (NO_HAND_USE, "No meaningful hand use")
+    )
+
     def __str__(self):
         return self.name + " (" + str(self.birth_date) + ")"
 
@@ -138,6 +182,11 @@ class Participant(models.Model):
     phone_cell=PhoneNumberField()
     phone_work=PhoneNumberField()
     school_institution=models.CharField(max_length=150, blank=True)
+    handedness=models.CharField(
+        max_length=1,
+        choices=HAND_CHOICES,
+        null=True
+    )
 
     @property
     def height_in_feet_and_inches(self):
@@ -160,6 +209,7 @@ class Session(models.Model):
     session_ID=models.AutoField(primary_key=True) # Auto generated PK
     date=models.DateTimeField()
     tack=models.CharField(max_length=250, null=True)
+
 
 class SessionPlanInd(models.Model):
     class Meta: # Sets up PK as (participant_id, date)
@@ -1667,6 +1717,7 @@ class SeizureEval(models.Model):
     seizure_frequency=models.CharField(max_length=SHORT_ANSWER_LENGTH)
     signature=models.CharField(max_length=NAME_LENGTH)
 
+
 # DISABLED: We are no longer storing seizuretype records.
 # DO NOT REMOVE Until after 5/2/16 demonstration, if given go ahead.
 # class SeizureType(models.Model):
@@ -1678,15 +1729,6 @@ class SeizureEval(models.Model):
 
 
 class AdaptationsNeeded(models.Model):
-    INDPENDENT="I"
-    MIN_ASSISTANCE="M"
-    FULL_ASSISTANCE="F"
-    ASSISTANCE_CHOICES=(
-        (INDPENDENT, "Independent"),
-        (MIN_ASSISTANCE, "Minimal assistance"),
-        (FULL_ASSISTANCE, "Full assistance")
-    )
-
     WALKS_IND="I"
     IND_WITH_CANE_ETC="C"
     WHEELCHAIR_MIN_NO_ASSISTANCE="N"
@@ -1733,7 +1775,8 @@ class AdaptationsNeeded(models.Model):
 
     mount_assistance_required=models.CharField(
         max_length=1,
-        choices=ASSISTANCE_CHOICES
+        choices=ASSISTANCE_CHOICES,
+        null=True
     )
     mount_device_needed=models.CharField(
         max_length=1,
@@ -1748,63 +1791,143 @@ class AdaptationsNeeded(models.Model):
 
     dismount_assistance_required=models.CharField(
         max_length=1,
-        choices=ASSISTANCE_CHOICES
+        choices=ASSISTANCE_CHOICES,
+        null=True
     )
     dismount_type=models.CharField(
         max_length=1,
-        choices=DISMOUNT_TYPE_CHOICES
+        choices=DISMOUNT_TYPE_CHOICES,
+        null=True
     )
-    posture_standing=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    posture_sitting=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    posture_mounted=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    ambulatory_status=models.CharField(max_length=1, choices=AMBULATORY_CHOICES)
+    posture_standing=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    posture_sitting=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    posture_mounted=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    ambulatory_status=models.CharField(
+        max_length=1,
+        choices=AMBULATORY_CHOICES,
+        null=True
+    )
     ambulatory_status_other=models.CharField(
         max_length=SHORT_ANSWER_LENGTH,
         null=True
     )
-    gait_flat=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_uneven=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_incline=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_decline=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_stairs=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_balance=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_standing_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_standing_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_straddle_up=models.CharField(max_length=SHORT_ANSWER_LENGTH)
-    gait_straddle_down=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+
+    gait_flat=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_uneven=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_incline=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_decline=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_stairs=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_balance=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_standing_up=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_sitting_down=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_straddle_up=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    gait_straddle_down=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
 
     # Sidewalker information for initial assessment
     num_sidewalkers_walk_spotter=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_walk_heel_hold=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_walk_over_thigh=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_walk_other=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_trot_spotter=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_trot_heel_hold=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_trot_over_thigh=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
     num_sidewalkers_trot_other=models.DecimalField(
         max_digits=1,
-        decimal_places=0
+        decimal_places=0,
+        null=True
     )
 
 
@@ -1863,3 +1986,156 @@ class AuthorizedUser(models.Model):
 
     participant_id=models.ForeignKey(Participant)
     authorized_user_id = models.OneToOneField(User)
+
+
+class IntakeAssessment(models.Model):
+    NO_ISSUES="N"
+    DO_NOT_TOUCH="T"
+    LIGHT_TOUCH="L"
+    DEEP_PRESSURE="P"
+    TACTILE_ISSUE_CHOICES=(
+        (NO_ISSUES, "No tactile issues"),
+        (DO_NOT_TOUCH, "Don't touch me!"),
+        (LIGHT_TOUCH, "Light touch"),
+        (DEEP_PRESSURE, "Deep pressure")
+    )
+
+    class Meta: # Sets up PK as (participant_id, date)
+        unique_together=(("participant_id","date"))
+
+    participant_id=models.ForeignKey(Participant, on_delete=models.CASCADE)
+    date=models.DateField()
+
+    staff_reviewed_medical_info=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
+    staff_reviewed_medical_info_date=models.DateField()
+    precautions=models.CharField(max_length=500)
+    impulsive=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
+    eye_contact=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
+    attention_span=models.CharField(
+        max_length=1,
+        choices=LIKERT_LIKE_CHOICES_MINIMAL,
+    )
+    interacts_with_others=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES
+    )
+    communication_verbal=models.CharField(
+        max_length=1,
+        choices=YES_NO_IMPAIRED_CHOICES,
+        null=True
+    )
+    communication_verbal_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH
+    )
+    language_skills_signs=models.CharField(
+        max_length=1,
+        choices=YES_NO_SOME_CHOICES,
+        null=True
+    )
+    language_skills_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    visual_impaired=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES,
+        null=True
+    )
+    visual_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    hearing_impaired=models.CharField(
+        max_length=1,
+        choices=YES_NO_CHOICES,
+        null=True
+    )
+    hearing_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    tactile=models.CharField(
+        max_length=1,
+        choices=TACTILE_ISSUE_CHOICES,
+        null=True
+    )
+    tactile_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    motor_skills_gross_left=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    motor_skills_gross_right=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    motor_skills_fine_left=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    motor_skills_fine_right=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    motor_skills_comments=models.CharField(
+        max_length=SHORT_ANSWER_LENGTH,
+        null=True
+    )
+    # motor skills: hand dominance is in Participant model.
+    posture_forward_halt=models.NullBooleanField()
+    posture_forward_walk=models.NullBooleanField()
+    posture_back_halt=models.NullBooleanField()
+    posture_back_walk=models.NullBooleanField()
+    posture_center_halt=models.NullBooleanField()
+    posture_center_walk=models.NullBooleanField()
+    posture_chairseat_halt=models.NullBooleanField()
+    posture_chairseat_walk=models.NullBooleanField()
+    posture_aligned_halt=models.NullBooleanField()
+    posture_aligned_walk=models.NullBooleanField()
+
+    rein_use_hold_halt=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    rein_use_steer_left_right_halt=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    rein_use_hold_walk=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    rein_use_steer_left_right_walk=models.CharField(
+        max_length=1,
+        choices=ASSISTANCE_CHOICES_NA,
+        default=NOT_APPLICABLE,
+        null=True
+    )
+    mounted_comments=models.CharField(max_length=SHORT_ANSWER_LENGTH)
+    risk_benefit_comments=models.CharField(max_length=500)
+    goals_expectations=models.CharField(max_length=500)

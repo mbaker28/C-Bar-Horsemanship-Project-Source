@@ -128,6 +128,13 @@ urlpatterns = [
         views.report_seizure,
         name='report-seizure'),
 
+    # Rider Intake Assessment view
+    url(
+        r'^forms/private/intake/$',
+        views.private_form_intake_assessment,
+        name="private-form-intake-assessment"
+    ),
+
     # Observation Evaluation form report view
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/observation_evaluation/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_observation_evaluation,
@@ -142,6 +149,11 @@ urlpatterns = [
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/rider_eval_checklist/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_rider_eval_checklist,
         name='report-rider-eval-checklist'),
+
+    # Rider Evaluation Checklist form report view
+    url(r'^admin/reports/intake/(?P<participant_id>[0-9]+)/report/rider_eval_checklist/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
+        views.report_rider_intake,
+        name='report-rider-intake'),
 
     ############################ Private forms ###########################
     #Observation Evaluation

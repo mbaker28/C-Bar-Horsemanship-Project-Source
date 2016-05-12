@@ -178,8 +178,7 @@ class SeizureEvaluationForm(forms.Form):
     phone_work=USPhoneNumberField(required=False)
 
     type_of_seizure=forms.ChoiceField(
-        choices=models.SeizureEval._meta.get_field("type_of_seizure").choices,
-        initial="N"
+        choices=models.SeizureEval._meta.get_field("type_of_seizure").choices
     )
 
     date_of_last_seizure=forms.DateField(widget=SelectDateWidget(years=YEARS))
@@ -615,6 +614,317 @@ class EmergencyMedicalReleaseForm(forms.Form):
         max_length=(models.AuthorizeEmergencyMedicalTreatment._meta
             .get_field("signature").max_length
         )
+    )
+
+
+class RiderIntakeAssessmentForm(forms.Form):
+    # Primary document sources:
+    #   -"Volunteer Folder/.../blank/Rider Intake Assessment (Spring 2014).pdf"
+    #   -"Volunteer Folder/.../Rider Intake Assessment (Spring 2014).pdf"
+
+    # GAAAAAAAAAAAAAAAAAAAAAAARRRRRRRRRRRRRRRRRRRRRRR
+    # participant_id_index=forms.CharField(
+    #     max_length=1000,
+    #     widget=forms.HiddenInput,
+    #     initial="Burp"
+    # )
+
+    # Stored in AdaptationsNeeded:
+    posture_standing=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta
+            .get_field("posture_standing").choices
+        ),
+        widget=RadioSelect
+    )
+    posture_sitting=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta
+            .get_field("posture_sitting").choices
+        ),
+        widget=RadioSelect
+    )
+    posture_mounted=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta
+            .get_field("posture_mounted").choices
+        ),
+        widget=RadioSelect
+    )
+    ambulatory_status=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta
+            .get_field("ambulatory_status").choices
+        )
+    )
+    ambulatory_status_other=forms.CharField(
+        max_length=(
+            models.AdaptationsNeeded._meta
+            .get_field("ambulatory_status_other").max_length
+        ),
+        required=False
+    )
+    gait_flat=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_flat").choices
+        ),
+        widget=RadioSelect
+    )
+    gait_uneven=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_uneven").choices
+        ),
+        widget=RadioSelect
+    )
+    gait_incline=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_incline").choices
+        ),
+        widget=RadioSelect
+    )
+    gait_decline=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_decline").choices
+        ),
+        widget=RadioSelect
+    )
+    gait_stairs=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_stairs").choices
+        ),
+        widget=RadioSelect
+    )
+    gait_balance=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_balance").choices
+        ),
+        widget=RadioSelect
+    )
+    gait_standing_up=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_standing_up")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    gait_sitting_down=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_sitting_down")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    gait_straddle_up=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_straddle_up")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    gait_straddle_down=forms.ChoiceField(
+        choices=(
+            models.AdaptationsNeeded._meta.get_field("gait_straddle_down")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+
+    # Stored in SeizureEval (should auto-fill)
+    # type_of_seizure=forms.ChoiceField(
+    #     choices=models.SeizureEval._meta.get_field("type_of_seizure").choices
+    # )
+
+    # Stored in Diagnosis:
+    # primary_diagnosis=forms.CharField( # Should be auto-filled if applicable
+    #     max_length=models.Diagnosis._meta.get_field("diagnosis").max_length
+    # )
+
+    # Stored in AuthorizedUser (?):
+    # assessor_name=forms.CharField(
+    #     max_length=models.Participant._meta.get_field("name").max_length
+    # )
+
+    # Stored in IntakeAssessment:
+    staff_reviewed_medical_info=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta
+            .get_field("staff_reviewed_medical_info").choices
+        )
+    )
+    staff_reviewed_medical_info_date=forms.DateField(
+        widget=SelectDateWidget(years=YEARS)
+    )
+    impulsive=forms.ChoiceField(
+        choices=models.IntakeAssessment._meta.get_field("impulsive").choices,
+        widget=RadioSelect
+    )
+    eye_contact=forms.ChoiceField(
+        choices=models.IntakeAssessment._meta.get_field("eye_contact").choices,
+        widget=RadioSelect
+    )
+    attention_span=forms.ChoiceField(
+        choices=models.IntakeAssessment._meta.get_field("attention_span").choices,
+        widget=RadioSelect
+    )
+    interacts_with_others=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("interacts_with_others")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    communication_verbal=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("communication_verbal")
+            .choices
+        ),
+        widget=RadioSelect,
+        required=False
+    )
+    language_skills_signs=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("language_skills_signs")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    visual_impaired=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("visual_impaired")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    visual_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("visual_comments")
+            .max_length
+        ),
+        required=False
+    )
+    hearing_impaired=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("hearing_impaired")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    hearing_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("hearing_comments")
+            .max_length
+        ),
+        required=False
+    )
+    tactile=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("tactile")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    tactile_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("tactile_comments")
+            .max_length
+        ),
+        required=False
+    )
+    motor_skills_gross_left=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_gross_left")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    motor_skills_gross_right=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_gross_right")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    motor_skills_fine_left=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_fine_left")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    motor_skills_fine_right=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_fine_right")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    motor_skills_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("motor_skills_comments")
+            .max_length
+        ),
+        required=False
+    )
+    posture_forward_halt=forms.BooleanField(required=False)
+    posture_forward_walk=forms.BooleanField(required=False)
+    posture_back_halt=forms.BooleanField(required=False)
+    posture_back_walk=forms.BooleanField(required=False)
+    posture_center_halt=forms.BooleanField(required=False)
+    posture_center_walk=forms.BooleanField(required=False)
+    posture_chairseat_halt=forms.BooleanField(required=False)
+    posture_chairseat_walk=forms.BooleanField(required=False)
+    posture_aligned_halt=forms.BooleanField(required=False)
+    posture_aligned_walk=forms.BooleanField(required=False)
+    rein_use_hold_halt=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_fine_right")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    rein_use_steer_left_right_halt=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_fine_right")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    rein_use_hold_walk=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_fine_right")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    rein_use_steer_left_right_walk=forms.ChoiceField(
+        choices=(
+            models.IntakeAssessment._meta.get_field("motor_skills_fine_right")
+            .choices
+        ),
+        widget=RadioSelect
+    )
+    mounted_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("mounted_comments")
+            .max_length
+        ),
+        required=False
+    )
+    risk_benefit_comments=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("risk_benefit_comments")
+            .max_length
+        ),
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
+        required=False
+    )
+    goals_expectations=forms.CharField(
+        max_length=(
+            models.IntakeAssessment._meta.get_field("goals_expectations")
+            .max_length
+        ),
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
+        required=False
     )
 
 

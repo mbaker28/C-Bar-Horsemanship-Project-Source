@@ -1,0 +1,20 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Rider Intake Assessment</h1>
+    <h2>Select Participants</h2>
+    <p>
+        Please select the participant(s) you would like to evaluate:
+    </p>
+    <form action="{% url 'private-form-intake-assessment' %}" method="post">
+        {% csrf_token %}
+        <p>
+            {{ form.participants_selected }}
+            {{ form.participants_selected.errors.as_text }}
+        </p>
+        <p>
+            Date: {{ form.date }}
+            {{ form.date.errors.as_text }}
+        </p>
+        <input type="submit" value="Continue" />
+    </form>
+{% endblock %}

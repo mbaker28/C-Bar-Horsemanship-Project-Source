@@ -126,6 +126,14 @@
         <h2>Evaluation and Planning Forms</h2>
         <div id="evaluation_and_planning_forms" class="floating_block_wrapper">
             <div class="floating_block">
+                <strong>Intake Assessments</strong><br />
+                {% for intake_assessment in intake_assessments %}
+                <a href="{% url 'report-rider-intake' participant.participant_id intake_assessment.date.year intake_assessment.date.month intake_assessment.date.day %}">
+                    {{ intake_assessment.date }}
+                </a><br />
+                {% endfor %}
+            </div>
+            <div class="floating_block">
                 <strong>Observation Evaluations</strong><br />
                 {% for observation_evaluation in observation_evaluations %}
                 <a href="{% url 'report-observation-evaluation' participant.participant_id observation_evaluation.date.year observation_evaluation.date.month observation_evaluation.date.day %}">

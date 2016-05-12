@@ -1,0 +1,534 @@
+{% extends "cbar_db/template.html" %}
+{% block header %}
+    {% load staticfiles %}
+    <script src="{% static "cbar_db/js/jquery-1.12.3.js" %}" type="text/javascript"></script>
+    <script src="{% static "cbar_db/js/intake_assessment.js" %}" type="text/javascript"></script>
+    <style>
+        ul, li {
+            display: inline;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>Rider Intake Assessment</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+
+    {% if formset_and_participants %}
+    <form style="text-align: center">
+        <select name="section" id="section" style="text-align: center">
+            <option value="general_information">
+                --- General Information ---
+            </option>
+            <option value="premounted">--- Premounted ---</option>
+            <option value="premounted_posture">Posture</option>
+            <option value="premounted_ambulatory">Ambulatory Status</option>
+            <option value="premounted_behavior">Behavior</option>
+            <option value="communication_verbal">Communication: Verbal</option>
+            <option value="communication_visual">Communication: Visual</option>
+            <option value="communication_hearing">
+                Communication: Hearing
+            </option>
+            <option value="tactile">Tactile</option>
+            <option value="motor_skills">Motor Skills</option>
+            <option value="mounted">--- Mounted ---</option>
+            <option value="posture_halt">
+                Posture &amp; Rein Use: At Halt
+            </option>
+            <option value="posture_walk">
+                Posture &amp; Rein Use: At Walk
+            </option>
+            <option value="mounted_comments">Comments</option>
+            <option value="precautions">
+                --- Precautions &amp; Contraindications ---
+            </option>
+        </select>
+    </form>
+
+    <form action="{% url 'private-form-intake-assessment' %}" method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for form, participant in formset_and_participants %}
+            {{ form.participant_id_index }}
+            {{ form.errors.as_text }}
+            {{ form.non_form_errors.as_text }}
+            <br />
+        {% endfor %}
+        <div id="general_information">
+            <div id="participant_name">
+                <p><strong>Participant Name</strong></p>
+                <p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant.name }}
+                        <br />
+                    {% endfor %}
+                </p>
+            </div>
+            <div id="birth_date">
+                <p><strong>Birth Date</strong></p>
+                <p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ participant.birth_date }}
+                        <br />
+                    {% endfor %}
+                </p>
+            </div>
+            <div id="reviewed_medical_info">
+                <p><strong>Medical Info Reviewed By Staff</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.staff_reviewed_medical_info }}, Date:
+                     {{ form.staff_reviewed_medical_info_date }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="height">
+                <p><strong>Height</strong></p>
+                <p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ participant.height_in_feet_and_inches }}
+                        <br />
+                    {% endfor %}
+                </p>
+            </div>
+            <div id="weight">
+                <p><strong>Weight</strong></p>
+                <p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ participant.weight }} lbs
+                        <br />
+                    {% endfor %}
+                </p>
+            </div>
+            <div id="Gender">
+                <p><strong>Gender</strong></p>
+                <p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ participant.get_gender_display }}
+                        <br />
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+
+        <div id="premounted">
+            <h2>Premounted</h2>
+            <div id="posture">
+                <h3>Posture</h3>
+                <div id="standing_posture">
+                    <p><strong>Standing</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.posture_standing }}
+                         {{ form.posture_standing.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="sitting_posture">
+                    <p><strong>Sitting</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.posture_sitting }}
+                         {{ form.posture_sitting.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="mounted_posture">
+                    <p><strong>Mounted</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.posture_mounted }}
+                         {{ form.posture_mounted.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="ambulatory">
+                <h3>Ambulatory Status</h3>
+                <p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.ambulatory_status }}
+                         {{ form.ambulatory_status.errors.as_text }}
+                         {{ form.ambulatory_status_other }}
+                         {{ form.ambulatory_status_other.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </p>
+
+                <h2>Gait</h2>
+                <div id="gait_flat">
+                    <p><strong>Flat</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_flat }}
+                         {{ form.gait_flat.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_uneven">
+                    <p><strong>Uneven</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_uneven }}
+                         {{ form.gait_uneven.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_incline">
+                    <p><strong>Incline</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_incline }}
+                         {{ form.gait_incline.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_decline">
+                    <p><strong>Decline</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_decline }}
+                         {{ form.gait_decline.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_stairs">
+                    <p><strong>Stairs</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_stairs }}
+                         {{ form.gait_stairs.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_balance">
+                    <p><strong>Balance</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_balance }}
+                         {{ form.gait_balance.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_standing_up">
+                    <p><strong>Standing Up</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_standing_up }}
+                         {{ form.gait_standing_up.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_sitting_down">
+                    <p><strong>Sitting Down</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_sitting_down }}
+                         {{ form.gait_sitting_down.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_straddle_up">
+                    <p><strong>Straddle - Standing</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_straddle_up }}
+                         {{ form.gait_straddle_up.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                </div>
+                <div id="gait_straddle_down">
+                    <p><strong>Straddle - Sitting</strong></p>
+                    {% for form, participant in formset_and_participants %}
+                        {{ participant }}:
+                         {{ form.gait_straddle_down }}
+                         {{ form.gait_straddle_down.errors.as_text }}
+                        <br />
+                    {% endfor %}
+                    </p>
+                </div>
+            </div>
+            <div id="behavior">
+                <h3>Behavior</h3>
+                <p><strong>Impulsive</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.impulsive }}
+                     {{ form.impulsive.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Eye Contact</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.eye_contact }}
+                     {{ form.eye_contact.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Attention Span</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.attention_span }}
+                     {{ form.attention_span.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Interacts with others</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.interacts_with_others }}
+                     {{ form.interacts_with_others.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="communication_verbal">
+                <h3>Communication</h3>
+                <p><strong>Verbal Communication</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.communication_verbal}}
+                     {{ form.communication_verbal.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Sign language skills</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.language_skills_signs}}
+                     {{ form.language_skills_signs.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="communication_visual">
+                <h3>Communication</h3>
+                <p><strong>Visually Impaired</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.visual_impaired }}
+                     {{ form.visual_impaired.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Comments</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.visual_comments }}
+                     {{ form.visual_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="communication_hearing">
+                <h3>Communication</h3>
+                <p><strong>Hearing Impaired</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.hearing_impaired }}
+                     {{ form.hearing_impaired.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Comments</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.hearing_comments }}
+                     {{ form.hearing_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="tactile">
+                <h3>Tactile</h3>
+                <p><strong>Tactile Restrictions</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.tactile }}
+                     {{ form.tactile.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Comments</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.tactile_comments }}
+                     {{ form.tactile_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+            <div id="motor_skills">
+                <h3>Motor Skills</h3>
+                <p><strong>Gross (ring reach) - Left</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_gross_left }}
+                     {{ form.motor_skills_gross_left.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Gross (ring reach) - Right</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_gross_right }}
+                     {{ form.motor_skills_gross_right.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Fine (helmet latch, clothespin) - Left</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_fine_left }}
+                     {{ form.motor_skills_fine_left.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Fine (helmet latch, clothespin) - Right</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_fine_right }}
+                     {{ form.motor_skills_fine_right.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Comments</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.motor_skills_comments }}
+                     {{ form.motor_skills_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <div id="mounted">
+            <h2>Mounted</h2>
+            <div id="posture_halt">
+                <h3>Posture - At Halt</h3>
+                <p><strong>Posture</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.posture_forward_halt }}
+                     {{ form.posture_forward_halt.errors.as_text }}
+                     forward
+                     {{ form.posture_back_halt }}
+                     {{ form.posture_back_halt.errors.as_text }}
+                     back
+                     {{ form.posture_center_halt }}
+                     {{ form.posture_center_halt.errors.as_text }}
+                     center
+                     {{ form.posture_chairseat_halt }}
+                     {{ form.posture_chairseat_halt.errors.as_text }}
+                     chair seat
+                     {{ form.posture_aligned_halt }}
+                     {{ form.posture_aligned_halt.errors.as_text }}
+                     aligned
+                    <br />
+                {% endfor %}
+
+                <h3>Rein Use - At Halt</h3>
+                <p><strong>Hold</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.rein_use_hold_halt }}
+                     {{ form.rein_use_hold_halt.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Steer Left and Right</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.rein_use_steer_left_right_halt }}
+                     {{ form.rein_use_steer_left_right_halt.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+
+            <div id="posture_walk">
+                <h3>Posture - At Walk</h3>
+                <p><strong>Posture</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.posture_forward_walk }}
+                     {{ form.posture_forward_walk.errors.as_text }}
+                     forward
+                     {{ form.posture_back_walk }}
+                     {{ form.posture_back_walk.errors.as_text }}
+                     back
+                     {{ form.posture_center_walk }}
+                     {{ form.posture_center_walk.errors.as_text }}
+                     center
+                     {{ form.posture_chairseat_walk }}
+                     {{ form.posture_chairseat_walk.errors.as_text }}
+                     chair seat
+                     {{ form.posture_aligned_walk }}
+                     {{ form.posture_aligned_walk.errors.as_text }}
+                     aligned
+                    <br />
+                {% endfor %}
+
+                <h3>Rein Use - At Walk</h3>
+                <p><strong>Hold</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.rein_use_hold_walk }}
+                     {{ form.rein_use_hold_walk.errors.as_text }}
+                    <br />
+                {% endfor %}
+
+                <p><strong>Steer Left and Right</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.rein_use_steer_left_right_walk }}
+                     {{ form.rein_use_steer_left_right_walk.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+
+            <div id="mounted_comments">
+                <h3>Comments</h3>
+                <p><strong>Posture</strong></p>
+                {% for form, participant in formset_and_participants %}
+                    {{ participant }}:
+                     {{ form.mounted_comments }}
+                     {{ form.mounted_comments.errors.as_text }}
+                    <br />
+                {% endfor %}
+            </div>
+        </div>
+        <div id="precautions">
+            <h3>Risk vs. Benefit Ratio</h3>
+            <h4>
+                There is always potential for a fall, this is how we minimize
+                 the risk.
+            </h4>
+            {% for form, participant in formset_and_participants %}
+                <p>
+                    {{ participant }}:<br />
+                    {{ form.risk_benefit_comments }}
+                    {{ form.risk_benefit_comments.errors.as_text }}
+                </p>
+            {% endfor %}
+
+            <h3>
+                Goals &amp; Expectations (parent/rider):
+            </h3>
+            {% for form, participant in formset_and_participants %}
+                <p>
+                    {{ participant }}:<br />
+                    {{ form.goals_expectations }}
+                    {{ form.goals_expectations.errors.as_text }}
+                </p>
+            {% endfor %}
+        </div>
+
+        <input type="hidden" name="save_form" value="True" />
+
+        <input type="submit" value="Submit" />
+    </form>
+    {% endif %}
+{% endblock %}

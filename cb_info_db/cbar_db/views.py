@@ -5,10 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
+from django import forms as django_forms
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 import logging
+from datetime import date
 import time
 from cbar_db import forms
 from cbar_db import models
@@ -64,6 +66,9 @@ ERROR_TEXT_SES_PLAN_NOT_AVALIABLE=(
 )
 ERROR_TEXT_RIDER_EVAL_CHECKLIST_NOT_AVAILABLE=(
     "The Rider Evaluation Checklist requested is not available."
+)
+ERROR_TEXT_RIDER_INTAKE_NOT_AVAILABLE=(
+    "The Rider Intake Assessment requested is not available."
 )
 ERROR_TEXT_DB_INTEGRITY=(
     "An internal database error has occured and the form could not be saved."
@@ -340,7 +345,7 @@ def public_form_med_release(request):
                 )
                 medication_two.save()
 
-            # Redirect to the home page:
+            # Redirect to the form saved page:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
@@ -548,7 +553,7 @@ def public_form_emerg_auth(request):
                         }
                     )
 
-            # Redirect to the home page:
+            # Redirect to the form saved page:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
@@ -835,7 +840,7 @@ def public_form_background(request):
                         }
                     )
 
-            # Redirect to the home page:
+            # Redirect to the form saved page:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
 
         else:
@@ -1904,6 +1909,12 @@ def participant_record(request, participant_id):
         )
     )
 
+    # Find our Participant's IntakeAssessment instances
+    intake_assessments=(models.IntakeAssessment.objects.filter(
+        participant_id=participant
+        )
+    )
+
     return render(
         request,
         "cbar_db/admin/reports/participant.html",
@@ -1917,7 +1928,8 @@ def participant_record(request, participant_id):
             "seizure_evals": seizure_evals,
             "observation_evaluations": observation_evaluations,
             "session_plans": session_plans,
-            "rider_eval_checklists": rider_eval_checklists
+            "rider_eval_checklists": rider_eval_checklists,
+            "intake_assessments": intake_assessments
         }
     )
 
@@ -2382,6 +2394,383 @@ def report_seizure(request, participant_id, year, month, day):
     )
 
 @login_required
+def private_form_intake_assessment(request):
+    """ Intake assessment view. """
+
+    # TODO:
+    #   -Add seizure info from seizure evaluations?
+
+    class SelectedParticipantsForm(django_forms.Form):
+        participants_selected=django_forms.ModelMultipleChoiceField(
+            queryset=models.Participant.objects.all(),
+            widget=django_forms.CheckboxSelectMultiple,
+        )
+        date=django_forms.DateField(
+            widget=django_forms.SelectDateWidget,
+            initial=date.today
+        )
+
+    if request.method == "POST":
+        if request.POST.get("show_evaluation_form") == "False":
+            # Let the user pick the participants to evaluate:
+            loggeyMcLogging.error("Request type is POST.")
+            loggeyMcLogging.error(
+                "'show_evaluation_form' is False. Displaying participant"
+                " selection form"
+            )
+
+            form=SelectedParticipantsForm(request.POST)
+
+            if form.is_valid():
+                loggeyMcLogging.error("[Saving Participant Selection] The form is valid")
+            else:
+                loggeyMcLogging.error("[Saving Participant Selection] The form is NOT valid")
+
+            # Log things for debugging / testing purposes:
+            loggeyMcLogging.error("request.POST == " + str(request.POST))
+            loggeyMcLogging.error(
+                "request.POST.getlist(\"participants_selected\") == " +
+                str(request.POST.getlist("participants_selected"))
+            )
+
+            # Retreive the participant id numbers passed from the POST date:
+            selected_participant_id_numbers=(
+                request.POST.getlist("participants_selected")
+            )
+
+            # Retreive a Participant record for each ID number:
+            selected_participants=[]
+            loggeyMcLogging.error("Retrieving selected participants...")
+            for participant in selected_participant_id_numbers:
+                try:
+                    loggeyMcLogging.error(
+                        "Retrieving participant with ID " + str(participant)
+                        + "..."
+                    )
+
+                    selected_participants.append(
+                        models.Participant.objects.get(
+                            participant_id=participant
+                        )
+                    )
+
+                    loggeyMcLogging.error(
+                        "Retrieved participant with ID " + str(participant) + "."
+                    )
+                except:
+                    loggeyMcLogging.error(
+                        "ERROR: Couldn't retrieve participant with ID "
+                         + str(participant) + "!"
+                    )
+
+            loggeyMcLogging.error(
+                "selected_participants == " + str(selected_participants)
+            )
+
+            # Load the form template and pass the selected participants to it:
+            return render(
+                request,
+                "cbar_db/forms/private/intake_assessment_form.html",
+                {
+                    "selected_participants": selected_participants,
+                    "show_evaluation_form": "False",
+                    "save_form": "False"
+                }
+            )
+
+        else:
+            # Let the user evaluate the participants.
+            loggeyMcLogging.error("Request type is POST.")
+            loggeyMcLogging.error("show_evaluation_form != False.")
+
+            RiderIntakeAssessmentFormset=django_forms.formset_factory(
+                forms.RiderIntakeAssessmentForm
+            )
+
+            if request.POST.get("save_form") == "True":
+                # The user submitted the form -> Process the data.
+                loggeyMcLogging.error(
+                    "save_form is True. Saving the evaluation forms."
+                )
+                loggeyMcLogging.error("request.POST == " + str(request.POST))
+
+                # create a form instance, populate with data from the request:
+                formset=RiderIntakeAssessmentFormset(request.POST)
+                # check whether it's valid:
+
+                post_participants=request.session["intake_post_participants"]
+                print("post_participants: " + str(post_participants))
+
+                # Get the Participant records from the participant_id numbers in
+                # post_participants:
+                participants_selected=models.Participant.objects.filter(
+                    participant_id__in=post_participants
+                )
+                loggeyMcLogging.error(
+                    "participants_selected: " + str(participants_selected)
+                )
+
+                loggeyMcLogging.error("request.session['date']: " + request.session["date"])
+
+                if formset.is_valid():
+                    # The formset is valid. Check all the forms are valid and
+                    # save them.
+                    loggeyMcLogging.error("The form is valid.")
+
+                    current_form_index=0 # For finding the right participant_id
+                    for form in formset:
+                        if form.is_valid():
+                            loggeyMcLogging.error("The current form is valid.")
+                            part_id=(
+                                request.session["intake_post_participants"][current_form_index]
+                            )
+                            loggeyMcLogging.error(str(part_id))
+
+                            participant=models.Participant.objects.get(
+                                participant_id=part_id
+                            )
+                            # Should probably do try...except here ^
+
+                            try:
+                                adaptions=models.AdaptationsNeeded(
+                                    participant_id=participant,
+                                    date=request.session["date"],
+                                    posture_standing=form.cleaned_data["posture_standing"],
+                                    posture_sitting=form.cleaned_data["posture_sitting"],
+                                    posture_mounted=form.cleaned_data["posture_mounted"],
+                                    ambulatory_status=form.cleaned_data["ambulatory_status"],
+                                    ambulatory_status_other=form.cleaned_data["ambulatory_status_other"],
+                                    gait_flat=form.cleaned_data["gait_flat"],
+                                    gait_uneven=form.cleaned_data["gait_uneven"],
+                                    gait_incline=form.cleaned_data["gait_incline"],
+                                    gait_decline=form.cleaned_data["gait_decline"],
+                                    gait_stairs=form.cleaned_data["gait_stairs"],
+                                    gait_balance=form.cleaned_data["gait_balance"],
+                                    gait_standing_up=form.cleaned_data["gait_standing_up"],
+                                    gait_sitting_down=form.cleaned_data["gait_sitting_down"],
+                                    gait_straddle_up=form.cleaned_data["gait_straddle_up"],
+                                    gait_straddle_down=form.cleaned_data["gait_straddle_down"],
+                                )
+                                adaptions.save()
+                            # Catch duplicate composite primary keys:
+                            except IntegrityError as error:
+                                # Set the error message and redisplay the form:
+                                if ("Duplicate entry" in str(error.__cause__) or
+                                    "UNIQUE constraint failed" in str(error.__cause__)):
+                                        return render(
+                                            request,
+                                            ("cbar_db/forms/private/"
+                                                "intake_assessment_form.html"),
+                                            {
+                                                'error_text': (
+                                                    ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                                    .format(form="rider intake assessment (or similar form)")
+                                                ),
+                                            }
+                                        )
+                                else: # pragma: no cover
+                                    # Excluded from coverage results because no way to test
+                                    # without intentionally breaking validation code
+                                    loggeyMcLogging.error(
+                                        "Caught generic database exception:\n" + str(error)
+                                    )
+                                    return render(
+                                        request,
+                                        "cbar_db/forms/private/rider_eval_checklist_form.html",
+                                        {
+                                            'form': form,
+                                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                                        }
+                                    )
+
+                            try:
+                                intake_ass=models.IntakeAssessment(
+                                    participant_id=participant,
+                                    date=request.session["date"],
+                                    staff_reviewed_medical_info=form.cleaned_data["staff_reviewed_medical_info"],
+                                    staff_reviewed_medical_info_date=form.cleaned_data["staff_reviewed_medical_info_date"],
+                                    impulsive=form.cleaned_data["impulsive"],
+                                    eye_contact=form.cleaned_data["eye_contact"],
+                                    attention_span=form.cleaned_data["attention_span"],
+                                    interacts_with_others=form.cleaned_data["interacts_with_others"],
+                                    communication_verbal=form.cleaned_data["communication_verbal"],
+                                    language_skills_signs=form.cleaned_data["language_skills_signs"],
+                                    visual_impaired=form.cleaned_data["visual_impaired"],
+                                    visual_comments=form.cleaned_data["visual_comments"],
+                                    hearing_impaired=form.cleaned_data["hearing_impaired"],
+                                    hearing_comments=form.cleaned_data["hearing_comments"],
+                                    tactile=form.cleaned_data["tactile"],
+                                    tactile_comments=form.cleaned_data["tactile_comments"],
+                                    motor_skills_gross_left=form.cleaned_data["motor_skills_gross_left"],
+                                    motor_skills_gross_right=form.cleaned_data["motor_skills_gross_right"],
+                                    motor_skills_fine_left=form.cleaned_data["motor_skills_fine_left"],
+                                    motor_skills_fine_right=form.cleaned_data["motor_skills_fine_right"],
+                                    motor_skills_comments=form.cleaned_data["motor_skills_comments"],
+                                    posture_forward_halt=form.cleaned_data["posture_forward_halt"],
+                                    posture_forward_walk=form.cleaned_data["posture_forward_walk"],
+                                    posture_back_halt=form.cleaned_data["posture_back_halt"],
+                                    posture_back_walk=form.cleaned_data["posture_back_walk"],
+                                    posture_center_halt=form.cleaned_data["posture_center_halt"],
+                                    posture_center_walk=form.cleaned_data["posture_center_walk"],
+                                    posture_chairseat_halt=form.cleaned_data["posture_chairseat_halt"],
+                                    posture_chairseat_walk=form.cleaned_data["posture_chairseat_walk"],
+                                    posture_aligned_halt=form.cleaned_data["posture_aligned_halt"],
+                                    posture_aligned_walk=form.cleaned_data["posture_aligned_walk"],
+                                    rein_use_hold_halt=form.cleaned_data["rein_use_hold_halt"],
+                                    rein_use_hold_walk=form.cleaned_data["rein_use_hold_walk"],
+                                    rein_use_steer_left_right_halt=form.cleaned_data["rein_use_steer_left_right_halt"],
+                                    rein_use_steer_left_right_walk=form.cleaned_data["rein_use_steer_left_right_walk"],
+                                    mounted_comments=form.cleaned_data["mounted_comments"],
+                                    risk_benefit_comments=form.cleaned_data["risk_benefit_comments"],
+                                    goals_expectations=form.cleaned_data["goals_expectations"],
+                                )
+                                intake_ass.save()
+                            # Catch duplicate composite primary keys:
+                            except IntegrityError as error:
+                                # Set the error message and redisplay the form:
+                                if ("Duplicate entry" in str(error.__cause__) or
+                                    "UNIQUE constraint failed" in str(error.__cause__)):
+                                        return render(
+                                            request,
+                                            ("cbar_db/forms/private/"
+                                                "intake_assessment_form.html"),
+                                            {
+                                                'error_text': (
+                                                    ERROR_TEXT_DUPLICATE_PARTICIPANT_DATE_PK
+                                                    .format(form="rider intake assessment (or similar form)")
+                                                ),
+                                            }
+                                        )
+                                else: # pragma: no cover
+                                    # Excluded from coverage results because no way to test
+                                    # without intentionally breaking validation code
+                                    loggeyMcLogging.error(
+                                        "Caught generic database exception:\n" + str(error)
+                                    )
+                                    return render(
+                                        request,
+                                        "cbar_db/forms/private/rider_eval_checklist_form.html",
+                                        {
+                                            'form': form,
+                                            'error_text': ERROR_TEXT_DB_INTEGRITY,
+                                        }
+                                    )
+
+
+                            current_form_index+=1
+                        else:
+                            # One of the forms isn't valid.
+
+                            loggeyMcLogging.error("One of the forms is not valid")
+
+                            # TODO: Actually show error if invalid instead of
+                            #       blowing up.
+
+                    # Redirect to the form saved page:
+                    return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+                else:
+                    # The form is not valid.
+                    loggeyMcLogging.error("The form is not valid.")
+
+                    loggeyMcLogging.error(
+                        "request.session['intake_post_participants']: "
+                        + str(request.session["intake_post_participants"])
+                    )
+
+                    # Set the error message and redisplay the form:
+                    return render(
+                        request,
+                        "cbar_db/forms/private/intake_assessment_form.html",
+                        {
+                            "formset": formset,
+                            "error_text": ERROR_TEXT_FORM_INVALID,
+                            "show_evaluation_form": "True",
+                            "save_form": "False",
+                            "formset_and_participants": list(
+                                zip(
+                                    formset, participants_selected
+                                )
+                            ),
+                            "participants_selected": participants_selected
+                        }
+                    )
+
+            else:
+                # Display the blank form(S).
+                loggeyMcLogging.error(
+                    "save_form != True. Displaying blank evaluation form."
+                )
+                loggeyMcLogging.error("request.POST == " + str(request.POST))
+
+                post_participants=request.POST.getlist("participants_selected")
+
+                management_form_date={
+                    "form-TOTAL_FORMS": len(post_participants),
+                    "form-INITIAL_FORMS": "0",
+                    "form-MAX_NUM_FORMS": "",
+                }
+
+                formset=RiderIntakeAssessmentFormset(management_form_date)
+
+                # Get the Participant records from the participant_id numbers in
+                # post_participants:
+                participants_selected=models.Participant.objects.filter(
+                    participant_id__in=post_participants
+                )
+                loggeyMcLogging.error(str(participants_selected))
+
+                # Store a list of the selected participant id numbers in session
+                request.session["intake_post_participants"]=post_participants
+
+                # Set the date in session plan from post data:
+                the_date=(
+                    request.POST["date_year"] + "-" + request.POST["date_month"]
+                    + "-" + request.POST["date_day"]
+                )
+                request.session["date"]=the_date
+                loggeyMcLogging.error(
+                    "request.session['date']: " + request.session["date"]
+                )
+
+                return render(
+                    request,
+                    "cbar_db/forms/private/intake_assessment_form.html",
+                    {
+                        "formset":formset,
+                        "formset_and_participants": list(
+                            zip(
+                                formset, participants_selected
+                            )
+                        ),
+                        "save_form": "True",
+                        "show_evaluation_form": "True",
+                        "participants_selected": participants_selected
+                    }
+                )
+
+    else:
+        # Normal request type -> display blank participant selection form.
+        loggeyMcLogging.error("Request type is " + request.method + ".")
+        loggeyMcLogging.error(
+            "Loaded intake assessment with a non-POST request method."
+            " Displaying participant selection form."
+        )
+
+        form=SelectedParticipantsForm()
+        participants=models.Participant.objects.all()
+
+        return render(
+            request,
+            'cbar_db/forms/private/intake_assessment_participants.html',
+            {
+                "participants":participants,
+                "form": form
+            }
+        )
+
+
+@login_required
 def observation_evaluation(request, participant_id):
     if request.method == 'POST':
         form=forms.ObservationEvaluation(request.POST)
@@ -2560,6 +2949,7 @@ def observation_evaluation(request, participant_id):
                 'participant': participant
             }
         )
+
 
 @login_required
 def private_form_session_plan(request, participant_id):
@@ -3251,6 +3641,84 @@ def report_rider_eval_checklist(request, participant_id, year, month, day):
         "cbar_db/admin/reports/report_rider_eval_checklist.html",
         {
             "rider_eval_checklist": rider_eval_checklist,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_rider_intake(request, participant_id, year, month, day):
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_intake.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Rider Intake Assessment's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_intake.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the AdaptationsNeeded record:
+    try:
+        adaptations_needed=models.AdaptationsNeeded.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The AdaptationsNeeded doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_intake.html",
+            {
+                'error_text': ERROR_TEXT_RIDER_INTAKE_NOT_AVAILABLE,
+            }
+        )
+
+    # Find the IntakeAssessment record:
+    try:
+        intake_assessment=models.IntakeAssessment.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The AdaptationsNeeded doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_intake.html",
+            {
+                'error_text': ERROR_TEXT_RIDER_INTAKE_NOT_AVAILABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_rider_intake.html",
+        {
+            "adaptations_needed": adaptations_needed,
+            "intake_assessment": intake_assessment,
             "participant": participant
         }
     )

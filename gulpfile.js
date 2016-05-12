@@ -13,7 +13,7 @@ gulp.task('default', function() {
 // Clean JS output folders
 gulp.task('clean:js', function () {
     return del([
-        'cb_info_db/cbar_db/static/cbar_db/js**/*'
+        'cb_info_db/cbar_db/static/cbar_db/js/**/*'
     ]);
 });
 
