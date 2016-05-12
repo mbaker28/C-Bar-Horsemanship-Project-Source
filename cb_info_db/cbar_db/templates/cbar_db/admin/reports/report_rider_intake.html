@@ -1,0 +1,252 @@
+{% extends "cbar_db/template.html" %}
+{% block header %}
+    <style>
+        h4, h5, h6 {
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>Rider Intake Assessment Report</h1>
+    {% if error_text %}
+        <p>
+            {{ error_text }}
+        </p>
+    {% else %}
+        <h2>General Information</h2>
+            <p>
+                <strong>Participant's Name: </strong>
+                {{ participant.name }}
+            </p>
+            <p>
+                <strong>Participant's Birth Date: </strong>
+                {{ participant.birth_date }}
+            </p>
+            <p>
+                <strong>Intake Assessment Date: </strong>
+                {{ intake_assessment.date }}
+            </p>
+            <p>
+                <strong>Staff Reviewed Medical Info: </strong>
+                {{ intake_assessment.get_staff_reviewed_medical_info_display }}
+                <strong> Date: </strong>
+                {{ intake_assessment.staff_reviewed_medical_info_date }}
+            </p>
+        <h2>Premounted</h2>
+            <h3>Posture</h3>
+                <p>
+                    <strong>Standing: </strong>
+                    {{ adaptations_needed.get_posture_standing_display }}
+                </p>
+                <p>
+                    <strong>Sitting: </strong>
+                    {{ adaptations_needed.get_posture_sitting_display }}
+                </p>
+                <p>
+                    <strong>Mounted: </strong>
+                    {{ adaptations_needed.get_posture_mounted_display }}
+                </p>
+            <h3>Ambulatory Status</h3>
+                <p>
+                    <strong>Ambulatory Status: </strong>
+                    {{ adaptations_needed.get_ambulatory_status_display }}
+                    {{ adaptations_needed.get_ambulatory_status_display_other }}
+                </p>
+
+            <h3>Gait</h3>
+                <p>
+                    <strong>Flat: </strong>
+                    {{ adaptations_needed.get_gait_flat_display }}
+                </p>
+                <p>
+                    <strong>Uneven: </strong>
+                    {{ adaptations_needed.get_gait_uneven_display }}
+                </p>
+                <p>
+                    <strong>Incline: </strong>
+                    {{ adaptations_needed.get_gait_incline_display }}
+                </p>
+                <p>
+                    <strong>Decline: </strong>
+                    {{ adaptations_needed.get_gait_decline_display }}
+                </p>
+                <p>
+                    <strong>Stairs: </strong>
+                    {{ adaptations_needed.get_gait_stairs_display }}
+                </p>
+                <p>
+                    <strong>Balance: </strong>
+                    {{ adaptations_needed.get_gait_balance_display }}
+                </p>
+                <p>
+                    <strong>Standing Up: </strong>
+                    {{ adaptations_needed.get_gait_standing_up_display }}
+                </p>
+                <p>
+                    <strong>Sitting Down: </strong>
+                    {{ adaptations_needed.get_gait_sitting_down_display }}
+                </p>
+                <p>
+                    <strong>Straddle - Standing: </strong>
+                    {{ adaptations_needed.get_gait_straddle_up_display }}
+                </p>
+                <p>
+                    <strong>Staddle - Sitting: </strong>
+                    {{ adaptations_needed.get_gait_straddle_down_display }}
+                </p>
+            <h3>Behavior</h3>
+                <p>
+                    <strong>Impulsive: </strong>
+                    {{ intake_assessment.get_impulsive_display }}
+                </p>
+                <p>
+                    <strong>Eye Contact: </strong>
+                    {{ intake_assessment.get_eye_contact_display }}
+                </p>
+                <p>
+                    <strong>Attention Span: </strong>
+                    {{ intake_assessment.get_attention_span_display }}
+                </p>
+                <p>
+                    <strong>Interacts With Others: </strong>
+                    {{ intake_assessment.get_interacts_with_others_display }}
+                </p>
+            <h3>Communication</h3>
+                <h4>Verbal</h4>
+                    <p>
+                        <strong>Verbal Communication: </strong>
+                        {{ intake_assessment.get_communication_verbal_display }}
+                    </p>
+                    <p>
+                        <strong>Sign Language Skills: </strong>
+                        {{ intake_assessment.get_language_skills_signs_display }}
+                    </p>
+                <h4>Visual</h4>
+                    <p>
+                        <strong>Visually Impaired: </strong>
+                        {{ intake_assessment.get_visual_impaired_display }}
+                    </p>
+                    <p>
+                        <strong>Comments: </strong>
+                        {{ intake_assessment.visual_comments }}
+                    </p>
+                <h4>Hearing</h4>
+                    <p>
+                        <strong>Hearing Impaired: </strong>
+                        {{ intake_assessment.get_hearing_impaired_display }}
+                    </p>
+                    <p>
+                        <strong>Comments: </strong>
+                        {{ intake_assessment.hearing_comments }}
+                    </p>
+            <h3>Tactile</h3>
+                <p>
+                    <strong>Tactile Restrictions: </strong>
+                    {{ intake_assessment.get_tactile_display }}
+                    <strong> Comments: </strong>
+                    {{ intake_assessment.tactile_comments }}
+                </p>
+            <h3>Motor Skills</h3>
+                <p>
+                    <strong>Gross (ring reach): </strong>
+                    <i>Left:</i> {{ intake_assessment.get_motor_skills_gross_left_display }}
+                    <i>Right:</i> {{ intake_assessment.get_motor_skills_gross_right_display }}
+                </p>
+                <p>
+                    <strong>Fine (helmet latch, clothespin): </strong>
+                    <i>Left:</i> {{ intake_assessment.get_motor_skills_fine_left_display }}
+                    <i>Right:</i> {{ intake_assessment.get_motor_skills_fine_right_display }}
+                </p>
+                <p>
+                    <strong>Comments: </strong>
+                    {{ intake_assessment.motor_skills_comments }}
+                </p>
+        <h2>Mounted</h2>
+            <h3>At Halt</h3>
+                <h4>Posture</h4>
+                    {% if intake_assessment.posture_forward_halt %}
+                    <p>
+                        <strong>Forward:</strong> [x]
+                    </p>
+                    {% endif %}
+                    {% if intake_assessment.posture_back_halt %}
+                    <p>
+                        <strong>Back:</strong> [x]
+                    </p>
+                    {% endif %}
+                    {% if intake_assessment.posture_center_halt %}
+                    <p>
+                        <strong>Center:</strong> [x]
+                    </p>
+                    {% endif %}
+                    {% if intake_assessment.posture_chairset_halt %}
+                    <p>
+                        <strong>Chair Seat:</strong> [x]
+                    </p>
+                    {% endif %}
+                    {% if intake_assessment.posture_aligned_halt %}
+                    <p>
+                        <strong>Aligned:</strong> [x]
+                    </p>
+                    {% endif %}
+                <h4>Rein Use</h4>
+                    <p>
+                        <strong>Hold: </strong>
+                        {{ intake_assessment.get_rein_use_hold_halt_display }}
+                    </p>
+                    <p>
+                        <strong>Steer Left and Right: </strong>
+                        {{ intake_assessment.get_rein_use_steer_left_right_halt_display }}
+                    </p>
+            <h3>At Walk</h3>
+                <h4>Posture</h4>
+                    {% if intake_assessment.posture_forward_walk %}
+                    <p>
+                        <strong>Forward:</strong> [x]
+                    </p>
+                    {% endif %}
+                    {% if intake_assessment.posture_back_walk %}
+                    <p>
+                        <strong>Back:</strong> [x]
+                    </p>
+                    {% endif %}
+                    {% if intake_assessment.posture_center_walk %}
+                    <p>
+                        <strong>Center:</strong> [x]
+                    </p>
+                    {% endif %}
+                    {% if intake_assessment.posture_chairset_walk %}
+                    <p>
+                        <strong>Chair Seat:</strong> [x]
+                    </p>
+                    {% endif %}
+                    {% if intake_assessment.posture_aligned_walk %}
+                    <p>
+                        <strong>Aligned:</strong> [x]
+                    </p>
+                    {% endif %}
+                <h4>Rein Use</h4>
+                    <p>
+                        <strong>Hold: </strong>
+                        {{ intake_assessment.get_rein_use_hold_walk_display }}
+                    </p>
+                    <p>
+                        <strong>Steer Left and Right: </strong>
+                        {{ intake_assessment.get_rein_use_steer_left_right_walk_display }}
+                    </p>
+            <h3>Comments</h3>
+                <p>
+                    <strong>Comments: </strong>
+                    {{ intake_assessment.mounted_comments }}
+                </p>
+        <h2>Precautions</h2>
+            <p>
+                <strong>Risk vs. Benefit Ratio: </strong>
+                {{ intake_assessment.risk_benefit_comments }}
+            </p>
+            <p>
+                <strong>Goals &amp; Expectations (parent/rider): </strong>
+                {{ intake_assessment.goals_expectations }}
+            </p>
+    {% endif %}
+{% endblock %}

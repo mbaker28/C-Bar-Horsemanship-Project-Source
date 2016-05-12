@@ -67,6 +67,9 @@ ERROR_TEXT_SES_PLAN_NOT_AVALIABLE=(
 ERROR_TEXT_RIDER_EVAL_CHECKLIST_NOT_AVAILABLE=(
     "The Rider Evaluation Checklist requested is not available."
 )
+ERROR_TEXT_RIDER_INTAKE_NOT_AVAILABLE=(
+    "The Rider Intake Assessment requested is not available."
+)
 ERROR_TEXT_DB_INTEGRITY=(
     "An internal database error has occured and the form could not be saved."
     " Please verify that you have not already filled out a form for this"
@@ -1906,6 +1909,12 @@ def participant_record(request, participant_id):
         )
     )
 
+    # Find our Participant's IntakeAssessment instances
+    intake_assessments=(models.IntakeAssessment.objects.filter(
+        participant_id=participant
+        )
+    )
+
     return render(
         request,
         "cbar_db/admin/reports/participant.html",
@@ -1919,7 +1928,8 @@ def participant_record(request, participant_id):
             "seizure_evals": seizure_evals,
             "observation_evaluations": observation_evaluations,
             "session_plans": session_plans,
-            "rider_eval_checklists": rider_eval_checklists
+            "rider_eval_checklists": rider_eval_checklists,
+            "intake_assessments": intake_assessments
         }
     )
 
@@ -3631,6 +3641,84 @@ def report_rider_eval_checklist(request, participant_id, year, month, day):
         "cbar_db/admin/reports/report_rider_eval_checklist.html",
         {
             "rider_eval_checklist": rider_eval_checklist,
+            "participant": participant
+        }
+    )
+
+@login_required
+def report_rider_intake(request, participant_id, year, month, day):
+    # Find the participant's Participant record:
+    try:
+        participant=models.Participant.objects.get(
+            participant_id=participant_id
+        )
+    except ObjectDoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_intake.html",
+            {
+                'error_text': (ERROR_TEXT_PARTICIPANT_NOT_FOUND),
+            }
+        )
+
+    # Parse the Rider Intake Assessment's date from the URL attributes
+    try:
+        loggeyMcLogging.error("year, month, day=" + year + "," + month + "," + day)
+        date=time.strptime(year + "/" + month + "/" + day, "%Y/%m/%d")
+        loggeyMcLogging.error("Date=" + str(date))
+    except:
+        loggeyMcLogging.error("Couldn't parse the date")
+        # The requested date can't be parsed
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_intake.html",
+            {
+                'error_text': ERROR_TEXT_INVALID_DATE,
+            }
+        )
+
+    # Find the AdaptationsNeeded record:
+    try:
+        adaptations_needed=models.AdaptationsNeeded.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The AdaptationsNeeded doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_intake.html",
+            {
+                'error_text': ERROR_TEXT_RIDER_INTAKE_NOT_AVAILABLE,
+            }
+        )
+
+    # Find the IntakeAssessment record:
+    try:
+        intake_assessment=models.IntakeAssessment.objects.get(
+            participant_id=participant,
+            date=time.strftime("%Y-%m-%d", date)
+        )
+    except ObjectDoesNotExist:
+        # The AdaptationsNeeded doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/report_rider_intake.html",
+            {
+                'error_text': ERROR_TEXT_RIDER_INTAKE_NOT_AVAILABLE,
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/report_rider_intake.html",
+        {
+            "adaptations_needed": adaptations_needed,
+            "intake_assessment": intake_assessment,
             "participant": participant
         }
     )
