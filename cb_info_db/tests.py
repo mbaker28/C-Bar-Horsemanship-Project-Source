@@ -19,68 +19,68 @@ class TestPublicViews(TestCase):
 
     def test_public_index_loads(self):
         """Tests whether the index page loads."""
-        response = self.client.get(reverse('index-public'))
+        response = self.client.get(reverse('index-public'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_public_forms_index_loads(self):
         """ Tests whether the Public Forms index page loads. """
-        response = self.client.get(reverse('index-public-forms'))
+        response = self.client.get(reverse('index-public-forms'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_application_form_loads(self):
         """ Tests whether the Application form loads. """
-        response = self.client.get(reverse('public-form-application'))
+        response = self.client.get(reverse('public-form-application'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_medical_release_form_loads(self):
         """ Tests whether the Medical Release form loads. """
-        response = self.client.get(reverse('public-form-med-release'))
+        response = self.client.get(reverse('public-form-med-release'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_emergency_authorization_form_loads(self):
         """ Tests whether the Emergency Medical Treatment Authorization form
          loads. """
-        response = self.client.get(reverse('public-form-emerg-auth'))
+        response = self.client.get(reverse('public-form-emerg-auth'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_liability_release_form_loads(self):
         """ Tests whether the Liability Release form loads. """
-        response = self.client.get(reverse('public-form-liability'))
+        response = self.client.get(reverse('public-form-liability'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_media_release_form_loads(self):
         """ Tests whether the Media Release form loads. """
-        response = self.client.get(reverse('public-form-media'))
+        response = self.client.get(reverse('public-form-media'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_background_check_form_loads(self):
         """ Tests whether the Background Check Authorization form loads. """
-        response = self.client.get(reverse('public-form-background'))
+        response = self.client.get(reverse('public-form-background'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_seizure_form_loads(self):
         """ Tests whether the Seizure Evaluation form loads. """
-        response = self.client.get(reverse('public-form-seizure'))
+        response = self.client.get(reverse('public-form-seizure'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_donation_index_loads(self):
         """ Tests whether the Donation index page loads. """
-        response = self.client.get(reverse('donation-index'))
+        response = self.client.get(reverse('donation-index'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_donation_participant_loads(self):
         """ Tests whether the Adopt A Participant donation form loads. """
-        response = self.client.get(reverse('donation-participant'))
+        response = self.client.get(reverse('donation-participant'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_donation_horse_loads(self):
         """ Tests whether the Adopt A Horse donation form loads. """
-        response = self.client.get(reverse('donation-horse'))
+        response = self.client.get(reverse('donation-horse'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_donation_monetary_loads(self):
         """ Tests whether the Monetary Donation form loads. """
-        response = self.client.get(reverse('donation-monetary'))
+        response = self.client.get(reverse('donation-monetary'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
 
@@ -640,14 +640,14 @@ class TestDefineAClassForm(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('private-form-define-a-class'))
+        response = self.client.get(reverse('private-form-define-a-class'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_define_a_class_form_redirects_if_user_not_logged_in(self):
         """ Tests whether the Define a Class form redirects to the login page if
          the user is not logged in."""
 
-        response = self.client.get(reverse("private-form-define-a-class"))
+        response = self.client.get(reverse("private-form-define-a-class"), secure=True)
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
@@ -793,7 +793,7 @@ class TestFormSavedPage(TestCase):
         """ Tests that the form_saved view tells the user the form saved, if it
          has the parameter set saying it came from a form redirect. """
 
-        response = self.client.get(reverse("form-saved")+"?a=a")
+        response = self.client.get(reverse("form-saved")+"?a=a", secure=True)
 
         self.assertEqual(response.status_code, 200) # Loaded...
 
@@ -801,7 +801,7 @@ class TestFormSavedPage(TestCase):
         """ Tests that the form_saved view redirects to the home page, if it is
          not sent the parameter set saying it came from a form redirect. """
 
-        response = self.client.get(reverse("form-saved"))
+        response = self.client.get(reverse("form-saved"), secure=True)
 
         self.assertEqual(response.status_code, 302) # Redirected...
 
@@ -5445,7 +5445,7 @@ class TestRiderEvalChecklistForm(TestCase):
                 kwargs={
                     "participant_id":test_participant_in_db.participant_id,
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -5461,7 +5461,7 @@ class TestRiderEvalChecklistForm(TestCase):
                 kwargs={
                     "participant_id":test_participant_in_db.participant_id,
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -5497,7 +5497,7 @@ class TestRiderEvalChecklistForm(TestCase):
                 kwargs={
                     "participant_id":99999999999,
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -5708,14 +5708,14 @@ class TestAdminIndex(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('index-admin'))
+        response = self.client.get(reverse('index-admin'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_admin_index_redirects_if_user_not_logged_in(self):
         """ Tests whether the Admin Index page redirects to the login page if
          the user is not logged in."""
 
-        response = self.client.get(reverse("index-admin"))
+        response = self.client.get(reverse("index-admin"), secure=True)
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
@@ -5771,14 +5771,14 @@ class TestReportSelectParticipant(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('report-select-participant'))
+        response = self.client.get(reverse('report-select-participant'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_report_select_participant_redirects_if_user_not_logged_in(self):
         """ Tests whether the Select Participant for Reports page redirects to
          the login page if the user is not logged in."""
 
-        response = self.client.get(reverse('report-select-participant'))
+        response = self.client.get(reverse('report-select-participant'), secure=True)
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
@@ -5819,14 +5819,14 @@ class TestReportSelectClass(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('report-select-class'))
+        response = self.client.get(reverse('report-select-class'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_report_select_class_redirects_if_user_not_logged_in(self):
         """ Tests whether the Select Class page redirects to
          the login page if the user is not logged in."""
 
-        response = self.client.get(reverse('report-select-class'))
+        response = self.client.get(reverse('report-select-class'), secure=True)
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
@@ -5881,14 +5881,14 @@ class TestPrivateFormsIndex(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse('index-private-forms'))
+        response = self.client.get(reverse('index-private-forms'), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_private_forms_index_redirects_if_user_not_logged_in(self):
         """ Tests whether the Private Forms Index page redirects to the login
          page if the user is not logged in."""
 
-        response = self.client.get(reverse("index-private-forms"))
+        response = self.client.get(reverse("index-private-forms"), secure=True)
 
         # Assert we redirected to the user login page:
         self.assertEqual(response.status_code, 302) # redirected...
@@ -5953,7 +5953,7 @@ class TestParticipantRecord(TestCase):
                 kwargs={
                     'participant_id':test_participant_in_db.participant_id
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -5969,7 +5969,7 @@ class TestParticipantRecord(TestCase):
                 kwargs={
                     'participant_id':test_participant_in_db.participant_id
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -5999,7 +5999,7 @@ class TestParticipantRecord(TestCase):
                 kwargs={
                     'participant_id': 9999999999
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6047,7 +6047,7 @@ class TestClassRecord(TestCase):
                 kwargs={
                     'class_id':test_class_in_db.class_id
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -6063,7 +6063,7 @@ class TestClassRecord(TestCase):
                 kwargs={
                     'class_id':test_class_in_db.class_id
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -6093,7 +6093,7 @@ class TestClassRecord(TestCase):
                 kwargs={
                     'class_id': 9999999999
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6187,7 +6187,7 @@ class TestMediaReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -6206,7 +6206,7 @@ class TestMediaReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -6239,7 +6239,7 @@ class TestMediaReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6274,7 +6274,7 @@ class TestMediaReleaseReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6309,7 +6309,7 @@ class TestMediaReleaseReport(TestCase):
                     "month": "1",
                     "day": "1"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6465,7 +6465,7 @@ class TestEmergencyAuthorizationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -6484,7 +6484,7 @@ class TestEmergencyAuthorizationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -6518,7 +6518,7 @@ class TestEmergencyAuthorizationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6553,7 +6553,7 @@ class TestEmergencyAuthorizationReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6589,7 +6589,7 @@ class TestEmergencyAuthorizationReport(TestCase):
                     "month": "1",
                     "day": "1"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6624,7 +6624,7 @@ class TestEmergencyAuthorizationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6730,7 +6730,7 @@ class TestMedicalReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -6749,7 +6749,7 @@ class TestMedicalReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -6783,7 +6783,7 @@ class TestMedicalReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6818,7 +6818,7 @@ class TestMedicalReleaseReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6853,7 +6853,7 @@ class TestMedicalReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -6944,7 +6944,7 @@ class TestLiabilityReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -6963,7 +6963,7 @@ class TestLiabilityReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -6997,7 +6997,7 @@ class TestLiabilityReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -7032,7 +7032,7 @@ class TestLiabilityReleaseReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -7067,7 +7067,7 @@ class TestLiabilityReleaseReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -7159,7 +7159,7 @@ class TestBackgroundCheckReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -7178,7 +7178,7 @@ class TestBackgroundCheckReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -7212,7 +7212,7 @@ class TestBackgroundCheckReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -7283,7 +7283,7 @@ class TestBackgroundCheckReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -7397,7 +7397,7 @@ class TestSeizureEvaluationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -7416,7 +7416,7 @@ class TestSeizureEvaluationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -7450,7 +7450,7 @@ class TestSeizureEvaluationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -7485,7 +7485,7 @@ class TestSeizureEvaluationReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -7520,7 +7520,7 @@ class TestSeizureEvaluationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -7630,7 +7630,7 @@ class TestObservationEvaluation(TestCase):
                 kwargs={
                     'participant_id':test_participant_in_db.participant_id
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200)
@@ -7644,7 +7644,7 @@ class TestObservationEvaluation(TestCase):
                 kwargs={
                     "participant_id":test_participant_in_db.participant_id
                 }
-            )
+            ), secure=True
         )
         self.assertEqual(response.status_code, 302)
 
@@ -7738,7 +7738,7 @@ class TestObservationEvaluation(TestCase):
                 kwargs={
                     "participant_id":99999999999,
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200)
@@ -8995,7 +8995,7 @@ class TestSessionPlanForm(TestCase):
             reverse(
                 "private-form-session-plan",
                 kwargs={"participant_id": test_participant.participant_id}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -9010,7 +9010,7 @@ class TestSessionPlanForm(TestCase):
             reverse(
                 "private-form-session-plan",
                 kwargs={"participant_id": test_participant.participant_id}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 302) # Redirected...
@@ -9293,7 +9293,7 @@ class TestSessionPlanForm(TestCase):
             reverse(
                 "private-form-session-plan",
                 kwargs={"participant_id": 999999999999}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -9643,7 +9643,7 @@ class TestObservationEvaluationReport(TestCase):
                     "month": "1",
                     "day": "1"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -9662,7 +9662,7 @@ class TestObservationEvaluationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -9695,7 +9695,7 @@ class TestObservationEvaluationReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -9730,7 +9730,7 @@ class TestObservationEvaluationReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -9765,7 +9765,7 @@ class TestObservationEvaluationReport(TestCase):
                     "month": "1",
                     "day": "1"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -9885,7 +9885,7 @@ class TestSessionPlanReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -9904,7 +9904,7 @@ class TestSessionPlanReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -9937,7 +9937,7 @@ class TestSessionPlanReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -9972,7 +9972,7 @@ class TestSessionPlanReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -10007,7 +10007,7 @@ class TestSessionPlanReport(TestCase):
                     "month": "1",
                     "day": "1"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -10225,7 +10225,7 @@ class TestRiderEvaluationChecklistReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -10244,7 +10244,7 @@ class TestRiderEvaluationChecklistReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         # Assert we redirected to the user login page:
@@ -10277,7 +10277,7 @@ class TestRiderEvaluationChecklistReport(TestCase):
                     "month": "3",
                     "day": "5"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -10312,7 +10312,7 @@ class TestRiderEvaluationChecklistReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -10347,7 +10347,7 @@ class TestRiderEvaluationChecklistReport(TestCase):
                     "month": "1",
                     "day": "1"
                 }
-            )
+            ), secure=True
         )
 
         self.assertTrue(
@@ -10415,7 +10415,7 @@ class TestPhoneLogForm(TestCase):
             reverse(
                 "private-form-phone-log",
                 kwargs={"participant_id": test_participant.participant_id}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -10430,7 +10430,7 @@ class TestPhoneLogForm(TestCase):
             reverse(
                 "private-form-phone-log",
                 kwargs={"participant_id": test_participant.participant_id}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 302) # Redirected...
@@ -10538,7 +10538,7 @@ class TestPhoneLogForm(TestCase):
             reverse(
                 "private-form-phone-log",
                 kwargs={"participant_id": 999999999999}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -10892,7 +10892,7 @@ class TestIncidentsForm(TestCase):
             reverse(
                 "private-form-incidents",
                 kwargs={"participant_id": test_participant.participant_id}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Loaded...
@@ -10907,7 +10907,7 @@ class TestIncidentsForm(TestCase):
             reverse(
                 "private-form-incidents",
                 kwargs={"participant_id": test_participant.participant_id}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 302) # Redirected...
@@ -11015,7 +11015,7 @@ class TestIncidentsForm(TestCase):
             reverse(
                 "private-form-incidents",
                 kwargs={"participant_id": 999999999999}
-            )
+            ), secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -11271,7 +11271,7 @@ class TestLogout(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse("logout-confirmation"))
+        response = self.client.get(reverse("logout-confirmation"), secure=True)
         self.assertEqual(response.status_code, 200) # Loaded...
 
     def test_loggered_out(self):
@@ -11281,7 +11281,7 @@ class TestLogout(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse("loggered-out")+"?a=a")
+        response = self.client.get(reverse("loggered-out")+"?a=a", secure=True)
         self.assertEqual(response.status_code, 200)
 
     def test_successfully_logs_out(self):
@@ -11291,11 +11291,11 @@ class TestLogout(TestCase):
 
         self.client.force_login(test_user)
 
-        response = self.client.get(reverse("logout-user"))
+        response = self.client.get(reverse("logout-user"), secure=True)
         self.assertEqual(response.status_code, 302)
 
     def test_log_out_redirects_if_user_just_entered_url(self):
-        response = self.client.get(reverse("loggered-out"))
+        response = self.client.get(reverse("loggered-out"), secure=True)
 
         self.assertEqual(response.status_code, 302)
 
