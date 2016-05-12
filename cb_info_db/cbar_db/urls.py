@@ -79,6 +79,10 @@ urlpatterns = [
     url(r'^admin/reports/$', views.report_select_participant,
         name='report-select-participant'),
 
+    # Class select page
+    url(r'^admin/reports/class_select/$', views.report_select_class,
+        name='report-select-class'),
+
     # Private forms index page
     url(r'^forms/private/$', views.index_private_forms,
         name='index-private-forms'),
@@ -88,6 +92,11 @@ urlpatterns = [
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/$',
         views.participant_record,
         name='participant-record'),
+
+    # Class record overview page
+    url(r'^admin/reports/class/(?P<class_id>[0-9]+)/$',
+        views.class_record,
+        name='class-record'),
 
     # Media Release form report view
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/media/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
@@ -164,4 +173,8 @@ urlpatterns = [
     # Seizure Incidents form
     url(r'^forms/private/incidents/(?P<participant_id>[0-9]+)$', views.private_form_incidents,
         name='private-form-incidents'),
+
+    # Define a Class form
+    url(r'^forms/private/define_a_class/$', views.private_form_define_a_class,
+        name='private-form-define-a-class'),
 ]

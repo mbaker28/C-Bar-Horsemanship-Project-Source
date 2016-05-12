@@ -16,6 +16,12 @@ ERROR_TEXT_PARTICIPANT_NOT_FOUND=(
 ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS=(
     "The participant already exists in the database."
 )
+ERROR_TEXT_CLASS_NOT_FOUND=(
+    "The requested class isn't in the database."
+)
+ERROR_TEXT_CLASS_ALREADY_EXISTS=(
+    "The class already exists in the database."
+)
 ERROR_TEXT_MEDICAL_INFO_NOT_FOUND=(
     "The requested participant does not have their medical information on file."
     " Please fill out a medical release first."
@@ -1722,6 +1728,17 @@ def report_select_participant(request):
     )
 
 @login_required
+def report_select_class(request):
+    """ Logged in user select class record view. """
+    grouping=models.Grouping.objects.all()
+
+    return render(
+        request,
+        'cbar_db/admin/reports/class_select.html',
+        {'grouping':grouping}
+    )
+
+@login_required
 def index_private_forms(request):
     """ Private forms index view. """
     participants=models.Participant.objects.all()
@@ -1818,6 +1835,33 @@ def participant_record(request, participant_id):
             "observation_evaluations": observation_evaluations,
             "session_plans": session_plans,
             "rider_eval_checklists": rider_eval_checklists
+        }
+    )
+
+@login_required
+def class_record(request, class_id):
+    """ Class record view. """
+
+    try:
+        group=models.Grouping.objects.get(
+            class_id=class_id
+        )
+    except ObjectDoesNotExist:
+        # The class doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/class.html",
+            {
+                'error_text': (ERROR_TEXT_CLASS_NOT_FOUND),
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/class.html",
+        {
+            "group": group
         }
     )
 
@@ -2852,6 +2896,66 @@ def private_form_incidents(request, participant_id):
                 'form': form,
                 'participant': participant
             }
+        )
+
+@login_required
+def private_form_define_a_class(request):
+    """ Classes form view. """
+
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form=forms.ClassesForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # Create an instance of the ClassesForm model to hold form data
+            try:
+                # Find the class that matches the name from
+                # the form data:
+                grouping=models.Grouping.objects.get(
+                    name=form.cleaned_data['name']
+                )
+                return render(
+                    request,
+                    "cbar_db/forms/private/define_a_class.html",
+                    {
+                        'form': form,
+                        'error_text': ERROR_TEXT_CLASS_ALREADY_EXISTS,
+                    }
+                )
+
+            except ObjectDoesNotExist:
+
+                # Create a new ClassesForm for the class and save it:
+                form_data_classes=models.Grouping(
+                    name=form.cleaned_data['name'],
+                    description=form.cleaned_data['description']
+                )
+                form_data_classes.save()
+
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse("form-saved")+"?a=a")
+
+        else:
+            # The form is not valid.
+            # Set the error message and redisplay the form:
+            return render(
+                request,
+                "cbar_db/forms/private/define_a_class.html",
+                {
+                    'form': form,
+                    'error_text': ERROR_TEXT_FORM_INVALID,
+                }
+            )
+
+    else:
+        # If request type is GET (or any other method) create a blank form.
+        form=forms.ClassesForm()
+
+        return render(
+            request,
+            'cbar_db/forms/private/define_a_class.html',
+            {'form': form}
         )
 
 
