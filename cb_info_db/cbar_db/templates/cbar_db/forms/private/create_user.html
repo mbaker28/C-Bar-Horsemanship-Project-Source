@@ -13,6 +13,9 @@
              required.
         </p>
         <p>
+            {{ form.is_superuser }}
+        </p>
+        <p>
             <span style="color: red">*</span>Create username: {{ form.username }}
             <span class="error_text">
                 {{ form.username.errors.as_text }}

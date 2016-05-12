@@ -19,6 +19,9 @@ ERROR_TEXT_PARTICIPANT_NOT_FOUND=(
 ERROR_TEXT_PARTICIPANT_ALREADY_EXISTS=(
     "The participant already exists in the database."
 )
+ERROR_TEXT_USER_NOT_FOUND=(
+    "The requested user isn't in the database."
+)
 ERROR_TEXT_USER_ALREADY_EXISTS=(
     "The user already exists in the database."
 )
@@ -1751,6 +1754,7 @@ def private_form_create_user(request):
                     email=form.cleaned_data['email'],
                 )
                 form_data_create_user.save()
+                user_id = form_data_create_user
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse("form-saved")+"?a=a")
@@ -1786,6 +1790,17 @@ def report_select_participant(request):
         request,
         'cbar_db/admin/reports/participant_select.html',
         {'participants':participants}
+    )
+
+@login_required
+def report_select_user(request):
+    """ Logged in user select user acount view. """
+    users=User.objects.all()
+
+    return render(
+        request,
+        'cbar_db/admin/reports/user_select.html',
+        {'users':users}
     )
 
 @login_required
@@ -1885,6 +1900,31 @@ def participant_record(request, participant_id):
             "observation_evaluations": observation_evaluations,
             "session_plans": session_plans,
             "rider_eval_checklists": rider_eval_checklists
+        }
+    )
+
+@login_required
+def user_record(request, user_id):
+    """ User Account view. """
+
+    try:
+        user = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        # The participant doesn't exist.
+        # Set the error message and redisplay the form:
+        return render(
+            request,
+            "cbar_db/admin/reports/user.html",
+            {
+                'error_text': (ERROR_TEXT_USER_NOT_FOUND),
+            }
+        )
+
+    return render(
+        request,
+        "cbar_db/admin/reports/user.html",
+        {
+            "user": user,
         }
     )
 
