@@ -7229,7 +7229,8 @@ class TestBackgroundCheckReport(TestCase):
          Background Check Release is passed. """
 
         test_user=models.User.objects.get(
-            username="testuser"
+            username="testuser",
+            secure=True
         )
 
         self.client.force_login(test_user)
