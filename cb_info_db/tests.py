@@ -7230,7 +7230,6 @@ class TestBackgroundCheckReport(TestCase):
 
         test_user=models.User.objects.get(
             username="testuser",
-            secure=True
         )
 
         self.client.force_login(test_user)
@@ -7248,7 +7247,8 @@ class TestBackgroundCheckReport(TestCase):
                     "month": "155",
                     "day": "11122"
                 }
-            )
+            ),
+            secure=True
         )
 
         self.assertTrue(
