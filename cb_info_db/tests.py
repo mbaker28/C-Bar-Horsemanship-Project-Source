@@ -144,7 +144,7 @@ class TestApplicationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
+        response=self.client.post(reverse("public-form-application"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -256,7 +256,7 @@ class TestApplicationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
+        response=self.client.post(reverse("public-form-application"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -340,7 +340,7 @@ class TestApplicationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
+        response=self.client.post(reverse("public-form-application"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -424,7 +424,7 @@ class TestApplicationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
+        response=self.client.post(reverse("public-form-application"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -465,7 +465,7 @@ class TestApplicationForm(TestCase):
         form=forms.ApplicationForm(form_data)
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
+        response=self.client.post(reverse("public-form-application"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -505,7 +505,7 @@ class TestApplicationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
+        response=self.client.post(reverse("public-form-application"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -558,7 +558,7 @@ class TestApplicationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
+        response=self.client.post(reverse("public-form-application"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -599,7 +599,7 @@ class TestApplicationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-application"), form_data)
+        response=self.client.post(reverse("public-form-application"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -677,7 +677,7 @@ class TestDefineAClassForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-define-a-class"), form_data)
+        response=self.client.post(reverse("private-form-define-a-class"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -722,7 +722,7 @@ class TestDefineAClassForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-define-a-class"), form_data)
+        response=self.client.post(reverse("private-form-define-a-class"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -775,7 +775,7 @@ class TestDefineAClassForm(TestCase):
         form=forms.ClassesForm(form_data)
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("private-form-define-a-class"), form_data)
+        response=self.client.post(reverse("private-form-define-a-class"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1059,7 +1059,7 @@ class TestEmergencyAuthorizationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -1182,7 +1182,7 @@ class TestEmergencyAuthorizationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1215,7 +1215,7 @@ class TestEmergencyAuthorizationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1248,7 +1248,7 @@ class TestEmergencyAuthorizationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1282,7 +1282,7 @@ class TestEmergencyAuthorizationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1316,7 +1316,7 @@ class TestEmergencyAuthorizationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-emerg-auth"), form_data)
+        response=self.client.post(reverse("public-form-emerg-auth"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1529,7 +1529,7 @@ class TestMediaReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("public-form-media"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -1598,7 +1598,7 @@ class TestMediaReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("public-form-media"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1623,7 +1623,7 @@ class TestMediaReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("public-form-media"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1646,7 +1646,7 @@ class TestMediaReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("public-form-media"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1672,7 +1672,7 @@ class TestMediaReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-media"), form_data)
+        response=self.client.post(reverse("public-form-media"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1830,7 +1830,7 @@ class TestBackGroundCheck(TestCase):
             "driver_license_num":"kgjenekkidik123"
         }
 
-        response=self.client.post(reverse("public-form-background"), form_data)
+        response=self.client.post(reverse("public-form-background"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 302)
 
@@ -1880,7 +1880,7 @@ class TestBackGroundCheck(TestCase):
             "driver_license_num":"kgjenekkidik123"
         }
 
-        response=self.client.post(reverse("public-form-background"), form_data)
+        response=self.client.post(reverse("public-form-background"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1901,7 +1901,7 @@ class TestBackGroundCheck(TestCase):
             "driver_license_num":"kgjenekkidik123"
         }
 
-        response=self.client.post(reverse("public-form-background"),form_data)
+        response=self.client.post(reverse("public-form-background"),form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -1926,7 +1926,7 @@ class TestBackGroundCheck(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-background"), form_data)
+        response=self.client.post(reverse("public-form-background"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -2219,7 +2219,7 @@ class TestMedicalReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-med-release"), form_data)
+        response=self.client.post(reverse("public-form-med-release"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -2310,7 +2310,7 @@ class TestMedicalReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-med-release"), form_data)
+        response=self.client.post(reverse("public-form-med-release"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -2362,7 +2362,7 @@ class TestMedicalReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-med-release"), form_data)
+        response=self.client.post(reverse("public-form-med-release"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -2416,7 +2416,7 @@ class TestMedicalReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-med-release"), form_data)
+        response=self.client.post(reverse("public-form-med-release"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -2468,7 +2468,7 @@ class TestMedicalReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-med-release"), form_data)
+        response=self.client.post(reverse("public-form-med-release"), form_data, secure=True)
 
         # Attempt to retrieve the new Participant record:
         try:
@@ -2554,7 +2554,7 @@ class TestMedicalReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-med-release"), form_data)
+        response=self.client.post(reverse("public-form-med-release"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -2647,7 +2647,7 @@ class TestLiabilityReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-liability"), form_data)
+        response=self.client.post(reverse("public-form-liability"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -2759,7 +2759,7 @@ class TestLiabilityReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-liability"), form_data)
+        response=self.client.post(reverse("public-form-liability"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -2780,7 +2780,7 @@ class TestLiabilityReleaseForm(TestCase):
             "date": "2016-03-31"
         }
 
-        response=self.client.post(reverse("public-form-liability"), form_data)
+        response=self.client.post(reverse("public-form-liability"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -2803,7 +2803,7 @@ class TestLiabilityReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-liability"), form_data)
+        response=self.client.post(reverse("public-form-liability"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -2828,7 +2828,7 @@ class TestLiabilityReleaseForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-liability"), form_data)
+        response=self.client.post(reverse("public-form-liability"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -3137,7 +3137,7 @@ class TestSeizureEvaluationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-seizure"), form_data)
+        response=self.client.post(reverse("public-form-seizure"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -3542,7 +3542,7 @@ class TestSeizureEvaluationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-seizure"), form_data)
+        response=self.client.post(reverse("public-form-seizure"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -3594,7 +3594,7 @@ class TestSeizureEvaluationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-seizure"), form_data)
+        response=self.client.post(reverse("public-form-seizure"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -3644,7 +3644,7 @@ class TestSeizureEvaluationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-seizure"), form_data)
+        response=self.client.post(reverse("public-form-seizure"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -3696,7 +3696,7 @@ class TestSeizureEvaluationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-seizure"), form_data)
+        response=self.client.post(reverse("public-form-seizure"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -3771,7 +3771,7 @@ class TestSeizureEvaluationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-seizure"), form_data)
+        response=self.client.post(reverse("public-form-seizure"), form_data, secure=True)
 
         # Assert that the reponse code is 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -3834,7 +3834,7 @@ class TestSeizureEvaluationForm(TestCase):
         }
 
         # Send a post request to the form view with the form_data defined above:
-        response=self.client.post(reverse("public-form-seizure"), form_data)
+        response=self.client.post(reverse("public-form-seizure"), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -4235,7 +4235,7 @@ class TestRiderEvalChecklistForm(TestCase):
                         "private_form_rider_eval_checklist",
                         kwargs={'participant_id':test_participant_in_db.participant_id}
                     ),
-                    form_data
+                    form_data, secure=True
                 )
 
                 # Assert that the reponse code is a 302 (redirect):
@@ -4603,7 +4603,7 @@ class TestRiderEvalChecklistForm(TestCase):
                 "private_form_rider_eval_checklist",
                 kwargs={'participant_id':test_participant_in_db.participant_id}
             ),
-            form_data
+            form_data, secure=True
         )
 
         # Assert that the reponse code is a 302 (redirect):
@@ -5412,7 +5412,7 @@ class TestRiderEvalChecklistForm(TestCase):
                 "private_form_rider_eval_checklist",
                 kwargs={'participant_id':test_participant_in_db.participant_id}
             ),
-            form_data
+            form_data, secure=True
         )
 
         # Assert that the reponse code is a 200 (OK):
@@ -5675,7 +5675,7 @@ class TestRiderEvalChecklistForm(TestCase):
                     "participant_id": 99999999999999999,
                 }
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -7714,7 +7714,7 @@ class TestObservationEvaluation(TestCase):
                     "participant_id":test_participant_in_db.participant_id,
                 }
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200)
@@ -7806,7 +7806,7 @@ class TestObservationEvaluation(TestCase):
                     "participant_id":99999999999,
                 }
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200)
@@ -7878,7 +7878,7 @@ class TestObservationEvaluation(TestCase):
                     "participant_id":test_participant_in_db.participant_id,
                 }
             ),
-            form_data
+            form_data, secure=True
         )
 
         # Assert that the reponse code is a 302 (redirect):
@@ -8142,7 +8142,7 @@ class TestObservationEvaluation(TestCase):
                             "participant_id":test_participant_in_db.participant_id,
                         }
                     ),
-                    form_data
+                    form_data, secure=True
                 )
 
                 # Assert that the reponse code is a 302 (redirect):
@@ -8226,7 +8226,7 @@ class TestObservationEvaluation(TestCase):
                             "participant_id":test_participant_in_db.participant_id,
                         }
                     ),
-                    form_data
+                    form_data, secure=True
                 )
 
                 # Assert that the reponse code is a 302 (redirect):
@@ -8344,7 +8344,7 @@ class TestAdoptParticipant(TestCase):
             "amount":"sadhiugiufe5",
         }
 
-        response=self.client.post(reverse("donation-participant"),form_data)
+        response=self.client.post(reverse("donation-participant"),form_data, secure=True)
 
         self.assertEqual(response.status_code, 200)
 
@@ -8363,7 +8363,7 @@ class TestAdoptParticipant(TestCase):
             "amount":"5",
         }
 
-        response=self.client.post(reverse("donation-participant"), form_data)
+        response=self.client.post(reverse("donation-participant"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 200)
 
@@ -8381,7 +8381,7 @@ class TestAdoptParticipant(TestCase):
             "amount": "5",
         }
 
-        response=self.client.post(reverse("donation-participant"), form_data)
+        response=self.client.post(reverse("donation-participant"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 302)
 
@@ -8527,7 +8527,7 @@ class TestAdoptHorse(TestCase):
             "amount":"sadhiugiufe5",
         }
 
-        response=self.client.post(reverse("donation-horse"),form_data)
+        response=self.client.post(reverse("donation-horse"),form_data, secure=True)
 
         self.assertEqual(response.status_code, 200)
 
@@ -8545,7 +8545,7 @@ class TestAdoptHorse(TestCase):
             "amount":"5",
         }
 
-        response=self.client.post(reverse("donation-horse"), form_data)
+        response=self.client.post(reverse("donation-horse"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 200)
 
@@ -8563,7 +8563,7 @@ class TestAdoptHorse(TestCase):
             "email":"George.Bush@whitehouse.com"
         }
 
-        response=self.client.post(reverse("donation-horse"), form_data)
+        response=self.client.post(reverse("donation-horse"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 302)
 
@@ -8613,7 +8613,7 @@ class TestAdoptHorse(TestCase):
             "email":"new@donor.com"
         }
 
-        response=self.client.post(reverse("donation-horse"), form_data)
+        response=self.client.post(reverse("donation-horse"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 302)
 
@@ -8759,7 +8759,7 @@ class TestMonetaryDonation(TestCase):
             "purpose": "",
         }
 
-        response=self.client.post(reverse("donation-monetary"),form_data)
+        response=self.client.post(reverse("donation-monetary"),form_data, secure=True)
 
         self.assertEqual(response.status_code, 200)
 
@@ -8778,7 +8778,7 @@ class TestMonetaryDonation(TestCase):
             "purpose": "",
         }
 
-        response=self.client.post(reverse("donation-monetary"), form_data)
+        response=self.client.post(reverse("donation-monetary"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 200)
 
@@ -8797,7 +8797,7 @@ class TestMonetaryDonation(TestCase):
             "purpose": "New saddles"
         }
 
-        response=self.client.post(reverse("donation-monetary"), form_data)
+        response=self.client.post(reverse("donation-monetary"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 302)
 
@@ -8852,7 +8852,7 @@ class TestMonetaryDonation(TestCase):
             "purpose": "",
         }
 
-        response=self.client.post(reverse("donation-monetary"), form_data)
+        response=self.client.post(reverse("donation-monetary"), form_data, secure=True)
 
         self.assertEqual(response.status_code, 302)
 
@@ -9122,7 +9122,7 @@ class TestSessionPlanForm(TestCase):
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("private-form-session-plan",
-        kwargs={"participant_id": test_participant.participant_id}), form_data)
+        kwargs={"participant_id": test_participant.participant_id}), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -9347,7 +9347,7 @@ class TestSessionPlanForm(TestCase):
                 "private-form-session-plan",
                 kwargs={"participant_id": 999999999999999}
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -9401,7 +9401,7 @@ class TestSessionPlanForm(TestCase):
                 "private-form-session-plan",
                 kwargs={"participant_id": 999999999999999}
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -9457,7 +9457,7 @@ class TestSessionPlanForm(TestCase):
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("private-form-session-plan",
-        kwargs={"participant_id": test_participant.participant_id}), form_data)
+        kwargs={"participant_id": test_participant.participant_id}), form_data, secure=True)
 
         # Assert that the reponse code is a 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -9521,7 +9521,7 @@ class TestSessionPlanForm(TestCase):
                             "participant_id": test_participant.participant_id
                         }
                     ),
-                    form_data
+                    form_data, secure=True
                 )
 
                 # Assert that the reponse code is 302 (Redirect):
@@ -10502,7 +10502,7 @@ class TestPhoneLogForm(TestCase):
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("private-form-phone-log",
-        kwargs={"participant_id": test_participant.participant_id}), form_data)
+        kwargs={"participant_id": test_participant.participant_id}), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -10573,7 +10573,7 @@ class TestPhoneLogForm(TestCase):
                 "private-form-phone-log",
                 kwargs={"participant_id": 999999999999999}
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -10651,7 +10651,7 @@ class TestPhoneLogForm(TestCase):
                 "private-form-phone-log",
                 kwargs={"participant_id": 999999999999999}
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -10773,7 +10773,7 @@ class TestPhoneLogForm(TestCase):
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("private-form-phone-log",
-        kwargs={"participant_id": test_participant.participant_id}), form_data)
+        kwargs={"participant_id": test_participant.participant_id}), form_data, secure=True)
 
         # Assert that the reponse code is a 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -10818,7 +10818,7 @@ class TestPhoneLogForm(TestCase):
                             "participant_id": test_participant.participant_id
                         }
                     ),
-                    form_data
+                    form_data, secure=True
                 )
 
                 # Assert that the reponse code is 302 (Redirect):
@@ -10979,7 +10979,7 @@ class TestIncidentsForm(TestCase):
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("private-form-incidents",
-        kwargs={"participant_id": test_participant.participant_id}), form_data)
+        kwargs={"participant_id": test_participant.participant_id}), form_data, secure=True)
 
         # Assert that the reponse code is a 302 (redirect):
         self.assertEqual(response.status_code, 302)
@@ -11050,7 +11050,7 @@ class TestIncidentsForm(TestCase):
                 "private-form-incidents",
                 kwargs={"participant_id": 999999999999999}
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -11085,7 +11085,7 @@ class TestIncidentsForm(TestCase):
                 "private-form-incidents",
                 kwargs={"participant_id": 999999999999999}
             ),
-            form_data
+            form_data, secure=True
         )
 
         self.assertEqual(response.status_code, 200) # Redirected...
@@ -11189,7 +11189,7 @@ class TestIncidentsForm(TestCase):
 
         # Send a post request to the form view with the form_data defined above:
         response=self.client.post(reverse("private-form-incidents",
-        kwargs={"participant_id": test_participant.participant_id}), form_data)
+        kwargs={"participant_id": test_participant.participant_id}), form_data, secure=True)
 
         # Assert that the reponse code is a 200 (OK):
         self.assertEqual(response.status_code, 200)
@@ -11234,7 +11234,7 @@ class TestIncidentsForm(TestCase):
                             "participant_id": test_participant.participant_id
                         }
                     ),
-                    form_data
+                    form_data, secure=True
                 )
 
                 # Assert that the reponse code is 302 (Redirect):
