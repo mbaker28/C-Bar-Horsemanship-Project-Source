@@ -4,13 +4,21 @@
 //same size on laptop or pc
 @media only screen and (max-device-width: 48em) {
     * {
-      font-size:110% !important;
+      font-size: 1.07em;
+    }
+
+    .main {
+        min-width: 100% !important;
     }
   }
 
 body {
     background-color: white;
     color: @color_grey_dark;
+}
+
+p {
+    font-size: 1em;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -20,10 +28,23 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     color: @color_blue_dark;
+    font-size: 2.5em
 }
 
 h2, h3, h4, h5, h6 {
     color: @color_background_brown;
+}
+
+h2 {
+    font-size: 2em
+}
+
+h3 {
+    font-size: 1.5em
+}
+
+h4 {
+    font-size: 1.25em
 }
 
 a {
@@ -72,6 +93,7 @@ a:hover {
     padding-left: 2em;
     padding-right: 2em;
     text-decoration: none;
+    font-size: 1.2em;
 }
 
 .button:hover {
