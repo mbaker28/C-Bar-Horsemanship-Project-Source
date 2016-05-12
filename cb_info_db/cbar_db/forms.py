@@ -141,6 +141,15 @@ class ApplicationForm(forms.Form):
         if height_inches > self.INCH_MAX or height_inches < self.INCH_MIN:
             self.add_error("height_inches", self.ERROR_TEXT_INVALID_HEIGHT_IN)
 
+class ClassesForm(forms.Form):
+    name=forms.CharField(
+        max_length=models.Grouping._meta.get_field("name").max_length
+    )
+
+    description=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':4, 'cols':40}),
+        max_length=models.Grouping._meta.get_field("description").max_length
+    )
 
 class SeizureEvaluationForm(forms.Form):
     name=forms.CharField(

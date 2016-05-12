@@ -1,0 +1,34 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Define a Class</h1>
+    {% if error_text %}
+    <p><strong>
+        {{ error_text }}
+        {{ form.errors }}
+        {{ form.non_field_errors }}
+    </strong></p>
+    {% endif %}
+    <form action="{% url 'private-form-define-a-class' %}" method="post">
+        {% csrf_token %}
+        <p>
+            Fields with an <span style="color: red">*</span> next to them are
+             required.
+        </p>
+
+        <p>
+            <span style="color: red">*</span>Class Name: {{ form.name }}
+            <span class="error_text">
+                {{ form.name.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            <span style="color: red">*</span>Class Description:<br /> {{ form.description }}
+            <span class="error_text">
+                {{ form.description.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            <input type="submit" value="Submit" />
+        </p>
+    </form>
+{% endblock %}

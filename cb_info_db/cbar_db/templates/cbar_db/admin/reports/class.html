@@ -1,0 +1,35 @@
+{% extends "cbar_db/template.html" %}
+{% block header %}
+    <style type="text/css">
+        .floating_block_wrapper {
+            text-align: center;
+        }
+
+        .floating_block_wrapper > .floating_block {
+            padding: 1.5em;
+            display: inline-block;
+            vertical-align: top;
+            width: 12em;
+            text-align: left;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <h1>
+        {% if group %}
+            {{ group.name }}
+        {% else %}
+            Class Record
+        {% endif %}
+    </h1>
+    {% if error_text %}
+        <p style="text-align: center"><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    {% if group %}
+        <p>
+            {{ group.description }}
+        </p>
+    {% endif %}
+{% endblock %}
