@@ -1,0 +1,38 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>Create New User</h1>
+    {% if error_text %}
+        <p><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    <form action="{% url 'private-form-create-user' %}" method="post">
+        {% csrf_token %}
+        <p>
+            Fields with an <span style="color: red">*</span> next to them are
+             required.
+        </p>
+        <p>
+            <span style="color: red">*</span>New username: {{ form.username }}
+            <span class="error_text">
+                {{ form.username.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            <span style="color: red">*</span>New password: {{ form.password }}
+            <span class="error_text">
+                {{ form.password.errors.as_text }}
+            </span>
+        </p>
+        <p>
+            <span style="color: red">*</span>User's email: {{ form.email }}
+            <span class="error_text">
+                {{ form.email.errors.as_text }}
+            </span>
+        </p>
+
+        <p>
+            <input type="submit" value="Submit" />
+        </p>
+    </form>
+{% endblock %}

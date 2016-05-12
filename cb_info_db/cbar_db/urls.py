@@ -174,6 +174,19 @@ urlpatterns = [
     url(r'^forms/private/incidents/(?P<participant_id>[0-9]+)$', views.private_form_incidents,
         name='private-form-incidents'),
 
+    # Create User form
+    url(r'^forms/private/create_user/$', views.private_form_create_user,
+        name='private-form-create-user'),
+
+    # User Accounts page
+    url(r'^admin/reports/user_select/$', views.report_select_user,
+        name='report-select-user'),
+
+    # User Account overview page
+    url(r'^admin/reports/user/(?P<user_id>[0-9]+)/$',
+        views.user_record,
+        name='user-record'),
+
     # Define a Class form
     url(r'^forms/private/define_a_class/$', views.private_form_define_a_class,
         name='private-form-define-a-class'),

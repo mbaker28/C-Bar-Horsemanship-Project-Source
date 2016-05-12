@@ -19,6 +19,20 @@ YEARS=range(this_year-125, this_year+1)
 
 loggeyMcLogging=logging.getLogger(__name__)
 
+class DeleteUser(forms.Form):
+    delete_user=forms.BooleanField(required=False)
+
+class CreateUserForm(forms.Form):
+    username=forms.CharField(
+        max_length=50
+    )
+    password=forms.CharField(
+        widget=forms.PasswordInput
+    )
+    email=forms.CharField(
+        max_length=100
+    )
+    is_superuser=forms.BooleanField(required=False)
 
 class ApplicationForm(forms.Form):
     FEET_MIN=2

@@ -1,0 +1,20 @@
+{% extends "cbar_db/template.html" %}
+{% block body %}
+    <h1>
+        {% if user %}
+            {{ user.username }}
+        {% else %}
+            User Account
+        {% endif %}
+    </h1>
+    {% if error_text %}
+        <p style="text-align: center"><strong>
+            {{ error_text }}
+        </strong></p>
+    {% endif %}
+    {% if user %}
+        <p>
+            {{ user.username }} ({{ user.email }})
+        </p>
+    {% endif %}
+{% endblock %}
