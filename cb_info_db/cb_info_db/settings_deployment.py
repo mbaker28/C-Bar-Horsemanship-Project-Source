@@ -17,12 +17,14 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Set the secret key from the hidden, server only file:
+with open('/home/cbardbuser/key.txt') as f:
+    SECRET_KEY = f.read().strip()
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*rin0hfya*_p(604srszyo7$jh4ijlj&njnkj91tqk!i8z0pqx'
+# Always redirect to a HTTPS connection, and use HTTPS settings:
+SECURE_SSL_REDIRECT=True
+CSRF_COOKIE_SECURE=True
+SESSION_COOKIE_SECURE=True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -108,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 LOGIN_URL='user-login'
-SESSION_COOKIE_AGE=30 * 60 #30 minutes
+SESSION_COOKIE_AGE=90 * 60 #90 minutes
 SESSION_SAVE_EVERY_REQUEST=True #Reset the expiration timer with every request
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True #Logout the user if they close their browser
 
