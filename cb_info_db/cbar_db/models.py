@@ -30,6 +30,7 @@
 from math import floor
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission
 from localflavor.us.models import USStateField
 from localflavor.us.models import PhoneNumberField
 from localflavor.us.models import USZipCodeField
@@ -1852,7 +1853,6 @@ class Sidewalker(models.Model):
         max_length=SHORT_ANSWER_LENGTH,
         null=True
     )
-
 
 class AuthorizedUser(models.Model):
     """ Links to the built in Django authentication system. Acts as a bridge
