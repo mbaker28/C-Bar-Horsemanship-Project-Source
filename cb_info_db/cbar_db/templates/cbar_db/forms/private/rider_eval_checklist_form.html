@@ -1,7 +1,7 @@
 {% extends "cbar_db/template.html" %}
 {% load staticfiles %}
 {% block header %}
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="{% static "cbar_db/js/jquery-1.12.3.min.js" %}" type="text/javascript"></script>
   <script src="{% static "cbar_db/js/rider_eval_checklist.js" %}" type="text/javascript"></script>
   <style>
     li{
@@ -30,8 +30,6 @@
             <option value="section_overall_comments">--- Overall Comments ---</option>
         </select>
     </form>
-
-    <span style="color: red;">WE NEED TO LOAD JQUERY FROM STATIC FILES NOT GOOGLE CDN</span>
 
     {% if participant %}
         <form action="{% url 'private_form_rider_eval_checklist' participant.participant_id %}" method="post">
@@ -1245,7 +1243,8 @@
         <div id="section_overall_comments">
           <div id="comments">
             <p>
-                <span style="color: red">*</span> <b><u>Overall Comments:</u></b> {{ form.comments }}
+                <span style="color: red">*</span> <b><u>Overall Comments:</u></b><br />
+                {{ form.comments }}
                 <span class="error_message">
                     {{ form.comments.errors.as_text }}
                 </span>

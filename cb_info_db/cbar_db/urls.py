@@ -128,13 +128,6 @@ urlpatterns = [
         views.report_seizure,
         name='report-seizure'),
 
-    # Rider Intake Assessment view
-    url(
-        r'^forms/private/intake/$',
-        views.private_form_intake_assessment,
-        name="private-form-intake-assessment"
-    ),
-
     # Observation Evaluation form report view
     url(r'^admin/reports/participant/(?P<participant_id>[0-9]+)/report/observation_evaluation/(?P<year>[0-9]+)/(?P<month>[0-9]+)/(?P<day>[0-9]+)/$',
         views.report_observation_evaluation,
@@ -156,6 +149,13 @@ urlpatterns = [
         name='report-rider-intake'),
 
     ############################ Private forms ###########################
+    # Rider Intake Assessment view
+    url(
+        r'^forms/private/intake/$',
+        views.private_form_intake_assessment,
+        name="private-form-intake-assessment"
+    ),
+
     #Observation Evaluation
     url(r'^forms/private/observation_evaluation/(?P<participant_id>[0-9]+)/$',
         views.observation_evaluation,
@@ -169,6 +169,19 @@ urlpatterns = [
     url(r'^forms/private/rider_eval_checklist/(?P<participant_id>[0-9]+)$', views.private_form_rider_eval_checklist,
         name='private_form_rider_eval_checklist'),
 
+    # Seizure Phone Log form
+    url(r'^forms/private/phone_log/(?P<participant_id>[0-9]+)$', views.private_form_phone_log,
+        name='private-form-phone-log'),
+
+    # Seizure Incidents form
+    url(r'^forms/private/incidents/(?P<participant_id>[0-9]+)$', views.private_form_incidents,
+        name='private-form-incidents'),
+
+    # Define a Class form
+    url(r'^forms/private/define_a_class/$', views.private_form_define_a_class,
+        name='private-form-define-a-class'),
+
+    ############################ User Account Views ###########################
     url(r'^private/logout/$', views.logout_confirmation,
         name='logout-confirmation'),
 
@@ -177,14 +190,6 @@ urlpatterns = [
 
     url(r'^private/logged_out/$', views.loggered_out,
         name="loggered-out"),
-
-    # Seizure Phone Log form
-    url(r'^forms/private/phone_log/(?P<participant_id>[0-9]+)$', views.private_form_phone_log,
-        name='private-form-phone-log'),
-
-    # Seizure Incidents form
-    url(r'^forms/private/incidents/(?P<participant_id>[0-9]+)$', views.private_form_incidents,
-        name='private-form-incidents'),
 
     # Create User form
     url(r'^forms/private/create_user/$', views.private_form_create_user,
@@ -198,8 +203,4 @@ urlpatterns = [
     url(r'^admin/reports/user/(?P<user_id>[0-9]+)/$',
         views.user_record,
         name='user-record'),
-
-    # Define a Class form
-    url(r'^forms/private/define_a_class/$', views.private_form_define_a_class,
-        name='private-form-define-a-class'),
 ]
