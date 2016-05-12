@@ -2,3 +2,9 @@
 include =
     cb_info_db/*
     cbar_db/*
+
+omit =
+    cbar_db/migrations/*
+    cbar_db/__init__.py
+    cb_info_db/__init__.py
+    cb_info_db/settings_*.py
