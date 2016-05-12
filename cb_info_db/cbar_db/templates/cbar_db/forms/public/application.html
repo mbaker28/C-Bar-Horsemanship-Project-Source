@@ -1,5 +1,12 @@
 {% extends "cbar_db/template.html" %}
 {% block body %}
+{% block header %}
+<style>
+  #id_height_feet, #id_height_inches {
+    width: 3em;
+  }
+</style>
+{% endblock %}
     <h1>Application</h1>
     {% if error_text %}
         <p></strong>
@@ -23,20 +30,24 @@
             <span class="error_message">
                 {{ form.name.errors.as_text }}
             </span>
+        </p>
+        <p>
             <span style="color: red">*</span> Date of Birth: {{ form.birth_date }}
             <span class="error_message">
                 {{ form.birth_date.errors.as_text }}
             </span>
         </p>
         <p>
-            <span style="color: red">*</span> Height: {{ form.height_feet }}
+            <span style="color: red">*</span> Height: {{ form.height_feet }} ft
             <span class="error_message">
                 {{ form.height_feet.errors.as_text }}
             </span>
             {{ form.height_inches }}
             <span class="error_message">
                 {{ form.height_inches.errors.as_text }}
-            </span>
+            </span> inches
+        </p>
+        <p>
             <span style="color: red">*</span> Weight: {{ form.weight }} lbs
             <span class="error_message">
                 {{ form.weight.errors.as_text }}
@@ -61,16 +72,18 @@
         </p>
         <p>
             <span style="color: red">*</span> If minor or adult with legal guardian, parent or legal guardian
-            name(s): {{ form.guardian_name }}
+            name(s): <p>{{ form.guardian_name }}
             <span class="error_message">
                 {{ form.guardian_name.errors.as_text }}
-            </span>
+            </span></p>
         </p>
         <p>
             <span style="color: red">*</span> Street Address:  {{ form.address_street }}
             <span class="error_message">
                 {{ form.address_street.errors.as_text }}
             </span>
+        </p>
+        <p>
             <span style="color: red">*</span> City: {{ form.address_city }}
             <span class="error_message">
                 {{ form.address_city.errors.as_text }}
@@ -81,16 +94,21 @@
             <span class="error_message">
                 {{ form.address_state.errors.as_text }}
             </span>
+        </p>
+        <p>
             <span style="color: red">*</span> Zip Code: {{ form.address_zip }}
             <span class="error_message">
                 {{ form.address_zip.errors.as_text }}
             </span>
         </p>
+        <span style="color: red">*</span> Please enter at least one phone number
         <p>
             Home Phone: {{ form.phone_home }}
             <span class="error_message">
                 {{ form.phone_home.errors.as_text }}
             </span>
+        </p>
+        <p>
             Cell Phone: {{ form.phone_cell }}
             <span class="error_message">
                 {{ form.phone_cell.errors.as_text }}
