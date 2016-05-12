@@ -14,7 +14,7 @@
     {% endif %}
     {% if user %}
         <p>
-            <a href="{% url 'user-delete' user.id %}">Delete User</a>
+            {{ user.username }} ({{ user.email }})
         </p>
     {% endif %}
 {% endblock %}
